@@ -52,8 +52,8 @@ LINES = [
     "[BREATHLESS][LUNGS BURNING][adrenaline][hissed shouting through teeth]"
     "뛰어요!! [PANICKED HARSH WHISPER]지금!! [GASPING]지금!!"),
   ("dex_01_surrender", VOICE_DEX, SETTINGS_DEX,
-    "[ICE COLD][SLOW][menacing low voice][slight smirk in voice]"
-    "…라온. [CHILLINGLY POLITE PAUSE][taunting whisper]투항해."),
+    "[ice cold][slow controlled][low voice][menacing]"
+    "…라온. 투항해."),
   ("raon_c2_yeonwoo", VOICE_RAON, SETTINGS_PEAK,
     "[BROKEN VOICE][shaking gasping sob][devastated whisper][trembling]"
     "…연우……… [BARELY AUDIBLE BREATH]연우……"),
@@ -83,7 +83,7 @@ LINES = [
   ("raon_a1_ok", VOICE_RAON, SETTINGS_RAON,
     "[breathless][concerned][quiet][voice rough] 괜찮아?"),
   ("raon_a2_behind", VOICE_RAON, SETTINGS_RAON,
-    "[low voice][resigned][weary][soft] 그럼 말고. [gentle][protective] 내 등 뒤에 있어."),
+    "[low voice][protective][gentle but firm] 내 등 뒤에 있어."),
   ("raon_b1_name", VOICE_RAON, SETTINGS_PEAK,
     "[low voice][relieved][quietly broken][choked] 연우…"),
   ("raon_b2_alive", VOICE_RAON, SETTINGS_PEAK,

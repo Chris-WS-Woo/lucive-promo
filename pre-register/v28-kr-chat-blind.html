@@ -1,0 +1,1989 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>LUCIVE · 고정 설정된 캐릭터 챗은 잊어요 (v28 · BLIND)</title>
+<meta name="description" content="고정 설정된 캐릭터 챗은 잊어요. 그가 당신의 결말을 만듭니다.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Space+Grotesk:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg-deep:#08090C; --bg-surface:#0F1117; --bg-card:#161822; --bg-elevated:#1C1F2E;
+  --bg:var(--bg-deep);
+  --border-subtle:rgba(255,255,255,.06);
+  --border-medium:rgba(255,255,255,.1);
+  --border-strong:rgba(255,255,255,.18);
+  --text-primary:#F1F3F8; --text-secondary:#8B92A8; --text-tertiary:#5A6178;
+  --ink:var(--text-primary); --ink-soft:var(--text-secondary); --muted:var(--text-tertiary);
+  --lucid-cyan:#06B6D4; --lucid-blue:#2563EB; --lucid-purple:#8B5CF6;
+  --awakening-pink:#EC4899; --fragment-gold:#F59E0B; --sync-green:#10B981;
+  --danger:var(--awakening-pink);
+  --gradient-primary:linear-gradient(135deg,#06B6D4,#2563EB);
+  --gradient-warm:linear-gradient(135deg,#EC4899,#8B5CF6);
+  --gradient-aurora:linear-gradient(135deg,#06B6D4,#8B5CF6,#EC4899);
+  --sans:"Inter","Noto Sans KR",system-ui,-apple-system,sans-serif;
+  --display:"Space Grotesk","Inter","Noto Sans KR",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,monospace;
+  --ease:cubic-bezier(.16,1,.3,1);
+  --top-h:52px; --tab-h:58px;
+}
+html{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+body{background:var(--bg-deep);color:var(--ink);font-family:var(--sans);min-height:100vh;min-height:100dvh;overflow:hidden;letter-spacing:-.01em;line-height:1.5}
+
+.ambient-bg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.ambient-orb{position:absolute;border-radius:50%;filter:blur(120px);opacity:.14;animation:orbFloat 20s ease-in-out infinite}
+.ambient-orb.o-cyan{width:min(600px,80vw);height:min(600px,80vw);background:var(--lucid-cyan);top:-10vw;right:0}
+.ambient-orb.o-purple{width:min(500px,70vw);height:min(500px,70vw);background:var(--lucid-purple);bottom:-10vw;left:0;animation-delay:-7s}
+.ambient-orb.o-pink{width:min(400px,60vw);height:min(400px,60vw);background:var(--awakening-pink);top:50%;left:50%;transform:translate(-50%,-50%);animation-delay:-14s;opacity:.08}
+@keyframes orbFloat{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(30px,-40px) scale(1.05)}66%{transform:translate(-20px,30px) scale(.95)}}
+.noise-overlay{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.03;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:256px}
+
+.app{position:fixed;inset:0;z-index:2;display:flex;justify-content:center;align-items:center}
+.app-frame{position:relative;width:100%;max-width:480px;height:100vh;height:100dvh;background:var(--bg-deep);overflow:hidden;display:flex;flex-direction:column;box-shadow:0 0 80px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.04)}
+@media(min-width:560px){.app-frame{max-height:900px;margin:auto;border-radius:28px;height:92vh}}
+
+/* TOPBAR */
+.topbar{height:var(--top-h);min-height:var(--top-h);display:flex;align-items:center;gap:10px;padding:0 14px;background:rgba(8,9,12,.88);backdrop-filter:blur(18px);border-bottom:1px solid var(--border-subtle);position:relative;z-index:10}
+.tb-back{display:none;align-items:center;gap:4px;padding:6px 10px;background:transparent;border:none;color:var(--ink-soft);font-family:var(--sans);font-size:13px;font-weight:600;cursor:pointer;border-radius:100px}
+.tb-back:hover{color:var(--lucid-cyan);background:rgba(6,182,212,.08)}
+.tb-back .arr{color:var(--lucid-cyan);font-family:var(--mono)}
+.app:not(.view-cast) .tb-back{display:inline-flex}
+.tb-brand{font-family:var(--display);font-weight:800;font-size:14.5px;letter-spacing:.26em;background:var(--gradient-primary);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.app:not(.view-cast) .tb-brand{display:none}
+.tb-title{display:none;flex-direction:column;gap:0;flex:1;min-width:0}
+.app.view-splash .tb-title,.app.view-chat .tb-title{display:flex}
+.tb-ep{font-family:var(--mono);font-size:9.5px;letter-spacing:.22em;color:var(--awakening-pink);text-transform:uppercase;font-weight:700}
+.tb-node{font-family:var(--sans);font-size:13px;font-weight:700;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tb-spacer{flex:1}
+.tb-dday{font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--lucid-cyan);padding:3px 9px;border:1px solid rgba(6,182,212,.32);border-radius:100px;background:rgba(6,182,212,.06)}
+.tb-dday b{color:var(--lucid-cyan);font-weight:800}
+
+/* STATS HUD */
+.stats-hud{display:none;gap:8px;align-items:center;padding:8px 14px;background:rgba(8,9,12,.78);border-bottom:1px solid var(--border-subtle);position:relative;z-index:9}
+.app.view-chat .stats-hud{display:flex}
+.stat{flex:1;display:flex;flex-direction:column;gap:3px;min-width:0}
+.stat-head{display:flex;align-items:center;justify-content:space-between;font-family:var(--mono);font-size:8.5px;letter-spacing:.16em;color:var(--muted);text-transform:uppercase;font-weight:700}
+.stat-head b{color:var(--ink);font-size:10.5px;letter-spacing:0}
+.stat-bar{height:3px;border-radius:100px;background:rgba(255,255,255,.08);overflow:hidden;position:relative}
+.stat-bar::after{content:'';position:absolute;top:0;left:50%;width:1px;height:100%;background:rgba(255,255,255,.22)}
+.stat-fill{height:100%;border-radius:100px;transition:width .5s var(--ease)}
+.stat.humanity .stat-fill{background:var(--lucid-cyan);box-shadow:0 0 6px rgba(6,182,212,.7)}
+.stat.humanity .stat-head b{color:var(--lucid-cyan)}
+.stat.obsession .stat-fill{background:var(--awakening-pink);box-shadow:0 0 6px rgba(236,72,153,.7)}
+.stat.obsession .stat-head b{color:var(--awakening-pink)}
+.stat.trust .stat-fill{background:var(--lucid-purple);box-shadow:0 0 6px rgba(139,92,246,.7)}
+.stat.trust .stat-head b{color:var(--lucid-purple)}
+
+/* BLIND VARIANT · stat changes hidden */
+.stats-hud .stat-head b{visibility:hidden}
+.stats-hud .stat .stat-fill{filter:saturate(.5) brightness(.7)}
+.stat-toast{display:none!important}
+
+/* SCREENS */
+.screens{flex:1;position:relative;overflow:hidden}
+.screen{position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .4s var(--ease);overflow-y:auto;overflow-x:hidden}
+.screen.active{opacity:1;pointer-events:auto}
+.screen::-webkit-scrollbar{width:4px}
+.screen::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:100px}
+
+/* ============ CAST LINEUP (v19 entry) ============ */
+.cast{padding:14px 14px 80px;position:relative}
+.cast-head{padding:8px 4px 18px;text-align:center}
+.cast-h1{font-family:var(--display);font-size:clamp(20px,5vw,26px);font-weight:900;letter-spacing:-.03em;color:var(--ink);line-height:1.15;margin-bottom:6px}
+.cast-h1 em{font-style:normal;background:var(--gradient-aurora);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.cast-sub{font-family:var(--sans);font-size:12.5px;color:var(--ink-soft);letter-spacing:.005em}
+.cast-sub b{color:var(--lucid-cyan);font-weight:800}
+
+/* v23 · Compact Catchphrase · CTA-first hierarchy · prop fits above-fold with featured */
+.cast-prop{margin:2px 0 12px;padding:11px 14px 11px;background:radial-gradient(ellipse at 30% 0%,rgba(236,72,153,.18),transparent 70%),linear-gradient(180deg,rgba(8,9,12,.6),rgba(8,9,12,.2));border:1px solid rgba(236,72,153,.32);border-radius:14px;position:relative;overflow:hidden}
+.cast-prop-eye{position:relative;font-family:var(--mono);font-size:9px;letter-spacing:.28em;text-transform:uppercase;font-weight:800;background:var(--gradient-aurora);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:5px}
+.cast-prop-h{position:relative;font-family:var(--display);font-size:clamp(17px,4.6vw,21px);font-weight:900;letter-spacing:-.025em;line-height:1.22;color:var(--ink);margin-bottom:0}
+.cast-prop-h em{font-style:normal;background:var(--gradient-aurora);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.cast-prop-h s{text-decoration:line-through;text-decoration-color:rgba(255,255,255,.28);text-decoration-thickness:1.5px;color:var(--muted);font-weight:700}
+/* Inline pillars · row of compact chips · no big card grid */
+.cast-pillars{position:relative;display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.pillar{padding:4px 9px 4px 8px;background:rgba(8,9,12,.55);border:1px solid var(--border-subtle);border-radius:100px;display:inline-flex;align-items:center;gap:5px;font-family:var(--sans);font-size:11px;font-weight:700;color:var(--ink);letter-spacing:-.005em}
+.pillar-ico{font-size:13px;line-height:1}
+.pillar-h{font-family:var(--sans);font-size:11px;font-weight:800;color:var(--ink);letter-spacing:-.005em;line-height:1}
+.pillar-t{display:none}
+.pillar.p1{border-color:rgba(139,92,246,.4)}
+.pillar.p2{border-color:rgba(236,72,153,.4)}
+.pillar.p3{border-color:rgba(6,182,212,.4)}
+.pillar.p4{border-color:rgba(245,158,11,.4)}
+
+/* Section divider (Live Now / Coming) */
+.cast-section-h{padding:4px 4px 8px;display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:10px;letter-spacing:.28em;text-transform:uppercase;font-weight:800;color:var(--awakening-pink)}
+.cast-section-h::before{content:'';width:6px;height:6px;border-radius:50%;background:#10B981;box-shadow:0 0 8px rgba(16,185,129,.7);animation:liveBlink 1.6s ease-in-out infinite}
+.cast-section-h .sh-line{flex:1;height:1px;background:linear-gradient(90deg,rgba(236,72,153,.4),transparent)}
+
+/* Featured (Yeonwoo · LIVE) */
+.cast-featured{position:relative;border-radius:18px;overflow:hidden;cursor:pointer;background:linear-gradient(160deg,rgba(236,72,153,.18),rgba(8,9,12,.85) 60%);border:1.5px solid rgba(236,72,153,.4);box-shadow:0 18px 48px rgba(236,72,153,.22),0 0 0 1px rgba(236,72,153,.18);margin-bottom:24px;display:flex;align-items:stretch;min-height:200px;transition:transform .25s var(--ease),box-shadow .25s}
+.cast-featured:hover{transform:translateY(-3px);box-shadow:0 24px 56px rgba(236,72,153,.32),0 0 0 1px rgba(236,72,153,.3)}
+.cast-featured-portrait{width:42%;flex-shrink:0;position:relative;background:rgba(8,9,12,.5);overflow:hidden}
+.cast-featured-portrait img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;filter:saturate(1.05)}
+.cast-featured-portrait::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent 50%,rgba(8,9,12,.4) 100%)}
+.cast-featured-body{flex:1;padding:18px 18px 16px;display:flex;flex-direction:column;justify-content:space-between;min-width:0}
+.cf-tag{display:inline-block;font-family:var(--mono);font-size:9.5px;letter-spacing:.26em;color:var(--awakening-pink);text-transform:uppercase;font-weight:800;padding:3px 9px;background:rgba(236,72,153,.18);border:1px solid rgba(236,72,153,.5);border-radius:100px;align-self:flex-start;margin-bottom:8px}
+.cf-name{font-family:var(--display);font-size:24px;font-weight:900;letter-spacing:-.03em;color:var(--ink);line-height:1.05;margin-bottom:3px}
+.cf-name em{font-style:normal;background:var(--gradient-aurora);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.cf-world{font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;color:var(--lucid-purple);text-transform:uppercase;font-weight:700;margin-bottom:10px}
+.cf-syn{font-family:var(--sans);font-size:12px;color:var(--ink-soft);line-height:1.55;margin-bottom:12px;flex:1}
+.cf-syn b{color:var(--ink);font-weight:700}
+.cf-meta{display:flex;align-items:center;gap:6px;margin-bottom:12px;flex-wrap:wrap}
+.cf-meta .chip{font-family:var(--mono);font-size:9px;letter-spacing:.1em;padding:2px 7px;border:1px solid var(--border-medium);border-radius:100px;color:var(--muted);text-transform:uppercase;font-weight:700}
+.cf-meta .chip.live{color:#10B981;border-color:rgba(16,185,129,.5);background:rgba(16,185,129,.1)}
+.cf-meta .chip.live::before{content:'●';margin-right:4px;animation:liveBlink 1.6s ease-in-out infinite}
+.cf-meta .chip.r3{color:var(--awakening-pink);border-color:rgba(236,72,153,.5)}
+.cf-play{display:inline-flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 18px;background:var(--gradient-primary);color:#fff;border:none;border-radius:100px;font-family:var(--sans);font-size:13px;font-weight:800;letter-spacing:-.005em;cursor:pointer;text-decoration:none;box-shadow:0 8px 24px rgba(6,182,212,.4);transition:all .2s}
+.cast-featured:hover .cf-play{transform:translateX(2px);box-shadow:0 10px 28px rgba(6,182,212,.5)}
+.cf-play .arr{font-family:var(--mono);font-weight:800}
+
+/* Locked grid */
+.cast-divider{display:flex;align-items:center;gap:10px;padding:8px 4px 14px;font-family:var(--mono);font-size:9.5px;letter-spacing:.3em;color:var(--lucid-purple);text-transform:uppercase;font-weight:800}
+.cast-divider::before,.cast-divider::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(139,92,246,.4),transparent)}
+/* v27 · locked teaser cards · same flex layout/size as LIVE NOW featured · scoped to #castGrid */
+#castGrid{display:grid;grid-template-columns:1fr;gap:14px}
+@media(min-width:760px){#castGrid{grid-template-columns:repeat(2,1fr);gap:14px}}
+@media(min-width:1200px){#castGrid{grid-template-columns:repeat(3,1fr)}}
+#castGrid .cast-card{position:relative;display:flex;align-items:stretch;min-height:180px;border-radius:18px;overflow:hidden;background:linear-gradient(160deg,rgba(8,9,12,.75),rgba(8,9,12,.95));border:1px solid var(--border-subtle);cursor:not-allowed;transition:transform .25s var(--ease),border-color .25s;aspect-ratio:auto;padding:0}
+#castGrid .cast-card:hover{transform:translateY(-3px);border-color:rgba(139,92,246,.5)}
+#castGrid .cast-card-art{width:38%;flex-shrink:0;position:relative;overflow:hidden}
+#castGrid .cast-card.c-pink   .cast-card-art{background:radial-gradient(ellipse at center,rgba(236,72,153,.42),rgba(8,9,12,.5) 80%)}
+#castGrid .cast-card.c-purple .cast-card-art{background:radial-gradient(ellipse at center,rgba(139,92,246,.42),rgba(8,9,12,.5) 80%)}
+#castGrid .cast-card.c-cyan   .cast-card-art{background:radial-gradient(ellipse at center,rgba(6,182,212,.42),rgba(8,9,12,.5) 80%)}
+#castGrid .cast-card.c-gold   .cast-card-art{background:radial-gradient(ellipse at center,rgba(245,158,11,.42),rgba(8,9,12,.5) 80%)}
+#castGrid .cast-card.c-blue   .cast-card-art{background:radial-gradient(ellipse at center,rgba(37,99,235,.42),rgba(8,9,12,.5) 80%)}
+#castGrid .cast-card-q{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:64px;font-weight:900;color:rgba(255,255,255,.25);letter-spacing:-.04em;text-shadow:0 2px 16px rgba(0,0,0,.6)}
+#castGrid .cast-card-body{flex:1;padding:18px 20px;display:flex;flex-direction:column;gap:6px;min-width:0}
+#castGrid .cast-card-tag{font-family:var(--mono);font-size:9.5px;letter-spacing:.26em;text-transform:uppercase;font-weight:800;color:var(--awakening-pink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#castGrid .cast-card-name{font-family:var(--display);font-size:22px;font-weight:900;color:var(--ink-soft);letter-spacing:-.02em;line-height:1}
+#castGrid .cast-card-syn{font-family:var(--sans);font-size:12.5px;color:var(--ink-soft);line-height:1.5;flex:1;opacity:.85}
+#castGrid .cast-card-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:auto}
+#castGrid .cast-card-dday{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;color:var(--lucid-cyan);font-weight:800;padding:4px 10px;background:rgba(6,182,212,.1);border:1px solid rgba(6,182,212,.32);border-radius:100px}
+#castGrid .cast-card-lock{font-size:14px;color:rgba(255,255,255,.42)}
+
+.cast-foot{margin-top:18px;padding:14px 4px 4px;text-align:center;font-family:var(--mono);font-size:10px;letter-spacing:.18em;color:var(--muted);text-transform:uppercase;font-weight:700;border-top:1px dashed var(--border-medium)}
+.cast-foot b{color:var(--lucid-cyan);font-weight:800}
+
+/* INBOX */
+.inbox{padding:16px 14px 80px}
+.inbox-head{padding:8px 4px 18px}
+.inbox-h1{font-family:var(--display);font-size:22px;font-weight:900;letter-spacing:-.03em;color:var(--ink);line-height:1.1;margin-bottom:4px}
+.inbox-h1 em{background:var(--gradient-aurora);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-style:normal}
+.inbox-sub{font-family:var(--sans);font-size:12.5px;color:var(--ink-soft)}
+
+.story-card{position:relative;display:block;width:100%;aspect-ratio:16/9;border-radius:16px;overflow:hidden;cursor:pointer;text-align:left;border:none;padding:0;margin-bottom:10px;background:var(--bg-card);box-shadow:0 14px 44px rgba(0,0,0,.5)}
+.story-card.featured{border:1.5px solid rgba(236,72,153,.44);box-shadow:0 14px 44px rgba(236,72,153,.22)}
+.story-card .sc-img{position:absolute;inset:0;background-size:cover;background-position:center;transition:transform .6s var(--ease)}
+.story-card:hover .sc-img{transform:scale(1.04)}
+.story-card::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 30%,rgba(8,9,12,.92) 100%)}
+.sc-body{position:absolute;inset:0;z-index:2;padding:14px 16px;display:flex;flex-direction:column;justify-content:flex-end;gap:6px}
+.sc-tag{font-family:var(--mono);font-size:9.5px;letter-spacing:.26em;color:var(--awakening-pink);text-transform:uppercase;font-weight:700;align-self:flex-start;padding:3px 9px;background:rgba(236,72,153,.2);border:1px solid rgba(236,72,153,.44);border-radius:100px}
+.sc-title{font-family:var(--display);font-size:20px;font-weight:800;letter-spacing:-.02em;color:#fff;line-height:1.15;text-shadow:0 2px 16px rgba(0,0,0,.6)}
+.sc-meta{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:10px;color:#fff;letter-spacing:.1em}
+.sc-meta span{padding:1.5px 7px;background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.18);border-radius:4px}
+.sc-meta .r3{color:var(--awakening-pink);border-color:rgba(236,72,153,.4)}
+.sc-play{position:absolute;top:12px;right:12px;z-index:3;display:inline-flex;align-items:center;gap:6px;padding:7px 14px;background:var(--gradient-primary);color:#fff;font-family:var(--sans);font-size:12px;font-weight:700;border-radius:100px;box-shadow:0 6px 20px rgba(6,182,212,.4)}
+.sc-play::after{content:'▶';font-size:9px;margin-left:1px}
+.sc-live-dot{position:absolute;top:18px;left:14px;width:8px;height:8px;border-radius:50%;background:#10B981;box-shadow:0 0 10px rgba(16,185,129,.6);animation:liveBlink 1.6s ease-in-out infinite;z-index:3}
+@keyframes liveBlink{0%,100%{opacity:1}50%{opacity:.3}}
+
+.story-card.locked{cursor:not-allowed;aspect-ratio:auto;padding:10px 12px;display:flex;align-items:center;gap:12px;background:var(--bg-card);border:1px solid var(--border-subtle);opacity:.75}
+.story-card.locked::after{display:none}
+.story-card.locked .sc-img-sm{width:52px;height:52px;border-radius:10px;flex-shrink:0}
+.story-card.locked .locked-body{flex:1;min-width:0}
+.story-card.locked .locked-title{font-family:var(--sans);font-size:13.5px;font-weight:700;color:var(--ink-soft);margin-bottom:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.story-card.locked .locked-meta{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;color:var(--muted);text-transform:uppercase}
+.story-card.locked .locked-dday{flex-shrink:0;padding:4px 10px;background:rgba(139,92,246,.14);border:1px solid rgba(139,92,246,.3);color:var(--lucid-purple);font-family:var(--mono);font-size:10px;font-weight:800;letter-spacing:.08em;border-radius:100px}
+
+/* SPLASH */
+.splash{position:relative;min-height:100%;padding:0 0 80px}
+.splash-hero{position:relative;aspect-ratio:16/9;width:100%;background-size:cover;background-position:center;overflow:hidden}
+.splash-hero::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(8,9,12,1) 100%)}
+.splash-hero-text{position:absolute;left:20px;right:20px;bottom:18px;z-index:2}
+.splash-kicker{font-family:var(--mono);font-size:10px;letter-spacing:.26em;color:var(--awakening-pink);font-weight:800;margin-bottom:6px}
+.splash-title{font-family:var(--display);font-size:clamp(24px,6.5vw,32px);font-weight:900;letter-spacing:-.03em;color:#fff;line-height:1.1;margin-bottom:6px;text-shadow:0 4px 20px rgba(0,0,0,.8)}
+.splash-title em{font-style:normal;background:var(--gradient-aurora);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.splash-sub{font-family:var(--sans);font-size:13.5px;color:var(--ink-soft);line-height:1.55}
+
+.splash-body{padding:22px 18px 0}
+.splash-sec{margin-bottom:22px}
+.splash-label{font-family:var(--mono);font-size:9.5px;letter-spacing:.3em;color:var(--lucid-cyan);text-transform:uppercase;font-weight:800;margin-bottom:10px}
+.splash-syn{font-family:var(--sans);font-size:14px;line-height:1.75;color:var(--ink);padding:14px 16px;background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:14px}
+.splash-syn b{color:var(--lucid-cyan);font-weight:700}
+.splash-syn em{font-style:normal;color:var(--awakening-pink);font-weight:600}
+
+.cast-grid{display:flex;flex-direction:column;gap:8px}
+.cast-card{display:flex;gap:12px;padding:10px;background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:12px}
+.cast-card.player{border-color:rgba(6,182,212,.3)}
+.cast-card.main{border-color:rgba(236,72,153,.3)}
+.cast-av{width:56px;height:56px;flex-shrink:0;border-radius:12px;background-size:cover;background-position:top center;border:1px solid var(--border-subtle);background-color:var(--bg-elevated)}
+.cast-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.cast-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.cast-name{font-family:var(--sans);font-size:14px;font-weight:800;color:var(--ink);letter-spacing:-.01em}
+.cast-tag{font-family:var(--mono);font-size:8.5px;letter-spacing:.16em;color:var(--muted);text-transform:uppercase;padding:2px 6px;border:1px solid var(--border-medium);border-radius:4px}
+.cast-card.player .cast-tag{background:rgba(6,182,212,.12);color:var(--lucid-cyan);border-color:rgba(6,182,212,.38)}
+.cast-card.main .cast-tag{background:rgba(236,72,153,.12);color:var(--awakening-pink);border-color:rgba(236,72,153,.38)}
+.cast-role{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.06em}
+.cast-desc{font-family:var(--sans);font-size:12px;color:var(--ink-soft);line-height:1.5}
+.cast-desc b{color:var(--ink);font-weight:700}
+
+.tease-stats-preview{display:flex;gap:10px;padding:10px 14px;background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:12px;margin-top:0}
+.ts-item{flex:1;text-align:center}
+.ts-val{font-family:var(--display);font-size:13px;font-weight:900;line-height:1;letter-spacing:.04em}
+.ts-val.humanity{color:var(--lucid-cyan)}
+.ts-val.obsession{color:var(--awakening-pink)}
+.ts-val.trust{color:var(--lucid-purple)}
+.ts-lbl{font-family:var(--mono);font-size:8.5px;letter-spacing:.18em;color:var(--muted);text-transform:uppercase;margin-top:3px;font-weight:700}
+
+.splash-cta{padding:0 4px;margin-top:12px}
+.start-btn{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 22px;background:var(--gradient-primary);color:#fff;border:none;border-radius:16px;font-family:var(--sans);font-weight:800;font-size:15px;cursor:pointer;letter-spacing:-.01em;box-shadow:0 12px 36px rgba(6,182,212,.42);transition:all .2s}
+.start-btn:hover{transform:translateY(-2px);box-shadow:0 16px 44px rgba(6,182,212,.55)}
+.start-btn .play-ico{font-size:16px}
+.start-btn .arr{font-family:var(--mono);font-weight:800;font-size:16px}
+.splash-ratings{display:flex;gap:6px;margin-top:10px;justify-content:center}
+.rat-chip{font-family:var(--mono);font-size:10px;letter-spacing:.12em;padding:4px 10px;border-radius:100px;background:rgba(22,24,34,.6);border:1px solid var(--border-subtle);color:var(--muted);font-weight:600}
+.rat-chip b{color:var(--awakening-pink)}
+
+/* CHAT */
+.chat{position:relative;height:100%;display:flex;flex-direction:column;background:var(--bg)}
+/* v23 · brighter, sharper · scene context should READ, not blur into the bg */
+.chat-bg{position:absolute;inset:0;background-size:cover;background-position:center;opacity:.7;filter:saturate(1.1) contrast(1.05);transition:opacity .8s,background-image .6s;z-index:0}
+/* gradient overlay that fades bottom for text readability instead of blanket-dimming */
+.chat-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,9,12,.15) 0%,rgba(8,9,12,.25) 40%,rgba(8,9,12,.78) 100%);pointer-events:none}
+.chat-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,9,12,.4) 0%,rgba(8,9,12,.6) 40%,rgba(8,9,12,.94) 100%)}
+
+.portrait-bay{position:relative;z-index:1;flex-shrink:0;height:240px;display:flex;align-items:flex-end;justify-content:center;padding:8px 0 0;pointer-events:none;overflow:hidden}
+.portrait{position:absolute;bottom:0;height:100%;max-height:240px;display:flex;align-items:flex-end;transition:opacity .5s var(--ease),transform .5s var(--ease);opacity:0;transform:translateY(20px) scale(.96)}
+.portrait.show{opacity:1;transform:translateY(0) scale(1)}
+.portrait img{display:block;height:100%;object-fit:contain;object-position:bottom center;max-width:100%;filter:drop-shadow(0 12px 28px rgba(0,0,0,.65))}
+.portrait-name{position:absolute;top:8px;left:14px;padding:4px 11px;background:rgba(8,9,12,.82);border:1px solid rgba(236,72,153,.42);border-radius:100px;font-family:var(--sans);font-size:12px;font-weight:700;color:var(--ink);backdrop-filter:blur(8px);z-index:3;opacity:0;transition:opacity .4s,border-color .3s}
+.portrait-name.show{opacity:1}
+.portrait-name .dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--awakening-pink);margin-right:6px;vertical-align:middle;animation:liveBlink 1.6s ease-in-out infinite}
+
+.chat-scroll{flex:1;position:relative;z-index:2;overflow:hidden;display:flex;flex-direction:column;padding:10px 12px 44px;min-height:0;justify-content:flex-end}
+.chat-scroll-inner{display:flex;flex-direction:column;gap:8px;max-height:100%;overflow-y:auto;overflow-x:hidden;padding-bottom:2px;min-height:0}
+.chat-scroll-inner::-webkit-scrollbar{display:none}
+
+.msg-row{display:flex;gap:8px;opacity:0;transform:translateY(10px);transition:opacity .45s,transform .45s}
+.msg-row.in{opacity:1;transform:translateY(0)}
+.msg-row.me{justify-content:flex-end}
+.msg-bubble{max-width:86%;padding:9px 13px;border-radius:16px;font-family:var(--sans);font-size:14px;line-height:1.5;letter-spacing:-.005em;word-break:keep-all;overflow-wrap:break-word;background:rgba(22,24,34,.92);border:1px solid var(--border-medium);color:var(--ink);border-bottom-left-radius:5px;box-shadow:0 2px 10px rgba(0,0,0,.3)}
+.msg-bubble.me{background:linear-gradient(135deg,rgba(6,182,212,.22),rgba(37,99,235,.18));border-color:rgba(6,182,212,.44);border-bottom-left-radius:16px;border-bottom-right-radius:5px;color:#fff}
+.msg-bubble em{color:var(--lucid-purple);font-style:normal;font-weight:600}
+.msg-bubble b{color:var(--awakening-pink);font-weight:700}
+.msg-bubble.raon{background:rgba(236,72,153,.08);border-color:rgba(236,72,153,.32)}
+.msg-bubble.dex{background:rgba(22,24,34,.92);border-color:rgba(255,255,255,.22)}
+.msg-bubble.karlo{background:rgba(139,92,246,.1);border-color:rgba(139,92,246,.32)}
+.msg-row.me .msg-bubble{order:2}
+.msg-mini{width:24px;height:24px;border-radius:50%;flex-shrink:0;background-size:cover;background-position:top center;margin-top:2px;align-self:flex-end;background-color:var(--bg-card);border:1px solid var(--border-medium)}
+.msg-row.me .msg-mini{display:none}
+.msg-speaker{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;color:var(--ink-soft);text-transform:uppercase;font-weight:700;margin-bottom:3px;padding-left:2px}
+.msg-speaker.raon{color:var(--awakening-pink)}
+.msg-speaker.dex{color:#E2E8F0}
+.msg-speaker.karlo{color:var(--lucid-purple)}
+
+/* v25 · narration boosted · larger size + slower entrance · readable */
+.narration{align-self:center;max-width:94%;padding:16px 20px;margin:8px 0;background:rgba(8,9,12,.82);border:1px solid rgba(139,92,246,.5);border-left:3px solid var(--lucid-purple);border-radius:8px;font-family:var(--sans);font-size:15px;font-style:italic;color:var(--ink);text-align:center;line-height:1.7;opacity:0;transform:translateY(12px) scale(.97);transition:opacity .55s var(--ease),transform .55s var(--ease);box-shadow:0 6px 22px rgba(139,92,246,.2)}
+.narration.in{opacity:1;transform:translateY(0) scale(1);animation:narrPulse 1.4s ease-out}
+@keyframes narrPulse{0%{box-shadow:0 6px 22px rgba(139,92,246,.18),0 0 0 0 rgba(139,92,246,.45)}50%{box-shadow:0 6px 22px rgba(139,92,246,.28),0 0 0 8px rgba(139,92,246,0)}100%{box-shadow:0 6px 22px rgba(139,92,246,.18),0 0 0 0 rgba(139,92,246,0)}}
+.narration em{color:var(--awakening-pink);font-weight:800;font-style:normal}
+.narration.peak{border-color:var(--awakening-pink);border-left-color:var(--awakening-pink);background:linear-gradient(135deg,rgba(236,72,153,.14),rgba(8,9,12,.88));color:var(--ink);font-weight:600;font-size:16px;padding:18px 22px;box-shadow:0 8px 28px rgba(236,72,153,.3)}
+.narration.peak.in{animation:narrPulsePeak 1.6s ease-out}
+@keyframes narrPulsePeak{0%{box-shadow:0 8px 28px rgba(236,72,153,.3),0 0 0 0 rgba(236,72,153,.6)}50%{box-shadow:0 8px 28px rgba(236,72,153,.45),0 0 0 14px rgba(236,72,153,0)}100%{box-shadow:0 8px 28px rgba(236,72,153,.3),0 0 0 0 rgba(236,72,153,0)}}
+
+.typing-row{display:flex;gap:8px;align-items:flex-end;opacity:0;transition:opacity .3s}
+.typing-row.show{opacity:1}
+.typing-bubble{padding:9px 13px;background:rgba(22,24,34,.92);border:1px solid var(--border-medium);border-radius:16px;border-bottom-left-radius:5px;display:inline-flex;gap:4px;align-items:center}
+.typing-bubble span{width:5px;height:5px;border-radius:50%;background:var(--lucid-cyan);opacity:.4;animation:typingDot 1.1s infinite ease-in-out}
+.typing-bubble span:nth-child(2){animation-delay:.15s}
+.typing-bubble span:nth-child(3){animation-delay:.3s}
+@keyframes typingDot{0%,100%{opacity:.3;transform:translateY(0)}50%{opacity:1;transform:translateY(-3px)}}
+
+/* v27 · stat toast · center top (was right top · obstructed view) */
+.stat-toast{position:absolute;top:8px;left:50%;z-index:15;padding:7px 16px;border-radius:100px;font-family:var(--mono);font-size:11px;letter-spacing:.1em;font-weight:800;background:rgba(8,9,12,.94);border:1px solid var(--border-medium);color:var(--ink);opacity:0;transform:translateX(-50%) translateY(-12px);transition:opacity .4s,transform .4s;box-shadow:0 8px 28px rgba(0,0,0,.6);pointer-events:none;white-space:nowrap}
+.stat-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.stat-toast.humanity{border-color:rgba(6,182,212,.46);color:var(--lucid-cyan)}
+.stat-toast.obsession{border-color:rgba(236,72,153,.46);color:var(--awakening-pink)}
+.stat-toast.trust{border-color:rgba(139,92,246,.46);color:var(--lucid-purple)}
+
+.choice-panel{position:absolute;left:0;right:0;bottom:0;padding:12px 14px 16px;background:linear-gradient(180deg,transparent,rgba(8,9,12,.95) 28%,var(--bg-deep));z-index:12;display:flex;flex-direction:column;gap:8px;max-height:62%;overflow-y:auto;transition:opacity .3s,transform .3s;transform:translateY(8px);opacity:0;pointer-events:none}
+.choice-panel.show{opacity:1;transform:translateY(0);pointer-events:auto}
+.choice-intent{font-family:var(--mono);font-size:9.5px;letter-spacing:.26em;color:var(--awakening-pink);text-transform:uppercase;font-weight:800;padding:0 6px 3px;text-align:center}
+.choice-label{font-family:var(--sans);font-size:13px;font-weight:600;color:var(--ink-soft);text-align:center;padding:0 6px 8px;line-height:1.45}
+.choice-btn{padding:12px 16px;background:rgba(22,24,34,.92);border:1px solid var(--border-medium);color:var(--ink);font-family:var(--sans);font-size:13.5px;font-weight:500;cursor:pointer;text-align:left;border-radius:14px;transition:all .2s;display:flex;align-items:flex-start;gap:10px;backdrop-filter:blur(8px);line-height:1.4}
+.choice-btn:hover{background:rgba(28,31,46,.95);border-color:var(--lucid-cyan);transform:translateX(4px)}
+.choice-btn .ch-letter{width:22px;height:22px;border:1px solid var(--lucid-cyan);color:var(--lucid-cyan);font-family:var(--mono);font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;border-radius:50%;flex-shrink:0;margin-top:1px}
+.choice-btn .ch-text{flex:1;min-width:0}
+.choice-btn .ch-text b{color:var(--ink);font-weight:700}
+.choice-btn .ch-hint{font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;color:var(--lucid-purple);margin-top:4px;font-weight:700}
+
+/* v23 · subtler peak pulse · was too prominent/long · now atmospheric */
+.peak-pulse{position:absolute;inset:0;z-index:11;pointer-events:none;opacity:0;background:radial-gradient(ellipse at center,rgba(236,72,153,.10),transparent 65%);transition:opacity .25s}
+.peak-pulse.show{opacity:1;animation:peakPulse .7s ease-out}
+@keyframes peakPulse{0%{opacity:0}40%{opacity:.85}100%{opacity:0}}
+
+/* PEAK FLASH · dramatic full-screen flash for cinematic peak moments */
+/* v23 · faster, less red · "blink" not "wash" */
+.peak-flash{position:absolute;inset:0;z-index:28;pointer-events:none;opacity:0;background:radial-gradient(circle at center,rgba(236,72,153,.32) 0%,rgba(8,9,12,.6) 70%);transition:opacity .2s}
+.peak-flash.show{animation:peakFlashShow .42s cubic-bezier(.16,1,.3,1)}
+@keyframes peakFlashShow{0%{opacity:0}25%{opacity:.85}100%{opacity:0}}
+.peak-flash.gunshot{background:radial-gradient(circle at center,rgba(255,255,255,.9) 0%,rgba(8,9,12,.85) 60%)}
+.peak-flash.gunshot.show{animation:gunshotFlash .35s ease-out}
+@keyframes gunshotFlash{0%{opacity:0}15%{opacity:1}100%{opacity:0}}
+
+.progress-hint{position:absolute;left:0;right:0;bottom:0;height:30px;display:flex;align-items:center;justify-content:center;gap:8px;font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--muted);text-transform:uppercase;background:linear-gradient(180deg,transparent,rgba(8,9,12,.92) 40%,rgba(8,9,12,.98));z-index:5;pointer-events:none}
+.progress-hint.hidden{opacity:0}
+.progress-hint .kbd{padding:2px 8px;background:rgba(6,182,212,.12);border:1px solid rgba(6,182,212,.42);border-radius:4px;color:var(--lucid-cyan);font-weight:800}
+.progress-hint .arr{color:var(--lucid-cyan);animation:arrFloat 1.4s ease-in-out infinite}
+@keyframes arrFloat{0%,100%{transform:translateY(0);opacity:.6}50%{transform:translateY(2px);opacity:1}}
+
+/* ENDING TEASE */
+.tease{position:absolute;inset:0;z-index:30;opacity:0;pointer-events:none;transition:opacity 1s var(--ease);background:#000;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:16px;padding:36px 20px 40px;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
+.tease > *:first-child{margin-top:auto}
+.tease > *:last-child{margin-bottom:auto}
+.tease::-webkit-scrollbar{width:4px}
+.tease::-webkit-scrollbar-thumb{background:rgba(255,255,255,.16);border-radius:100px}
+.tease.show{opacity:1;pointer-events:auto}
+.tease-kicker{font-family:var(--mono);font-size:10px;letter-spacing:.32em;color:var(--awakening-pink);text-transform:uppercase;font-weight:800;padding:4px 12px;border:1px solid rgba(236,72,153,.5);border-radius:100px;background:rgba(236,72,153,.12);animation:kickerBlink 2.6s ease-in-out infinite}
+@keyframes kickerBlink{0%,100%{opacity:1}50%{opacity:.6}}
+.tease-h{font-family:var(--display);font-size:clamp(22px,5.6vw,28px);font-weight:900;letter-spacing:-.03em;color:var(--ink);line-height:1.18;text-align:center}
+.tease-h em{font-style:normal;background:var(--gradient-aurora);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.tease-ends{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;width:100%;max-width:340px;margin:8px 0 4px}
+.tease-end{position:relative;aspect-ratio:3/4;border-radius:10px;overflow:hidden;border:1px solid var(--border-subtle);cursor:not-allowed}
+.tease-end-img{position:absolute;inset:0;background-size:cover;background-position:center;filter:blur(14px) brightness(.55) saturate(.8);transform:scale(1.15)}
+.tease-end-lock{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;background:linear-gradient(180deg,rgba(8,9,12,.1),rgba(8,9,12,.72));z-index:2;padding:6px}
+.tease-end-lock .lock{font-size:14px;opacity:.7}
+.tease-end-label{font-family:var(--mono);font-size:9px;letter-spacing:.2em;color:var(--ink);font-weight:800;text-shadow:0 1px 4px rgba(0,0,0,.8)}
+.tease-end-sub{font-family:var(--sans);font-size:9px;color:var(--ink-soft);text-align:center;line-height:1.4}
+.tease-end.e-true .tease-end-label{color:var(--lucid-cyan)}
+.tease-end.e-dark .tease-end-label{color:var(--awakening-pink)}
+.tease-end.e-sad .tease-end-label{color:var(--lucid-purple)}
+
+.tease-stats{display:flex;gap:10px;padding:10px 14px;background:rgba(22,24,34,.6);border:1px solid var(--border-subtle);border-radius:12px;width:100%;max-width:340px}
+.tease-stats .ts-val{font-size:20px}
+
+.tease-divider{font-family:var(--mono);font-size:10px;letter-spacing:.3em;color:var(--muted);text-transform:uppercase;padding:0 6px;display:flex;align-items:center;gap:10px}
+.tease-divider::before,.tease-divider::after{content:'';height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.18),transparent);width:28px;display:inline-block}
+.tease-note{font-family:var(--sans);font-size:12.5px;color:var(--ink-soft);text-align:center;line-height:1.55;max-width:320px}
+.tease-note b{color:var(--lucid-cyan);font-weight:700}
+.tease-cta{display:flex;flex-direction:column;gap:10px;width:100%;max-width:320px}
+.tease-primary{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:15px 22px;background:var(--gradient-primary);color:#fff;border:none;border-radius:14px;font-family:var(--sans);font-weight:800;font-size:14.5px;cursor:pointer;letter-spacing:-.01em;box-shadow:0 12px 36px rgba(6,182,212,.45);text-decoration:none;transition:all .2s}
+.tease-primary:hover{transform:translateY(-2px);box-shadow:0 16px 44px rgba(6,182,212,.58)}
+.tease-secondary{background:transparent;color:var(--ink-soft);border:1px solid var(--border-medium);padding:12px 20px;border-radius:14px;font-family:var(--sans);font-size:13px;cursor:pointer;text-align:center;transition:all .2s}
+.tease-secondary:hover{border-color:var(--lucid-cyan);color:var(--lucid-cyan)}
+
+/* TABBAR */
+.tabbar{height:var(--tab-h);min-height:var(--tab-h);background:rgba(8,9,12,.96);border-top:1px solid var(--border-subtle);display:flex;align-items:stretch;position:relative;z-index:40;padding-bottom:env(safe-area-inset-bottom)}
+.app:not(.view-cast) .tabbar{display:none}
+.tabbar-btn{flex:1;background:transparent;border:none;color:var(--muted);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:4px 2px;font-family:var(--sans);font-size:10px;font-weight:700;letter-spacing:.04em;text-decoration:none}
+.tabbar-btn.active{color:var(--lucid-cyan)}
+.tabbar-btn .tb-ico{font-size:18px;line-height:1}
+
+audio{display:none}
+
+/* ============ MODE TOGGLE (Text vs Visual) ============ */
+.mode-pill{display:none;align-items:center;gap:0;padding:2px;background:rgba(8,9,12,.82);border:1px solid var(--border-medium);border-radius:100px;overflow:hidden}
+.app.view-chat .mode-pill{display:flex}
+.mode-pill button{padding:5px 11px;background:transparent;border:none;color:var(--muted);font-family:var(--sans);font-size:10.5px;font-weight:700;letter-spacing:.04em;cursor:pointer;border-radius:100px;transition:all .2s;display:flex;align-items:center;gap:4px;white-space:nowrap}
+.mode-pill button.active{background:var(--lucid-cyan);color:var(--bg-deep)}
+.mode-pill.attract{animation:modeAttract 1.2s ease-in-out infinite;box-shadow:0 0 0 0 rgba(6,182,212,.6)}
+@keyframes modeAttract{0%,100%{box-shadow:0 0 0 0 rgba(6,182,212,.6);transform:scale(1)}50%{box-shadow:0 0 0 6px rgba(6,182,212,0);transform:scale(1.04)}}
+/* ============ MODE BANNER · prominent attract for visual mode (v20) ============ */
+.mode-banner{position:absolute;left:0;right:0;top:0;z-index:14;padding:11px 14px 12px;background:linear-gradient(135deg,rgba(139,92,246,.92),rgba(6,182,212,.92));border-bottom:1px solid rgba(255,255,255,.18);box-shadow:0 14px 40px rgba(6,182,212,.32);display:flex;align-items:center;gap:12px;transform:translateY(-110%);transition:transform .5s var(--ease);pointer-events:none}
+.mode-banner.show{transform:translateY(0);pointer-events:auto}
+.mode-banner.show{animation:mbPulse 2.4s ease-in-out infinite}
+@keyframes mbPulse{0%,100%{box-shadow:0 14px 40px rgba(6,182,212,.32)}50%{box-shadow:0 18px 56px rgba(236,72,153,.42)}}
+.mb-ico{font-size:28px;line-height:1;flex-shrink:0;filter:drop-shadow(0 2px 8px rgba(0,0,0,.5))}
+.mb-body{flex:1;min-width:0}
+.mb-h{font-family:var(--sans);font-size:12.5px;font-weight:800;color:#fff;letter-spacing:-.01em;line-height:1.25;margin-bottom:2px;text-shadow:0 1px 4px rgba(0,0,0,.3)}
+.mb-h em{font-style:normal;background:linear-gradient(90deg,#FFD66B,#FF9EE0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:900}
+.mb-sub{font-family:var(--sans);font-size:10.5px;color:rgba(255,255,255,.86);letter-spacing:-.005em;line-height:1.3}
+.mb-cta{flex-shrink:0;padding:8px 14px;background:#fff;color:#5B21B6;border:none;border-radius:100px;font-family:var(--sans);font-size:11px;font-weight:900;letter-spacing:.02em;cursor:pointer;display:inline-flex;align-items:center;gap:5px;box-shadow:0 6px 18px rgba(0,0,0,.35);transition:transform .2s,box-shadow .2s}
+.mb-cta:hover{transform:translateY(-1px);box-shadow:0 10px 24px rgba(0,0,0,.45)}
+.mb-cta::after{content:'▶';font-size:8px}
+.mb-x{flex-shrink:0;width:22px;height:22px;border:none;background:rgba(255,255,255,.15);color:#fff;border-radius:50%;font-size:14px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s}
+.mb-x:hover{background:rgba(255,255,255,.3)}
+@media(max-width:380px){.mb-ico{display:none}.mb-h{font-size:11.5px}.mb-sub{font-size:10px}}
+.mode-pill button::before{font-size:10px;opacity:.85}
+.mode-pill .mt-text::before{content:'▤'}
+.mode-pill .mt-visual::before{content:'◈'}
+
+/* TTS toggle */
+.tts-pill{display:none;align-items:center;gap:0;padding:2px;background:rgba(8,9,12,.82);border:1px solid var(--border-medium);border-radius:100px;overflow:hidden;margin-left:6px}
+.app.view-chat .tts-pill{display:flex}
+.tts-pill button{padding:5px 9px;background:transparent;border:none;color:var(--muted);font-family:var(--sans);font-size:12px;cursor:pointer;border-radius:100px;transition:all .2s;line-height:1}
+.tts-pill button.active{background:var(--lucid-purple);color:#fff}
+
+/* Voice replay indicator on speaker line */
+.voice-ind{display:inline-block;margin-left:4px;cursor:pointer;font-size:10px;opacity:.65;transition:opacity .2s,transform .2s}
+.voice-ind:hover{opacity:1;transform:scale(1.15)}
+
+/* ============ TEXT MODE · chat only, no portrait bay ============ */
+.app.mode-text .portrait-bay{display:none}
+.app.mode-text .chat-scroll{padding-top:14px}
+.app.mode-text .vn-stage{display:none!important}
+
+/* ============ VISUAL NOVEL MODE · large portrait + dialogue box ============ */
+.vn-stage{position:absolute;inset:0;z-index:3;display:none;flex-direction:column;pointer-events:none}
+.app.mode-visual .vn-stage{display:flex}
+.app.mode-visual .text-stage{display:none}
+.app.mode-visual .portrait-bay{display:none}
+
+.vn-bg-layer{position:absolute;inset:0;z-index:0}
+.vn-portrait-big{position:absolute;inset:0;z-index:1;display:flex;align-items:flex-end;justify-content:center;padding:0 0 220px}
+.vn-portrait-big img{height:88%;max-height:560px;width:auto;object-fit:contain;object-position:bottom center;filter:drop-shadow(0 18px 38px rgba(0,0,0,.7));opacity:0;transform:translateY(16px) scale(.97);transition:opacity .5s var(--ease),transform .5s var(--ease)}
+.vn-portrait-big.show img{opacity:1;transform:translateY(0) scale(1)}
+
+.vn-speaker-tag{position:absolute;left:14px;bottom:204px;z-index:4;padding:4px 12px;background:rgba(8,9,12,.86);border:1px solid rgba(236,72,153,.5);border-radius:100px;font-family:var(--sans);font-size:11.5px;font-weight:800;color:var(--ink);letter-spacing:.02em;backdrop-filter:blur(8px);opacity:0;transition:opacity .35s,border-color .3s;pointer-events:none}
+.vn-speaker-tag.show{opacity:1}
+.vn-speaker-tag.raon{border-color:rgba(236,72,153,.6)}
+.vn-speaker-tag.dex{border-color:rgba(255,255,255,.45)}
+.vn-speaker-tag.karlo{border-color:rgba(139,92,246,.6)}
+.vn-speaker-tag.yeonwoo{border-color:rgba(6,182,212,.6)}
+.vn-speaker-tag .dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--awakening-pink);margin-right:6px;vertical-align:middle;animation:liveBlink 1.6s ease-in-out infinite}
+
+.vn-dialogue{position:absolute;left:0;right:0;bottom:0;z-index:5;padding:18px 20px 30px;background:linear-gradient(180deg,transparent,rgba(8,9,12,.92) 30%,rgba(8,9,12,.98));pointer-events:auto}
+.vn-dialogue-card{background:rgba(8,9,12,.86);border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:18px 22px 20px;backdrop-filter:blur(14px);box-shadow:0 14px 36px rgba(0,0,0,.6),inset 0 0 0 1px rgba(255,255,255,.04);position:relative;min-height:96px}
+/* v25 · vn-line · larger size + fade transition (was instant snap = "씹힘") */
+.vn-line-text{font-family:var(--sans);font-size:17px;font-weight:500;color:var(--ink);line-height:1.6;letter-spacing:-.005em;min-height:56px;display:flex;align-items:center;transition:opacity .32s ease,transform .32s ease}
+.vn-line-text.fading{opacity:0;transform:translateY(-6px)}
+.vn-line-text em{color:var(--lucid-purple);font-style:normal;font-weight:700}
+.vn-line-text b{color:var(--awakening-pink);font-weight:800}
+.vn-line-text.narration{font-style:italic;color:var(--ink);font-size:16px;font-weight:500}
+.vn-line-text.narration em{color:var(--awakening-pink);font-style:normal;font-weight:700}
+.vn-line-text.narration.peak{font-size:17px;font-weight:600;color:var(--ink);text-shadow:0 2px 12px rgba(236,72,153,.4)}
+.vn-line-text.me{color:var(--lucid-cyan);font-weight:600}
+.vn-cont{display:flex;align-items:center;justify-content:flex-end;gap:6px;margin-top:8px;font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;color:var(--muted);text-transform:uppercase}
+.vn-cont .arr{color:var(--lucid-cyan);animation:arrFloat 1.4s ease-in-out infinite}
+
+/* ============ CHAT-STYLE SIGNUP (in-frame screen) ============ */
+.signup-chat{position:relative;height:100%;display:flex;flex-direction:column;background:var(--bg-deep);overflow:hidden}
+.signup-chat-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 30% 20%,rgba(6,182,212,.12),transparent 55%),radial-gradient(ellipse at 75% 85%,rgba(139,92,246,.1),transparent 55%);z-index:0}
+.signup-chat-scroll{flex:1;overflow-y:auto;overflow-x:hidden;padding:18px 14px 12px;display:flex;flex-direction:column;gap:10px;position:relative;z-index:1}
+.signup-chat-scroll::-webkit-scrollbar{width:4px}
+.signup-chat-scroll::-webkit-scrollbar-thumb{background:rgba(255,255,255,.16);border-radius:100px}
+.lucive-bot-msg{display:flex;gap:8px;align-items:flex-end;opacity:0;transform:translateY(10px);transition:opacity .45s,transform .45s}
+.lucive-bot-msg.in{opacity:1;transform:translateY(0)}
+.lucive-bot-av{width:32px;height:32px;border-radius:50%;flex-shrink:0;background:var(--gradient-primary);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:800;font-size:13px;color:#fff;letter-spacing:.04em;box-shadow:0 4px 14px rgba(6,182,212,.4)}
+.lucive-bot-bubble{max-width:86%;padding:11px 15px;border-radius:18px;background:rgba(22,24,34,.95);border:1px solid rgba(6,182,212,.32);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.55;border-bottom-left-radius:5px}
+.lucive-bot-bubble em{color:var(--lucid-cyan);font-style:normal;font-weight:600}
+.lucive-bot-bubble b{color:var(--lucid-purple);font-weight:700}
+.lucive-bot-name{font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;color:var(--lucid-cyan);text-transform:uppercase;font-weight:800;margin-bottom:3px}
+.lucive-bot-name::before{content:'✦ '}
+.signup-input-bar{position:relative;z-index:5;padding:10px 12px 14px;background:linear-gradient(180deg,transparent,rgba(8,9,12,.96) 30%,var(--bg-deep));display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--border-subtle)}
+.signup-input-row{display:flex;gap:8px;align-items:stretch}
+.signup-input-row input{flex:1;padding:12px 16px;background:rgba(22,24,34,.92);border:1.5px solid rgba(6,182,212,.4);color:var(--ink);font-family:var(--sans);font-size:14px;outline:none;border-radius:100px;transition:border-color .2s}
+.signup-input-row input:focus{border-color:var(--lucid-cyan);box-shadow:0 0 0 3px rgba(6,182,212,.2)}
+.signup-input-row button{padding:0 18px;background:var(--gradient-primary);color:#fff;border:none;font-family:var(--sans);font-size:13px;font-weight:800;border-radius:100px;cursor:pointer;letter-spacing:-.01em;transition:transform .2s,box-shadow .2s}
+.signup-input-row button:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(6,182,212,.5)}
+.signup-input-row button:disabled{opacity:.5;cursor:not-allowed}
+.signup-input-skip{align-self:flex-end;background:transparent;border:none;color:var(--ink-soft);font-family:var(--sans);font-size:11.5px;font-weight:600;cursor:pointer;padding:4px 8px}
+.signup-input-skip:hover{color:var(--lucid-cyan);text-decoration:underline}
+.signup-consent{display:flex;align-items:flex-start;gap:8px;font-family:var(--sans);font-size:11.5px;color:var(--ink-soft);line-height:1.5;padding:0 4px}
+.signup-consent input[type="checkbox"]{margin-top:2px;accent-color:var(--lucid-cyan);cursor:pointer}
+.signup-consent label{cursor:pointer;flex:1}
+.signup-consent a{color:var(--lucid-cyan);text-decoration:underline;text-underline-offset:2px}
+
+/* v26 · quick-reply buttons for signup questionnaire */
+.signup-quick{display:flex;flex-direction:column;gap:8px;margin:6px 0 4px;align-self:stretch;opacity:0;transform:translateY(8px);transition:opacity .35s,transform .35s}
+.signup-quick.in{opacity:1;transform:translateY(0)}
+.sq-btn{padding:12px 16px;background:rgba(22,24,34,.92);border:1.5px solid var(--border-medium);color:var(--ink);font-family:var(--sans);font-size:13.5px;font-weight:600;text-align:left;cursor:pointer;border-radius:14px;line-height:1.4;transition:all .2s}
+.sq-btn:hover{border-color:var(--lucid-cyan);background:rgba(6,182,212,.12);transform:translateY(-1px)}
+
+/* Reward / community / closing cards in signup-chat */
+.signup-card{padding:14px 16px;background:rgba(22,24,34,.85);border:1px solid var(--border-subtle);border-radius:14px;opacity:0;transform:translateY(10px);transition:opacity .45s,transform .45s;align-self:stretch;max-width:100%}
+.signup-card.in{opacity:1;transform:translateY(0)}
+.signup-card.welcome{background:linear-gradient(135deg,rgba(6,182,212,.18),rgba(139,92,246,.12));border-color:rgba(6,182,212,.5);text-align:center;padding:20px 16px}
+.signup-card .sw-icon{font-size:32px;line-height:1;margin-bottom:8px}
+.signup-card .sw-title{font-family:var(--display);font-size:18px;font-weight:900;letter-spacing:-.02em;color:var(--ink);margin-bottom:4px;line-height:1.2}
+.signup-card .sw-title em{font-style:normal;background:var(--gradient-aurora);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.signup-card .sw-sub{font-family:var(--sans);font-size:12.5px;color:var(--ink-soft);line-height:1.55}
+.signup-card .sw-sub b{color:var(--ink);font-weight:700}
+.sc-row{display:flex;flex-direction:column;gap:6px;margin-top:10px}
+.sc-row-label{font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;color:var(--lucid-purple);text-transform:uppercase;font-weight:800}
+.sc-row-field{display:flex;gap:6px;align-items:stretch}
+.sc-row-field code{flex:1;padding:9px 12px;background:rgba(8,9,12,.7);border:1px solid var(--border-medium);border-radius:10px;font-family:var(--mono);font-size:13px;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:flex;align-items:center}
+.sc-row-field button{padding:0 14px;background:var(--lucid-purple);color:#fff;border:none;font-family:var(--mono);font-size:10.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;border-radius:10px;cursor:pointer}
+.sc-share{display:flex;gap:6px;margin-top:10px}
+.sc-share button{flex:1;padding:10px;border:none;font-family:var(--sans);font-size:12px;font-weight:700;border-radius:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px}
+.sc-share .sh-kakao{background:#FEE500;color:#3C1E1E}
+.sc-share .sh-x{background:#000;color:#fff}
+.sc-share .sh-link{background:rgba(8,9,12,.7);color:var(--ink);border:1px solid var(--border-medium)}
+.sc-card-h{font-family:var(--display);font-size:14px;font-weight:800;color:var(--ink);margin-bottom:6px;letter-spacing:-.01em}
+.sc-card-h em{font-style:normal;color:var(--lucid-cyan)}
+.sc-card-points{list-style:none;padding:0;margin:0 0 10px}
+.sc-card-points li{font-family:var(--sans);font-size:12.5px;color:var(--ink-soft);padding:3px 0 3px 16px;position:relative;line-height:1.5}
+.sc-card-points li::before{content:'◆';position:absolute;left:0;color:var(--lucid-cyan);font-size:7px;top:8px}
+.sc-card-points li b{color:var(--ink);font-weight:700}
+.sc-kakao-link{display:flex;align-items:center;justify-content:space-between;padding:11px 16px;background:#FEE500;color:#3C1E1E;text-decoration:none;font-family:var(--sans);font-size:13px;font-weight:800;border-radius:100px;transition:transform .2s}
+.sc-kakao-link:hover{transform:translateY(-1px)}
+
+.signup-closing-card{margin:14px 0;font-family:var(--display);font-size:18px;font-weight:800;letter-spacing:.04em;text-align:center;color:var(--ink-soft);padding:14px}
+.signup-closing-card em{font-style:normal;background:var(--gradient-aurora);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:.18em}
+
+/* ============ MORE STORIES TEASE (final ending screen) ============ */
+.more-stories{margin-top:14px;width:100%;max-width:340px;padding:14px 14px 12px;background:rgba(22,24,34,.6);border:1px solid var(--border-subtle);border-radius:12px}
+.ms-head{font-family:var(--mono);font-size:9.5px;letter-spacing:.26em;color:var(--lucid-cyan);text-transform:uppercase;font-weight:800;margin-bottom:10px;text-align:center}
+.ms-head::before{content:'◆ '}
+.ms-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.ms-card{position:relative;aspect-ratio:3/4;border-radius:8px;overflow:hidden;background:linear-gradient(135deg,rgba(139,92,246,.18),rgba(8,9,12,.6));border:1px solid var(--border-subtle);padding:8px 6px;display:flex;flex-direction:column;justify-content:flex-end;gap:2px}
+.ms-card.c-cyan{background:linear-gradient(135deg,rgba(6,182,212,.22),rgba(8,9,12,.7))}
+.ms-card.c-pink{background:linear-gradient(135deg,rgba(236,72,153,.22),rgba(8,9,12,.7))}
+.ms-card.c-purple{background:linear-gradient(135deg,rgba(139,92,246,.22),rgba(8,9,12,.7))}
+.ms-card.c-gold{background:linear-gradient(135deg,rgba(245,158,11,.22),rgba(8,9,12,.7))}
+.ms-card.c-blue{background:linear-gradient(135deg,rgba(37,99,235,.22),rgba(8,9,12,.7))}
+.ms-name{font-family:var(--sans);font-size:9.5px;font-weight:800;color:var(--ink);letter-spacing:-.005em;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ms-meta{font-family:var(--mono);font-size:8px;letter-spacing:.08em;color:var(--ink-soft);text-transform:uppercase;font-weight:600;line-height:1.2}
+.ms-dday{position:absolute;top:5px;right:5px;font-family:var(--mono);font-size:8px;font-weight:800;letter-spacing:.06em;padding:2px 6px;border-radius:100px;background:rgba(8,9,12,.78);color:var(--lucid-cyan);border:1px solid rgba(6,182,212,.34);line-height:1}
+.ms-card .ms-lock{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:14px;color:rgba(255,255,255,.32);background:rgba(8,9,12,.18)}
+.ms-foot{margin-top:10px;font-family:var(--sans);font-size:11px;color:var(--ink-soft);text-align:center;line-height:1.5}
+.ms-foot b{color:var(--lucid-cyan);font-weight:700}
+</style>
+</head>
+<body>
+
+<div class="ambient-bg">
+  <div class="ambient-orb o-cyan"></div>
+  <div class="ambient-orb o-purple"></div>
+  <div class="ambient-orb o-pink"></div>
+</div>
+<div class="noise-overlay"></div>
+
+<audio id="voiceAudio" preload="auto"></audio>
+
+<div class="app view-cast mode-text" id="app">
+  <div class="app-frame">
+
+    <div class="topbar">
+      <button class="tb-back" onclick="goBack()"><span class="arr">←</span></button>
+      <div class="tb-brand">LUCIVE</div>
+      <div class="tb-title">
+        <div class="tb-ep">EP.1 · MOONLIGHT CARTEL</div>
+        <div class="tb-node" id="tbNode">장례식장의 밤</div>
+      </div>
+      <div class="tb-spacer"></div>
+      <div class="mode-pill" id="modePill">
+        <button class="mt-text active" onclick="setChatMode('text')">텍스트</button>
+        <button class="mt-visual" onclick="setChatMode('visual')">비주얼</button>
+      </div>
+      <div class="tts-pill">
+        <button class="tts-on active" onclick="setTts(true)" title="TTS 켜기">🔊</button>
+        <button class="tts-off" onclick="setTts(false)" title="TTS 끄기">🔇</button>
+      </div>
+      <div class="tb-dday">D-<b><span id="dday">17</span></b></div>
+    </div>
+
+    <div class="stats-hud" id="statsHud">
+      <div class="stat humanity">
+        <div class="stat-head"><span>HUMANITY</span><b id="statH">0</b></div>
+        <div class="stat-bar"><div class="stat-fill" id="fillH" style="width:50%"></div></div>
+      </div>
+      <div class="stat obsession">
+        <div class="stat-head"><span>OBSESSION</span><b id="statO">0</b></div>
+        <div class="stat-bar"><div class="stat-fill" id="fillO" style="width:50%"></div></div>
+      </div>
+      <div class="stat trust">
+        <div class="stat-head"><span>TRUST</span><b id="statT">0</b></div>
+        <div class="stat-bar"><div class="stat-fill" id="fillT" style="width:50%"></div></div>
+      </div>
+    </div>
+
+    <div class="stat-toast" id="statToast"></div>
+
+    <div class="screens">
+
+      <!-- CAST LINEUP (v19 entry) -->
+      <div class="screen active" id="screen-cast">
+        <div class="cast">
+          <div class="cast-prop">
+            <div class="cast-prop-eye">LUCIVE · NEXT-GEN CHARACTER CHAT</div>
+            <h1 class="cast-prop-h"><s>고정 설정된 캐릭터 챗</s>은 잊어요.<br><em>그가 · 당신의 결말을 만듭니다.</em></h1>
+            <div class="cast-pillars">
+              <span class="pillar p1"><span class="pillar-ico">🎭</span><span class="pillar-h">비주얼 노벨</span></span>
+              <span class="pillar p2"><span class="pillar-ico">🔊</span><span class="pillar-h">음성 연기</span></span>
+              <span class="pillar p3"><span class="pillar-ico">⚡</span><span class="pillar-h">분기 엔딩</span></span>
+              <span class="pillar p4"><span class="pillar-ico">🔁</span><span class="pillar-h">회귀 서사</span></span>
+            </div>
+          </div>
+
+          <div class="cast-section-h">LIVE NOW<span class="sh-line"></span></div>
+
+          <div class="cast-featured" onclick="enterChatDirect()">
+            <div class="cast-featured-portrait">
+              <img src="./assets/v17/story1/characters/raon/neutral_arms_crossed.png" alt="라온">
+            </div>
+            <div class="cast-featured-body">
+              <span class="cf-tag">▶ EP.1 · 프롤로그</span>
+              <div>
+                <div class="cf-name">라온 · <em>RAON</em></div>
+                <div class="cf-world">호위 · 14년차 · 다시 살아간다</div>
+              </div>
+              <p class="cf-syn"><b>그 때, 당신은 그의 손을 놓쳤습니다.</b></p>
+              <div class="cf-meta">
+                <span class="chip live">LIVE</span>
+                <span class="chip r3">V3·O3</span>
+                <span class="chip">90초</span>
+              </div>
+              <button class="cf-play">
+                <span>💬 라온과 채팅 시작</span>
+                <span class="arr">→</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="cast-divider">매주 합류하는 캐릭터</div>
+
+          <div class="cast-grid" id="castGrid"></div>
+
+          <div class="cast-foot">캐릭터 · 세계관 · 매주 합류 · <b>D-<span id="castDday">17</span></b> 알파</div>
+        </div>
+      </div>
+
+      <!-- SPLASH -->
+      <div class="screen" id="screen-splash">
+        <div class="splash">
+          <div class="splash-hero" style="background-image:url('./assets/v17/story1/thumbnail/hero-16x9.png')">
+            <div class="splash-hero-text">
+              <div class="splash-kicker">EP.1 · MOONLIGHT CARTEL · PROLOGUE</div>
+              <h1 class="splash-title">장례식장의 <em>밤</em></h1>
+              <p class="splash-sub">평범한 당신에게 · 오늘 밤 · 14년을 무기로 산 남자가 다가옵니다.</p>
+            </div>
+          </div>
+
+          <div class="splash-body">
+            <div class="splash-sec">
+              <div class="splash-label">Synopsis</div>
+              <p class="splash-syn">
+                낯선 이름의 영정 앞 · <b>당신(연우)</b>은 어쩌다 이곳에 왔습니다.<br>
+                호위 요원 <em>라온</em>이 당신을 지켜보고 있습니다.<br>
+                천장을 뚫는 <em>총성</em> · 이 밤부터 당신의 한 마디가 결말을 만듭니다.
+              </p>
+            </div>
+
+            <div class="splash-sec">
+              <div class="splash-label">Cast · 4 Characters</div>
+              <div class="cast-grid">
+                <div class="cast-card player">
+                  <div class="cast-av" style="background-image:url('./assets/v17/story1/characters/yeonwoo/neutral_default.png')"></div>
+                  <div class="cast-body">
+                    <div class="cast-head"><span class="cast-name">연우</span><span class="cast-tag">PLAYER · 당신</span></div>
+                    <div class="cast-role">카르텔 외부인 · 일반인</div>
+                    <div class="cast-desc">우연한 질문 하나로 라온의 14년에 <b>금을 낸 여성</b>. 오늘 밤 자신의 운명을 선택한다.</div>
+                  </div>
+                </div>
+                <div class="cast-card main">
+                  <div class="cast-av" style="background-image:url('./assets/v17/story1/characters/raon/neutral_arms_crossed.png')"></div>
+                  <div class="cast-body">
+                    <div class="cast-head"><span class="cast-name">라온</span><span class="cast-tag">MAIN · 호위</span></div>
+                    <div class="cast-role">카르텔 · 3회 위장 사망 기록</div>
+                    <div class="cast-desc">14년간 무기로 길러진 남자. 연우의 안부 한 마디에 <b>조직을 등진다</b>.</div>
+                  </div>
+                </div>
+                <div class="cast-card">
+                  <div class="cast-av" style="background-image:url('./assets/v17/story1/characters/karlo/neutral_default.png')"></div>
+                  <div class="cast-body">
+                    <div class="cast-head"><span class="cast-name">칼로</span><span class="cast-tag">SUPPORT · 관리자</span></div>
+                    <div class="cast-role">조직 핵심 · 라온의 양육자</div>
+                    <div class="cast-desc">라온을 고아원에서 데려와 병기로 키웠다. <b>연우를 약점으로 설계</b>한다.</div>
+                  </div>
+                </div>
+                <div class="cast-card">
+                  <div class="cast-av" style="background-image:url('./assets/v17/story1/characters/dex/neutral_default.png')"></div>
+                  <div class="cast-body">
+                    <div class="cast-head"><span class="cast-name">덱스</span><span class="cast-tag">ANTAGONIST · 히트맨</span></div>
+                    <div class="cast-role">말수 없는 추격자</div>
+                    <div class="cast-desc">라온의 유일한 대항마. 골목에서 당신의 <b>생명을 직접 위협</b>한다.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="splash-sec">
+              <div class="splash-label">Stats · 당신의 선택이 결정합니다</div>
+              <div class="tease-stats-preview">
+                <div class="ts-item"><div class="ts-val humanity">HUMANITY</div><div class="ts-lbl">그를 사람으로</div></div>
+                <div class="ts-item"><div class="ts-val obsession">OBSESSION</div><div class="ts-lbl">어둠 속으로</div></div>
+                <div class="ts-item"><div class="ts-val trust">TRUST</div><div class="ts-lbl">관계의 깊이</div></div>
+              </div>
+            </div>
+
+            <div class="splash-cta">
+              <button class="start-btn" onclick="startChat()">
+                <span class="play-ico">▶</span>
+                <span>플레이 시작</span>
+                <span class="arr">→</span>
+              </button>
+              <div class="splash-ratings">
+                <span class="rat-chip">SENSUAL <b>S1</b></span>
+                <span class="rat-chip">VIOLENCE <b>V3</b></span>
+                <span class="rat-chip">OBSESSION <b>O3</b></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CHAT -->
+      <div class="screen" id="screen-chat">
+        <div class="chat">
+          <div class="chat-bg" id="chatBg" style="background-image:url('./assets/v17/story1/backgrounds/mortuary_hallway_creepy.png')"></div>
+
+          <!-- v20 · prominent attract banner for Visual Novel mode -->
+          <div class="mode-banner" id="modeBanner">
+            <div class="mb-ico">🎭</div>
+            <div class="mb-body">
+              <div class="mb-h"><em>비주얼 모드</em>에서 캐릭터의 표정을 풀 일러스트로</div>
+              <div class="mb-sub">감정에 따라 12가지 표정 · 음성 그대로</div>
+            </div>
+            <button class="mb-cta" onclick="setChatMode('visual'); hideModeBanner();">비주얼로 보기</button>
+            <button class="mb-x" onclick="hideModeBanner()" aria-label="닫기">×</button>
+          </div>
+
+          <div class="portrait-bay">
+            <div class="portrait" id="portrait"><img id="portraitImg" src="" alt=""></div>
+            <div class="portrait-name" id="portraitName"><span class="dot"></span><span id="portraitNameText">라온</span></div>
+          </div>
+
+          <div class="peak-pulse" id="peakPulse"></div>
+          <div class="peak-flash" id="peakFlash"></div>
+
+          <!-- TEXT MODE STAGE -->
+          <div class="text-stage" id="textStage">
+            <div class="chat-scroll">
+              <div class="chat-scroll-inner" id="chatScroll"></div>
+            </div>
+          </div>
+
+          <!-- VISUAL NOVEL MODE STAGE -->
+          <div class="vn-stage" id="vnStage">
+            <div class="vn-portrait-big" id="vnPortrait">
+              <img id="vnPortraitImg" src="" alt="">
+            </div>
+            <div class="vn-speaker-tag" id="vnSpeakerTag"><span class="dot"></span><span id="vnSpeakerName">라온</span></div>
+            <div class="vn-dialogue">
+              <div class="vn-dialogue-card">
+                <div class="vn-line-text" id="vnLineText">…</div>
+                <div class="vn-cont"><span class="kbd" style="padding:1px 7px;background:rgba(6,182,212,.14);border:1px solid rgba(6,182,212,.4);border-radius:3px;color:var(--lucid-cyan);font-weight:800">SPACE</span><span>계속</span><span class="arr">▼</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="choice-panel" id="choicePanel"></div>
+
+          <div class="progress-hint" id="progressHint">
+            <span class="kbd">SPACE</span>
+            <span>또는 탭으로 진행</span>
+            <span class="arr">▼</span>
+          </div>
+
+          <div class="tease" id="tease">
+            <div class="tease-kicker">PROLOGUE · 끊긴 자리</div>
+            <h2 class="tease-h">이 이야기는 · <em>본편에서</em><br><em>당신의 선택과 함께</em> 이어집니다.</h2>
+
+            <div class="tease-ends">
+              <div class="tease-end e-true">
+                <div class="tease-end-img" style="background-image:url('./assets/v17/story1/scenes/E_True.png')"></div>
+                <div class="tease-end-lock">
+                  <div class="lock">🔒</div>
+                  <div class="tease-end-label">ENDING #1</div>
+                  <div class="tease-end-sub">?</div>
+                </div>
+              </div>
+              <div class="tease-end e-dark">
+                <div class="tease-end-img" style="background-image:url('./assets/v17/story1/scenes/E_Dark.png')"></div>
+                <div class="tease-end-lock">
+                  <div class="lock">🔒</div>
+                  <div class="tease-end-label">ENDING #2</div>
+                  <div class="tease-end-sub">?</div>
+                </div>
+              </div>
+              <div class="tease-end e-sad">
+                <div class="tease-end-img" style="background-image:url('./assets/v17/story1/scenes/E_Sad.png')"></div>
+                <div class="tease-end-lock">
+                  <div class="lock">🔒</div>
+                  <div class="tease-end-label">ENDING #3</div>
+                  <div class="tease-end-sub">?</div>
+                </div>
+              </div>
+            </div>
+
+            <p class="tease-note" style="margin:0 0 6px">본편에서 · <b>당신의 회차</b>가 결말을 만듭니다. 알파테스터로 먼저 들어가세요.</p>
+
+            <!-- v26 · CTA · alpha tester selection above the fold -->
+            <div class="tease-cta">
+              <a href="#" onclick="event.preventDefault();openSignupChat()" class="tease-primary">
+                <span>알파테스터 선발 신청 · 본편 첫 회차</span>
+                <span class="arr">→</span>
+              </a>
+              <button class="tease-secondary" onclick="restart()">프롤로그 다시 · 다른 선택</button>
+            </div>
+
+            <div class="tease-stats">
+              <div class="ts-item"><div class="ts-val humanity" id="endH">0</div><div class="ts-lbl">HUMANITY</div></div>
+              <div class="ts-item"><div class="ts-val obsession" id="endO">0</div><div class="ts-lbl">OBSESSION</div></div>
+              <div class="ts-item"><div class="ts-val trust" id="endT">0</div><div class="ts-lbl">TRUST</div></div>
+            </div>
+
+            <div class="tease-divider">COMING STORIES</div>
+
+            <div class="more-stories">
+              <div class="ms-head">날이 다가올수록 풀려나는 이야기</div>
+              <div class="ms-grid">
+                <div class="ms-card c-purple">
+                  <div class="ms-dday">D-3</div>
+                  <div class="ms-lock">🔒</div>
+                  <div class="ms-name">공명 아카데미</div>
+                  <div class="ms-meta">다크 판타지</div>
+                </div>
+                <div class="ms-card c-pink">
+                  <div class="ms-dday">D-6</div>
+                  <div class="ms-lock">🔒</div>
+                  <div class="ms-name">가문 계약 결혼</div>
+                  <div class="ms-meta">성인 로맨스</div>
+                </div>
+                <div class="ms-card c-cyan">
+                  <div class="ms-dday">D-9</div>
+                  <div class="ms-lock">🔒</div>
+                  <div class="ms-name">Blacksite</div>
+                  <div class="ms-meta">SF 추격</div>
+                </div>
+                <div class="ms-card c-gold">
+                  <div class="ms-dday">D-12</div>
+                  <div class="ms-lock">🔒</div>
+                  <div class="ms-name">ELIA 학원</div>
+                  <div class="ms-meta">다크 아카데미</div>
+                </div>
+                <div class="ms-card c-blue">
+                  <div class="ms-dday">D-15</div>
+                  <div class="ms-lock">🔒</div>
+                  <div class="ms-name">꿈의 여관</div>
+                  <div class="ms-meta">멜랑콜리</div>
+                </div>
+                <div class="ms-card c-purple">
+                  <div class="ms-dday">D-17</div>
+                  <div class="ms-lock">🔒</div>
+                  <div class="ms-name">Ultraviolet</div>
+                  <div class="ms-meta">메타 스릴러</div>
+                </div>
+              </div>
+              <p class="ms-foot"><b>26명</b>의 캐릭터 · <b>10개</b>의 세계 · 알파 D-<span id="teaseDday">17</span></p>
+            </div>
+
+            <!-- v26 · secondary CTA at bottom -->
+            <div class="tease-cta">
+              <a href="#" onclick="event.preventDefault();openSignupChat()" class="tease-primary">
+                <span>알파테스터 신청 · 본편 첫 회차로</span>
+                <span class="arr">→</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SIGNUP CHAT SCREEN -->
+      <div class="screen" id="screen-signup">
+        <div class="signup-chat">
+          <div class="signup-chat-bg"></div>
+          <div class="signup-chat-scroll" id="signupScroll"></div>
+          <div class="signup-input-bar" id="signupInputBar">
+            <div class="signup-input-row">
+              <input type="email" id="signupEmail" placeholder="your@email" autocomplete="email">
+              <button id="signupSubmit" onclick="signupSubmit()">전송</button>
+            </div>
+            <div class="signup-consent">
+              <input type="checkbox" id="signupConsent" checked>
+              <label for="signupConsent">제출 시 <a href="./terms.html" target="_blank">이용약관</a> · <a href="./privacy.html" target="_blank">개인정보 처리방침</a> 동의로 갈음. 마케팅 수신 동의 (선택).</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <nav class="tabbar">
+      <button class="tabbar-btn active" onclick="switchScreen('cast')">
+        <span class="tb-ico">🎭</span><span>CAST</span>
+      </button>
+      <a class="tabbar-btn" href="#" onclick="event.preventDefault();openSignupChat()" style="color:var(--lucid-cyan)">
+        <span class="tb-ico">✦</span><span>D-<span id="ddayTab">17</span> 등록</span>
+      </a>
+    </nav>
+
+  </div>
+</div>
+
+<script>
+const STATE = { humanity:0, obsession:0, trust:0, busy:false, awaitingChoice:false, mode:'text' };
+
+function setChatMode(m){
+  STATE.mode = m;
+  const app = document.getElementById('app');
+  app.classList.remove('mode-text','mode-visual');
+  app.classList.add('mode-' + m);
+  document.querySelectorAll('.mode-pill button').forEach(b=>b.classList.remove('active'));
+  document.querySelector('.mode-pill .mt-' + m)?.classList.add('active');
+}
+window.setChatMode = setChatMode;
+const CHARS = {
+  yeonwoo: { name:'연우' },
+  raon:    { name:'라온' },
+  karlo:   { name:'칼로' },
+  dex:     { name:'덱스' },
+};
+function portraitSrc(id, mood){ return `./assets/v17/story1/characters/${id}/${mood}.png`; }
+
+/* v21 PROLOGUE · lean · ~18 beats · max-drama cliffhanger
+   • Open in action (no exposition dump)
+   • Two choices · second one immediately precedes the cut
+   • Uses only the dramatic existing voices (raon_05_run, dex_01_surrender, raon_c2_yeonwoo)
+   • Ends BEFORE resolution: 2nd gunshot fires · who fell? */
+/* v23 PROLOGUE · REGRESSION frame · "그 때 손을 놓지 않았더라면"
+   Open in death · regret · regress · relive · cliffhanger.
+   Total ~16 beats · 2 choices · only dramatic voices used. */
+/* v24 PROLOGUE · 5 ACTS · ~38 beats · ~3min · climax-driven cut
+   ACT 0 · regression cold open (death/regret)
+   ACT 1 · wake up (recognition · 또 같은 자리)
+   ACT 2 · escape warning (Raon's recognition)
+   ACT 3 · hallway · Karlo appears (silent threat)
+   ACT 4 · alley · Dex confrontation (gunshot · surrender)
+   ACT 5 · TRUE CLIMAX · Raon's last words → 2nd gunshot → CUT mid-loop  */
+/* v27 PROLOGUE · coherent regression · RAON is the regressor (twist)
+   Yeonwoo (player) doesn't know she's in a loop · Raon does and fails again.
+   Effects (flash) ride on narration · scene transitions auto-chain.
+   Each msg/me/narration mood matches the line's emotional content. */
+const FLOW = [
+  /* === ACT 0 · RAON's DEATH · cold open · raon's POV === */
+  { type:'node', id:'F0_Regret', title:'…한 번만 다시', bg:'neon_alley_rain_noir.png' },
+  { type:'narration', peak:true, text:'라온의 손에 · 빛이 흐려진다.' },
+  { type:'portrait', who:'raon', mood:'crying_default' },
+  { type:'msg', who:'raon', mood:'crying_default', text:'…만약 그 때, 그 한 마디를 했더라면.', voice:'raon_00_regret' },
+  { type:'narration', peak:true, text:'어둠. 그리고 —', flash:'peak' },
+  { type:'msg', who:'raon', mood:'crying_default', text:'…또. 한 번만 다시.', voice:'raon_99_again' },
+
+  /* === ACT 1 · YEONWOO at funeral · she has no foreknowledge === */
+  { type:'node', id:'F1_Funeral', title:'장례식장 · 처음 보는 사람', bg:'mortuary_hallway_creepy.png' },
+  { type:'narration', text:'향 연기가 무겁게 내려앉은 복도.' },
+  { type:'narration', text:'<em>낯선 영정.</em> 당신은 · 왜 여기 왔는지 알 수 없다.' },
+  { type:'portrait', who:'raon', mood:'sad_default' },
+  { type:'msg', who:'raon', mood:'sad_default', text:'연우 씨.', voice:'raon_b1_name' },
+  { type:'me', mood:'surprised_default', text:'(...누구지? 처음 보는 얼굴인데, 내 이름을 알아.)' },
+  { type:'portrait', who:'raon', mood:'neutral_arms_crossed' },
+  { type:'msg', who:'raon', mood:'neutral_arms_crossed', text:'호위 맡은 라온입니다. <em>지금 일어나지 마세요.</em>', voice:'raon_02_intro' },
+
+  /* === ACT 2 · 라온의 경고 · 이미 알고 있는 듯한 정확함 === */
+  { type:'portrait', who:'raon', mood:'fear_defensive' },
+  { type:'msg', who:'raon', mood:'fear_defensive', text:'우측 출구 근처에 · <em>모르는 얼굴 셋</em>.', voice:'raon_03_warn' },
+  { type:'me', mood:'fear_defensive', text:'(...어떻게 다 보고 있는 거지.)' },
+  { type:'msg', who:'raon', mood:'fear_defensive', text:'뛰어요. 지금.', voice:'raon_05_run' },
+  { type:'choice', intent:'결정 · 1초',
+    label:'당신은 어떻게 할까?',
+    options:[
+      { letter:'A', text:'<b>그의 등 뒤로 붙는다</b> · 처음 보는 사람이지만 · 믿어본다', hint:'TRUST +2 · HUMANITY +1', stats:{humanity:1,trust:2}, next:'F2_Hallway' },
+      { letter:'B', text:'<b>군중 속으로 흩어진다</b> · 모르는 사람을 따를 수는 없다', hint:'OBSESSION +2 · HUMANITY -1', stats:{humanity:-1,obsession:2}, next:'F2_Hallway' },
+    ]
+  },
+
+  /* === ACT 3 · HALLWAY · KARLO recognizes (foreshadow loop) === */
+  { type:'node', id:'F2_Hallway', title:'복도 · 다가오는 그림자', bg:'funeral_back_alley_rain.png' },
+  { type:'narration', text:'발소리가 늘어난다. 셋. 넷. 다섯.' },
+  { type:'portrait', who:'karlo', mood:'smile_default' },
+  { type:'msg', who:'karlo', mood:'smile_default', text:'…라온의 그 여자가, 너구나.', voice:'karlo_01_recognize' },
+  { type:'me', mood:'fear_defensive', text:'(라온의 여자? 처음 만난 사람인데 · <em>저 사람도 나를 안다.</em>)' },
+  { type:'portrait', who:'raon', mood:'angry_arms_crossed' },
+  { type:'msg', who:'raon', mood:'angry_arms_crossed', text:'<em>내 등 뒤에 있어.</em>', voice:'raon_a2_behind' },
+
+  /* === ACT 4 · ALLEY · DEX confrontation · the gunshot === */
+  { type:'node', id:'A1_Alley', title:'네온사인 골목', bg:'neon_alley_rain_noir.png' },
+  { type:'narration', peak:true, text:'— <em>탕!</em>', flash:'gunshot' },
+  { type:'portrait', who:'dex', mood:'smile_default' },
+  { type:'msg', who:'dex', mood:'smile_default', text:'…라온. 투항해.', voice:'dex_01_surrender' },
+  { type:'portrait', who:'raon', mood:'crying_default' },
+  { type:'msg', who:'raon', mood:'crying_default', text:'…연우.', voice:'raon_c2_yeonwoo' },
+  { type:'me', mood:'crying_default', text:'(...왜 · 그가 우는 거지.)' },
+  { type:'choice', intent:'어둠 속 · 그의 손',
+    label:'그가 손을 내민다 · 어떻게 할까?',
+    options:[
+      { letter:'A', text:'<b>그의 손을 잡는다</b>', hint:'TRUST +3 · HUMANITY +2', stats:{humanity:2,trust:3}, next:'__DRAMA' },
+      { letter:'B', text:'<b>그를 밀어내고 어둠으로</b>', hint:'OBSESSION +3 · TRUST -1', stats:{obsession:3,trust:-1}, next:'__DRAMA' },
+    ]
+  },
+
+  /* === ACT 5 · CLIMAX · 그의 마지막 한 마디 → 두 번째 총성 → 그녀의 이름 → CUT === */
+  { type:'__DRAMA' },
+  { type:'narration', text:'정적.' },
+  { type:'portrait', who:'raon', mood:'neutral_default' },
+  { type:'narration', peak:true, text:'그의 눈이 · <em>처음으로 · 당신만 본다.</em>' },
+  { type:'msg', who:'raon', mood:'neutral_default', text:'죽지 않았네. <em>그거면 됐어.</em>', voice:'raon_b2_alive' },
+  { type:'me', mood:'surprised_default', text:'(...왜 · 안심하지? 위험한 건 그쪽인데.)' },
+  { type:'portrait', who:'raon', mood:'smile_default' },
+  { type:'narration', peak:true, text:'<em>그의 입꼬리가 · 미세하게 움직인다.</em>' },
+  { type:'narration', peak:true, text:'그리고 —', flash:'gunshot' },
+  /* The cut · raon's dying breath · her name on his lips */
+  { type:'portrait', who:'raon', mood:'crying_default' },
+  { type:'msg', who:'raon', mood:'crying_default', text:'…<em>연우.</em>', voice:'raon_c2_yeonwoo' },
+  { type:'cut_to_tease' },
+];
+
+let beatIdx = 0;
+let typingNode = null;
+const chatScroll = document.getElementById('chatScroll');
+const choicePanel = document.getElementById('choicePanel');
+const chatBg = document.getElementById('chatBg');
+const portraitEl = document.getElementById('portrait');
+const portraitImg = document.getElementById('portraitImg');
+const portraitName = document.getElementById('portraitName');
+const portraitNameText = document.getElementById('portraitNameText');
+const peakPulse = document.getElementById('peakPulse');
+const progressHint = document.getElementById('progressHint');
+const tbNode = document.getElementById('tbNode');
+const teaseEl = document.getElementById('tease');
+// VN stage refs
+const vnPortrait = document.getElementById('vnPortrait');
+const vnPortraitImg = document.getElementById('vnPortraitImg');
+const vnSpeakerTag = document.getElementById('vnSpeakerTag');
+const vnSpeakerName = document.getElementById('vnSpeakerName');
+const vnLineText = document.getElementById('vnLineText');
+
+/* ============ TTS · voice playback (ElevenLabs v3 generated) ============ */
+const voiceAudio = document.getElementById('voiceAudio');
+let voiceUnlocked = false;
+let ttsEnabled = true; // user-controlled toggle (default ON)
+function unlockVoice(){ voiceUnlocked = true; bgmStartIfNeeded(); }
+['click','keydown','touchstart','pointerdown'].forEach(ev=>document.addEventListener(ev, unlockVoice, { once:true, capture:true }));
+let _voiceFadeRaf = null;
+function playVoice(file){
+  if(!ttsEnabled || !file) return;
+  if(_voiceFadeRaf){ cancelAnimationFrame(_voiceFadeRaf); _voiceFadeRaf = null; }
+  voiceAudio.pause();
+  voiceAudio.src = `./assets/v17/story1/voice/${file}.mp3`;
+  voiceAudio.volume = 0.95;
+  // v26 · voice-aware hold · extend the narration hold so dialogue isn't cut off mid-word
+  voiceAudio.onloadedmetadata = () => {
+    const dur = (voiceAudio.duration || 0) * 1000;
+    if(dur > 100){
+      const target = Date.now() + dur - 150; // small tail trim
+      if(target > _narrationHoldUntil) _narrationHoldUntil = target;
+    }
+  };
+  voiceAudio.play().catch(()=>{ /* will work after first gesture */ });
+}
+// v21 · fade out current TTS line (called on every beat advance)
+function fadeOutVoice(ms = 320){
+  if(_voiceFadeRaf){ cancelAnimationFrame(_voiceFadeRaf); _voiceFadeRaf = null; }
+  if(voiceAudio.paused || voiceAudio.ended) return;
+  const startVol = voiceAudio.volume;
+  const start = performance.now();
+  const tick = () => {
+    const t = (performance.now() - start) / ms;
+    if(t >= 1){
+      voiceAudio.pause();
+      voiceAudio.volume = startVol;
+      _voiceFadeRaf = null;
+      return;
+    }
+    voiceAudio.volume = startVol * (1 - t);
+    _voiceFadeRaf = requestAnimationFrame(tick);
+  };
+  _voiceFadeRaf = requestAnimationFrame(tick);
+}
+function setTts(on){
+  ttsEnabled = on;
+  if(!on) voiceAudio.pause();
+  document.querySelectorAll('.tts-pill button').forEach(b=>b.classList.remove('active'));
+  document.querySelector('.tts-pill .tts-' + (on?'on':'off'))?.classList.add('active');
+}
+window.setTts = setTts;
+
+/* ============ BGM · Web Audio · procedural tense ambient (v21) ============
+   Layered: sub drone (55Hz sine) + filtered pink noise + slow detuned saw with LFO.
+   No external assets · works offline. Tension level adjustable via bgmTension(0..1). */
+let _audioCtx = null;
+const _bgm = { master:null, nodes:[], active:false, intensity:0 };
+function _ctx(){
+  if(!_audioCtx){
+    try { _audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e){}
+  }
+  return _audioCtx;
+}
+function bgmStart(){
+  if(_bgm.active) return;
+  const ctx = _ctx();
+  if(!ctx) return;
+  if(ctx.state === 'suspended') ctx.resume();
+  const t = ctx.currentTime;
+  const master = ctx.createGain();
+  master.gain.value = 0;
+  master.gain.linearRampToValueAtTime(0.14, t + 2.4);
+  master.connect(ctx.destination);
+  _bgm.master = master;
+  // L1 · sub drone
+  const sub = ctx.createOscillator();
+  sub.type = 'sine'; sub.frequency.value = 55;
+  const subG = ctx.createGain(); subG.gain.value = 0.55;
+  sub.connect(subG).connect(master); sub.start();
+  _bgm.nodes.push(sub);
+  // L2 · pink-ish lowpass noise
+  const buf = ctx.createBuffer(1, 4 * ctx.sampleRate, ctx.sampleRate);
+  const d = buf.getChannelData(0);
+  let last = 0;
+  for(let i = 0; i < d.length; i++){
+    const w = Math.random() * 2 - 1;
+    last = (last + 0.02 * w) / 1.02;
+    d[i] = last * 3.5;
+  }
+  const noise = ctx.createBufferSource();
+  noise.buffer = buf; noise.loop = true;
+  const nf = ctx.createBiquadFilter();
+  nf.type = 'lowpass'; nf.frequency.value = 240; nf.Q.value = 0.9;
+  const nG = ctx.createGain(); nG.gain.value = 0.22;
+  noise.connect(nf).connect(nG).connect(master); noise.start();
+  _bgm.nodes.push(noise);
+  // L3 · detuned saw drone with LFO-modulated filter (movement)
+  const drone = ctx.createOscillator();
+  drone.type = 'sawtooth'; drone.frequency.value = 110;
+  const df = ctx.createBiquadFilter();
+  df.type = 'lowpass'; df.frequency.value = 260; df.Q.value = 7;
+  const dG = ctx.createGain(); dG.gain.value = 0.04;
+  drone.connect(df).connect(dG).connect(master); drone.start();
+  _bgm.nodes.push(drone);
+  const lfo = ctx.createOscillator();
+  lfo.type = 'sine'; lfo.frequency.value = 0.13;
+  const lfoG = ctx.createGain(); lfoG.gain.value = 110;
+  lfo.connect(lfoG).connect(df.frequency); lfo.start();
+  _bgm.nodes.push(lfo);
+  _bgm.active = true;
+}
+function bgmTension(level){
+  if(!_bgm.active || !_bgm.master) return;
+  const ctx = _ctx();
+  _bgm.intensity = Math.max(0, Math.min(1, level));
+  _bgm.master.gain.cancelScheduledValues(ctx.currentTime);
+  _bgm.master.gain.linearRampToValueAtTime(0.14 + _bgm.intensity * 0.16, ctx.currentTime + 1.4);
+}
+function bgmStop(fadeMs = 800){
+  if(!_bgm.active || !_bgm.master) return;
+  const ctx = _ctx();
+  _bgm.master.gain.cancelScheduledValues(ctx.currentTime);
+  _bgm.master.gain.linearRampToValueAtTime(0, ctx.currentTime + fadeMs/1000);
+  const nodes = _bgm.nodes.slice();
+  const master = _bgm.master;
+  setTimeout(() => {
+    nodes.forEach(n => { try { n.stop?.(); } catch(e){} try { n.disconnect?.(); } catch(e){} });
+    try { master.disconnect(); } catch(e){}
+  }, fadeMs + 80);
+  _bgm.nodes = [];
+  _bgm.master = null;
+  _bgm.active = false;
+}
+let _bgmShouldRun = false;
+function bgmStartIfNeeded(){ if(_bgmShouldRun && !_bgm.active) bgmStart(); }
+/* v22 · SFX redesigned for cohesion with BGM
+   - Muffled bass impact only (no harsh hi-freq crack)
+   - Heavy lowpass + delay-based reverb tail (matches BGM spatial feel)
+   - BGM SWELLS with the impact (not duck-spike) so it's one rising movement */
+function sfxGunshot(){
+  const ctx = _ctx();
+  if(!ctx) return;
+  if(ctx.state === 'suspended') ctx.resume();
+  const t = ctx.currentTime;
+  // Bus into BGM master for tonal cohesion (so reverb sits with drone)
+  const bus = ctx.createGain();
+  bus.gain.value = 0.7;
+  bus.connect(_bgm.master || ctx.destination);
+  // Muffled body · sub frequency only · lowpass to feel distant/thick
+  const body = ctx.createOscillator();
+  body.type = 'sine';
+  body.frequency.setValueAtTime(72, t);
+  body.frequency.exponentialRampToValueAtTime(28, t + 0.55);
+  const bodyG = ctx.createGain();
+  bodyG.gain.setValueAtTime(0.0001, t);
+  bodyG.gain.exponentialRampToValueAtTime(0.55, t + 0.018);
+  bodyG.gain.exponentialRampToValueAtTime(0.001, t + 0.85);
+  const bodyLP = ctx.createBiquadFilter();
+  bodyLP.type = 'lowpass';
+  bodyLP.frequency.value = 220;
+  body.connect(bodyG).connect(bodyLP).connect(bus);
+  body.start(t); body.stop(t + 0.9);
+  // Soft sub-noise puff (texture · no transient crack)
+  const bs = Math.floor(0.5 * ctx.sampleRate);
+  const buf = ctx.createBuffer(1, bs, ctx.sampleRate);
+  const d = buf.getChannelData(0);
+  for(let i = 0; i < bs; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i/bs, 1.4);
+  const noise = ctx.createBufferSource();
+  noise.buffer = buf;
+  const noiseLP = ctx.createBiquadFilter();
+  noiseLP.type = 'lowpass';
+  noiseLP.frequency.value = 180;
+  const noiseG = ctx.createGain();
+  noiseG.gain.value = 0.18;
+  noise.connect(noiseLP).connect(noiseG).connect(bus);
+  noise.start(t);
+  // Long reverb tail · feedback delay loop · heavy LP for muffled space
+  const delay = ctx.createDelay(2);
+  delay.delayTime.value = 0.22;
+  const fbG = ctx.createGain();
+  fbG.gain.value = 0.55;
+  const revLP = ctx.createBiquadFilter();
+  revLP.type = 'lowpass';
+  revLP.frequency.value = 240;
+  const revG = ctx.createGain();
+  revG.gain.value = 0.5;
+  bus.connect(delay).connect(revLP).connect(fbG).connect(delay);
+  revLP.connect(revG).connect(_bgm.master || ctx.destination);
+  // BGM SWELL · everything rises together (cohesion · not duck-then-spike)
+  if(_bgm.active && _bgm.master){
+    const cur = _bgm.master.gain.value;
+    _bgm.master.gain.cancelScheduledValues(t);
+    _bgm.master.gain.setValueAtTime(cur, t);
+    _bgm.master.gain.linearRampToValueAtTime(Math.min(0.42, cur * 1.65), t + 0.25);
+    _bgm.master.gain.linearRampToValueAtTime(0.16 + _bgm.intensity * 0.16, t + 1.6);
+  }
+}
+
+let lastSpeaker = null;
+function setVNPortrait(who, mood){
+  if(!who) return;
+  vnPortraitImg.src = portraitSrc(who, mood);
+  vnPortraitImg.alt = CHARS[who].name;
+  vnSpeakerName.textContent = CHARS[who].name;
+  vnSpeakerTag.className = 'vn-speaker-tag ' + who;
+  vnPortrait.classList.remove('show');
+  vnSpeakerTag.classList.remove('show');
+  requestAnimationFrame(()=>{
+    vnPortrait.classList.add('show');
+    vnSpeakerTag.classList.add('show');
+  });
+  lastSpeaker = who;
+}
+function setVNLine(html, kind){
+  vnLineText.className = 'vn-line-text' + (kind ? ' ' + kind : '');
+  vnLineText.innerHTML = html;
+}
+function vnHideSpeakerForNarration(){
+  vnSpeakerTag.classList.remove('show');
+}
+
+function switchScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('screen-'+id).classList.add('active');
+  const app = document.getElementById('app');
+  app.classList.remove('view-cast','view-splash','view-chat','view-signup');
+  app.classList.add('view-'+id);
+}
+function openSplash(){ switchScreen('splash'); }
+/* v19 · skip splash · go directly from cast lineup → chat */
+function enterChatDirect(){
+  startChat();
+}
+window.enterChatDirect = enterChatDirect;
+function goBack(){
+  const app = document.getElementById('app');
+  // v21 · stop audio when leaving chat
+  if(app.classList.contains('view-chat')){
+    fadeOutVoice(200);
+    _bgmShouldRun = false;
+    bgmStop(500);
+  }
+  if(app.classList.contains('view-signup')) switchScreen('cast');
+  else if(app.classList.contains('view-chat')) switchScreen('cast');
+  else if(app.classList.contains('view-splash')) switchScreen('cast');
+}
+
+/* Render locked cast cards (25 teaser slots) */
+/* v26 · uniform teaser cards · all use just district color + ? + lock + genre + dday
+   no portrait silhouettes (visual inconsistency removed) */
+const CAST_TEASERS = [
+  { hint:'다크 아카데미',     district:'purple',      dday:3 },
+  { hint:'다크 아카데미',     district:'gold',        dday:3 },
+  { hint:'성인 로맨스',       district:'pink',        dday:6 },
+  { hint:'SF · 추격',         district:'cyan',        dday:6 },
+  { hint:'경매 · 스릴러',     district:'pink',        dday:9 },
+  { hint:'야미 · 후원생',     district:'gold',        dday:9 },
+  { hint:'마피아 정보상',     district:'pink',        dday:9 },
+  { hint:'안드로이드 DJ',     district:'cyan',        dday:12 },
+  { hint:'전속 재단사',       district:'purple',      dday:12 },
+  { hint:'아카이비스트',      district:'purple',      dday:15 },
+  { hint:'타투이스트',        district:'blue',        dday:15 },
+  { hint:'피아노 작곡가',     district:'purple',      dday:15 },
+  { hint:'전 인터폴',         district:'pink',        dday:18 },
+  { hint:'정보 중개자',       district:'purple',      dday:18 },
+  { hint:'영화감독 · 타겟',   district:'blue',        dday:21 },
+  { hint:'꿈 수호자',         district:'blue',        dday:21 },
+  { hint:'전 비행단 리더',    district:'blue',        dday:23 },
+  { hint:'바리스타',          district:'gold',        dday:23 },
+  { hint:'책방 주인',         district:'gold',        dday:23 },
+  { hint:'꽃집 주인',         district:'gold',        dday:23 },
+  { hint:'???',               district:'pink',        dday:28 },
+  { hint:'???',               district:'cyan',        dday:28 },
+  { hint:'???',               district:'purple',      dday:35 },
+  { hint:'???',               district:'gold',        dday:42 },
+  { hint:'∞',                 district:'cyan',        dday:'∞' },
+];
+/* v27 · locked teaser cards rendered in same flex layout as featured (LIVE NOW)
+   art area + body (genre + locked name + meta) · matches featured visual weight */
+function renderCastGrid(){
+  const grid = document.getElementById('castGrid');
+  if(!grid) return;
+  grid.innerHTML = CAST_TEASERS.map(c => {
+    const ddayLabel = (c.dday === '∞') ? '계속' : `D-${c.dday}`;
+    const popMsg = (c.dday === '∞') ? '계속 합류 중' : `${ddayLabel}일 후 오픈`;
+    const isInfinite = c.dday === '∞';
+    return `
+      <div class="cast-card c-${c.district}" onclick="toast('${popMsg}')">
+        <div class="cast-card-art">
+          <div class="cast-card-q">${isInfinite ? '∞' : '?'}</div>
+        </div>
+        <div class="cast-card-body">
+          <div class="cast-card-tag">${isInfinite ? '계속 합류' : c.hint}</div>
+          <div class="cast-card-name">???</div>
+          <div class="cast-card-syn">${isInfinite ? '매주 새 캐릭터 · 끝없이' : '곧 만날 사람'}</div>
+          <div class="cast-card-foot">
+            <span class="cast-card-dday">${ddayLabel}</span>
+            <span class="cast-card-lock">🔒</span>
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+}
+renderCastGrid();
+window.openSplash = openSplash;
+window.goBack = goBack;
+window.switchScreen = switchScreen;
+
+function toast(msg){
+  const t = document.createElement('div');
+  t.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:rgba(8,9,12,.94);border:1px solid var(--lucid-cyan);color:var(--ink);font-family:var(--sans);font-size:13px;font-weight:600;padding:10px 20px;border-radius:100px;box-shadow:0 10px 28px rgba(0,0,0,.5);z-index:300;pointer-events:none';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(()=>{t.style.opacity='0';t.style.transition='opacity .3s'},1400);
+  setTimeout(()=>t.remove(),1800);
+}
+window.toast = toast;
+
+let chatStarted = false;
+let modeBannerDismissed = false;
+function showModeBanner(){
+  if(modeBannerDismissed) return;
+  if(document.getElementById('app').classList.contains('mode-visual')) return;
+  document.getElementById('modeBanner')?.classList.add('show');
+}
+function hideModeBanner(){
+  modeBannerDismissed = true;
+  document.getElementById('modeBanner')?.classList.remove('show');
+  document.getElementById('modePill')?.classList.remove('attract');
+}
+window.hideModeBanner = hideModeBanner;
+function startChat(){
+  switchScreen('chat');
+  if(!chatStarted){
+    chatStarted = true;
+    beatIdx = 0; _lastBeatType = null;
+    // v22 · start BGM · tension is driven by peak narrations (continuous build)
+    _bgmShouldRun = true;
+    bgmStart();
+    setTimeout(()=>advance(), 250);
+    // Show prominent mode banner ~800ms in, hide after ~14s
+    setTimeout(()=>{
+      showModeBanner();
+      document.getElementById('modePill')?.classList.add('attract');
+    }, 800);
+    setTimeout(()=>{
+      document.getElementById('modeBanner')?.classList.remove('show');
+      document.getElementById('modePill')?.classList.remove('attract');
+    }, 14000);
+  }
+}
+window.startChat = startChat;
+// Dismiss banner on any toggle interaction
+document.querySelectorAll('.mode-pill button').forEach(b=>{
+  b.addEventListener('click', ()=>{ hideModeBanner(); });
+});
+
+function restart(){
+  chatStarted = false; beatIdx = 0; modeBannerDismissed = false; _lastBeatType = null;
+  _narrationHoldUntil = 0; _pendingNarrationAbsorb = false;
+  STATE.humanity = 0; STATE.obsession = 0; STATE.trust = 0;
+  updateStatsHud();
+  chatScroll.innerHTML = '';
+  portraitEl.classList.remove('show');
+  portraitName.classList.remove('show');
+  teaseEl.classList.remove('show');
+  chatScroll.style.opacity = '1';
+  chatBg.style.opacity = '.7';
+  // v21 · stop BGM on restart (will re-init on next startChat)
+  _bgmShouldRun = false;
+  fadeOutVoice(200);
+  bgmStop(500);
+  switchScreen('splash');
+}
+window.restart = restart;
+
+function appendNode(html){
+  const tmp = document.createElement('div');
+  tmp.innerHTML = html;
+  const node = tmp.firstElementChild;
+  chatScroll.appendChild(node);
+  requestAnimationFrame(()=>node.classList.add('in'));
+  chatScroll.scrollTop = chatScroll.scrollHeight;
+  return node;
+}
+function showTyping(who){
+  removeTyping();
+  typingNode = document.createElement('div');
+  typingNode.className = 'msg-row typing-row';
+  typingNode.innerHTML = `
+    <div class="msg-mini" style="background-image:url('${portraitSrc(who,'neutral_default')}')"></div>
+    <div><div class="msg-speaker ${who}">${CHARS[who].name} 입력 중…</div><div class="typing-bubble"><span></span><span></span><span></span></div></div>`;
+  chatScroll.appendChild(typingNode);
+  requestAnimationFrame(()=>typingNode.classList.add('in','show'));
+  chatScroll.scrollTop = chatScroll.scrollHeight;
+}
+function removeTyping(){ if(typingNode){ typingNode.remove(); typingNode=null; } }
+function wait(ms){ return new Promise(r=>setTimeout(r,ms)); }
+
+function updateStatsHud(){
+  document.getElementById('statH').textContent = (STATE.humanity >= 0 ? '+' : '') + STATE.humanity;
+  document.getElementById('statO').textContent = (STATE.obsession >= 0 ? '+' : '') + STATE.obsession;
+  document.getElementById('statT').textContent = (STATE.trust >= 0 ? '+' : '') + STATE.trust;
+  const toPct = v => Math.max(8, Math.min(92, 50 + v*5));
+  document.getElementById('fillH').style.width = toPct(STATE.humanity) + '%';
+  document.getElementById('fillO').style.width = toPct(STATE.obsession) + '%';
+  document.getElementById('fillT').style.width = toPct(STATE.trust) + '%';
+}
+function flashStatToast(stats){
+  const t = document.getElementById('statToast');
+  const parts = [];
+  if(stats.humanity) parts.push(`HUMANITY ${stats.humanity > 0 ? '+' : ''}${stats.humanity}`);
+  if(stats.obsession) parts.push(`OBSESSION ${stats.obsession > 0 ? '+' : ''}${stats.obsession}`);
+  if(stats.trust) parts.push(`TRUST ${stats.trust > 0 ? '+' : ''}${stats.trust}`);
+  const primary = stats.humanity ? 'humanity' : (stats.obsession ? 'obsession' : 'trust');
+  t.className = 'stat-toast ' + primary;
+  t.textContent = parts.join('  ');
+  requestAnimationFrame(()=>t.classList.add('show'));
+  clearTimeout(t._tm);
+  t._tm = setTimeout(()=>t.classList.remove('show'), 2400);
+}
+
+function setPortrait(who, mood){
+  const ch = CHARS[who];
+  if(!ch) return;
+  portraitImg.src = portraitSrc(who, mood);
+  portraitImg.alt = ch.name;
+  portraitNameText.textContent = ch.name;
+  portraitEl.classList.remove('show');
+  portraitName.classList.remove('show');
+  requestAnimationFrame(()=>{
+    portraitEl.classList.add('show');
+    portraitName.classList.add('show');
+  });
+}
+
+function setNode(id, title, bg){
+  tbNode.textContent = title;
+  chatBg.style.opacity = '0';
+  setTimeout(()=>{
+    chatBg.style.backgroundImage = `url('./assets/v17/story1/backgrounds/${bg}')`;
+    chatBg.style.opacity = '.7';
+  }, 220);
+}
+
+function showChoices(intent, label, options){
+  STATE.awaitingChoice = true;
+  progressHint.classList.add('hidden');
+  const html = `
+    <div class="choice-intent">◆ ${intent}</div>
+    <div class="choice-label">${label}</div>
+    ${options.map((o,i)=>`
+      <button class="choice-btn" onclick="pickChoice(${i})">
+        <span class="ch-letter">${o.letter || String.fromCharCode(65+i)}</span>
+        <span class="ch-text">${o.text}<div class="ch-hint">${o.hint||''}</div></span>
+      </button>`).join('')}`;
+  choicePanel.innerHTML = html;
+  window._options = options;
+  setTimeout(()=>choicePanel.classList.add('show'), 100);
+}
+function hideChoices(){ choicePanel.classList.remove('show'); STATE.awaitingChoice = false; progressHint.classList.remove('hidden'); }
+
+async function pickChoice(idx){
+  if(!STATE.awaitingChoice) return;
+  const opt = window._options[idx];
+  hideChoices();
+  appendNode(`<div class="msg-row me"><div><div class="msg-bubble me">${opt.text.replace(/<[^>]+>/g,'')}</div></div></div>`);
+  if(opt.stats){
+    Object.entries(opt.stats).forEach(([k,v])=>{ STATE[k] += v; });
+    updateStatsHud();
+    flashStatToast(opt.stats);
+  }
+  await wait(700);
+  if(opt.next === '__CUT' || opt.next === '__DRAMA'){
+    const target = opt.next === '__DRAMA' ? '__DRAMA' : 'cut_to_tease';
+    const idx = FLOW.findIndex(b => b.type === target);
+    if(idx >= 0) beatIdx = idx + 1;
+  } else if(opt.next){
+    const targetIdx = FLOW.findIndex(b => b.type === 'node' && b.id === opt.next);
+    if(targetIdx >= 0) beatIdx = targetIdx;
+  }
+  advance();
+}
+window.pickChoice = pickChoice;
+
+/* v25 · STRUCTURAL narration absorb fix v2 (v24 still felt 씹힘)
+   - hold time PROPORTIONAL to text length (not fixed 900ms · long narrations need
+     more time)
+   - VN line FADE TRANSITION before replacement (was instant snap = "씹힘")
+   - msg typing scales longer per char so long lines aren't typed too fast
+   - _narrationHoldUntil blocks advance() · _pendingNarrationAbsorb survives chain */
+let _narrationHoldUntil = 0;
+let _pendingNarrationAbsorb = false;
+
+// Compute reading time for a chunk · strips HTML tags · clamped 1100-2400ms
+function readMs(text){
+  const plain = (text || '').replace(/<[^>]+>/g, '').trim();
+  return Math.min(2400, Math.max(1100, plain.length * 130));
+}
+
+// VN line · fade out before next text replaces it · prevents instant snap
+async function fadeOutVNLine(){
+  const t = vnLineText.textContent.trim();
+  if(!t) return;
+  vnLineText.classList.add('fading');
+  await wait(280);
+  vnLineText.classList.remove('fading');
+}
+
+/* v26 · queued advance · space pressed during hold gets remembered · auto-fires
+   when hold expires · solves "empty space press" feedback */
+let _queuedAdvanceTimer = null;
+async function advance(){
+  if(STATE.busy || STATE.awaitingChoice) return;
+  const remaining = _narrationHoldUntil - Date.now();
+  if(remaining > 0){
+    if(_queuedAdvanceTimer) return;  // already queued
+    _queuedAdvanceTimer = setTimeout(()=>{
+      _queuedAdvanceTimer = null;
+      advance();
+    }, remaining + 30);
+    return;
+  }
+  STATE.busy = true;
+  try {
+    while(beatIdx < FLOW.length){
+      const b = FLOW[beatIdx++];
+      const next = await processBeat(b);
+      if(next !== 'chain') break;
+    }
+  } finally {
+    STATE.busy = false;
+  }
+}
+
+let _lastBeatType = null;
+async function processBeat(b){
+  // v21 · fade out previous voice on every transition
+  fadeOutVoice();
+  switch(b.type){
+    case 'node':
+      setNode(b.id, b.title, b.bg);
+      await wait(420);
+      _lastBeatType = 'node';
+      return 'chain';
+    case 'portrait':
+      setPortrait(b.who, b.mood);
+      setVNPortrait(b.who, b.mood);
+      await wait(240);
+      _lastBeatType = 'portrait';
+      return 'chain';
+    case 'narration':
+      if(b.peak){
+        peakPulse.classList.remove('show'); requestAnimationFrame(()=>peakPulse.classList.add('show'));
+        if(_bgm.active) bgmTension(Math.min(0.95, _bgm.intensity + 0.18));
+      }
+      // v27 · effects ride on narration · single space → text + flash simultaneously
+      if(b.flash){ runFlash(b.flash); }
+      // v25 · fade out previous VN line before showing new narration
+      await fadeOutVNLine();
+      // text mode stage
+      appendNode(`<div class="narration ${b.peak?'peak':''}">${b.text}</div>`);
+      // VN stage
+      vnHideSpeakerForNarration();
+      setVNLine(b.text, 'narration' + (b.peak ? ' peak' : ''));
+      // v25 · proportional hold · short narration ~1.1s · long narration up to 2.4s
+      _narrationHoldUntil = Date.now() + readMs(b.text);
+      _pendingNarrationAbsorb = true;
+      _lastBeatType = 'narration';
+      return;
+    case 'msg': {
+      const ch = CHARS[b.who];
+      // v28 · narration absorb hold (if previous was narration)
+      if(_pendingNarrationAbsorb){ await wait(500); _pendingNarrationAbsorb = false; }
+      // v25 · fade VN line out before msg replaces it
+      await fadeOutVNLine();
+      // v28 · INSTANT msg · no typing animation · click → dialogue appears immediately
+      appendNode(`
+        <div class="msg-row">
+          <div class="msg-mini" style="background-image:url('${portraitSrc(b.who, b.mood)}')"></div>
+          <div>
+            <div class="msg-speaker ${b.who}">${ch.name} ${b.voice ? '<span class="voice-ind" onclick="event.stopPropagation();playVoice(\''+b.voice+'\')" title="다시 듣기">🔊</span>' : ''}</div>
+            <div class="msg-bubble ${b.who}">${b.text}</div>
+          </div>
+        </div>`);
+      setVNPortrait(b.who, b.mood);
+      setVNLine(b.text);
+      // Auto-play voice for this line
+      if(b.voice) playVoice(b.voice);
+      _lastBeatType = 'msg';
+      // msg lingers proportionally · long messages need more read time
+      // (voice-aware hold extends this further when voice loads)
+      _narrationHoldUntil = Date.now() + Math.max(1000, readMs(b.text) * 0.85);
+      return;
+    }
+    case 'me':
+      if(_pendingNarrationAbsorb){ await wait(550); _pendingNarrationAbsorb = false; }
+      // v25 · fade VN line out before me replaces it
+      await fadeOutVNLine();
+      appendNode(`<div class="msg-row me"><div><div class="msg-bubble me">${b.text}</div></div></div>`);
+      // v26 · show Yeonwoo's portrait + speaker tag for me beats (player visual)
+      setVNPortrait('yeonwoo', b.mood || 'neutral_default');
+      setVNLine(b.text, 'me');
+      _lastBeatType = 'me';
+      // me lines also linger
+      _narrationHoldUntil = Date.now() + Math.max(900, readMs(b.text) * 0.7);
+      return;
+    case 'choice':
+      showChoices(b.intent, b.label, b.options);
+      return;
+    case 'goto': {
+      const idx = FLOW.findIndex(x => x.type === b.target);
+      if(idx >= 0) beatIdx = idx + 1;
+      return 'chain';
+    }
+    case '__CONVERGE_DEX':
+    case '__DRAMA':
+      return 'chain';
+    case 'flash':
+      // v27 · standalone flash auto-chains · doesn't consume a space press
+      await runFlash(b.kind);
+      return 'chain';
+    case 'cut_to_tease':
+      await runTeaseFade();
+      return;
+  }
+}
+
+async function runFlash(kind){
+  // v21 · trigger SFX for gunshot kind
+  if(kind === 'gunshot') sfxGunshot();
+  const f = document.getElementById('peakFlash');
+  if(!f) return;
+  f.className = 'peak-flash ' + (kind || 'peak');
+  f.classList.remove('show');
+  // force reflow then add show class to restart animation
+  void f.offsetWidth;
+  f.classList.add('show');
+  // v23 · cut short · was too long, broke tension instead of building it
+  await wait(kind === 'gunshot' ? 480 : 380);
+}
+
+async function runTeaseFade(){
+  // v21 · cut · fade voice + BGM into silence as the screen goes black
+  fadeOutVoice(600);
+  _bgmShouldRun = false;
+  bgmStop(1100);
+  chatScroll.style.transition = 'opacity .9s';
+  chatScroll.style.opacity = '0';
+  portraitEl.classList.remove('show');
+  portraitName.classList.remove('show');
+  chatBg.style.transition = 'opacity 1s';
+  chatBg.style.opacity = '0';
+  progressHint.classList.add('hidden');
+  await wait(1300); // longer hold of silence/black before tease appears
+  document.getElementById('endH').textContent = (STATE.humanity >= 0 ? '+' : '') + STATE.humanity;
+  document.getElementById('endO').textContent = (STATE.obsession >= 0 ? '+' : '') + STATE.obsession;
+  document.getElementById('endT').textContent = (STATE.trust >= 0 ? '+' : '') + STATE.trust;
+  teaseEl.classList.add('show');
+}
+
+document.addEventListener('keydown', e => {
+  const app = document.getElementById('app');
+  if(!app.classList.contains('view-chat')) return;
+  if(e.repeat) return; // ignore key auto-repeat (holding space = 1 advance, not many)
+  const a = document.activeElement;
+  if(a && (a.tagName === 'INPUT' || a.tagName === 'TEXTAREA')) return;
+  if(e.code === 'Space' || e.code === 'ArrowDown' || e.code === 'PageDown' || e.code === 'Enter'){
+    e.preventDefault();
+    advance();
+  }
+});
+let lastAdv = 0;
+function maybeAdv(){ const n = Date.now(); if(n - lastAdv < 350) return; lastAdv = n; advance(); }
+document.addEventListener('wheel', e => {
+  const app = document.getElementById('app');
+  if(!app.classList.contains('view-chat')) return;
+  if(e.deltaY > 14) maybeAdv();
+}, { passive:true });
+let touchY = 0;
+document.addEventListener('touchstart', e => { touchY = e.touches[0].clientY; }, { passive:true });
+document.addEventListener('touchmove', e => {
+  const app = document.getElementById('app');
+  if(!app.classList.contains('view-chat')) return;
+  const dy = touchY - e.touches[0].clientY;
+  if(dy > 40){ maybeAdv(); touchY = e.touches[0].clientY; }
+}, { passive:true });
+document.getElementById('screen-chat').addEventListener('click', e => {
+  if(STATE.awaitingChoice) return;
+  if(e.target.closest('.choice-panel')||e.target.closest('.tease')||e.target.closest('.topbar')||e.target.closest('.stats-hud')) return;
+  advance();
+});
+
+/* ============ CHAT-STYLE SIGNUP ============ */
+const signupScroll = document.getElementById('signupScroll');
+const signupInputBar = document.getElementById('signupInputBar');
+const signupEmail = document.getElementById('signupEmail');
+let signupStep = 0;
+let signupData = { email:'', promo:'', myCode:'' };
+
+function botMsg(text){
+  const node = document.createElement('div');
+  node.className = 'lucive-bot-msg';
+  node.innerHTML = `
+    <div class="lucive-bot-av">L</div>
+    <div>
+      <div class="lucive-bot-name">LUCIVE</div>
+      <div class="lucive-bot-bubble">${text}</div>
+    </div>`;
+  signupScroll.appendChild(node);
+  requestAnimationFrame(()=>node.classList.add('in'));
+  signupScroll.scrollTop = signupScroll.scrollHeight;
+  return node;
+}
+function meBubble(text){
+  const node = document.createElement('div');
+  node.className = 'msg-row me';
+  node.style.animation = 'none';
+  node.innerHTML = `<div><div class="msg-bubble me">${text}</div></div>`;
+  signupScroll.appendChild(node);
+  requestAnimationFrame(()=>node.classList.add('in'));
+  signupScroll.scrollTop = signupScroll.scrollHeight;
+}
+function botCard(html){
+  const node = document.createElement('div');
+  node.className = 'signup-card';
+  node.innerHTML = html;
+  signupScroll.appendChild(node);
+  requestAnimationFrame(()=>node.classList.add('in'));
+  signupScroll.scrollTop = signupScroll.scrollHeight;
+  return node;
+}
+
+function genMyPromo(email){
+  const seed = email.toLowerCase().replace(/[^a-z0-9]/g,'');
+  const letters = (seed.substring(0,3) || 'LUX').toUpperCase().padEnd(3,'X');
+  return letters + Math.floor(100 + Math.random()*900);
+}
+
+/* v26 · alpha tester selection questionnaire (replaces basic email signup) */
+const SIGNUP_QS = [
+  {
+    text: '먼저 — 캐릭터 챗 · <em>써본 적 있어요?</em>',
+    options: [
+      { value:'often', label:'자주 (Character.AI / Janitor / Zeta 등)' },
+      { value:'some',  label:'가끔' },
+      { value:'first', label:'처음이에요' },
+    ]
+  },
+  {
+    text: '오늘 만난 라온 · <em>다음 회차에서</em> 어떤 결말로 데려갈까요?',
+    options: [
+      { value:'true', label:'TRUE · 그를 살린다' },
+      { value:'dark', label:'DARK · 함께 어둠으로' },
+      { value:'sad',  label:'SAD · 잡지 못한 손' },
+    ]
+  },
+  {
+    text: '비주얼 노벨 · 회귀물 · <em>익숙하세요?</em>',
+    options: [
+      { value:'yes',  label:'네 · 좋아해요' },
+      { value:'some', label:'가끔 봐요' },
+      { value:'no',   label:'장르는 처음' },
+    ]
+  },
+];
+let signupQIdx = 0;
+signupData.answers = [];
+
+function openSignupChat(){
+  switchScreen('signup');
+  if(signupStep === 0){
+    signupStep = 'q';
+    // hide email input bar until last question
+    signupInputBar.style.display = 'none';
+    setTimeout(()=>botMsg('도착하셨군요. · <em>알파테스터 선발 문항</em> 세 가지만 묻겠습니다.'), 350);
+    setTimeout(()=>botMsg('답하시면 본편 첫 회차 · 알림 보내드릴게요.'), 1500);
+    setTimeout(()=>askNextSignupQ(), 2400);
+  }
+}
+window.openSignupChat = openSignupChat;
+
+async function askNextSignupQ(){
+  const q = SIGNUP_QS[signupQIdx];
+  if(!q){ askSignupEmail(); return; }
+  botMsg(q.text);
+  await wait(700);
+  const wrap = document.createElement('div');
+  wrap.className = 'signup-quick';
+  q.options.forEach((o) => {
+    const btn = document.createElement('button');
+    btn.className = 'sq-btn';
+    btn.innerHTML = o.label;
+    btn.onclick = () => answerSignupQ(o.value, o.label);
+    wrap.appendChild(btn);
+  });
+  signupScroll.appendChild(wrap);
+  requestAnimationFrame(()=>wrap.classList.add('in'));
+  signupScroll.scrollTop = signupScroll.scrollHeight;
+}
+
+async function answerSignupQ(value, label){
+  signupData.answers.push({ q: signupQIdx, a: value });
+  const wrap = document.querySelector('.signup-quick');
+  if(wrap) wrap.remove();
+  meBubble(label.replace(/<[^>]+>/g,''));
+  signupQIdx++;
+  await wait(700);
+  askNextSignupQ();
+}
+
+async function askSignupEmail(){
+  signupStep = 'email';
+  botMsg('마지막 · 선발 안내를 받을 <em>이메일</em> 적어주세요.');
+  await wait(400);
+  signupInputBar.style.display = 'flex';
+  signupEmail.placeholder = 'your@email.com';
+  signupEmail.type = 'email';
+  signupEmail.focus();
+}
+
+async function signupSubmit(){
+  if(signupStep !== 'email') return;
+  const val = signupEmail.value.trim();
+  if(!val || !val.includes('@')){ signupEmail.focus(); return; }
+  signupData.email = val;
+  meBubble(val);
+  signupEmail.value = '';
+  signupInputBar.style.display = 'none';
+  await finishSignup();
+}
+window.signupSubmit = signupSubmit;
+function signupSkipPromo(){ /* deprecated · kept for backward compat */ }
+window.signupSkipPromo = signupSkipPromo;
+
+async function finishSignup(){
+  signupStep = 'done';
+  signupData.myCode = genMyPromo(signupData.email);
+  // Save
+  localStorage.setItem('lucive_signup_email', signupData.email);
+  localStorage.setItem('lucive_my_promo', signupData.myCode);
+  localStorage.setItem('lucive_signup_answers', JSON.stringify(signupData.answers || []));
+  localStorage.setItem('lucive_consent_at', new Date().toISOString());
+
+  await wait(800);
+  botMsg('선발 후보로 등록되었습니다. 본편 첫 회차까지 · <em>D-' + Math.max(0, Math.floor((LAUNCH-Date.now())/86400000)) + '</em>.');
+
+  await wait(1100);
+  // Confirmation card
+  botCard(`
+    <div class="signup-card welcome">
+      <div class="sw-icon">✦</div>
+      <div class="sw-title">알파테스터 선발 후보 · <em>등록 완료</em></div>
+      <div class="sw-sub"><b>${signupData.email}</b>로<br>선발 결과 · 본편 첫 회차 알림이 갑니다.</div>
+    </div>`);
+
+  await wait(900);
+  // Share card · friend invite
+  botCard(`
+    <div class="sc-card-h">친구 초대 · <em>둘 다 첫 회차 우선 입장</em></div>
+    <div class="sc-row">
+      <div class="sc-row-label">내 초대 코드</div>
+      <div class="sc-row-field">
+        <code>LUCIVE·${signupData.myCode}</code>
+        <button onclick="copySignupPromo()">복사</button>
+      </div>
+    </div>
+    <div class="sc-row">
+      <div class="sc-row-label">초대 링크</div>
+      <div class="sc-row-field">
+        <code>lucive.app/r/${signupData.myCode}</code>
+        <button onclick="copySignupInvite()">복사</button>
+      </div>
+    </div>
+    <div class="sc-share">
+      <button class="sh-kakao" onclick="shareSignup('kakao')">💬 카카오톡</button>
+      <button class="sh-x" onclick="shareSignup('x')">𝕏 X</button>
+      <button class="sh-link" onclick="shareSignup('link')">🔗 링크</button>
+    </div>`);
+
+  await wait(800);
+  // Community
+  botCard(`
+    <div class="sc-card-h">💬 <em>알파테스터 운영 채널</em></div>
+    <ul class="sc-card-points">
+      <li>본편 첫 회차 <b>우선 안내</b></li>
+      <li>개발자에게 <b>직접 1:1 질답</b></li>
+      <li>다른 테스터들의 <b>실제 회차 후기</b></li>
+    </ul>
+    <a href="https://open.kakao.com/o/g4LZmfri" target="_blank" rel="noopener" class="sc-kakao-link">
+      <span>카톡 오픈채팅 들어가기</span><span>↗</span>
+    </a>`);
+
+  await wait(600);
+  const closing = document.createElement('div');
+  closing.className = 'signup-closing-card';
+  closing.innerHTML = 'Dive into <em>LUCIVE</em>';
+  signupScroll.appendChild(closing);
+  signupScroll.scrollTop = signupScroll.scrollHeight;
+
+  // Hide input bar after completion
+  signupInputBar.style.display = 'none';
+}
+
+function copySignupPromo(){
+  navigator.clipboard.writeText('LUCIVE·' + signupData.myCode).then(()=>toast('프로모 코드 복사됨'));
+}
+function copySignupInvite(){
+  navigator.clipboard.writeText('https://lucive.app/r/' + signupData.myCode).then(()=>toast('초대 링크 복사됨'));
+}
+function shareSignup(ch){
+  const code = signupData.myCode;
+  const url = 'https://lucive.app/r/' + code;
+  const msg = `LUCIVE · 캐릭터 챗 비주얼 노벨. 내 코드 ${code} 입력하면 둘 다 +300 Dip.`;
+  if(ch === 'x'){
+    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(msg)}&url=${encodeURIComponent(url)}`, '_blank');
+  } else if(ch === 'kakao'){
+    navigator.clipboard.writeText(`${msg} ${url}`).then(()=>toast('카톡 공유 문구 복사됨'));
+  } else {
+    navigator.clipboard.writeText(url).then(()=>toast('링크 복사됨'));
+  }
+}
+window.copySignupPromo = copySignupPromo;
+window.copySignupInvite = copySignupInvite;
+window.shareSignup = shareSignup;
+
+const LAUNCH = new Date('2026-05-17T00:00:00+09:00').getTime();
+function tickDday(){
+  const d = Math.max(0, Math.floor((LAUNCH - Date.now())/86400000));
+  const set = (id, v) => { const el = document.getElementById(id); if(el) el.textContent = v; };
+  set('castDday', d);
+  set('ddayTab', d);
+  set('teaseDday', d);
+}
+tickDday();
+setInterval(tickDday, 60000);
+
+updateStatsHud();
+</script>
+</body>
+</html>
