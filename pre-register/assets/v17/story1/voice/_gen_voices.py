@@ -26,9 +26,10 @@ sys.stdout.reconfigure(encoding='utf-8')
 KEY = os.environ['ELEVENLABS_API_KEY']
 MODEL = "eleven_v3"
 
-# Voice IDs · v23
-VOICE_RAON = "CW8sR0DtVIQaeLyAjGAf"  # Premium Korean Baritone (young · deep · Seoul)
-VOICE_DEX  = "V6IXmZ3a4ixL7ixYPupu"  # Steve · Mysterious Horror (deep · calm · narrator)
+# Voice IDs · v23/v26
+VOICE_RAON  = "CW8sR0DtVIQaeLyAjGAf"  # Premium Korean Baritone (young · deep · Seoul)
+VOICE_DEX   = "V6IXmZ3a4ixL7ixYPupu"  # Steve · Mysterious Horror (deep · calm · narrator)
+VOICE_KARLO = "aQzFKIjVemqRAhfd9est"  # Midnight Cave · deep middle-aged baritone (patriarch)
 
 # Settings · low stability + max style forces v3 to honor emotion tags hard
 SETTINGS_PEAK = {
@@ -36,6 +37,9 @@ SETTINGS_PEAK = {
 }
 SETTINGS_DEX = {
   "stability": 0.28, "similarity_boost": 0.85, "style": 0.95, "use_speaker_boost": True,
+}
+SETTINGS_KARLO = {
+  "stability": 0.32, "similarity_boost": 0.85, "style": 0.92, "use_speaker_boost": True,
 }
 SETTINGS_RAON = {
   "stability": 0.40, "similarity_boost": 0.88, "style": 0.78, "use_speaker_boost": True,
@@ -61,6 +65,11 @@ LINES = [
   ("raon_99_again", VOICE_RAON, SETTINGS_PEAK,
     "[broken whisper][trembling][raw determination]"
     "…또. [HARSH BREATH]또 다시."),
+
+  # === v26 KARLO (the boss / handler) · cold patriarch ===
+  ("karlo_01_recognize", VOICE_KARLO, SETTINGS_KARLO,
+    "[ICE COLD][slow controlled menace][deep low voice][taunting]"
+    "…라온의 그 여자가, [PAUSE][almost amused] 너구나."),
 
   # === LEGACY · v17–v22 backward compat ===
   ("raon_01_check", VOICE_RAON, SETTINGS_RAON,
