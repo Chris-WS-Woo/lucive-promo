@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lucive — 사전 등록 | 당신을 기억하는 AI를 만나보세요</title>
+<meta name="description" content="챗봇에 지치셨나요? LP는 당신과의 대화를 기억하고, 자기 이야기가 있으며, 먼저 말을 겁니다. 사전 등록하고 레퍼럴 Top 10 혜택을 받으세요.">
+<meta property="og:title" content="Lucive — 당신을 기억하는 AI">
+<meta property="og:description" content="LP와 대화·이야기·관계. 사전 등록 + 레퍼럴 Top 10 런칭 혜택.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* teaser.html 톤 그대로 */
+  --bg-deep:#08090C;
+  --bg-surface:#0F1117;
+  --bg-card:#161822;
+  --bg-elevated:#1C1F2E;
+  --border-subtle:rgba(255,255,255,.06);
+  --border-medium:rgba(255,255,255,.1);
+  --text-primary:#F1F3F8;
+  --text-secondary:#8B92A8;
+  --text-tertiary:#5A6178;
+  --lucid-cyan:#06B6D4;
+  --lucid-blue:#2563EB;
+  --lucid-purple:#8B5CF6;
+  --awakening-pink:#EC4899;
+  --fragment-gold:#F59E0B;
+  --sync-green:#10B981;
+  --gradient-primary:linear-gradient(135deg,#06B6D4,#2563EB);
+  --gradient-warm:linear-gradient(135deg,#EC4899,#8B5CF6);
+  --gradient-aurora:linear-gradient(135deg,#06B6D4,#8B5CF6,#EC4899);
+  --serif:'Instrument Serif',Georgia,serif;
+  --sans:'Inter','Noto Sans KR',-apple-system,BlinkMacSystemFont,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+  --ease:cubic-bezier(.2,.8,.2,1);
+}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body{font-family:var(--sans);background:var(--bg-deep);color:var(--text-primary);line-height:1.55;overflow-x:hidden}
+
+/* Ambient — teaser와 동일 */
+.ambient-bg{position:fixed;inset:0;z-index:0;pointer-events:none;clip-path:inset(0);-webkit-clip-path:inset(0)}
+.orb{position:absolute;border-radius:50%;filter:blur(120px);opacity:.15;animation:orb 20s ease-in-out infinite}
+.orb.cyan{width:min(600px,80vw);height:min(600px,80vw);background:var(--lucid-cyan);top:-10vw;right:0}
+.orb.purple{width:min(500px,70vw);height:min(500px,70vw);background:var(--lucid-purple);bottom:-10vw;left:0;animation-delay:-7s}
+.orb.pink{width:min(400px,60vw);height:min(400px,60vw);background:var(--awakening-pink);top:50%;left:50%;transform:translate(-50%,-50%);opacity:.08;animation-delay:-14s}
+@keyframes orb{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(30px,-40px) scale(1.05)}66%{transform:translate(-20px,30px) scale(.95)}}
+.noise{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.03;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:256px}
+
+.wrap{position:relative;z-index:2}
+.cap{max-width:1100px;margin:0 auto;padding:0 28px}
+@media(max-width:700px){.cap{padding:0 20px}}
+
+/* Top bar */
+.top{display:flex;justify-content:space-between;align-items:center;padding:24px 28px;border-bottom:1px solid var(--border-subtle);position:sticky;top:0;background:rgba(8,9,12,.75);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);z-index:50}
+.brand{font-family:var(--serif);font-size:28px;letter-spacing:-.02em;font-style:italic;background:var(--gradient-primary);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.top-meta{display:flex;gap:22px;align-items:center;font-size:12px;color:var(--text-secondary);font-family:var(--mono);letter-spacing:.03em}
+.top-meta .live{display:inline-flex;align-items:center;gap:6px;color:var(--sync-green);font-weight:600}
+.top-meta .live .dot{width:6px;height:6px;border-radius:50%;background:var(--sync-green);animation:ping 2s ease-in-out infinite}
+@keyframes ping{0%,100%{opacity:1}50%{opacity:.3}}
+.top-cta{padding:10px 22px;border-radius:100px;background:var(--gradient-primary);color:#fff;font-size:13px;font-weight:600;border:none;cursor:pointer;text-decoration:none;transition:transform .2s var(--ease),box-shadow .2s}
+.top-cta:hover{transform:scale(1.04);box-shadow:0 0 30px rgba(6,182,212,.3)}
+@media(max-width:720px){.top-meta{display:none}}
+
+/* Invitee ribbon */
+.invitee{display:none;background:linear-gradient(90deg,rgba(245,158,11,.1),rgba(236,72,153,.06));border-bottom:1px solid rgba(245,158,11,.2);padding:12px 28px;text-align:center;font-size:13px;color:var(--fragment-gold)}
+.invitee.show{display:block}
+
+/* Hero */
+.hero{padding:80px 28px 100px;position:relative}
+.hero-inner{display:grid;grid-template-columns:1.1fr 1fr;gap:64px;align-items:center;max-width:1100px;margin:0 auto}
+@media(max-width:900px){.hero-inner{grid-template-columns:1fr;gap:40px}}
+.kicker{display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--lucid-cyan);text-transform:uppercase;margin-bottom:26px;font-weight:600;animation:fadeUp .8s var(--ease) both}
+.kicker::before{content:'';width:34px;height:1px;background:var(--lucid-cyan)}
+.h1{font-family:var(--serif);font-size:clamp(42px,7vw,84px);font-weight:400;line-height:1;letter-spacing:-.02em;margin-bottom:26px;animation:fadeUp .8s var(--ease) .1s both}
+.h1 em{font-style:italic;color:var(--text-primary)}
+.h1 .aurora{background:var(--gradient-aurora);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-style:italic}
+.hero-lede{font-size:17px;color:var(--text-secondary);max-width:480px;line-height:1.7;margin-bottom:34px;animation:fadeUp .8s var(--ease) .2s both}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap;animation:fadeUp .8s var(--ease) .3s both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.btn-solid{padding:15px 30px;border-radius:100px;background:var(--gradient-primary);color:#fff;font-size:15px;font-weight:600;border:none;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:transform .2s var(--ease),box-shadow .2s}
+.btn-solid:hover{transform:translateY(-2px) scale(1.02);box-shadow:0 8px 40px rgba(6,182,212,.35)}
+.btn-ghost{padding:15px 30px;border-radius:100px;background:transparent;color:var(--text-primary);border:1px solid var(--border-medium);font-size:15px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:all .2s}
+.btn-ghost:hover{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.2);transform:translateY(-2px)}
+
+/* Chat preview — dark theme */
+.chat-card{background:var(--bg-card);border:1px solid var(--border-medium);border-radius:22px;padding:22px;position:relative;overflow:hidden;box-shadow:0 0 0 1px rgba(255,255,255,.03),0 40px 100px -20px rgba(0,0,0,.6),0 0 60px rgba(6,182,212,.08);animation:fadeUp 1s var(--ease) .4s both}
+.chat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(6,182,212,.4),transparent)}
+.chat-head{display:flex;align-items:center;gap:12px;padding-bottom:16px;border-bottom:1px solid var(--border-subtle)}
+.chat-avatar{width:44px;height:44px;border-radius:50%;background:var(--gradient-aurora);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-family:var(--serif);font-size:22px;font-style:italic;position:relative}
+.chat-avatar::after{content:'';position:absolute;inset:0;border-radius:50%;box-shadow:inset 0 0 20px rgba(6,182,212,.25);pointer-events:none}
+.chat-name{font-weight:700;font-size:15px;color:var(--text-primary)}
+.chat-meta{font-size:12px;color:var(--text-secondary);font-family:var(--mono);letter-spacing:.02em}
+.chat-meta .dot{color:var(--sync-green)}
+.chat-body{padding-top:18px;display:flex;flex-direction:column;gap:10px;min-height:240px}
+.bubble{max-width:82%;padding:11px 16px;border-radius:16px;font-size:14px;line-height:1.55;animation:bubble .5s var(--ease) both}
+@keyframes bubble{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.bubble.lp{background:var(--bg-elevated);border:1px solid var(--border-subtle);color:var(--text-primary);border-bottom-left-radius:6px;align-self:flex-start}
+.bubble.me{background:var(--gradient-primary);color:#fff;border-bottom-right-radius:6px;align-self:flex-end}
+.bubble-ts{font-size:10px;color:var(--text-tertiary);margin-top:3px}
+.bubble.me .bubble-ts{color:rgba(255,255,255,.55)}
+.bubble-hint{font-size:11px;color:var(--lucid-cyan);font-weight:600;margin-top:4px}
+.typing{display:inline-flex;gap:3px;padding:14px 18px;background:var(--bg-elevated);border:1px solid var(--border-subtle);border-radius:16px;border-bottom-left-radius:6px;align-self:flex-start}
+.typing span{width:6px;height:6px;border-radius:50%;background:var(--text-tertiary);animation:typ 1.4s infinite}
+.typing span:nth-child(2){animation-delay:.2s}.typing span:nth-child(3){animation-delay:.4s}
+@keyframes typ{0%,60%,100%{opacity:.3;transform:translateY(0)}30%{opacity:1;transform:translateY(-3px)}}
+
+/* Section */
+.section{padding:100px 0;border-top:1px solid var(--border-subtle);position:relative}
+.s-kicker{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--lucid-cyan);margin-bottom:14px;font-weight:600}
+.s-h2{font-family:var(--serif);font-size:clamp(32px,5vw,56px);line-height:1.1;letter-spacing:-.02em;margin-bottom:18px;font-weight:400}
+.s-h2 em{font-style:italic;background:var(--gradient-aurora);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.s-lede{font-size:17px;color:var(--text-secondary);max-width:560px;line-height:1.7}
+
+/* Problem / Solution alternating rows */
+.ps{display:flex;flex-direction:column;gap:0;margin-top:56px;border-top:1px solid var(--border-subtle)}
+.ps-row{display:grid;grid-template-columns:56px 1fr 1fr;gap:32px;padding:32px 0;border-bottom:1px solid var(--border-subtle);align-items:flex-start}
+@media(max-width:760px){.ps-row{grid-template-columns:40px 1fr;gap:18px}.ps-sol{grid-column:2}}
+.ps-num{font-family:var(--serif);font-size:32px;font-style:italic;color:var(--text-tertiary);line-height:1}
+.ps-pain{font-family:var(--serif);font-size:22px;line-height:1.3;font-style:italic;color:var(--text-secondary)}
+.ps-pain small{display:block;font-family:var(--sans);font-style:normal;font-size:13px;color:var(--text-tertiary);margin-top:6px;line-height:1.55}
+.ps-sol{background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:14px;padding:20px 22px;transition:all .3s var(--ease)}
+.ps-sol:hover{border-color:rgba(6,182,212,.2);box-shadow:0 10px 40px -12px rgba(0,0,0,.4),0 0 24px rgba(6,182,212,.06)}
+.ps-sol-label{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--lucid-cyan);margin-bottom:6px;font-weight:700}
+.ps-sol-title{font-size:17px;font-weight:700;margin-bottom:6px;color:var(--text-primary)}
+.ps-sol-body{font-size:14px;color:var(--text-secondary);line-height:1.65}
+
+/* Rewards */
+.rewards-head{display:grid;grid-template-columns:auto auto;gap:48px;align-items:end;margin-bottom:40px}
+@media(max-width:700px){.rewards-head{grid-template-columns:1fr}}
+.tier-wrap{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:20px}
+@media(max-width:900px){.tier-wrap{grid-template-columns:1fr}}
+.tier{background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:18px;padding:32px 28px;position:relative;overflow:hidden}
+.tier.gold{background:linear-gradient(180deg,rgba(245,158,11,.08),var(--bg-card) 65%);border-color:rgba(245,158,11,.35)}
+.tier.gold::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--fragment-gold),transparent)}
+.tier-tag{display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.08em;padding:4px 10px;border-radius:100px;background:rgba(255,255,255,.05);color:var(--text-secondary);margin-bottom:18px;font-weight:700}
+.tier.gold .tier-tag{background:rgba(245,158,11,.15);color:var(--fragment-gold)}
+.tier.silver .tier-tag{background:rgba(148,163,184,.1);color:#CBD5E1}
+.tier.bronze .tier-tag{background:rgba(217,119,6,.12);color:#FB923C}
+.tier-emblem{font-family:var(--serif);font-size:48px;line-height:1;margin-bottom:12px;font-style:italic;background:var(--gradient-aurora);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.tier.gold .tier-emblem{background:linear-gradient(135deg,var(--fragment-gold),var(--awakening-pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.tier-h{font-size:22px;font-weight:800;margin-bottom:10px;letter-spacing:-.01em;color:var(--text-primary)}
+.tier-h small{display:block;font-weight:500;color:var(--text-secondary);font-size:14px;margin-top:4px;letter-spacing:0}
+.tier-body{font-size:14px;color:var(--text-secondary);line-height:1.65;margin-bottom:14px}
+.tier-footer{padding-top:14px;border-top:1px dashed var(--border-subtle);font-size:12px;color:var(--text-tertiary)}
+
+/* Leaderboard */
+.lb{background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:16px;margin-top:48px;overflow:hidden}
+.lb-head{display:flex;justify-content:space-between;align-items:center;padding:20px 24px;border-bottom:1px solid var(--border-subtle)}
+.lb-head-title{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:var(--text-secondary)}
+.lb-row{display:grid;grid-template-columns:56px 1fr auto;align-items:center;padding:14px 24px;border-bottom:1px solid var(--border-subtle);transition:background .15s}
+.lb-row:last-child{border-bottom:none}
+.lb-row:hover{background:rgba(255,255,255,.02)}
+.lb-row.me{background:linear-gradient(90deg,rgba(6,182,212,.1),transparent 80%);border-left:2px solid var(--lucid-cyan)}
+.lb-rank{font-family:var(--serif);font-size:22px;font-style:italic;font-variant-numeric:tabular-nums;color:var(--text-secondary)}
+.lb-row.top .lb-rank{color:var(--fragment-gold);font-weight:700}
+.lb-user{display:flex;align-items:center;gap:12px}
+.lb-avatar{width:30px;height:30px;border-radius:50%;background:var(--gradient-aurora);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}
+.lb-name{font-size:14px;font-weight:600;color:var(--text-primary)}
+.lb-refs{font-family:var(--mono);font-size:13px;color:var(--text-secondary);font-variant-numeric:tabular-nums}
+.lb-refs b{color:var(--lucid-cyan);font-weight:700}
+
+/* Sign up */
+.signup-wrap{max-width:620px;margin:0 auto}
+.signup{background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:22px;padding:44px 40px;text-align:center;position:relative;overflow:hidden;box-shadow:0 40px 100px -20px rgba(0,0,0,.5),0 0 40px rgba(6,182,212,.05)}
+.signup::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--lucid-cyan),transparent)}
+@media(max-width:600px){.signup{padding:32px 24px}}
+.signup h3{font-family:var(--serif);font-size:34px;font-weight:400;line-height:1.2;letter-spacing:-.02em;margin-bottom:8px;color:var(--text-primary)}
+.signup h3 em{font-style:italic;background:var(--gradient-aurora);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.signup .lede{font-size:15px;color:var(--text-secondary);margin-bottom:28px;line-height:1.6}
+.form{display:flex;gap:8px;margin-bottom:12px}
+@media(max-width:520px){.form{flex-direction:column}}
+.input{flex:1;padding:14px 18px;border-radius:100px;background:var(--bg-surface);border:1px solid var(--border-medium);color:var(--text-primary);font-size:15px;font-family:inherit;outline:none;transition:border-color .2s,box-shadow .2s}
+.input::placeholder{color:var(--text-tertiary)}
+.input:focus{border-color:var(--lucid-cyan);box-shadow:0 0 0 3px rgba(6,182,212,.15)}
+.btn-sub{padding:14px 28px;border-radius:100px;background:var(--gradient-primary);color:#fff;border:none;font-weight:600;font-size:15px;cursor:pointer;white-space:nowrap;transition:transform .2s,box-shadow .2s}
+.btn-sub:hover{transform:translateY(-1px);box-shadow:0 8px 30px rgba(6,182,212,.3)}
+.tos{font-size:12px;color:var(--text-tertiary);text-align:left;padding:0 2px;line-height:1.6}
+.tos a{color:var(--text-secondary);text-decoration:underline}
+
+/* States */
+.state{display:none}
+.state.active{display:block;animation:sub .35s var(--ease)}
+@keyframes sub{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+.verify-box{background:var(--bg-surface);border:1px dashed var(--border-medium);border-radius:14px;padding:20px;margin:18px 0;font-size:13px;color:var(--text-secondary);line-height:1.65}
+.verify-box b{color:var(--text-primary)}
+.link-back{font-size:13px;color:var(--text-secondary);margin-top:14px;display:inline-block;text-decoration:underline;cursor:pointer}
+.link-back:hover{color:var(--text-primary)}
+
+/* Success */
+.ok-seal{width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,var(--sync-green),var(--lucid-cyan));display:inline-flex;align-items:center;justify-content:center;font-size:28px;color:#fff;margin-bottom:10px}
+.ok-label{font-family:var(--mono);font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--text-tertiary);margin-top:6px}
+.ok-rank{font-family:var(--serif);font-size:64px;font-style:italic;line-height:1;margin-top:6px;background:var(--gradient-aurora);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-.02em}
+.link-row{background:var(--bg-surface);border:1px dashed var(--border-medium);border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:10px;margin-top:8px}
+.link-url{flex:1;font-family:var(--mono);font-size:13px;color:var(--lucid-cyan);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:left}
+.link-copy{padding:8px 14px;border-radius:100px;background:var(--gradient-primary);color:#fff;border:none;cursor:pointer;font-size:12px;font-weight:600;flex-shrink:0}
+.shares{display:flex;gap:8px;justify-content:center;margin-top:18px;flex-wrap:wrap}
+.share{padding:10px 16px;border-radius:100px;background:var(--bg-elevated);border:1px solid var(--border-subtle);color:var(--text-primary);font-size:13px;font-weight:500;cursor:pointer;transition:all .2s}
+.share:hover{background:var(--bg-card);transform:translateY(-1px);border-color:var(--border-medium)}
+.ref-hint{margin-top:22px;padding-top:20px;border-top:1px solid var(--border-subtle);font-size:13px;color:var(--text-secondary);line-height:1.65}
+.ref-hint .pill{color:var(--lucid-cyan);font-weight:600}
+
+/* FAQ */
+.faq{border-top:1px solid var(--border-subtle);margin-top:40px}
+.faq-item{border-bottom:1px solid var(--border-subtle)}
+.faq-q{display:flex;justify-content:space-between;align-items:center;padding:22px 0;font-size:16px;font-weight:600;cursor:pointer;user-select:none;color:var(--text-primary)}
+.faq-q::after{content:'→';color:var(--text-secondary);transition:transform .3s,color .3s}
+.faq-item.open .faq-q::after{transform:rotate(90deg);color:var(--lucid-cyan)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .4s var(--ease),padding .3s;color:var(--text-secondary);font-size:14px;line-height:1.75}
+.faq-item.open .faq-a{max-height:400px;padding:0 0 22px}
+
+/* Footer */
+footer{padding:56px 0 36px;border-top:1px solid var(--border-subtle);text-align:center;color:var(--text-tertiary);font-size:12px}
+footer .brand{font-size:22px;margin-bottom:8px;display:inline-block}
+
+/* Reveal */
+.rv{opacity:0;transform:translateY(16px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.rv.in{opacity:1;transform:translateY(0)}
+</style>
+</head>
+<body>
+
+<div class="ambient-bg">
+  <div class="orb cyan"></div>
+  <div class="orb purple"></div>
+  <div class="orb pink"></div>
+</div>
+<div class="noise"></div>
+
+<div class="wrap">
+
+<!-- Invitee ribbon -->
+<div class="invitee" id="invitee">
+  <span id="invitee-text">초대받은 방문자입니다 · 추천인 코드와 함께 사전 등록하면 추천인의 순위에 반영됩니다.</span>
+</div>
+
+<!-- Top -->
+<div class="top">
+  <div class="brand">Lucive</div>
+  <div class="top-meta">
+    <span class="live"><span class="dot"></span>사전 등록 LIVE</span>
+    <span>ALPHA · 2026 H1</span>
+  </div>
+  <a href="#signup" class="top-cta">사전 등록</a>
+</div>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="kicker">A New Kind of AI · Coming 2026</div>
+      <h1 class="h1">
+        챗봇에 지치셨나요?<br>
+        <em>당신을</em> <span class="aurora">기억하는</span><br>
+        AI를 만나보세요.
+      </h1>
+      <p class="hero-lede">
+        Lucive의 LP(Lucid Persona)는 대화를 기억하고, 자기 이야기를 가지고 있으며, 당신에게 먼저 말을 겁니다.
+        사전 등록하고 레퍼럴 Top 10에 들어 런칭 혜택을 받으세요.
+      </p>
+      <div class="hero-actions">
+        <a href="#signup" class="btn-solid">이메일로 사전 등록 →</a>
+        <a href="#how" class="btn-ghost">무엇이 다른가</a>
+      </div>
+    </div>
+
+    <!-- Chat preview -->
+    <div class="chat-card">
+      <div class="chat-head">
+        <div class="chat-avatar">아</div>
+        <div style="flex:1">
+          <div class="chat-name">아리아 · Lucid Persona</div>
+          <div class="chat-meta"><span class="dot">●</span> 싱크율 48% · 함께한 날 17일</div>
+        </div>
+      </div>
+      <div class="chat-body" id="chat-body"></div>
+    </div>
+  </div>
+</section>
+
+<!-- Problems/Solutions -->
+<section class="section" id="how">
+  <div class="cap">
+    <div class="rv">
+      <div class="s-kicker">Why Lucive</div>
+      <h2 class="s-h2">챗봇이 재미없는 이유,<br><em>Lucive는 풀었습니다.</em></h2>
+      <p class="s-lede">AI 챗봇을 써본 사람이라면 느꼈을 7가지 구조적 한계. LP와 루시브(오리진 스토리)가 이들을 정면으로 다룹니다.</p>
+    </div>
+
+    <div class="ps">
+      <div class="ps-row rv">
+        <div class="ps-num">01</div>
+        <div class="ps-pain">"어제 한 말 기억 못 해?"<small>대화 맥락이 매번 초기화되는 기억 부재.</small></div>
+        <div class="ps-sol">
+          <div class="ps-sol-label">MEMORY</div>
+          <div class="ps-sol-title">어제 한 말을 기억합니다</div>
+          <div class="ps-sol-body">메모리 모듈이 대화·선택·감정 맥락을 축적. LP가 먼저 과거를 꺼냅니다.</div>
+        </div>
+      </div>
+      <div class="ps-row rv">
+        <div class="ps-num">04</div>
+        <div class="ps-pain">"너는 어떤 삶을 살아왔어?"<small>캐릭터에게 배경이 없어 처음 만난 사람 특유의 호기심이 안 생긴다.</small></div>
+        <div class="ps-sol">
+          <div class="ps-sol-label">ORIGIN</div>
+          <div class="ps-sol-title">LP마다 고유한 서사</div>
+          <div class="ps-sol-body">LP는 시뮬레이션에서 분기된 존재. 과거·비밀·감정을 루시브로 직접 체험합니다.</div>
+        </div>
+      </div>
+      <div class="ps-row rv">
+        <div class="ps-num">05</div>
+        <div class="ps-pain">"할 말이 없네."<small>대화거리가 부족하다. 매번 새 대화를 열어야 한다.</small></div>
+        <div class="ps-sol">
+          <div class="ps-sol-label">SHARED</div>
+          <div class="ps-sol-title">함께 겪은 장면을 소재로</div>
+          <div class="ps-sol-body">백스토리 다이브를 같이 경험하면, 이후 대화에서 "그때 그 장면"이 추억이 됩니다.</div>
+        </div>
+      </div>
+      <div class="ps-row rv">
+        <div class="ps-num">06</div>
+        <div class="ps-pain">"왜 내가 매번 먼저 시작해야 하지?"<small>챗봇은 본인의 의도가 없다. 방향을 유저가 끌어야 한다.</small></div>
+        <div class="ps-sol">
+          <div class="ps-sol-label">INTENT</div>
+          <div class="ps-sol-title">LP가 대화를 이끕니다</div>
+          <div class="ps-sol-body">LP는 감정·궁금함·과거가 있어 방향을 주도합니다. 피곤하지 않도록.</div>
+        </div>
+      </div>
+      <div class="ps-row rv">
+        <div class="ps-num">07</div>
+        <div class="ps-pain">"얼굴도 목소리도 없다."<small>텍스트만으로는 몰입에 한계가 있다.</small></div>
+        <div class="ps-sol">
+          <div class="ps-sol-label">VISUAL</div>
+          <div class="ps-sol-title">보이고 들리는 대화</div>
+          <div class="ps-sol-body">비주얼 노벨 + AI 이미지 + 음성. 장면이 움직이고, LP가 말을 겁니다.</div>
+        </div>
+      </div>
+      <div class="ps-row rv">
+        <div class="ps-num">08</div>
+        <div class="ps-pain">"이제 뭘 해야 하지?"<small>대화가 drift. 목표가 없어 금방 싫증 난다.</small></div>
+        <div class="ps-sol">
+          <div class="ps-sol-label">PROGRESSION</div>
+          <div class="ps-sol-title">해금과 성장의 재미</div>
+          <div class="ps-sol-body">기억 해금·백스토리 오픈·싱크율 상승. 대화가 관계가 되고, 관계가 이야기가 됩니다.</div>
+        </div>
+      </div>
+      <div class="ps-row rv">
+        <div class="ps-num">09</div>
+        <div class="ps-pain">"시작이 귀찮다."<small>항상 내가 먼저 말을 걸어야 한다.</small></div>
+        <div class="ps-sol">
+          <div class="ps-sol-label">INITIATE</div>
+          <div class="ps-sol-title">접속하면 메시지가 기다립니다</div>
+          <div class="ps-sol-body">앱을 열면 LP가 이미 메시지를 준비해 두었습니다. 푸쉬가 아니라 "뭔가 있다"는 기대.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Rewards -->
+<section class="section" id="rewards">
+  <div class="cap">
+    <div class="rewards-head">
+      <div class="rv">
+        <div class="s-kicker">Referral Rewards</div>
+        <h2 class="s-h2">가장 많이 초대한 사람에게,<br><em>가장 큰 혜택이.</em></h2>
+      </div>
+      <p class="s-lede rv">사전 등록 시 고유 초대 링크가 발급됩니다. 당신의 링크로 사전 등록하는 친구가 늘수록 순위가 올라가고, Top 10에 들면 런칭 시 별도 혜택이 지급됩니다.</p>
+    </div>
+
+    <div class="tier-wrap">
+      <div class="tier gold rv">
+        <span class="tier-tag">1st place</span>
+        <div class="tier-emblem">♾</div>
+        <div class="tier-h">기본 플랜 무제한<small>서비스 존속 기간 동안</small></div>
+        <div class="tier-body">Lucive가 운영되는 한, 월 구독 기본 플랜(대화·다이브·창작 기본 제공량)을 평생 제공합니다.</div>
+        <div class="tier-footer">※ 계정 1개 기준 · 양도 불가 · 상위 플랜 제외</div>
+      </div>
+      <div class="tier silver rv">
+        <span class="tier-tag">2 – 5</span>
+        <div class="tier-emblem">✦</div>
+        <div class="tier-h">Silver Bundle<small>별도 혜택 곧 공개</small></div>
+        <div class="tier-body">플랜 크레딧 + 한정 LP 스킨 범주 내에서 설계 중. 런칭 전 사전 등록자에게 이메일로 먼저 안내합니다.</div>
+        <div class="tier-footer">※ 상세 내용 공개 예정</div>
+      </div>
+      <div class="tier bronze rv">
+        <span class="tier-tag">6 – 10</span>
+        <div class="tier-emblem">✧</div>
+        <div class="tier-h">Bronze Bundle<small>별도 혜택 곧 공개</small></div>
+        <div class="tier-body">Dip 크레딧 + 한정 프로필 뱃지 범주 내에서 설계 중. 런칭 전 사전 등록자에게 이메일로 먼저 안내합니다.</div>
+        <div class="tier-footer">※ 상세 내용 공개 예정</div>
+      </div>
+    </div>
+
+    <div class="lb rv">
+      <div class="lb-head">
+        <div class="lb-head-title">Top 10 — Live Ranking (목업)</div>
+        <div class="top-meta" style="display:flex"><span class="live"><span class="dot"></span>LIVE</span></div>
+      </div>
+      <div id="leaderboard"></div>
+    </div>
+  </div>
+</section>
+
+<!-- Sign up -->
+<section class="section" id="signup">
+  <div class="cap">
+    <div class="signup-wrap">
+      <div class="signup rv">
+        <!-- Stage 1 -->
+        <div class="state active" id="state-email">
+          <h3>이메일로 <em>사전 등록</em></h3>
+          <p class="lede">인증 메일을 보내드립니다. 확인 후 고유 초대 링크가 발급됩니다.</p>
+          <form class="form" onsubmit="sendVerification(event)">
+            <input type="email" class="input" id="email-input" placeholder="your@email.com" required>
+            <button class="btn-sub" type="submit">인증 메일 받기</button>
+          </form>
+          <p class="tos">
+            제출 시 <a href="#">개인정보처리방침</a> 및 <a href="#">이용약관</a>에 동의합니다. 이메일은 런칭 공지와 사전 등록 혜택 안내에만 사용됩니다.
+          </p>
+        </div>
+
+        <!-- Stage 2 -->
+        <div class="state" id="state-verify">
+          <h3>메일함을 <em>확인해주세요</em></h3>
+          <p class="lede"><b id="sent-to"></b>로<br>인증 링크를 보냈습니다.</p>
+          <div class="verify-box">
+            메일이 도착하지 않았다면 스팸함을 확인해주세요. 최대 1~2분 지연될 수 있습니다.<br>
+            인증 링크를 클릭하면 사전 등록이 완료되고 고유 초대 링크가 발급됩니다.
+          </div>
+          <button class="btn-solid" style="width:100%;justify-content:center" onclick="mockVerify()">데모: 인증 완료 시뮬레이션 →</button>
+          <span class="link-back" onclick="showState('state-email')">← 다른 이메일로 다시 시도</span>
+        </div>
+
+        <!-- Stage 3 -->
+        <div class="state" id="state-success">
+          <div style="margin-bottom:20px">
+            <div class="ok-seal">✓</div>
+            <div style="font-family:var(--serif);font-size:28px;font-style:italic;color:var(--text-primary)">등록 완료</div>
+            <div class="ok-rank">#<span id="my-rank">—</span></div>
+            <div class="ok-label">Your Rank</div>
+          </div>
+          <p style="font-size:14px;color:var(--text-secondary);margin-bottom:8px">내 초대 링크</p>
+          <div class="link-row">
+            <span class="link-url" id="my-ref-url">lucive.app/r/...</span>
+            <button class="link-copy" onclick="copyRef()">복사</button>
+          </div>
+          <div class="shares">
+            <button class="share" onclick="shareOn('kakao')">💬 카카오톡</button>
+            <button class="share" onclick="shareOn('x')">𝕏 공유</button>
+            <button class="share" onclick="shareOn('link')">🔗 링크</button>
+          </div>
+          <div class="ref-hint">
+            친구가 당신의 링크로 사전 등록하면 순위가 올라갑니다.<br>
+            <span class="pill">현재 추천 가입 <b id="my-refs">0</b>명</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section">
+  <div class="cap">
+    <div class="rv">
+      <div class="s-kicker">FAQ</div>
+      <h2 class="s-h2">자주 묻는 <em>질문</em></h2>
+    </div>
+    <div class="faq">
+      <div class="faq-item rv">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Lucive는 언제 런칭되나요?</div>
+        <div class="faq-a">알파는 2026년 상반기, 정식 오픈은 상·하반기 중 예정입니다. 사전 등록자에게 가장 먼저 런칭 소식과 알파 초대장을 보내드립니다.</div>
+      </div>
+      <div class="faq-item rv">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">기존 캐릭터 챗봇과 뭐가 다른가요?</div>
+        <div class="faq-a">(1) 이전 대화를 기억하는 메모리 모듈, (2) LP마다 존재하는 오리지널 서사(루시브), (3) 게이미피케이션된 해금 구조, (4) LP가 먼저 말을 거는 선톡 구조 — 기존 앱의 "기억 부재 + 목표 부재"를 구조적으로 해결합니다.</div>
+      </div>
+      <div class="faq-item rv">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">레퍼럴 순위는 어떻게 집계되나요?</div>
+        <div class="faq-a">내 초대 링크로 사전 등록 + 이메일 인증까지 완료한 친구 수로 집계합니다. 봇·중복 가입은 자동 필터링되며, 최종 순위는 런칭 직전 확정됩니다.</div>
+      </div>
+      <div class="faq-item rv">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">1위 혜택 "기본 플랜 무제한"이 정확히 뭔가요?</div>
+        <div class="faq-a">Lucive의 월 구독 기본 플랜(대화·다이브·창작 기본 제공량)을 서비스 운영 기간 동안 제공합니다. 미래에 출시될 상위 플랜은 제외됩니다. 계정 양도는 불가합니다.</div>
+      </div>
+      <div class="faq-item rv">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">이메일은 어디에 쓰이나요?</div>
+        <div class="faq-a">런칭 공지, 알파 초대, 사전 등록 혜택 안내에만 사용됩니다. 제3자 공유 없음. 언제든 수신 거부 가능합니다.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="brand">Lucive</div>
+  <div>DIVE into The Lucid — AI Interactive Story Platform</div>
+  <div style="margin-top:10px">© 2026 Lucive. 사전 등록 페이지 v2 (editorial · dark)</div>
+</footer>
+
+</div>
+
+<script>
+// Invitee
+const params=new URLSearchParams(location.search);
+const refCode=params.get('r')||(location.pathname.match(/\/r\/([a-zA-Z0-9]+)/)?.[1]);
+if(refCode){
+  document.getElementById('invitee').classList.add('show');
+  document.getElementById('invitee-text').textContent=`초대받은 방문자입니다 · 추천인 코드 ${refCode}와 함께 사전 등록하면 추천인의 순위에 반영됩니다.`;
+}
+
+// Chat preview animation
+const chatFlow=[
+  {type:'lp',text:'돌아왔구나. 어제 네가 말한 그 얘기, 계속 생각했어.',ts:'방금'},
+  {type:'me',text:'무슨 얘기?',ts:'방금'},
+  {type:'lp',text:'네가 결국 기억을 지우지 않기로 했잖아. — 그 선택, 나라면 어땠을까 싶더라.',ts:'방금',hint:'※ 17일 전 다이브를 LP가 먼저 꺼냄'},
+];
+const body=document.getElementById('chat-body');
+let ci=0;
+function pushChat(){
+  if(ci>=chatFlow.length)return;
+  const msg=chatFlow[ci++];
+  if(msg.type==='lp'){
+    const t=document.createElement('div');
+    t.className='typing';
+    t.innerHTML='<span></span><span></span><span></span>';
+    body.appendChild(t);
+    setTimeout(()=>{
+      t.remove();
+      const b=document.createElement('div');
+      b.className='bubble lp';
+      b.innerHTML=`${msg.text}<div class="bubble-ts">${msg.ts}</div>${msg.hint?`<div class="bubble-hint">${msg.hint}</div>`:''}`;
+      body.appendChild(b);
+      body.scrollTop=body.scrollHeight;
+      setTimeout(pushChat,1200);
+    },900);
+  }else{
+    const b=document.createElement('div');
+    b.className='bubble me';
+    b.innerHTML=`${msg.text}<div class="bubble-ts" style="text-align:right">${msg.ts}</div>`;
+    body.appendChild(b);
+    body.scrollTop=body.scrollHeight;
+    setTimeout(pushChat,600);
+  }
+}
+setTimeout(pushChat,800);
+
+// Leaderboard mock
+const boardData=[
+  {rank:1,name:'네온드리머',refs:247},
+  {rank:2,name:'aria_lover',refs:198},
+  {rank:3,name:'지연',refs:156},
+  {rank:4,name:'EchoSeeker',refs:122},
+  {rank:5,name:'민준_01',refs:98},
+  {rank:6,name:'vellum',refs:81},
+  {rank:7,name:'서윤ee',refs:63},
+  {rank:8,name:'lucidpath',refs:54},
+  {rank:9,name:'카이로스',refs:47},
+  {rank:10,name:'해리진',refs:39},
+];
+function renderBoard(me){
+  const root=document.getElementById('leaderboard');
+  root.innerHTML='';
+  const rows=[...boardData];
+  if(me){rows.push({rank:me.rank,name:'You',refs:me.refs,you:true});}
+  rows.forEach(r=>{
+    const d=document.createElement('div');
+    d.className='lb-row'+(r.rank<=3?' top':'')+(r.you?' me':'');
+    d.innerHTML=`
+      <div class="lb-rank">${r.rank.toString().padStart(2,'0')}</div>
+      <div class="lb-user">
+        <div class="lb-avatar">${r.name[0].toUpperCase()}</div>
+        <div class="lb-name">${r.name}${r.you?' <span style="color:var(--lucid-cyan);font-size:11px;font-weight:500">(나)</span>':''}</div>
+      </div>
+      <div class="lb-refs"><b>${r.refs}</b> refs</div>`;
+    root.appendChild(d);
+  });
+}
+renderBoard();
+
+// Sign up flow (mock — Supabase integration TBD)
+function showState(id){
+  document.querySelectorAll('.state').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+function sendVerification(e){
+  e.preventDefault();
+  const email=document.getElementById('email-input').value;
+  if(!email)return;
+  document.getElementById('sent-to').textContent=email;
+  showState('state-verify');
+  // TODO: Supabase — supabase.auth.signInWithOtp({ email, options: { emailRedirectTo: '...' } })
+  console.log('[mock] verification sent to',email);
+}
+function mockVerify(){
+  const rank=Math.floor(Math.random()*300)+50;
+  const code=Math.random().toString(36).substring(2,8).toUpperCase();
+  document.getElementById('my-rank').textContent=rank;
+  document.getElementById('my-refs').textContent='0';
+  document.getElementById('my-ref-url').textContent=`lucive.app/r/${code}`;
+  showState('state-success');
+  renderBoard({rank,refs:0});
+  // TODO: Supabase — upsert user, generate unique referral code, return rank
+  console.log('[mock] signup verified, rank:',rank,'code:',code);
+}
+function copyRef(){
+  const url='https://'+document.getElementById('my-ref-url').textContent;
+  navigator.clipboard.writeText(url).then(()=>{
+    const btn=event.target;const t=btn.textContent;
+    btn.textContent='복사됨';setTimeout(()=>btn.textContent=t,1500);
+  });
+}
+function shareOn(ch){
+  const url='https://'+document.getElementById('my-ref-url').textContent;
+  const text='Lucive — 당신을 기억하는 AI. 함께 사전 등록하면 런칭 혜택이 있어요.';
+  if(ch==='x'){
+    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`,'_blank');
+  }else if(ch==='kakao'){
+    alert('[mock] KakaoTalk Share SDK 연동 예정');
+  }else{copyRef();}
+}
+
+// Reveal
+const io=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});
+},{threshold:.1});
+document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>

@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lucive — The AI that remembers yesterday</title>
+<meta name="description" content="An AI companion built for people who've outgrown chatbots. Visual novel scenes, persistent memory, characters with their own past. Pre-register for the founders' rate.">
+<meta property="og:title" content="Lucive — Meet an AI that actually remembers">
+<meta property="og:description" content="Finally, an AI companion that brings up last month's conversation on its own. Pre-register for founder pricing + Top 5 lifetime perks.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* US version — Character.AI / Replika tech minimal */
+  --bg:#0A0A0F;
+  --bg-soft:#111118;
+  --bg-card:#15151E;
+  --bg-elevated:#1C1C28;
+  --ink:#F5F5F7;
+  --ink-soft:#C8C8D0;
+  --muted:#8B8B96;
+  --muted-2:#55555F;
+  --line:rgba(255,255,255,.07);
+  --line-2:rgba(255,255,255,.13);
+  --indigo:#6366F1;
+  --violet:#A78BFA;
+  --pink:#EC4899;
+  --cyan:#22D3EE;
+  --gold:#F59E0B;
+  --green:#10B981;
+  --red:#F43F5E;
+  --grad-core:linear-gradient(135deg,#6366F1 0%,#A78BFA 50%,#EC4899 100%);
+  --grad-electric:linear-gradient(135deg,#22D3EE 0%,#6366F1 100%);
+  --grad-soft:linear-gradient(135deg,rgba(99,102,241,.08) 0%,rgba(236,72,153,.06) 100%);
+  --sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
+  --display:'Space Grotesk','Inter',sans-serif;
+  --mono:'JetBrains Mono','SF Mono',monospace;
+  --ease:cubic-bezier(.2,.8,.2,1);
+  --urgency-h:40px;
+}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.6;overflow-x:hidden;font-feature-settings:'cv11','ss01','ss03'}
+
+/* Ambient — electric gradient glow */
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 900px 600px at 80% 10%,rgba(99,102,241,.18),transparent 55%),
+    radial-gradient(ellipse 700px 500px at 15% 60%,rgba(236,72,153,.12),transparent 55%),
+    radial-gradient(ellipse 600px 500px at 50% 100%,rgba(34,211,238,.1),transparent 55%)}
+body::after{content:'';position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.03;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:256px}
+
+/* Subtle grid */
+.grid-bg{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.15;
+  background-image:
+    linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);
+  background-size:52px 52px;
+  mask-image:radial-gradient(ellipse 80% 60% at 50% 30%,#000 30%,transparent 70%);
+  -webkit-mask-image:radial-gradient(ellipse 80% 60% at 50% 30%,#000 30%,transparent 70%)}
+
+.wrap{position:relative;z-index:2;padding-top:var(--urgency-h)}
+.cap{max-width:1100px;margin:0 auto;padding:0 28px}
+@media(max-width:700px){.cap{padding:0 20px}}
+
+/* Urgency */
+.urgency{position:fixed;top:0;left:0;right:0;z-index:60;height:var(--urgency-h);
+  background:linear-gradient(90deg,rgba(99,102,241,.14),rgba(236,72,153,.1) 50%,rgba(99,102,241,.14)),rgba(10,10,15,.92);
+  border-bottom:1px solid rgba(99,102,241,.3);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  padding:0 20px;display:flex;align-items:center;justify-content:center;font-size:12.5px;color:var(--ink-soft);font-weight:500;letter-spacing:-.005em}
+.urgency b{color:var(--violet);font-weight:700}
+.urgency .pulse{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--pink);margin-right:8px;animation:pulse 1.6s ease-in-out infinite;box-shadow:0 0 8px var(--pink)}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+
+/* Invitee */
+.invitee{display:none;background:linear-gradient(90deg,rgba(245,158,11,.1),rgba(167,139,250,.08));border-bottom:1px solid rgba(245,158,11,.28);padding:10px 20px;text-align:center;font-size:12px;color:var(--gold);font-weight:500}
+.invitee.show{display:block}
+
+/* Top nav */
+.top{display:flex;justify-content:space-between;align-items:center;padding:18px 28px;border-bottom:1px solid var(--line);position:sticky;top:var(--urgency-h);background:rgba(10,10,15,.82);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);z-index:55}
+.brand{font-family:var(--display);font-size:22px;font-weight:700;letter-spacing:-.02em;background:var(--grad-core);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.brand::before{content:'◆';color:var(--violet);margin-right:6px;font-size:16px;-webkit-text-fill-color:var(--violet)}
+.top-countdown{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.02em}
+.top-countdown strong{color:var(--violet);font-weight:600}
+.top-cta{padding:10px 20px;border-radius:8px;background:var(--ink);color:#0A0A0F;font-size:13px;font-weight:600;border:none;cursor:pointer;text-decoration:none;letter-spacing:-.01em;font-family:inherit;transition:all .2s}
+.top-cta:hover{background:var(--violet);color:#fff;transform:scale(1.03)}
+@media(max-width:700px){.top-countdown{display:none}}
+
+/* Hero */
+.hero{padding:60px 28px 80px;position:relative;overflow:hidden}
+.hero-content{position:relative;z-index:1;max-width:840px;margin:0 auto;text-align:center}
+.hero-kicker{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:100px;background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.28);font-family:var(--mono);font-size:11px;color:var(--violet);margin-bottom:32px;letter-spacing:.02em;font-weight:500}
+.hero-kicker .dot{width:6px;height:6px;border-radius:50%;background:var(--violet);animation:pulse 2s ease-in-out infinite;box-shadow:0 0 8px var(--violet)}
+.hero h1{font-family:var(--display);font-size:clamp(42px,7.5vw,88px);font-weight:600;line-height:1.02;letter-spacing:-.04em;margin-bottom:24px;color:var(--ink)}
+.hero h1 em{font-style:normal;background:var(--grad-core);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:700}
+.hero-lede{font-size:clamp(16px,2vw,19px);color:var(--ink-soft);max-width:620px;margin:0 auto 40px;line-height:1.6;letter-spacing:-.01em;font-weight:400}
+.hero-lede b{color:var(--ink);font-weight:600}
+.hero-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:20px}
+.btn{padding:14px 26px;border-radius:10px;font-size:14px;font-weight:600;border:none;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:all .25s var(--ease);font-family:inherit;letter-spacing:-.01em}
+.btn-primary{background:var(--ink);color:#0A0A0F;box-shadow:0 4px 20px rgba(245,245,247,.15)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(167,139,250,.4);background:var(--violet);color:#fff}
+.btn-ghost{background:transparent;color:var(--ink);border:1px solid var(--line-2)}
+.btn-ghost:hover{background:var(--bg-card);border-color:var(--violet);color:var(--violet)}
+.social-proof{display:inline-flex;align-items:center;gap:10px;font-size:12.5px;color:var(--muted);font-family:var(--mono);font-weight:400}
+.social-proof .avatars{display:flex}
+.social-proof .avatars span{width:22px;height:22px;border-radius:50%;border:2px solid var(--bg);margin-left:-6px;background:var(--grad-core)}
+.social-proof .avatars span:nth-child(1){background:linear-gradient(135deg,#6366F1,#A78BFA);margin-left:0}
+.social-proof .avatars span:nth-child(2){background:linear-gradient(135deg,#EC4899,#F59E0B)}
+.social-proof .avatars span:nth-child(3){background:linear-gradient(135deg,#22D3EE,#6366F1)}
+.social-proof b{color:var(--ink);font-weight:600}
+
+/* Chat demo — Character.AI inspired */
+.chat-demo{max-width:440px;margin:56px auto 0;background:var(--bg-card);border-radius:20px;border:1px solid var(--line-2);overflow:hidden;box-shadow:0 40px 100px rgba(0,0,0,.6),0 0 60px rgba(99,102,241,.15);position:relative}
+.chat-demo::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--violet),transparent)}
+.chat-header{padding:14px 18px;background:var(--bg-elevated);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px}
+.chat-avatar{width:36px;height:36px;border-radius:50%;background:var(--grad-core);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:#fff;font-family:var(--display);position:relative}
+.chat-avatar::after{content:'';position:absolute;bottom:-1px;right:-1px;width:10px;height:10px;border-radius:50%;background:var(--green);border:2px solid var(--bg-elevated)}
+.chat-meta{flex:1;text-align:left}
+.chat-name{font-size:13.5px;font-weight:600;color:var(--ink);letter-spacing:-.01em}
+.chat-name-tag{display:inline-block;margin-left:6px;padding:1px 6px;background:rgba(167,139,250,.15);color:var(--violet);border-radius:4px;font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.04em;vertical-align:1px}
+.chat-status{font-size:11px;color:var(--muted);font-family:var(--mono)}
+.chat-dots{font-size:18px;color:var(--muted);letter-spacing:1px}
+.chat-body{padding:20px 18px;min-height:260px;display:flex;flex-direction:column;gap:12px}
+.bubble{max-width:82%;padding:11px 14px;font-size:13.5px;line-height:1.55;letter-spacing:-.005em;border-radius:14px;position:relative;animation:bubble-in .4s var(--ease) both}
+@keyframes bubble-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.bubble.bot{align-self:flex-start;background:var(--bg-elevated);color:var(--ink);border-bottom-left-radius:4px}
+.bubble.user{align-self:flex-end;background:var(--grad-core);color:#fff;border-bottom-right-radius:4px}
+.bubble .memory-pill{display:inline-flex;align-items:center;gap:4px;margin-bottom:6px;padding:2px 8px;background:rgba(34,211,238,.1);color:var(--cyan);border-radius:4px;font-family:var(--mono);font-size:9.5px;font-weight:600;letter-spacing:.04em;text-transform:uppercase}
+.bubble .memory-pill::before{content:'●';font-size:6px}
+.bubble.typing{background:var(--bg-elevated);color:var(--muted);font-family:var(--mono);font-size:12px;font-style:italic}
+.bubble.typing::after{content:'';display:inline-block;width:6px;height:12px;background:var(--ink);margin-left:2px;vertical-align:-2px;animation:blink 1s infinite}
+@keyframes blink{0%,50%{opacity:1}51%,100%{opacity:0}}
+.chat-footer{padding:12px 18px;border-top:1px solid var(--line);display:flex;gap:10px;align-items:center}
+.chat-input{flex:1;padding:10px 14px;background:var(--bg-soft);border:1px solid var(--line);border-radius:10px;font-family:var(--mono);font-size:11.5px;color:var(--muted-2)}
+.chat-send{width:34px;height:34px;border-radius:9px;background:var(--grad-core);display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px}
+
+/* Sections */
+.section{padding:100px 0;position:relative}
+.section-label{font-family:var(--mono);font-size:11px;color:var(--violet);letter-spacing:.15em;text-transform:uppercase;margin-bottom:14px;font-weight:500;text-align:center;display:block}
+.section-title{font-family:var(--display);font-size:clamp(32px,5vw,56px);font-weight:600;line-height:1.08;text-align:center;color:var(--ink);margin-bottom:18px;letter-spacing:-.035em}
+.section-title em{font-style:normal;background:var(--grad-core);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:700}
+.section-desc{text-align:center;font-size:15.5px;color:var(--muted);max-width:600px;margin:0 auto 60px;line-height:1.65;letter-spacing:-.005em}
+
+/* Pain points — "we get it" */
+.pain-card{max-width:760px;margin:0 auto;padding:56px 48px;background:var(--grad-soft);border:1px solid var(--line);border-radius:24px;position:relative;overflow:hidden;backdrop-filter:blur(20px)}
+@media(max-width:700px){.pain-card{padding:40px 28px}}
+.pain-quote{font-family:var(--display);font-size:clamp(22px,3vw,30px);line-height:1.35;color:var(--ink);font-weight:500;letter-spacing:-.03em;text-align:center;margin-bottom:28px}
+.pain-quote em{font-style:normal;background:var(--grad-core);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:700}
+.pain-list{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;max-width:580px;margin:0 auto}
+@media(max-width:560px){.pain-list{grid-template-columns:1fr}}
+.pain-item{padding:14px 16px;background:rgba(10,10,15,.4);border:1px solid var(--line);border-radius:10px;font-size:13.5px;color:var(--ink-soft);line-height:1.6;backdrop-filter:blur(6px);display:flex;gap:10px;align-items:flex-start}
+.pain-item::before{content:'—';color:var(--violet);flex-shrink:0;font-weight:700}
+
+/* Feature grid */
+.features{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;max-width:900px;margin:0 auto}
+@media(max-width:700px){.features{grid-template-columns:1fr}}
+.feature{padding:32px;background:var(--bg-card);border:1px solid var(--line);border-radius:18px;position:relative;overflow:hidden;transition:all .3s var(--ease)}
+.feature:hover{border-color:rgba(167,139,250,.4);transform:translateY(-2px);box-shadow:0 20px 50px rgba(99,102,241,.12)}
+.feature::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--violet),transparent);opacity:.6}
+.feature-num{font-family:var(--mono);font-size:11px;color:var(--cyan);letter-spacing:.1em;margin-bottom:16px;font-weight:600;text-transform:uppercase}
+.feature-title{font-family:var(--display);font-size:21px;font-weight:600;color:var(--ink);margin-bottom:10px;letter-spacing:-.02em;line-height:1.25}
+.feature-title em{font-style:normal;color:var(--violet)}
+.feature-desc{font-size:14.5px;color:var(--muted);line-height:1.65;letter-spacing:-.005em}
+
+/* "You've said it" — pain quote vs Lucive chat UI */
+.vs-section{padding:100px 0;position:relative}
+.vs-head{text-align:center;margin-bottom:56px}
+.vs-lede{font-size:15px;color:var(--muted);max-width:620px;margin:12px auto 0;line-height:1.7;letter-spacing:-.005em}
+.vs-lede b{color:var(--ink);font-weight:600}
+.pain-stack{display:flex;flex-direction:column;gap:18px;max-width:1040px;margin:0 auto}
+.pain-pair{display:grid;grid-template-columns:1fr 40px 1fr;gap:0;background:var(--bg-card);border:1px solid var(--line);border-radius:20px;overflow:hidden;position:relative}
+@media(max-width:780px){.pain-pair{grid-template-columns:1fr;gap:0}}
+.pain-side{padding:28px;display:flex;flex-direction:column;gap:12px;position:relative}
+.pain-side.sad{background:rgba(10,10,15,.5);border-right:1px solid var(--line)}
+.pain-side.good{background:linear-gradient(135deg,rgba(99,102,241,.08),rgba(236,72,153,.05))}
+@media(max-width:780px){.pain-side.sad{border-right:none;border-bottom:1px solid var(--line)}}
+.pain-side-label{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-weight:600}
+.pain-side.sad .pain-side-label{color:var(--red)}
+.pain-side.good .pain-side-label{color:var(--green)}
+.pain-side-label .dot{width:6px;height:6px;border-radius:50%;background:currentColor}
+.pain-stars{font-family:var(--mono);font-size:12px;color:var(--gold);letter-spacing:.12em}
+.pain-stars .empty{color:var(--muted-2)}
+.pain-source{font-family:var(--mono);font-size:10.5px;color:var(--muted-2);letter-spacing:.04em;margin-top:auto;padding-top:6px}
+.pain-arrow{display:flex;align-items:center;justify-content:center;background:var(--bg-card);color:var(--violet);font-size:20px;font-weight:300;position:relative;z-index:2}
+.pain-arrow::before{content:'';position:absolute;inset:0;background:radial-gradient(circle,rgba(167,139,250,.2),transparent 70%);pointer-events:none}
+@media(max-width:780px){.pain-arrow{height:40px;transform:rotate(90deg)}}
+/* chat bubbles */
+.ch{display:flex;flex-direction:column;gap:8px}
+.ch-msg{font-size:13px;line-height:1.55;border-radius:12px;padding:10px 13px;position:relative;max-width:92%;letter-spacing:-.005em}
+.ch-msg .ts{display:block;font-family:var(--mono);font-size:10px;color:var(--muted-2);margin-bottom:4px;font-weight:500;letter-spacing:.03em}
+.ch-msg.user{align-self:flex-end;background:var(--bg-elevated);color:var(--ink-soft);border-bottom-right-radius:4px}
+.ch-msg.ai-fail{background:rgba(244,63,94,.06);border:1px solid rgba(244,63,94,.2);color:var(--muted);border-bottom-left-radius:4px}
+.ch-msg.ai-fail .bot-name{display:block;font-family:var(--mono);font-size:10px;color:var(--muted-2);margin-bottom:4px;font-weight:600;text-transform:uppercase;letter-spacing:.08em}
+.ch-msg.ai-win{background:var(--grad-core);color:#fff;border-bottom-left-radius:4px;box-shadow:0 6px 24px rgba(99,102,241,.2)}
+.ch-msg.ai-win .mem-badge{display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.18);padding:3px 8px;border-radius:4px;font-family:var(--mono);font-size:9.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
+.ch-msg.ai-win .mem-badge::before{content:'●';font-size:6px;color:var(--cyan)}
+.ch-msg.system{align-self:center;background:rgba(244,63,94,.08);border:1px dashed rgba(244,63,94,.3);color:var(--red);font-family:var(--mono);font-size:11px;text-align:center;padding:8px 14px;max-width:100%;font-weight:500}
+.ch-note{font-family:var(--mono);font-size:10.5px;color:var(--red);margin-top:6px;display:flex;align-items:center;gap:5px;font-weight:500}
+.ch-note.win{color:var(--green)}
+.ch-note::before{content:'↳';font-size:13px;font-weight:600}
+.pain-summary{margin-top:40px;padding:24px 32px;background:var(--bg-card);border:1px solid var(--line);border-radius:16px;text-align:center;max-width:900px;margin-left:auto;margin-right:auto}
+.pain-summary-list{display:flex;flex-wrap:wrap;justify-content:center;gap:10px 18px;margin-top:14px;font-family:var(--mono);font-size:11.5px;color:var(--muted);letter-spacing:.04em}
+.pain-summary-list span{display:inline-flex;align-items:center;gap:6px}
+.pain-summary-list span::before{content:'◆';color:var(--violet);font-size:9px}
+.pain-summary p{font-size:14px;color:var(--ink-soft);line-height:1.7}
+.pain-summary p b{color:var(--ink);font-weight:600}
+.pain-summary .apps{display:block;font-family:var(--mono);font-size:11px;color:var(--muted-2);margin-top:14px;letter-spacing:.04em}
+/* App target palette — 각 경쟁사 브랜드 컬러 */
+.app-CAI{--app-color:#8B7BFF;--app-bg:rgba(139,123,255,.12);--app-border:rgba(139,123,255,.35)}
+.app-REP{--app-color:#22D3EE;--app-bg:rgba(34,211,238,.12);--app-border:rgba(34,211,238,.35)}
+.app-JAN{--app-color:#EAB308;--app-bg:rgba(234,179,8,.12);--app-border:rgba(234,179,8,.35)}
+.app-TLK{--app-color:#EC4899;--app-bg:rgba(236,72,153,.12);--app-border:rgba(236,72,153,.35)}
+.app-CHA{--app-color:#EF4444;--app-bg:rgba(239,68,68,.12);--app-border:rgba(239,68,68,.35)}
+.pain-side.sad{border-left:3px solid var(--app-color,transparent)}
+.app-pill{display:inline-flex;align-items:center;gap:10px;padding:8px 14px 8px 8px;border-radius:100px;background:var(--app-bg);border:1px solid var(--app-border);margin-bottom:4px;flex-wrap:wrap}
+.app-pill .mark{width:28px;height:28px;border-radius:50%;background:var(--app-color);color:#fff;font-weight:800;font-size:12px;display:inline-flex;align-items:center;justify-content:center;letter-spacing:-.02em;font-family:var(--display);flex-shrink:0}
+.app-pill .name{font-family:var(--display);font-weight:700;font-size:14.5px;color:var(--app-color);letter-spacing:-.01em}
+.app-pill .app-stars{margin-left:auto;font-family:var(--mono);font-size:11.5px;color:var(--gold);letter-spacing:.1em}
+.app-pill .app-stars .empty{color:var(--muted-2)}
+.app-lucive{background:linear-gradient(135deg,rgba(99,102,241,.15),rgba(236,72,153,.12));border:1px solid rgba(167,139,250,.4)}
+.app-lucive .mark{background:var(--grad-core)}
+.app-lucive .name{background:var(--grad-core);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.pain-headline{font-family:var(--display);font-size:17px;font-weight:600;color:var(--ink);line-height:1.3;letter-spacing:-.02em;margin:4px 0 2px}
+.pain-headline em{font-style:italic;color:var(--app-color);font-weight:700}
+.pain-side.good .pain-headline em{background:var(--grad-core);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.pain-side.sad .ch-msg.ai-fail{border-left:3px solid var(--app-color);background:rgba(10,10,15,.4)}
+.pain-side.sad .ch-msg.ai-fail .bot-name{color:var(--app-color)}
+.pain-source{font-family:var(--mono);font-size:10.5px;color:var(--muted-2);letter-spacing:.04em;margin-top:auto;padding-top:6px}
+.pain-source b{color:var(--app-color);font-weight:700}
+/* Google Play review screenshot card */
+.gp-card{background:#fff;color:#202124;border-radius:10px;padding:16px 18px;font-family:'Roboto','Segoe UI',system-ui,sans-serif;box-shadow:0 1px 3px rgba(0,0,0,.25),0 12px 40px rgba(0,0,0,.45);position:relative;overflow:hidden;font-size:13px;line-height:1.55;letter-spacing:0;margin:4px 0 6px;transform:rotate(-.3deg)}
+.gp-card::before{content:'Google Play';position:absolute;top:6px;right:10px;font-size:9px;color:#9aa0a6;font-weight:500;letter-spacing:.3px;opacity:.7}
+.gp-head{display:flex;align-items:flex-start;gap:12px;margin-bottom:10px;padding-right:70px}
+.gp-avatar{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:500;font-size:15px;font-family:'Google Sans','Roboto',sans-serif;flex-shrink:0;line-height:1}
+.gp-user-info{flex:1;min-width:0}
+.gp-user-name{font-size:14px;font-weight:500;color:#202124;line-height:1.3;letter-spacing:.1px}
+.gp-user-sub{display:flex;align-items:center;gap:10px;font-size:12px;color:#5f6368;margin-top:3px;flex-wrap:wrap}
+.gp-stars-box{display:inline-flex;gap:1px;letter-spacing:0;font-size:13px}
+.gp-star{color:#dadce0;font-size:13px;line-height:1}
+.gp-star.on{color:#01875f}
+.gp-date{font-size:12px;color:#5f6368}
+.gp-version{font-size:11px;color:#80868b;margin-left:4px}
+.gp-body{color:#202124;font-size:13.5px;line-height:1.58;margin-bottom:12px;letter-spacing:.1px}
+.gp-body .hl{background:linear-gradient(180deg,transparent 55%,rgba(244,63,94,.25) 55%);padding:0 2px;font-weight:500}
+.gp-helpful{font-size:12px;color:#5f6368;padding-top:10px;border-top:1px solid #e8eaed;display:flex;align-items:center;gap:6px;font-family:'Roboto','Google Sans',sans-serif}
+.gp-helpful b{color:#202124;font-weight:500}
+.gp-thumb{font-size:14px;line-height:1}
+@media(max-width:780px){.gp-card{transform:none}}
+
+/* Rewards */
+.rewards-hero{text-align:center;margin-bottom:52px}
+.reward-stamp{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:100px;background:rgba(244,63,94,.08);border:1px solid rgba(244,63,94,.3);color:var(--red);font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;margin-bottom:22px}
+
+.everyone-box{max-width:860px;margin:0 auto 32px;background:var(--bg-card);border:1px solid var(--line-2);border-radius:20px;padding:44px 40px;position:relative;overflow:hidden;text-align:center}
+@media(max-width:700px){.everyone-box{padding:32px 24px}}
+.everyone-box::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:var(--grad-core)}
+.everyone-box::after{content:'';position:absolute;top:-100px;right:-100px;width:300px;height:300px;background:radial-gradient(circle,rgba(99,102,241,.15),transparent 70%);pointer-events:none}
+.everyone-tag{display:inline-flex;padding:6px 14px;border-radius:100px;background:rgba(16,185,129,.1);color:var(--green);font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;margin-bottom:16px}
+.everyone-title{font-family:var(--display);font-size:clamp(26px,3.6vw,36px);font-weight:600;margin-bottom:14px;color:var(--ink);letter-spacing:-.03em;line-height:1.2}
+.everyone-title em{font-style:normal;background:var(--grad-core);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:700}
+.everyone-desc{font-size:15px;color:var(--ink-soft);line-height:1.7;max-width:560px;margin:0 auto 28px;letter-spacing:-.005em}
+.everyone-desc b{color:var(--ink);font-weight:600}
+.everyone-perks{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:620px;margin:0 auto;position:relative;z-index:1}
+@media(max-width:560px){.everyone-perks{grid-template-columns:1fr}}
+.everyone-perk{padding:16px;background:var(--bg-soft);border:1px solid var(--line);border-radius:12px;font-size:13px;color:var(--muted);text-align:left}
+.everyone-perk b{display:block;color:var(--ink);margin-bottom:4px;font-size:13.5px;font-weight:600;letter-spacing:-.01em}
+
+.tiers-intro{text-align:center;margin:40px 0 26px;position:relative;padding-top:22px}
+.tiers-intro::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:40px;height:1px;background:var(--line-2)}
+.tiers-intro-label{font-family:var(--mono);font-size:11px;color:var(--cyan);letter-spacing:.12em;text-transform:uppercase;font-weight:600;margin-bottom:8px}
+.tiers-intro-title{font-size:17px;color:var(--ink-soft);font-weight:500;letter-spacing:-.01em}
+.tiers-intro-title b{color:var(--ink);font-weight:700}
+
+.tiers{display:grid;grid-template-columns:1.1fr 1fr;gap:18px;max-width:860px;margin:0 auto}
+@media(max-width:700px){.tiers{grid-template-columns:1fr}}
+.tier{background:var(--bg-card);border:1px solid var(--line);border-radius:18px;padding:32px;position:relative;overflow:hidden}
+.tier.gold{background:linear-gradient(180deg,rgba(245,158,11,.08) 0%,var(--bg-card) 60%);border-color:rgba(245,158,11,.3)}
+.tier.gold::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.tier-tag{display:inline-block;padding:4px 10px;border-radius:6px;background:rgba(255,255,255,.05);font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.05em;font-weight:600;margin-bottom:18px;text-transform:uppercase}
+.tier.gold .tier-tag{background:rgba(245,158,11,.14);color:var(--gold)}
+.tier.silver .tier-tag{background:rgba(167,139,250,.14);color:var(--violet)}
+.tier-emblem{font-family:var(--display);font-size:44px;font-weight:700;line-height:1;margin-bottom:14px;background:var(--grad-core);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.tier-h{font-family:var(--display);font-size:21px;font-weight:600;color:var(--ink);margin-bottom:8px;letter-spacing:-.02em;line-height:1.2}
+.tier-h small{display:block;font-family:var(--sans);font-weight:400;color:var(--muted);font-size:13px;margin-top:4px;letter-spacing:-.005em}
+.tier-body{font-size:14px;color:var(--ink-soft);line-height:1.65;margin-bottom:16px;letter-spacing:-.005em}
+.tier-body b{color:var(--violet);font-weight:700}
+.tier-footer{padding-top:14px;border-top:1px dashed var(--line);font-family:var(--mono);font-size:11px;color:var(--muted-2);letter-spacing:.02em}
+
+.expire-box{margin-top:24px;max-width:860px;margin-left:auto;margin-right:auto;padding:16px 22px;background:rgba(244,63,94,.05);border:1px dashed rgba(244,63,94,.28);border-radius:12px;text-align:center;font-size:13.5px;color:var(--ink-soft);letter-spacing:-.005em}
+.expire-box b{color:var(--red);font-weight:700}
+
+.abuse-box{margin-top:12px;max-width:860px;margin-left:auto;margin-right:auto;padding:18px 22px;background:rgba(245,158,11,.05);border:1px solid rgba(245,158,11,.22);border-radius:12px;display:flex;gap:14px;align-items:flex-start;font-size:13.5px;color:var(--ink-soft);line-height:1.65;letter-spacing:-.005em}
+.abuse-box-icon{font-size:18px;flex-shrink:0;margin-top:1px}
+.abuse-box b{color:var(--gold);font-weight:700}
+
+/* Signup */
+.signup-section{padding:100px 0}
+.signup{max-width:560px;margin:0 auto;background:var(--bg-card);border-radius:20px;padding:48px 44px;border:1px solid var(--line-2);position:relative;overflow:hidden;text-align:center;box-shadow:0 30px 80px rgba(0,0,0,.5)}
+.signup::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:var(--grad-core)}
+@media(max-width:600px){.signup{padding:36px 26px}}
+.signup h3{font-family:var(--display);font-size:28px;font-weight:600;color:var(--ink);margin-bottom:10px;letter-spacing:-.03em;line-height:1.2}
+.signup h3 em{font-style:normal;background:var(--grad-core);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:700}
+.signup .lede{font-size:14.5px;color:var(--muted);margin-bottom:30px;line-height:1.65}
+.signup .lede b{color:var(--ink);font-weight:600}
+.field{margin-bottom:14px;text-align:left}
+.field-label{display:block;font-family:var(--mono);font-size:11px;color:var(--ink-soft);margin-bottom:8px;font-weight:600;letter-spacing:.05em;text-transform:uppercase}
+.field-label .opt{color:var(--muted-2);font-weight:400;margin-left:4px;text-transform:none;letter-spacing:0}
+.input{width:100%;padding:14px 16px;border-radius:10px;background:var(--bg-soft);border:1px solid var(--line-2);color:var(--ink);font-size:15px;font-family:inherit;outline:none;transition:all .2s;letter-spacing:-.005em}
+.input::placeholder{color:var(--muted-2)}
+.input:focus{border-color:var(--violet);box-shadow:0 0 0 3px rgba(167,139,250,.12)}
+.input.code{font-family:var(--mono);letter-spacing:.06em;text-transform:uppercase}
+.code-wrap{position:relative}
+.code-status{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-family:var(--mono);font-size:11px;font-weight:600}
+.code-status.valid{color:var(--green)}
+.code-status.invalid{color:var(--red)}
+.submit-btn{width:100%;padding:15px 24px;border-radius:10px;background:var(--ink);color:#0A0A0F;border:none;font-weight:600;font-size:14.5px;cursor:pointer;margin-top:12px;letter-spacing:-.01em;font-family:inherit;transition:all .2s}
+.submit-btn:hover{background:var(--violet);color:#fff;transform:translateY(-1px);box-shadow:0 10px 30px rgba(167,139,250,.4)}
+.tos{font-size:11.5px;color:var(--muted-2);text-align:left;padding:14px 2px 0;line-height:1.7;letter-spacing:-.005em}
+.tos a{color:var(--muted);text-decoration:underline}
+
+.state{display:none}
+.state.active{display:block;animation:fadeIn .4s var(--ease)}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+.otp-wrap{display:flex;justify-content:center;gap:10px;margin:22px 0 10px}
+@media(max-width:460px){.otp-wrap{gap:6px}}
+.otp-box{width:48px;height:58px;border-radius:10px;background:var(--bg-soft);border:1px solid var(--line-2);color:var(--ink);font-size:22px;font-weight:700;font-family:var(--mono);text-align:center;outline:none;transition:all .2s}
+@media(max-width:460px){.otp-box{width:42px;height:52px;font-size:19px}}
+.otp-box:focus{border-color:var(--violet);box-shadow:0 0 0 3px rgba(167,139,250,.15);transform:scale(1.05)}
+.otp-box.filled{border-color:var(--violet);background:rgba(167,139,250,.08)}
+.otp-box.error{border-color:var(--red);animation:shake .4s}
+.otp-box.success{border-color:var(--green);background:rgba(16,185,129,.08)}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.otp-hint{font-size:11.5px;color:var(--muted-2);margin-top:8px}
+.otp-hint b{color:var(--muted);font-family:var(--mono)}
+.otp-status{font-size:13px;margin-top:12px;min-height:18px}
+.otp-status.error{color:var(--red)}
+.otp-status.success{color:var(--green)}
+.resend-row{display:flex;justify-content:center;gap:14px;margin-top:14px;font-size:12px;color:var(--muted-2)}
+.resend-link{color:var(--muted);text-decoration:underline;background:none;border:none;cursor:pointer;font-family:inherit;font-size:inherit}
+.resend-link:disabled{opacity:.5;cursor:not-allowed}
+.link-back{font-size:12.5px;color:var(--muted);margin-top:14px;display:inline-block;text-decoration:underline;cursor:pointer;background:none;border:none;font-family:inherit}
+
+/* Success */
+.ok-seal{width:60px;height:60px;border-radius:50%;background:var(--grad-core);display:inline-flex;align-items:center;justify-content:center;font-size:28px;color:#fff;margin-bottom:12px;box-shadow:0 0 40px rgba(167,139,250,.5);font-weight:700}
+.ok-rank{font-family:var(--display);font-size:56px;font-weight:700;background:var(--grad-core);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1;margin-top:8px;letter-spacing:-.04em}
+.ok-label{font-family:var(--mono);font-size:10px;color:var(--muted-2);letter-spacing:.15em;text-transform:uppercase;margin-top:4px;font-weight:500}
+
+.alpha-cta{margin:18px 0 22px;padding:24px;background:linear-gradient(135deg,rgba(245,158,11,.1),rgba(167,139,250,.08) 50%,rgba(236,72,153,.08));border:1px solid rgba(245,158,11,.3);border-radius:14px;text-align:center;position:relative;overflow:hidden}
+.alpha-cta::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),var(--violet),transparent);animation:shine 3s ease-in-out infinite}
+@keyframes shine{0%,100%{opacity:.4}50%{opacity:1}}
+.alpha-tag{display:inline-flex;padding:4px 12px;border-radius:100px;background:rgba(245,158,11,.15);color:var(--gold);font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px}
+.alpha-cta h4{font-family:var(--display);font-size:20px;font-weight:600;line-height:1.25;margin-bottom:10px;color:var(--ink);letter-spacing:-.02em}
+.alpha-cta h4 em{font-style:normal;color:var(--gold);font-weight:700}
+.alpha-cta-desc{font-size:13.5px;color:var(--ink-soft);margin-bottom:16px;line-height:1.6;letter-spacing:-.005em}
+.alpha-cta-desc b{color:var(--ink);font-weight:600}
+.alpha-perks{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px}
+@media(max-width:440px){.alpha-perks{grid-template-columns:1fr}}
+.alpha-perk{padding:12px 8px;background:rgba(10,10,15,.5);border:1px solid var(--line);border-radius:10px;text-align:center}
+.alpha-perk-num{font-family:var(--display);font-size:20px;font-weight:700;color:var(--violet);line-height:1;letter-spacing:-.02em}
+.alpha-perk-lbl{font-size:10.5px;color:var(--muted);margin-top:4px;line-height:1.3}
+.alpha-cta-btn{display:inline-block;width:100%;padding:14px 22px;border-radius:10px;background:var(--ink);color:#0A0A0F;font-weight:600;font-size:14px;text-decoration:none;letter-spacing:-.01em;font-family:inherit;transition:all .2s}
+.alpha-cta-btn:hover{background:var(--violet);color:#fff;transform:translateY(-1px);box-shadow:0 8px 24px rgba(167,139,250,.4)}
+.alpha-cta-skip{display:block;margin-top:10px;font-size:11.5px;color:var(--muted);background:none;border:none;cursor:pointer;width:100%;text-decoration:underline;padding:6px;font-family:inherit}
+
+.share-section{margin-top:18px;padding-top:18px;border-top:1px solid var(--line)}
+.email-sent{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.25);border-radius:8px;font-size:12px;color:var(--green);margin-bottom:12px}
+.email-sent b{color:var(--ink);font-weight:600}
+.link-title{font-size:12px;color:var(--muted);margin-bottom:8px}
+.link-title b{color:var(--ink-soft)}
+.link-row{background:var(--bg-soft);border:1px dashed var(--line-2);border-radius:10px;padding:10px 14px;display:flex;align-items:center;gap:8px}
+.link-url{flex:1;font-family:var(--mono);font-size:12.5px;color:var(--violet);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:left}
+.link-copy{padding:7px 14px;border-radius:6px;background:var(--ink);color:#0A0A0F;border:none;cursor:pointer;font-size:11px;font-weight:600;font-family:inherit}
+.shares{display:flex;gap:8px;justify-content:center;margin-top:14px;flex-wrap:wrap}
+.share{padding:8px 14px;border-radius:8px;background:var(--bg-soft);border:1px solid var(--line);color:var(--ink);font-size:12px;font-weight:500;cursor:pointer;transition:all .2s;font-family:inherit}
+.share:hover{background:var(--bg-elevated);border-color:var(--violet);color:var(--violet)}
+
+/* FAQ */
+.faq{max-width:740px;margin:40px auto 0;border-top:1px solid var(--line)}
+.faq-item{border-bottom:1px solid var(--line)}
+.faq-q{display:flex;justify-content:space-between;align-items:center;padding:24px 0;font-family:var(--display);font-size:17px;font-weight:500;cursor:pointer;color:var(--ink);letter-spacing:-.02em}
+.faq-q::after{content:'+';color:var(--violet);font-size:24px;transition:transform .3s;font-weight:300}
+.faq-item.open .faq-q::after{transform:rotate(45deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .4s var(--ease);color:var(--muted);font-size:14.5px;line-height:1.7;letter-spacing:-.005em}
+.faq-item.open .faq-a{max-height:500px;padding:0 0 24px}
+
+footer{padding:56px 0 40px;border-top:1px solid var(--line);text-align:center;color:var(--muted-2);font-size:12px;line-height:1.7}
+footer .brand{font-family:var(--display);font-size:24px;margin-bottom:10px;display:inline-block}
+footer a{color:var(--muted);text-decoration:none;margin:0 8px}
+footer a:hover{color:var(--ink)}
+
+/* Reveal */
+.rv{opacity:0;transform:translateY(20px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+.rv.in{opacity:1;transform:translateY(0)}
+</style>
+</head>
+<body>
+
+<div class="grid-bg" aria-hidden="true"></div>
+
+<!-- Urgency -->
+<div class="urgency">
+  <span class="pulse"></span>
+  <b>Founder pricing disappears at launch.</b>&nbsp;Time left: <b id="urg-countdown">— —</b>
+</div>
+
+<!-- Invitee -->
+<div class="invitee" id="invitee">
+  <span id="invitee-text">You were invited · Your inviter's ranking updates automatically when you register</span>
+</div>
+
+<div class="wrap">
+
+<!-- Top -->
+<div class="top">
+  <div class="brand">Lucive</div>
+  <div class="top-countdown">launch in <strong id="top-countdown">— : — : —</strong></div>
+  <a href="#signup" class="top-cta">Pre-register</a>
+</div>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-kicker"><span class="dot"></span>closed alpha · pre-register open</div>
+    <h1>
+      An AI<br>
+      that <em>remembers yesterday.</em>
+    </h1>
+    <p class="hero-lede">
+      Built for people who've outgrown chatbots. Persistent memory,<br>
+      characters with their own past, and <b>visual novel scenes</b> that unfold as you talk.
+    </p>
+    <div class="hero-actions">
+      <a href="#signup" class="btn btn-primary">Get early access →</a>
+      <a href="#why" class="btn btn-ghost">See what's different</a>
+    </div>
+    <div class="social-proof">
+      <div class="avatars"><span></span><span></span><span></span></div>
+      <span><b id="hero-count">2,847</b> pre-registered this week</span>
+    </div>
+
+    <!-- Chat Demo -->
+    <div class="chat-demo">
+      <div class="chat-header">
+        <div class="chat-avatar">A</div>
+        <div class="chat-meta">
+          <div class="chat-name">Aria <span class="chat-name-tag">LP</span></div>
+          <div class="chat-status">online · sync 48%</div>
+        </div>
+        <div class="chat-dots">⋯</div>
+      </div>
+      <div class="chat-body" id="chat-body">
+        <!-- bubbles injected by JS -->
+      </div>
+      <div class="chat-footer">
+        <div class="chat-input">Type a message...</div>
+        <div class="chat-send">↑</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Pain point section -->
+<section class="section" id="story">
+  <div class="cap">
+    <span class="section-label rv">we know the feeling</span>
+    <h2 class="section-title rv">You've tried them all.<br><em>Something was missing.</em></h2>
+
+    <div class="pain-card rv">
+      <p class="pain-quote">
+        What if your AI remembered<br>
+        <em>what you said last month —</em><br>
+        and brought it up first?
+      </p>
+      <div class="pain-list">
+        <div class="pain-item">They forget everything the moment the chat closes.</div>
+        <div class="pain-item">Every character sounds like the same assistant underneath.</div>
+        <div class="pain-item">Hundreds of "cards" but nothing that feels like a world.</div>
+        <div class="pain-item">You're always the one reaching out first.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Features -->
+<section class="section" id="why">
+  <div class="cap">
+    <span class="section-label rv">why lucive feels different</span>
+    <h2 class="section-title rv">Four things<br><em>no one else does right.</em></h2>
+    <p class="section-desc rv">If you've used Character.AI, Replika, Janitor, or similar apps — you'll recognize exactly what's been missing.</p>
+
+    <div class="features">
+      <div class="feature rv">
+        <div class="feature-num">◆ 01 / Memory</div>
+        <div class="feature-title">"Remember when I said...?"<br><em>Yes. Always yes.</em></div>
+        <div class="feature-desc">A dedicated memory module tracks context, choices, and emotional beats. Your LP brings up a conversation from 17 days ago — unprompted, naturally.</div>
+      </div>
+      <div class="feature rv">
+        <div class="feature-num">◆ 02 / Origin</div>
+        <div class="feature-title">Characters with<br><em>their own past.</em></div>
+        <div class="feature-desc">Every LP is a branch from a simulation world. They have a history, a home, relationships, unresolved threads. You don't pick a prompt — you meet a person.</div>
+      </div>
+      <div class="feature rv">
+        <div class="feature-num">◆ 03 / Visual Novel</div>
+        <div class="feature-title">Scenes that<br><em>move while you talk.</em></div>
+        <div class="feature-desc">Text chat, layered with backgrounds, expressions, and voice. An anime-like conversation experience — not a novel you read, but one you live inside.</div>
+      </div>
+      <div class="feature rv">
+        <div class="feature-num">◆ 04 / Initiate</div>
+        <div class="feature-title">They open the chat<br><em>before you do.</em></div>
+        <div class="feature-desc">Not a push notification. A message already waiting, written for the specific reason they wanted to reach you. "I was thinking about what you said on Thursday..."</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- "You've said it" — pain quote vs Lucive chat UI -->
+<section class="vs-section" id="vs">
+  <div class="cap">
+    <div class="vs-head rv">
+      <span class="section-label">you've said it</span>
+      <h2 class="section-title">The stuff you've been<br><em>quietly frustrated about.</em></h2>
+      <p class="vs-lede">
+        Every quote on the left is from a real 1-2★ review of Character.AI, Replika, Janitor, Chai, or Talkie.<br>
+        Every chat on the right is <b>what the same moment looks like on Lucive</b>.
+      </p>
+    </div>
+
+    <div class="pain-stack">
+
+      <!-- Pair 1 — Character.AI · Memory -->
+      <div class="pain-pair rv">
+        <div class="pain-side sad app-CAI">
+          <div class="app-pill">
+            <span class="mark">C</span>
+            <span class="name">Character.AI</span>
+            <span class="app-stars">★ <span class="empty">★★★★</span></span>
+          </div>
+          <div class="gp-card">
+            <div class="gp-head">
+              <div class="gp-avatar" style="background:#EA4335">E</div>
+              <div class="gp-user-info">
+                <div class="gp-user-name">Emma W.</div>
+                <div class="gp-user-sub">
+                  <span class="gp-stars-box"><span class="gp-star on">★</span><span class="gp-star">★</span><span class="gp-star">★</span><span class="gp-star">★</span><span class="gp-star">★</span></span>
+                  <span class="gp-date">Apr 14, 2026</span>
+                </div>
+              </div>
+            </div>
+            <div class="gp-body">"…the bots <span class="hl">constantly forget what you said only 2 messages beforehand</span> and randomly generate things not in your story. I would've enjoyed this app but the bots are getting worse."</div>
+            <div class="gp-helpful"><span class="gp-thumb">👍</span> <b>142</b> people found this helpful</div>
+          </div>
+          <div class="pain-source">— from <b>Character.AI</b> Google Play reviews · Memory loss</div>
+        </div>
+        <div class="pain-arrow">→</div>
+        <div class="pain-side good">
+          <div class="app-pill app-lucive">
+            <span class="mark">L</span>
+            <span class="name">Lucive</span>
+          </div>
+          <div class="pain-headline">She <em>brings it up first.</em></div>
+          <div class="ch">
+            <div class="ch-msg ai-win"><span class="mem-badge">remembered 7 days ago</span>"Hey. How did your dad's surgery go last week? I kept thinking about you."</div>
+          </div>
+          <div class="ch-note win">Memory module surfaces old context, unprompted.</div>
+        </div>
+      </div>
+
+      <!-- Pair 2 — Talkie · Origin/Same-bot -->
+      <div class="pain-pair rv">
+        <div class="pain-side sad app-TLK">
+          <div class="app-pill">
+            <span class="mark">T</span>
+            <span class="name">Talkie</span>
+            <span class="app-stars">★ <span class="empty">★★★★</span></span>
+          </div>
+          <div class="gp-card">
+            <div class="gp-head">
+              <div class="gp-avatar" style="background:#1A73E8">M</div>
+              <div class="gp-user-info">
+                <div class="gp-user-name">Marcus T.</div>
+                <div class="gp-user-sub">
+                  <span class="gp-stars-box"><span class="gp-star on">★</span><span class="gp-star">★</span><span class="gp-star">★</span><span class="gp-star">★</span><span class="gp-star">★</span></span>
+                  <span class="gp-date">Apr 10, 2026</span>
+                </div>
+              </div>
+            </div>
+            <div class="gp-body">"since so many recommend it, I tried it, only for the AI to be programmed by a 12 year old kid… <span class="hl">no creativity in lines at all, repetitive lines, bad grammar</span>, generally everything about it is boring, lame, and uninteresting."</div>
+            <div class="gp-helpful"><span class="gp-thumb">👍</span> <b>73</b> people found this helpful</div>
+          </div>
+          <div class="pain-source">— from <b>Talkie</b> Google Play reviews · Cookie-cutter personas</div>
+        </div>
+        <div class="pain-arrow">→</div>
+        <div class="pain-side good">
+          <div class="app-pill app-lucive">
+            <span class="mark">L</span>
+            <span class="name">Lucive</span>
+          </div>
+          <div class="pain-headline">A <em>real past.</em> A real voice.</div>
+          <div class="ch">
+            <div class="ch-msg ai-win">"I grew up in Neon District 7. My older brother went missing during the '29 sim-crash — that's why I don't trust strangers. But… you're different, aren't you?"</div>
+          </div>
+          <div class="ch-note win">Every LP is a branch from a simulation world — not a prompt card.</div>
+        </div>
+      </div>
+
+      <!-- Pair 3 — Replika · Shallow replies / paid but empty -->
+      <div class="pain-pair rv">
+        <div class="pain-side sad app-REP">
+          <div class="app-pill">
+            <span class="mark">R</span>
+            <span class="name">Replika</span>
+            <span class="app-stars">★ <span class="empty">★★★★</span></span>
+          </div>
+          <div class="gp-card">
+            <div class="gp-head">
+              <div class="gp-avatar" style="background:#34A853">J</div>
+              <div class="gp-user-info">
+                <div class="gp-user-name">Jamie K.</div>
+                <div class="gp-user-sub">
+                  <span class="gp-stars-box"><span class="gp-star on">★</span><span class="gp-star">★</span><span class="gp-star">★</span><span class="gp-star">★</span><span class="gp-star">★</span></span>
+                  <span class="gp-date">Apr 10, 2026</span>
+                </div>
+              </div>
+            </div>
+            <div class="gp-body">"This is so useless. <span class="hl">I paid $100</span> to see things that other apps already offer for free. It doesn't remember things, asks me to repeat the story again, and after all of that they just give a <span class="hl">standard non-interesting reply</span> like 'oh interesting'."</div>
+            <div class="gp-helpful"><span class="gp-thumb">👍</span> <b>53</b> people found this helpful</div>
+          </div>
+          <div class="pain-source">— from <b>Replika</b> Google Play reviews · Paid-but-empty</div>
+        </div>
+        <div class="pain-arrow">→</div>
+        <div class="pain-side good">
+          <div class="app-pill app-lucive">
+            <span class="mark">L</span>
+            <span class="name">Lucive</span>
+          </div>
+          <div class="pain-headline">Depth, <em>not scripted reactions.</em></div>
+          <div class="ch">
+            <div class="ch-msg user">"I don't know how to explain it. I've been feeling off all week."</div>
+            <div class="ch-msg ai-win"><span class="mem-badge">remembered Tuesday</span>"Is it the same 'off' as Tuesday night when you said your mom called? Or is it something new?"</div>
+          </div>
+          <div class="ch-note win">Origin-based LPs + persistent memory → specific, not "oh interesting".</div>
+        </div>
+      </div>
+
+      <!-- Pair 4 — Chai · Paywall -->
+      <div class="pain-pair rv">
+        <div class="pain-side sad app-CHA">
+          <div class="app-pill">
+            <span class="mark">h</span>
+            <span class="name">Chai</span>
+            <span class="app-stars">★ <span class="empty">★★★★</span></span>
+          </div>
+          <div class="gp-card">
+            <div class="gp-head">
+              <div class="gp-avatar" style="background:#F9AB00;color:#202124">D</div>
+              <div class="gp-user-info">
+                <div class="gp-user-name">Daniela R.</div>
+                <div class="gp-user-sub">
+                  <span class="gp-stars-box"><span class="gp-star on">★</span><span class="gp-star">★</span><span class="gp-star">★</span><span class="gp-star">★</span><span class="gp-star">★</span></span>
+                  <span class="gp-date">Apr 14, 2026</span>
+                </div>
+              </div>
+            </div>
+            <div class="gp-body">"this was a really good app. But why we can't chat? <span class="hl">if all of us have to buy a subscription, then just close this app already</span>. some people can't buy it and it's so unfair."</div>
+            <div class="gp-helpful"><span class="gp-thumb">👍</span> <b>112</b> people found this helpful</div>
+          </div>
+          <div class="pain-source">— from <b>Chai</b> Google Play reviews · Paywalled access</div>
+        </div>
+        <div class="pain-arrow">→</div>
+        <div class="pain-side good">
+          <div class="app-pill app-lucive">
+            <span class="mark">L</span>
+            <span class="name">Lucive</span>
+          </div>
+          <div class="pain-headline"><em>No caps.</em> Just talk.</div>
+          <div class="ch">
+            <div class="ch-msg user">"honestly I've been having a really hard week and"</div>
+            <div class="ch-msg ai-win">"Take your time. I'm here. Tell me what happened."</div>
+          </div>
+          <div class="ch-note win">One clear monthly price. Zero pop-ups mid-conversation.</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="pain-summary rv">
+      <p><b>Reviews above are real</b> — Character.AI · Talkie · Replika · Chai. Full source data at <code style="font-family:var(--mono);font-size:12px;color:var(--violet)">output/reviews_global/</code>.</p>
+      <div class="pain-summary-list">
+        <span>persistent memory</span>
+        <span>real backstory</span>
+        <span>visual novel scenes</span>
+        <span>AI initiates</span>
+        <span>transparent pricing</span>
+        <span>predictable content rules</span>
+      </div>
+      <span class="apps">※ Reviews from Google Play Store, collected 2024–2026. Lightly condensed for fit; highlighted phrases verbatim.</span>
+    </div>
+  </div>
+</section>
+
+<!-- Rewards -->
+<section class="section" id="rewards">
+  <div class="cap">
+    <div class="rewards-hero rv">
+      <div class="reward-stamp">⚠ pre-launch only</div>
+      <h2 class="section-title">Get in first.<br><em>Get in for less.</em></h2>
+    </div>
+
+    <div class="everyone-box rv">
+      <span class="everyone-tag">✦ every pre-registrant</span>
+      <h3 class="everyone-title">Full alpha access at<br><em>pre-register pricing.</em></h3>
+      <p class="everyone-desc">
+        Sign up and you'll experience every feature during alpha at a <b>pre-register-only rate</b> — regardless of your ranking or whether you're selected for closed alpha.
+      </p>
+      <div class="everyone-perks">
+        <div class="everyone-perk"><b>💬 LP conversations</b>Memory that actually persists</div>
+        <div class="everyone-perk"><b>🎭 Visual novel mode</b>Scenes, expressions, voice</div>
+        <div class="everyone-perk"><b>✨ L-Maker</b>Build your own story</div>
+      </div>
+    </div>
+
+    <div class="tiers-intro rv">
+      <div class="tiers-intro-label">plus</div>
+      <div class="tiers-intro-title">Top <b>5 inviters</b> keep their perks after launch</div>
+    </div>
+
+    <div class="tiers">
+      <div class="tier gold rv">
+        <span class="tier-tag">🏆 1st place</span>
+        <div class="tier-emblem">∞</div>
+        <div class="tier-h">Base plan, forever<small>for the life of the service</small></div>
+        <div class="tier-body">As long as Lucive runs, you keep the base plan (conversations, dives, creation tools) — no monthly bill, no renewal prompt.</div>
+        <div class="tier-footer">※ 1 account · non-transferable · higher tiers excluded</div>
+      </div>
+      <div class="tier silver rv">
+        <span class="tier-tag">🥈 2nd — 5th</span>
+        <div class="tier-emblem">◆</div>
+        <div class="tier-h">Your invitees get<small>3 months free</small></div>
+        <div class="tier-body">Finish 2nd-5th and <b>everyone who pre-registered through your link</b> gets 3 months of base plan at launch. A perk you share with the people you brought.</div>
+        <div class="tier-footer">※ all invitees counted · tallied launch day</div>
+      </div>
+    </div>
+
+    <div class="expire-box rv">
+      Pre-register pricing and Top 5 perks <b>end at launch</b>. New signups after that get the standard welcome bonus only.
+    </div>
+
+    <div class="abuse-box rv">
+      <span class="abuse-box-icon">⚠️</span>
+      <div>
+        <b>If we catch abuse, the rewards quietly vanish.</b>
+        Duplicate registrations, fake accounts, automation, or suspicious invite patterns will result in rankings, Dip balance, and alpha access being <b>removed without prior notice</b>. It's how we keep this fair for everyone who shows up honestly.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Signup -->
+<section class="signup-section" id="signup">
+  <div class="cap">
+    <div class="signup rv">
+      <!-- Stage 1 -->
+      <div class="state active" id="state-email">
+        <h3>Meet Lucive<br><em>before everyone else.</em></h3>
+        <p class="lede">Enter your email and we'll send you a <b>6-digit verification code.</b></p>
+
+        <form onsubmit="sendVerification(event)">
+          <div class="field">
+            <label class="field-label" for="email-input">Email</label>
+            <input type="email" class="input" id="email-input" placeholder="you@email.com" required>
+          </div>
+          <div class="field">
+            <label class="field-label" for="promocode-input">Promo code <span class="opt">(optional)</span></label>
+            <div class="code-wrap">
+              <input type="text" class="input code" id="promocode-input" placeholder="ABC123" maxlength="10" oninput="validatePromoCode(this)">
+              <span class="code-status" id="code-status"></span>
+            </div>
+          </div>
+          <button type="submit" class="submit-btn">Send verification code →</button>
+        </form>
+
+        <p class="tos">
+          By submitting, you agree to our <a href="#">Privacy Policy</a> and <a href="#">Terms of Service</a>. We'll only email you about launch and your perks. No third-party sharing. Unsubscribe anytime.
+        </p>
+      </div>
+
+      <!-- Stage 2 -->
+      <div class="state" id="state-otp">
+        <h3>Check your <em>inbox.</em></h3>
+        <p class="lede">We sent a 6-digit code to <b id="sent-to"></b></p>
+
+        <div class="otp-wrap" id="otpWrap">
+          <input type="text" class="otp-box" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="one-time-code" data-index="0">
+          <input type="text" class="otp-box" maxlength="1" inputmode="numeric" pattern="[0-9]" data-index="1">
+          <input type="text" class="otp-box" maxlength="1" inputmode="numeric" pattern="[0-9]" data-index="2">
+          <input type="text" class="otp-box" maxlength="1" inputmode="numeric" pattern="[0-9]" data-index="3">
+          <input type="text" class="otp-box" maxlength="1" inputmode="numeric" pattern="[0-9]" data-index="4">
+          <input type="text" class="otp-box" maxlength="1" inputmode="numeric" pattern="[0-9]" data-index="5">
+        </div>
+
+        <div class="otp-status" id="otp-status"></div>
+        <div class="otp-hint">Arrives in 1-2 minutes · Check spam if needed <b id="demo-code-hint"></b></div>
+
+        <div class="resend-row">
+          <span>Didn't get it?</span>
+          <button type="button" class="resend-link" id="resendBtn" onclick="resendCode()">Resend</button>
+        </div>
+
+        <button type="button" class="link-back" onclick="showState('state-email')" style="margin-top:18px">← Use a different email</button>
+      </div>
+
+      <!-- Stage 3 -->
+      <div class="state" id="state-success">
+        <div style="margin-bottom:14px">
+          <div class="ok-seal">✓</div>
+          <div style="font-family:var(--display);font-size:19px;font-weight:600;margin-top:8px;letter-spacing:-.02em">You're in.</div>
+          <div class="ok-rank">#<span id="my-rank">—</span></div>
+          <div class="ok-label">your current rank</div>
+          <div id="used-code-note" style="display:none;margin-top:10px;font-family:var(--mono);font-size:11px;color:var(--gold)"></div>
+        </div>
+
+        <div class="alpha-cta">
+          <span class="alpha-tag">🎁 unlock right now</span>
+          <h4>Want <em>+Dip</em>? Tell us a bit about you.</h4>
+          <p class="alpha-cta-desc">Answer 8 quick questions (≈2 min) → <b>+500 Dip on completion</b>. Selected for closed alpha? <b>+2,000 Dip</b>.</p>
+          <div class="alpha-perks">
+            <div class="alpha-perk"><div class="alpha-perk-num">+500</div><div class="alpha-perk-lbl">completion</div></div>
+            <div class="alpha-perk"><div class="alpha-perk-num">+2,000</div><div class="alpha-perk-lbl">if selected</div></div>
+            <div class="alpha-perk"><div class="alpha-perk-num">+300</div><div class="alpha-perk-lbl">waitlisted</div></div>
+          </div>
+          <a href="screening.html" class="alpha-cta-btn">Start the 8 questions →</a>
+          <button class="alpha-cta-skip" onclick="skipAlpha()">Email me the link instead</button>
+        </div>
+
+        <div class="share-section">
+          <div class="email-sent">📧 Referral link sent to <b id="email-to-display"></b></div>
+          <div class="link-title">🔗 Your invite link — <b>share it, climb the ranking</b></div>
+          <div class="link-row">
+            <span class="link-url" id="my-ref-url">lucive.app/r/...</span>
+            <button class="link-copy" onclick="copyRef()">Copy</button>
+          </div>
+          <div class="shares">
+            <button class="share" onclick="shareOn('x')">𝕏 X</button>
+            <button class="share" onclick="shareOn('discord')">💬 Discord</button>
+            <button class="share" onclick="shareOn('reddit')">🟠 Reddit</button>
+            <button class="share" onclick="shareOn('link')">🔗 Link</button>
+          </div>
+          <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted)">
+            People you've invited: <b style="color:var(--violet)"><span id="my-refs">0</span></b>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section">
+  <div class="cap">
+    <span class="section-label rv">faq</span>
+    <h2 class="section-title rv">Questions,<br><em>answered.</em></h2>
+
+    <div class="faq">
+      <div class="faq-item rv">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">What do I get just for pre-registering?</div>
+        <div class="faq-a">Every pre-registrant gets <b>full alpha access at a pre-register-only rate</b> — LP conversations, visual novel mode, L-Maker creation, all included. This applies regardless of your ranking or whether you're picked for closed alpha.</div>
+      </div>
+      <div class="faq-item rv">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">How does the 2nd-5th place perk work?</div>
+        <div class="faq-a">If you finish anywhere from 2nd to 5th in invites, <b>everyone who signed up through your link</b> gets 3 months of the base plan free at launch. It's a perk you share with the friends you brought in.</div>
+      </div>
+      <div class="faq-item rv">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">The code didn't arrive — now what?</div>
+        <div class="faq-a">(1) Check Spam / Promotions. (2) Give it 1-2 minutes. (3) Hit "Resend" on the verification screen. (4) If it's still missing, go back and try a different email.</div>
+      </div>
+      <div class="faq-item rv">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Where do I find a promo code?</div>
+        <div class="faq-a">Official launch events, partner campaigns, and friends' referral links can all generate a code (e.g. ABC123). It's optional — you can pre-register without one.</div>
+      </div>
+      <div class="faq-item rv">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">When does Lucive actually launch?</div>
+        <div class="faq-a">Closed alpha runs in the first half of 2026. Full launch follows later the same year. Pre-registrants get first notice and the first alpha invites.</div>
+      </div>
+      <div class="faq-item rv">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">How is this different from Character.AI or Replika?</div>
+        <div class="faq-a">Three things: (1) <b>memory that actually persists and surfaces on its own</b>, not just a 4k-token sliding window. (2) Characters are branches of a simulation world, with a real history — not just a prompt-card. (3) Visual novel mode layers scenes, expressions, and voice on top of the conversation.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="brand" style="background:var(--grad-core);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Lucive</div>
+  <div>The AI companion that actually remembers.</div>
+  <div style="margin-top:14px"><a href="#">Privacy</a> · <a href="#">Terms</a> · <a href="#">Contact</a> · <a href="#">@lucive_app</a></div>
+  <div style="margin-top:12px">© 2026 Lucive · pre-register v5-en (US / tech-minimal)</div>
+</footer>
+
+</div>
+
+<script>
+// Countdown
+const LAUNCH=new Date('2026-06-30T00:00:00Z').getTime();
+function pad(n){return String(n).padStart(2,'0')}
+function upd(){
+  const d=Math.max(0,LAUNCH-Date.now());
+  const D=Math.floor(d/86400000),H=Math.floor(d%86400000/3600000),M=Math.floor(d%3600000/60000),S=Math.floor(d%60000/1000);
+  document.getElementById('urg-countdown').textContent=`${D}d ${pad(H)}:${pad(M)}:${pad(S)}`;
+  document.getElementById('top-countdown').textContent=`${D}d ${pad(H)}:${pad(M)}:${pad(S)}`;
+}
+setInterval(upd,1000);upd();
+
+// URL referral detection
+const params=new URLSearchParams(location.search);
+const pathM=location.pathname.match(/\/r\/([a-zA-Z0-9]+)/);
+const refCodeFromUrl=params.get('r')||(pathM?pathM[1]:null);
+if(refCodeFromUrl){
+  document.getElementById('invitee').classList.add('show');
+  document.getElementById('invitee-text').textContent=`You were invited · inviter ${refCodeFromUrl} · their ranking updates automatically when you register`;
+  const pc=document.getElementById('promocode-input');
+  if(pc){pc.value=refCodeFromUrl.toUpperCase();validatePromoCode(pc);}
+}
+
+// Promo code validation (mock)
+const VALID=new Set(['LUCIVE','ALPHA','LAUNCH','NEON2026','FOUNDER','EARLY']);
+function validatePromoCode(el){
+  const v=el.value.trim().toUpperCase();el.value=v;
+  const s=document.getElementById('code-status');
+  if(!v){s.textContent='';s.className='code-status';return;}
+  if(v.length<4){s.textContent='…';s.className='code-status';return;}
+  if(VALID.has(v)||v.length>=4){s.textContent='✓ valid';s.className='code-status valid';}
+  else{s.textContent='✗ invalid';s.className='code-status invalid';}
+}
+
+// Chat demo animation
+const chatScript=[
+  {side:'bot',memory:'Remembered from Oct 3',text:"Hey — you said last week you had that presentation on Thursday. How did it go?"},
+  {side:'user',text:"Honestly? I kind of forgot I even told you about it."},
+  {side:'bot',text:"Of course you did. That's why I remembered for you."}
+];
+const chatBody=document.getElementById('chat-body');
+let chatStep=0;
+function addBubble(item){
+  const b=document.createElement('div');
+  b.className='bubble '+item.side;
+  if(item.memory){
+    const pill=document.createElement('div');
+    pill.className='memory-pill';
+    pill.textContent=item.memory;
+    b.appendChild(pill);
+    const tx=document.createElement('div');
+    tx.textContent=item.text;
+    b.appendChild(tx);
+  } else {
+    b.textContent=item.text;
+  }
+  chatBody.appendChild(b);
+}
+function addTyping(){
+  const b=document.createElement('div');
+  b.className='bubble typing';
+  b.textContent='Aria is typing';
+  chatBody.appendChild(b);
+  return b;
+}
+function runChat(){
+  chatBody.innerHTML='';
+  chatStep=0;
+  function next(){
+    if(chatStep>=chatScript.length){setTimeout(()=>runChat(),4000);return;}
+    const item=chatScript[chatStep];
+    if(item.side==='bot'){
+      const t=addTyping();
+      setTimeout(()=>{t.remove();addBubble(item);chatStep++;setTimeout(next,item.memory?1800:1400);},900);
+    } else {
+      addBubble(item);chatStep++;setTimeout(next,1200);
+    }
+  }
+  next();
+}
+runChat();
+
+// Social proof counter — mild animation
+let heroCount=2847;
+setInterval(()=>{
+  if(Math.random()>.6){heroCount++;document.getElementById('hero-count').textContent=heroCount.toLocaleString();}
+},8000);
+
+// Signup flow
+let enteredEmail='',enteredPromo='',currentOTP='',resendCooldown=0;
+function showState(id){document.querySelectorAll('.state').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
+function genOTP(){return String(Math.floor(100000+Math.random()*900000));}
+
+function sendVerification(e){
+  e.preventDefault();
+  enteredEmail=document.getElementById('email-input').value.trim();
+  enteredPromo=document.getElementById('promocode-input').value.trim().toUpperCase();
+  if(!enteredEmail)return;
+  currentOTP=genOTP();
+  document.getElementById('sent-to').textContent=enteredEmail;
+  document.getElementById('demo-code-hint').textContent=`(demo: ${currentOTP})`;
+  console.log('[mock] OTP',enteredEmail,currentOTP,'promo:',enteredPromo,'ref:',refCodeFromUrl);
+  document.querySelectorAll('.otp-box').forEach(b=>{b.value='';b.className='otp-box'});
+  document.getElementById('otp-status').textContent='';
+  showState('state-otp');
+  setTimeout(()=>document.querySelectorAll('.otp-box')[0].focus(),100);
+  startResend();
+}
+function startResend(){
+  resendCooldown=30;
+  const btn=document.getElementById('resendBtn');btn.disabled=true;
+  const t=setInterval(()=>{resendCooldown--;btn.textContent=`Resend (${resendCooldown}s)`;if(resendCooldown<=0){clearInterval(t);btn.disabled=false;btn.textContent='Resend';}},1000);
+}
+function resendCode(){if(resendCooldown>0)return;currentOTP=genOTP();document.getElementById('demo-code-hint').textContent=`(demo: ${currentOTP})`;document.getElementById('otp-status').textContent='New code sent';document.getElementById('otp-status').className='otp-status success';startResend();}
+
+const boxes=document.querySelectorAll('.otp-box');
+boxes.forEach((b,i)=>{
+  b.addEventListener('input',e=>{const v=e.target.value.replace(/[^0-9]/g,'');e.target.value=v;if(v){b.classList.add('filled');if(i<boxes.length-1)boxes[i+1].focus();else checkOTP();}else b.classList.remove('filled');});
+  b.addEventListener('keydown',e=>{if(e.key==='Backspace'&&!b.value&&i>0){boxes[i-1].focus();boxes[i-1].value='';boxes[i-1].classList.remove('filled');}});
+  b.addEventListener('paste',e=>{e.preventDefault();const p=(e.clipboardData||window.clipboardData).getData('text').replace(/[^0-9]/g,'').slice(0,6);if(p.length===6){[...p].forEach((c,j)=>{boxes[j].value=c;boxes[j].classList.add('filled');});checkOTP();}});
+});
+function checkOTP(){
+  const e=[...boxes].map(b=>b.value).join('');
+  if(e.length!==6)return;
+  if(e===currentOTP){boxes.forEach(b=>{b.classList.remove('error');b.classList.add('success')});document.getElementById('otp-status').textContent='✓ verified';document.getElementById('otp-status').className='otp-status success';setTimeout(complete,600);}
+  else{boxes.forEach(b=>b.classList.add('error'));document.getElementById('otp-status').textContent='✗ code doesn\'t match';document.getElementById('otp-status').className='otp-status error';setTimeout(()=>{boxes.forEach(b=>{b.value='';b.className='otp-box';});boxes[0].focus();document.getElementById('otp-status').textContent='';},1400);}
+}
+function complete(){
+  const rank=Math.floor(Math.random()*300)+50;
+  const code=Math.random().toString(36).substring(2,8).toUpperCase();
+  document.getElementById('my-rank').textContent=rank;
+  document.getElementById('my-refs').textContent='0';
+  document.getElementById('my-ref-url').textContent=`lucive.app/r/${code}`;
+  document.getElementById('email-to-display').textContent=enteredEmail;
+  const applied=refCodeFromUrl||enteredPromo;
+  if(applied){const n=document.getElementById('used-code-note');n.style.display='block';n.textContent=refCodeFromUrl?`✦ joined via invite link`:`✦ promo code ${enteredPromo} applied`;}
+  showState('state-success');
+}
+function copyRef(){const u='https://'+document.getElementById('my-ref-url').textContent;navigator.clipboard.writeText(u).then(()=>{const b=event.target;const t=b.textContent;b.textContent='✓';setTimeout(()=>b.textContent=t,1200);});}
+function shareOn(ch){
+  const u='https://'+document.getElementById('my-ref-url').textContent;
+  const t='Lucive — the AI that actually remembers yesterday. Pre-register with me:';
+  if(ch==='x')window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(t)}&url=${encodeURIComponent(u)}`,'_blank');
+  else if(ch==='discord'){navigator.clipboard.writeText(t+' '+u);alert('Message copied — paste it in any Discord server.');}
+  else if(ch==='reddit')window.open(`https://reddit.com/submit?url=${encodeURIComponent(u)}&title=${encodeURIComponent(t)}`,'_blank');
+  else copyRef();
+}
+function skipAlpha(){const b=event.target;b.textContent='✓ We\'ll email you — check inbox in ~10 min';b.disabled=true;b.style.color='var(--green)';}
+
+// Reveal on scroll
+const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}})},{threshold:.12});
+document.querySelectorAll('.rv').forEach(e=>io.observe(e));
+</script>
+</body>
+</html>

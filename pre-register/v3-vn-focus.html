@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lucive — 사전 등록 | 비주얼 노벨로 만나는 AI 동반자</title>
+<meta name="description" content="장면이 움직이고 캐릭터가 말을 겁니다. 챗봇을 넘어선 비주얼 노벨형 AI 동반자, Lucive. 출시 후 사라지는 사전 등록 혜택을 잡으세요.">
+<meta property="og:title" content="Lucive — 비주얼 노벨로 만나는 AI 동반자">
+<meta property="og:description" content="출시 전 사전 등록 + 레퍼럴 Top 10 런칭 혜택. 출시 후엔 이 혜택이 사라집니다.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg-deep:#08090C; --bg-surface:#0F1117; --bg-card:#161822; --bg-elevated:#1C1F2E;
+  --border-subtle:rgba(255,255,255,.06); --border-medium:rgba(255,255,255,.1); --border-strong:rgba(255,255,255,.2);
+  --text-primary:#F1F3F8; --text-secondary:#8B92A8; --text-tertiary:#5A6178;
+  --lucid-cyan:#06B6D4; --lucid-blue:#2563EB; --lucid-purple:#8B5CF6;
+  --awakening-pink:#EC4899; --fragment-gold:#F59E0B; --sync-green:#10B981;
+  --alert-red:#EF4444;
+  --gradient-primary:linear-gradient(135deg,#06B6D4,#2563EB);
+  --gradient-warm:linear-gradient(135deg,#EC4899,#8B5CF6);
+  --gradient-aurora:linear-gradient(135deg,#06B6D4,#8B5CF6,#EC4899);
+  --gradient-neon:linear-gradient(135deg,#1a0f2e 0%,#4c1d95 35%,#be185d 70%,#f97316 100%);
+  --gradient-sunrise:linear-gradient(135deg,#fbbf24 0%,#f97316 50%,#dc2626 100%);
+  --serif:'Instrument Serif',Georgia,serif;
+  --sans:'Inter','Noto Sans KR',-apple-system,BlinkMacSystemFont,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+  --ease:cubic-bezier(.2,.8,.2,1);
+}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body{font-family:var(--sans);background:var(--bg-deep);color:var(--text-primary);line-height:1.55;overflow-x:hidden}
+
+/* Ambient */
+.ambient-bg{position:fixed;inset:0;z-index:0;pointer-events:none;clip-path:inset(0)}
+.orb{position:absolute;border-radius:50%;filter:blur(120px);opacity:.15;animation:orb 20s ease-in-out infinite}
+.orb.cyan{width:min(600px,80vw);height:min(600px,80vw);background:var(--lucid-cyan);top:-10vw;right:0}
+.orb.purple{width:min(500px,70vw);height:min(500px,70vw);background:var(--lucid-purple);bottom:-10vw;left:0;animation-delay:-7s}
+.orb.pink{width:min(400px,60vw);height:min(400px,60vw);background:var(--awakening-pink);top:50%;left:50%;transform:translate(-50%,-50%);opacity:.08;animation-delay:-14s}
+@keyframes orb{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(30px,-40px) scale(1.05)}66%{transform:translate(-20px,30px) scale(.95)}}
+.noise{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.03;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:256px}
+
+.wrap{position:relative;z-index:2}
+.cap{max-width:1160px;margin:0 auto;padding:0 28px}
+@media(max-width:700px){.cap{padding:0 20px}}
+
+/* Urgency banner — sticky */
+.urgency{position:sticky;top:0;z-index:60;background:linear-gradient(90deg,rgba(239,68,68,.15),rgba(236,72,153,.1) 50%,rgba(239,68,68,.15));border-bottom:1px solid rgba(239,68,68,.3);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);padding:10px 20px;text-align:center;font-size:13px;color:var(--text-primary);font-weight:500}
+.urgency b{color:var(--alert-red);font-weight:700}
+.urgency .pulse{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--alert-red);margin-right:8px;animation:pulse 1.6s ease-in-out infinite;vertical-align:middle}
+@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(239,68,68,.6)}50%{opacity:.5;box-shadow:0 0 0 8px rgba(239,68,68,0)}}
+
+/* Top bar */
+.top{display:flex;justify-content:space-between;align-items:center;padding:20px 28px;border-bottom:1px solid var(--border-subtle);position:sticky;top:37px;background:rgba(8,9,12,.8);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);z-index:55}
+.brand{font-size:22px;font-weight:800;letter-spacing:-.02em;background:var(--gradient-primary);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.top-right{display:flex;align-items:center;gap:18px}
+.top-countdown{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:12px;color:var(--text-secondary)}
+.top-countdown strong{color:var(--fragment-gold);font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:.03em}
+.top-cta{padding:10px 22px;border-radius:100px;background:var(--gradient-primary);color:#fff;font-size:13px;font-weight:600;border:none;cursor:pointer;text-decoration:none;transition:transform .2s var(--ease),box-shadow .2s}
+.top-cta:hover{transform:scale(1.04);box-shadow:0 0 30px rgba(6,182,212,.3)}
+@media(max-width:720px){.top-countdown{display:none}}
+
+/* Invitee */
+.invitee{display:none;background:linear-gradient(90deg,rgba(245,158,11,.12),rgba(236,72,153,.06));border-bottom:1px solid rgba(245,158,11,.25);padding:10px 28px;text-align:center;font-size:12px;color:var(--fragment-gold)}
+.invitee.show{display:block}
+
+/* Hero */
+.hero{padding:90px 28px 80px;position:relative}
+.hero-inner{display:grid;grid-template-columns:1fr 1.05fr;gap:56px;align-items:center;max-width:1160px;margin:0 auto}
+@media(max-width:920px){.hero-inner{grid-template-columns:1fr;gap:40px}}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:7px 16px;border-radius:100px;background:rgba(6,182,212,.1);border:1px solid rgba(6,182,212,.25);font-size:12px;font-weight:600;color:var(--lucid-cyan);margin-bottom:24px;font-family:var(--mono);letter-spacing:.04em;text-transform:uppercase}
+.hero-badge .dot{width:6px;height:6px;border-radius:50%;background:var(--lucid-cyan);animation:pulse2 2s ease-in-out infinite}
+@keyframes pulse2{0%,100%{opacity:1}50%{opacity:.3}}
+.hero h1{font-size:clamp(38px,6vw,68px);font-weight:900;line-height:1.05;letter-spacing:-.03em;margin-bottom:20px}
+.hero h1 .grad{background:var(--gradient-aurora);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero-lede{font-size:17px;color:var(--text-secondary);max-width:520px;line-height:1.7;margin-bottom:28px}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:26px}
+.btn-solid{padding:15px 30px;border-radius:100px;background:var(--gradient-primary);color:#fff;font-size:15px;font-weight:600;border:none;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:transform .2s var(--ease),box-shadow .2s}
+.btn-solid:hover{transform:translateY(-2px) scale(1.02);box-shadow:0 8px 40px rgba(6,182,212,.35)}
+.btn-ghost{padding:15px 30px;border-radius:100px;background:transparent;color:var(--text-primary);border:1px solid var(--border-medium);font-size:15px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:all .2s}
+.btn-ghost:hover{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.2);transform:translateY(-2px)}
+.hero-meta{display:flex;gap:18px;font-size:12px;color:var(--text-tertiary);font-family:var(--mono);flex-wrap:wrap}
+.hero-meta b{color:var(--sync-green);font-weight:700}
+
+/* VN Scene (Hero right) */
+.vn-frame{position:relative;border-radius:22px;overflow:hidden;aspect-ratio:9/14;max-width:360px;margin:0 auto;background:var(--bg-card);border:1px solid var(--border-medium);box-shadow:0 40px 100px -20px rgba(0,0,0,.65),0 0 80px rgba(139,92,246,.15);animation:floatFrame 6s ease-in-out infinite}
+@keyframes floatFrame{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.vn-scene{position:absolute;inset:0;background:var(--gradient-neon);overflow:hidden}
+.vn-scene::before{content:'';position:absolute;inset:-50%;background:repeating-linear-gradient(45deg,transparent 0,transparent 30px,rgba(255,255,255,.03) 30px,rgba(255,255,255,.03) 31px);animation:rainMove 20s linear infinite}
+@keyframes rainMove{0%{transform:translate(0,0)}100%{transform:translate(60px,60px)}}
+.vn-scene::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 70% 40%,rgba(236,72,153,.35),transparent 55%)}
+/* Character silhouette */
+.vn-char{position:absolute;bottom:34%;right:-8%;width:65%;height:70%;background:linear-gradient(180deg,rgba(0,0,0,.1) 0%,rgba(0,0,0,.55) 100%);clip-path:polygon(50% 0%,42% 10%,38% 25%,38% 42%,30% 50%,28% 68%,34% 100%,66% 100%,72% 68%,70% 50%,62% 42%,62% 25%,58% 10%);filter:blur(.5px);z-index:2}
+.vn-char::before{content:'';position:absolute;top:5%;left:34%;width:32%;height:18%;border-radius:50%;background:radial-gradient(circle at 40% 30%,rgba(244,114,182,.4),rgba(0,0,0,.5));box-shadow:0 0 30px rgba(236,72,153,.3)}
+.vn-char-glow{position:absolute;bottom:44%;right:8%;width:52%;height:52%;background:radial-gradient(ellipse,rgba(236,72,153,.35),transparent 65%);filter:blur(25px);z-index:1;animation:charPulse 4s ease-in-out infinite}
+@keyframes charPulse{0%,100%{opacity:.6}50%{opacity:1}}
+/* Scene label */
+.vn-label{position:absolute;top:16px;left:16px;display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:100px;background:rgba(0,0,0,.6);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);font-family:var(--mono);font-size:10px;color:#fff;letter-spacing:.08em;text-transform:uppercase;z-index:4;border:1px solid rgba(255,255,255,.12)}
+.vn-label .dot{width:6px;height:6px;border-radius:50%;background:var(--awakening-pink);animation:pulse2 2s ease-in-out infinite}
+.vn-district{position:absolute;top:44px;left:16px;color:#fff;z-index:4;font-family:var(--serif);font-size:20px;font-style:italic;text-shadow:0 2px 20px rgba(0,0,0,.8)}
+/* Dialog box */
+.vn-dialog{position:absolute;left:14px;right:14px;bottom:14px;background:rgba(15,17,23,.82);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--border-medium);border-radius:14px;padding:14px 16px;z-index:5;font-size:13px;line-height:1.55}
+.vn-speaker{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.vn-speaker-name{font-weight:700;color:var(--awakening-pink);font-size:12px;letter-spacing:.02em}
+.vn-speaker-sync{font-family:var(--mono);font-size:10px;color:var(--lucid-cyan);letter-spacing:.04em}
+.vn-text{color:var(--text-primary);min-height:44px;font-size:13px;line-height:1.6}
+.vn-text .cursor{display:inline-block;width:6px;height:12px;background:var(--text-primary);margin-left:2px;animation:blink 1s infinite;vertical-align:baseline}
+@keyframes blink{0%,50%{opacity:1}50.01%,100%{opacity:0}}
+.vn-choices{margin-top:10px;display:none;flex-direction:column;gap:5px}
+.vn-choices.show{display:flex;animation:slideUp .4s var(--ease)}
+@keyframes slideUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.vn-choice{display:flex;align-items:center;gap:8px;padding:8px 12px;background:rgba(255,255,255,.04);border:1px solid var(--border-subtle);border-radius:10px;font-size:12px;color:var(--text-primary);cursor:default}
+.vn-choice.hidden{color:var(--fragment-gold);border-color:rgba(245,158,11,.3)}
+.vn-choice .arrow{color:var(--lucid-cyan);font-size:10px}
+.vn-choice.hidden .arrow{color:var(--fragment-gold)}
+
+/* Countdown module — prominent */
+.countdown-section{padding:40px 28px;background:linear-gradient(180deg,rgba(239,68,68,.04),transparent 70%);border-top:1px solid var(--border-subtle);border-bottom:1px solid var(--border-subtle)}
+.countdown-inner{max-width:900px;margin:0 auto;text-align:center}
+.countdown-heading{font-size:13px;font-family:var(--mono);letter-spacing:.15em;text-transform:uppercase;color:var(--alert-red);margin-bottom:10px;font-weight:700}
+.countdown-title{font-size:clamp(22px,3vw,30px);font-weight:800;line-height:1.3;letter-spacing:-.02em;margin-bottom:28px}
+.countdown-title em{font-style:normal;color:var(--alert-red);font-weight:900}
+.countdown-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;max-width:640px;margin:0 auto}
+@media(max-width:520px){.countdown-grid{gap:10px}}
+.cd-unit{background:var(--bg-card);border:1px solid var(--border-medium);border-radius:14px;padding:18px 12px;position:relative;overflow:hidden}
+.cd-unit::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--alert-red),transparent);opacity:.5}
+.cd-num{font-size:clamp(30px,5vw,44px);font-weight:900;line-height:1;font-variant-numeric:tabular-nums;background:var(--gradient-aurora);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-.02em}
+.cd-label{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-tertiary);margin-top:8px;font-weight:600}
+
+/* Section */
+.section{padding:100px 0;border-top:1px solid var(--border-subtle);position:relative}
+.s-kicker{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--lucid-cyan);margin-bottom:14px;font-weight:700}
+.s-h2{font-size:clamp(30px,4.6vw,48px);font-weight:800;line-height:1.15;letter-spacing:-.02em;margin-bottom:18px}
+.s-h2 em{font-style:normal;background:var(--gradient-aurora);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.s-lede{font-size:17px;color:var(--text-secondary);max-width:620px;line-height:1.7}
+.s-head{text-align:center;margin-bottom:60px}
+.s-head .s-lede{margin:0 auto}
+
+/* VN Showcase section */
+.vn-showcase{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+@media(max-width:900px){.vn-showcase{grid-template-columns:1fr}}
+.vn-showcase-points{display:flex;flex-direction:column;gap:24px}
+.vn-point{display:flex;gap:16px;align-items:flex-start}
+.vn-point-icon{flex-shrink:0;width:42px;height:42px;border-radius:12px;background:var(--bg-card);border:1px solid var(--border-subtle);display:flex;align-items:center;justify-content:center;font-size:20px}
+.vn-point-icon.cyan{background:rgba(6,182,212,.1);border-color:rgba(6,182,212,.2)}
+.vn-point-icon.purple{background:rgba(139,92,246,.1);border-color:rgba(139,92,246,.2)}
+.vn-point-icon.pink{background:rgba(236,72,153,.1);border-color:rgba(236,72,153,.2)}
+.vn-point-icon.gold{background:rgba(245,158,11,.1);border-color:rgba(245,158,11,.2)}
+.vn-point-title{font-size:17px;font-weight:700;margin-bottom:4px}
+.vn-point-body{font-size:14px;color:var(--text-secondary);line-height:1.65}
+.vn-big-frame{position:relative}
+.vn-big-frame .vn-frame{max-width:420px;aspect-ratio:9/15}
+
+/* Competitor comparison — matrix */
+.matrix-wrap{overflow-x:auto;margin-top:28px;border-radius:18px;border:1px solid var(--border-medium);background:var(--bg-card)}
+.matrix{width:100%;border-collapse:collapse;min-width:720px}
+.matrix thead tr{background:linear-gradient(180deg,rgba(6,182,212,.06),transparent)}
+.matrix th{padding:18px 14px;text-align:center;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-secondary);font-weight:700;border-bottom:1px solid var(--border-medium)}
+.matrix th.feat{text-align:left;color:var(--text-tertiary);padding-left:22px;min-width:220px}
+.matrix th.us{color:var(--lucid-cyan);background:rgba(6,182,212,.08)}
+.matrix th.us .logo{font-weight:900;font-size:15px;letter-spacing:-.01em;background:var(--gradient-primary);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.matrix td{padding:16px 14px;text-align:center;border-bottom:1px solid var(--border-subtle);vertical-align:middle}
+.matrix td.feat{text-align:left;color:var(--text-primary);font-weight:600;font-size:14px;padding-left:22px}
+.matrix td.feat small{display:block;font-weight:400;color:var(--text-tertiary);font-size:12px;margin-top:3px}
+.matrix td.us{background:rgba(6,182,212,.04)}
+.matrix tr:hover td:not(.feat){background:rgba(255,255,255,.015)}
+.matrix tr:hover td.us{background:rgba(6,182,212,.07)}
+.matrix tr:last-child td{border-bottom:none}
+.m-check{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;font-weight:800;font-size:15px}
+.m-yes{background:linear-gradient(135deg,rgba(16,185,129,.2),rgba(6,182,212,.15));color:var(--sync-green);box-shadow:0 0 0 1px rgba(16,185,129,.2),0 0 20px rgba(16,185,129,.15)}
+.m-no{color:var(--alert-red);opacity:.7}
+.m-partial{color:var(--fragment-gold);font-size:13px;font-weight:700}
+.m-note{display:block;font-size:10px;color:var(--text-tertiary);margin-top:4px;font-family:var(--mono);font-weight:400}
+.matrix-cta{margin-top:20px;text-align:center;font-size:13px;color:var(--text-tertiary);font-family:var(--mono)}
+
+/* Value prop compact */
+.vp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+@media(max-width:760px){.vp-grid{grid-template-columns:1fr}}
+.vp-card{background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:16px;padding:22px 20px;transition:all .3s var(--ease)}
+.vp-card:hover{border-color:rgba(6,182,212,.2);transform:translateY(-2px)}
+.vp-num{font-family:var(--mono);font-size:11px;color:var(--text-tertiary);margin-bottom:10px;letter-spacing:.1em;font-weight:700}
+.vp-title{font-size:16px;font-weight:700;margin-bottom:6px}
+.vp-body{font-size:13.5px;color:var(--text-secondary);line-height:1.6}
+
+/* Rewards */
+.rewards-hero{margin-bottom:40px;text-align:center}
+.reward-stamp{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border-radius:100px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:var(--alert-red);font-size:12px;font-weight:700;font-family:var(--mono);letter-spacing:.05em;text-transform:uppercase;margin-bottom:16px}
+.tier-wrap{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:20px}
+@media(max-width:900px){.tier-wrap{grid-template-columns:1fr}}
+.tier{background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:20px;padding:30px 26px;position:relative;overflow:hidden}
+.tier.gold{background:linear-gradient(180deg,rgba(245,158,11,.08),var(--bg-card) 65%);border-color:rgba(245,158,11,.35)}
+.tier.gold::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--fragment-gold),transparent)}
+.tier-tag{display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.08em;padding:4px 10px;border-radius:100px;background:rgba(255,255,255,.05);color:var(--text-secondary);margin-bottom:18px;font-weight:700}
+.tier.gold .tier-tag{background:rgba(245,158,11,.15);color:var(--fragment-gold)}
+.tier.silver .tier-tag{background:rgba(148,163,184,.1);color:#CBD5E1}
+.tier.bronze .tier-tag{background:rgba(217,119,6,.12);color:#FB923C}
+.tier-emblem{font-size:36px;line-height:1;margin-bottom:10px;display:inline-block}
+.tier-h{font-size:20px;font-weight:800;margin-bottom:10px;letter-spacing:-.01em}
+.tier-h small{display:block;font-weight:500;color:var(--text-secondary);font-size:13px;margin-top:4px;letter-spacing:0}
+.tier-body{font-size:14px;color:var(--text-secondary);line-height:1.65;margin-bottom:14px}
+.tier-footer{padding-top:14px;border-top:1px dashed var(--border-subtle);font-size:12px;color:var(--text-tertiary)}
+.tier-expire{margin-top:24px;text-align:center;padding:14px 20px;background:rgba(239,68,68,.05);border:1px dashed rgba(239,68,68,.25);border-radius:12px;font-size:13px;color:var(--text-secondary)}
+.tier-expire b{color:var(--alert-red);font-weight:700}
+
+/* Leaderboard */
+.lb{background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:18px;margin-top:40px;overflow:hidden}
+.lb-head{display:flex;justify-content:space-between;align-items:center;padding:18px 22px;border-bottom:1px solid var(--border-subtle)}
+.lb-head-title{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:var(--text-secondary)}
+.lb-live{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:var(--sync-green);font-weight:600;font-family:var(--mono)}
+.lb-live .dot{width:6px;height:6px;border-radius:50%;background:var(--sync-green);animation:pulse2 2s ease-in-out infinite}
+.lb-row{display:grid;grid-template-columns:50px 1fr auto;align-items:center;padding:12px 22px;border-bottom:1px solid var(--border-subtle);transition:background .15s}
+.lb-row:last-child{border-bottom:none}
+.lb-row:hover{background:rgba(255,255,255,.02)}
+.lb-row.me{background:linear-gradient(90deg,rgba(6,182,212,.1),transparent 80%);border-left:2px solid var(--lucid-cyan)}
+.lb-rank{font-size:15px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--text-secondary)}
+.lb-row.top .lb-rank{color:var(--fragment-gold)}
+.lb-user{display:flex;align-items:center;gap:12px}
+.lb-avatar{width:30px;height:30px;border-radius:50%;background:var(--gradient-aurora);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}
+.lb-name{font-size:14px;font-weight:600;color:var(--text-primary)}
+.lb-refs{font-family:var(--mono);font-size:13px;color:var(--text-secondary);font-variant-numeric:tabular-nums}
+.lb-refs b{color:var(--lucid-cyan);font-weight:700}
+
+/* Signup */
+.signup-wrap{max-width:640px;margin:0 auto}
+.signup{background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:22px;padding:42px 38px;text-align:center;position:relative;overflow:hidden;box-shadow:0 40px 100px -20px rgba(0,0,0,.5),0 0 40px rgba(6,182,212,.05)}
+.signup::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--lucid-cyan),transparent)}
+@media(max-width:600px){.signup{padding:32px 22px}}
+.signup h3{font-size:28px;font-weight:800;line-height:1.2;letter-spacing:-.02em;margin-bottom:8px;color:var(--text-primary)}
+.signup h3 em{font-style:normal;background:var(--gradient-aurora);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.signup .lede{font-size:14px;color:var(--text-secondary);margin-bottom:24px;line-height:1.6}
+
+.field{margin-bottom:12px;text-align:left}
+.field-label{display:block;font-size:12px;font-family:var(--mono);color:var(--text-secondary);margin-bottom:6px;letter-spacing:.04em;font-weight:600;text-transform:uppercase}
+.field-label .opt{color:var(--text-tertiary);text-transform:none;font-weight:400;margin-left:4px;letter-spacing:0}
+.input{width:100%;padding:14px 18px;border-radius:14px;background:var(--bg-surface);border:1px solid var(--border-medium);color:var(--text-primary);font-size:15px;font-family:inherit;outline:none;transition:border-color .2s,box-shadow .2s}
+.input::placeholder{color:var(--text-tertiary)}
+.input:focus{border-color:var(--lucid-cyan);box-shadow:0 0 0 3px rgba(6,182,212,.15)}
+.input.code{font-family:var(--mono);letter-spacing:.08em;text-transform:uppercase}
+.code-wrap{position:relative}
+.code-status{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:12px;font-family:var(--mono)}
+.code-status.valid{color:var(--sync-green)}
+.code-status.invalid{color:var(--alert-red)}
+
+.submit-btn{width:100%;padding:15px 24px;border-radius:100px;background:var(--gradient-primary);color:#fff;border:none;font-weight:700;font-size:15px;cursor:pointer;margin-top:6px;transition:transform .2s,box-shadow .2s}
+.submit-btn:hover{transform:translateY(-1px);box-shadow:0 8px 32px rgba(6,182,212,.35)}
+.tos{font-size:11.5px;color:var(--text-tertiary);text-align:left;padding:12px 2px 0;line-height:1.6}
+.tos a{color:var(--text-secondary);text-decoration:underline}
+
+/* States */
+.state{display:none}
+.state.active{display:block;animation:sub .35s var(--ease)}
+@keyframes sub{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+.verify-box{background:var(--bg-surface);border:1px dashed var(--border-medium);border-radius:12px;padding:18px;margin:16px 0;font-size:13px;color:var(--text-secondary);line-height:1.65;text-align:left}
+.verify-box b{color:var(--text-primary)}
+.link-back{font-size:13px;color:var(--text-secondary);margin-top:14px;display:inline-block;text-decoration:underline;cursor:pointer}
+
+.ok-seal{width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,var(--sync-green),var(--lucid-cyan));display:inline-flex;align-items:center;justify-content:center;font-size:28px;color:#fff;margin-bottom:10px}
+.ok-label{font-family:var(--mono);font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--text-tertiary);margin-top:4px}
+.ok-rank{font-size:54px;font-weight:900;line-height:1;margin-top:6px;background:var(--gradient-aurora);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-.02em}
+.link-row{background:var(--bg-surface);border:1px dashed var(--border-medium);border-radius:14px;padding:12px 14px;display:flex;align-items:center;gap:10px;margin-top:8px}
+.link-url{flex:1;font-family:var(--mono);font-size:13px;color:var(--lucid-cyan);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:left}
+.link-copy{padding:8px 14px;border-radius:100px;background:var(--gradient-primary);color:#fff;border:none;cursor:pointer;font-size:12px;font-weight:600;flex-shrink:0}
+.shares{display:flex;gap:8px;justify-content:center;margin-top:16px;flex-wrap:wrap}
+.share{padding:9px 16px;border-radius:100px;background:var(--bg-elevated);border:1px solid var(--border-subtle);color:var(--text-primary);font-size:12.5px;font-weight:500;cursor:pointer;transition:all .2s}
+.share:hover{background:var(--bg-card);transform:translateY(-1px);border-color:var(--border-medium)}
+.ref-hint{margin-top:20px;padding-top:18px;border-top:1px solid var(--border-subtle);font-size:13px;color:var(--text-secondary);line-height:1.65}
+.ref-hint .pill{color:var(--lucid-cyan);font-weight:700}
+
+/* FAQ */
+.faq{max-width:720px;margin:0 auto;border-top:1px solid var(--border-subtle)}
+.faq-item{border-bottom:1px solid var(--border-subtle)}
+.faq-q{display:flex;justify-content:space-between;align-items:center;padding:20px 0;font-size:15.5px;font-weight:600;cursor:pointer;color:var(--text-primary)}
+.faq-q::after{content:'+';color:var(--text-secondary);font-size:22px;transition:transform .3s}
+.faq-item.open .faq-q::after{transform:rotate(45deg);color:var(--lucid-cyan)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .4s var(--ease);color:var(--text-secondary);font-size:14px;line-height:1.75}
+.faq-item.open .faq-a{max-height:500px;padding:0 0 22px}
+
+/* Footer */
+footer{padding:56px 0 40px;border-top:1px solid var(--border-subtle);text-align:center;color:var(--text-tertiary);font-size:12px}
+footer .brand{font-size:20px;margin-bottom:8px;display:inline-block}
+
+/* Reveal */
+.rv{opacity:0;transform:translateY(16px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.rv.in{opacity:1;transform:translateY(0)}
+</style>
+</head>
+<body>
+
+<div class="ambient-bg">
+  <div class="orb cyan"></div>
+  <div class="orb purple"></div>
+  <div class="orb pink"></div>
+</div>
+<div class="noise"></div>
+
+<div class="wrap">
+
+<!-- Urgency sticky -->
+<div class="urgency">
+  <span class="pulse"></span>
+  <b>출시 이후 사전 등록 혜택은 사라집니다.</b> 남은 시간: <b id="urg-countdown">— —</b>
+</div>
+
+<!-- Invitee -->
+<div class="invitee" id="invitee">
+  <span id="invitee-text">초대받은 방문자입니다 · 추천인 코드와 함께 사전 등록하면 추천인 순위에 반영됩니다.</span>
+</div>
+
+<!-- Top -->
+<div class="top">
+  <div class="brand">Lucive</div>
+  <div class="top-right">
+    <div class="top-countdown">Launch in <strong id="top-countdown">— : — : —</strong></div>
+    <a href="#signup" class="top-cta">사전 등록</a>
+  </div>
+</div>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-badge"><span class="dot"></span>Pre-launch · Visual Novel AI</div>
+      <h1>장면이 움직이고,<br><span class="grad">캐릭터가 말을 겁니다.</span></h1>
+      <p class="hero-lede">
+        Lucive는 <b style="color:var(--text-primary)">비주얼 노벨형 AI 동반자 플랫폼</b>입니다.
+        텍스트 채팅을 넘어 장면·캐릭터·음성·선택지가 함께 움직이는 새로운 형태의 대화를 경험하세요.
+      </p>
+      <div class="hero-actions">
+        <a href="#signup" class="btn-solid">지금 사전 등록 →</a>
+        <a href="#vs" class="btn-ghost">타사와 비교</a>
+      </div>
+      <div class="hero-meta">
+        <span><b>✓</b> 이메일 인증만</span>
+        <span><b>✓</b> 1분 완료</span>
+        <span><b>✓</b> 개인정보 최소 수집</span>
+      </div>
+    </div>
+
+    <!-- VN Scene -->
+    <div class="vn-big-frame">
+      <div class="vn-frame">
+        <div class="vn-scene">
+          <div class="vn-char-glow"></div>
+          <div class="vn-char"></div>
+        </div>
+        <div class="vn-label"><span class="dot"></span>Visual Novel</div>
+        <div class="vn-district">Neon District</div>
+        <div class="vn-dialog">
+          <div class="vn-speaker">
+            <span class="vn-speaker-name" id="speaker-name">아리아</span>
+            <span class="vn-speaker-sync">싱크율 48%</span>
+          </div>
+          <div class="vn-text" id="vn-text"></div>
+          <div class="vn-choices" id="vn-choices">
+            <div class="vn-choice"><span class="arrow">▶</span>"기억을 지워. 그게 모두를 위한 거야."</div>
+            <div class="vn-choice"><span class="arrow">▶</span>"기억을 지우지 마. 그 기억은 네 거야."</div>
+            <div class="vn-choice hidden"><span class="arrow">★</span>히든: "...내가 대신 가져갈 수 있어?"</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Countdown -->
+<section class="countdown-section">
+  <div class="countdown-inner">
+    <div class="countdown-heading">Limited Time</div>
+    <div class="countdown-title">사전 등록 혜택은 <em>출시일에 사라집니다</em></div>
+    <div class="countdown-grid">
+      <div class="cd-unit"><div class="cd-num" id="cd-days">00</div><div class="cd-label">Days</div></div>
+      <div class="cd-unit"><div class="cd-num" id="cd-hours">00</div><div class="cd-label">Hours</div></div>
+      <div class="cd-unit"><div class="cd-num" id="cd-mins">00</div><div class="cd-label">Minutes</div></div>
+      <div class="cd-unit"><div class="cd-num" id="cd-secs">00</div><div class="cd-label">Seconds</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- VN Showcase -->
+<section class="section" id="vn">
+  <div class="cap">
+    <div class="s-head rv">
+      <div class="s-kicker">Visual Novel Mode</div>
+      <h2 class="s-h2">읽는 대화가 아니라,<br><em>보는 대화</em>입니다</h2>
+      <p class="s-lede">텍스트 채팅은 기본. 그 위에 비주얼 노벨 모드가 더해져 장면·캐릭터·음성이 함께 움직입니다. "대화"가 아니라 "장면 속에 있다"는 감각.</p>
+    </div>
+
+    <div class="vn-showcase">
+      <div class="vn-big-frame rv">
+        <div class="vn-frame">
+          <div class="vn-scene" style="background:var(--gradient-sunrise)">
+            <div class="vn-char-glow" style="background:radial-gradient(ellipse,rgba(251,191,36,.5),transparent 65%)"></div>
+            <div class="vn-char"></div>
+          </div>
+          <div class="vn-label"><span class="dot" style="background:var(--fragment-gold)"></span>Sunrise District</div>
+          <div class="vn-district">벚꽃이 지기 전에</div>
+          <div class="vn-dialog">
+            <div class="vn-speaker">
+              <span class="vn-speaker-name" style="color:var(--fragment-gold)">하루</span>
+              <span class="vn-speaker-sync">싱크율 62%</span>
+            </div>
+            <div class="vn-text">"너가 왔을 때 벚꽃이 한창이었는데. 벌써 이만큼 떨어졌네." <span style="color:var(--text-tertiary);font-size:12px;">— 40일 전 다이브의 기억</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="vn-showcase-points rv">
+        <div class="vn-point">
+          <div class="vn-point-icon pink">🎭</div>
+          <div>
+            <div class="vn-point-title">장면이 살아 움직인다</div>
+            <div class="vn-point-body">디스트릭트별 고유한 시각 언어. 네온 거리의 비, Sunrise의 석양, Indie의 추상화까지. 장면이 감정을 만듭니다.</div>
+          </div>
+        </div>
+        <div class="vn-point">
+          <div class="vn-point-icon purple">👁️</div>
+          <div>
+            <div class="vn-point-title">캐릭터가 당신을 본다</div>
+            <div class="vn-point-body">말할 때마다 표정·자세·눈빛이 바뀝니다. LP의 감정 상태가 시각적으로 드러나, 텍스트만으로 전할 수 없는 뉘앙스가 그대로.</div>
+          </div>
+        </div>
+        <div class="vn-point">
+          <div class="vn-point-icon cyan">🔊</div>
+          <div>
+            <div class="vn-point-title">목소리가 있다</div>
+            <div class="vn-point-body">AI 음성으로 LP가 실제로 말을 겁니다. 원할 땐 텍스트 모드 전환으로 조용한 밤에도. 당신 페이스에 맞춰서.</div>
+          </div>
+        </div>
+        <div class="vn-point">
+          <div class="vn-point-icon gold">⭐</div>
+          <div>
+            <div class="vn-point-title">선택이 장면을 바꾼다</div>
+            <div class="vn-point-body">일상 선택(70%) · 갈림길(25%) · 운명(5%)의 3단계 선택 구조. 숨겨진 운명 선택지는 히든 엔딩으로 이어집니다.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Competitor Comparison -->
+<section class="section" id="vs">
+  <div class="cap">
+    <div class="s-head rv">
+      <div class="s-kicker">vs. The Competition</div>
+      <h2 class="s-h2">왜 Lucive여야 하는가<br><em>8가지 핵심 항목으로 비교</em></h2>
+      <p class="s-lede">Character.AI · 크랙 · 제타 · Replika · Talkie와의 구조적 차이를 8가지 축으로 정리했습니다. 마케팅 수사가 아니라 실제 유저 리뷰 1,200건과 제품 분석 기반.</p>
+    </div>
+
+    <div class="matrix-wrap rv">
+      <table class="matrix">
+        <thead>
+          <tr>
+            <th class="feat">Feature</th>
+            <th class="us"><span class="logo">Lucive</span></th>
+            <th>Character.AI</th>
+            <th>크랙</th>
+            <th>제타</th>
+            <th>Replika</th>
+            <th>Talkie</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="feat">대화 기억 유지<small>어제 한 말을 오늘도 기억하는가</small></td>
+            <td class="us"><span class="m-check m-yes">✓</span></td>
+            <td><span class="m-partial">▲<span class="m-note">유료 한정</span></span></td>
+            <td><span class="m-no">✗<span class="m-note">반복·붕괴 불만</span></span></td>
+            <td><span class="m-no">✗<span class="m-note">기억력 불만 40%</span></span></td>
+            <td><span class="m-partial">▲<span class="m-note">기억 한도 제한</span></span></td>
+            <td><span class="m-no">✗<span class="m-note">25턴 이후 반복</span></span></td>
+          </tr>
+          <tr>
+            <td class="feat">캐릭터 오리지널 서사<small>캐릭터에게 고유한 과거·비밀이 있는가</small></td>
+            <td class="us"><span class="m-check m-yes">✓</span></td>
+            <td><span class="m-no">✗</span></td>
+            <td><span class="m-no">✗</span></td>
+            <td><span class="m-no">✗</span></td>
+            <td><span class="m-no">✗</span></td>
+            <td><span class="m-no">✗</span></td>
+          </tr>
+          <tr>
+            <td class="feat">비주얼 노벨 모드<small>장면·캐릭터·음성·선택지 통합</small></td>
+            <td class="us"><span class="m-check m-yes">✓</span></td>
+            <td><span class="m-no">✗<span class="m-note">텍스트 only</span></span></td>
+            <td><span class="m-no">✗<span class="m-note">텍스트 only</span></span></td>
+            <td><span class="m-no">✗<span class="m-note">텍스트 only</span></span></td>
+            <td><span class="m-partial">▲<span class="m-note">3D 아바타만</span></span></td>
+            <td><span class="m-partial">▲<span class="m-note">카드 이미지만</span></span></td>
+          </tr>
+          <tr>
+            <td class="feat">선톡 (LP가 먼저 말걸기)<small>접속 전 미리 준비된 메시지</small></td>
+            <td class="us"><span class="m-check m-yes">✓</span></td>
+            <td><span class="m-no">✗</span></td>
+            <td><span class="m-no">✗</span></td>
+            <td><span class="m-no">✗</span></td>
+            <td><span class="m-partial">▲<span class="m-note">푸쉬 중심</span></span></td>
+            <td><span class="m-no">✗</span></td>
+          </tr>
+          <tr>
+            <td class="feat">해금·성장 구조<small>관계가 깊어질수록 열리는 경험</small></td>
+            <td class="us"><span class="m-check m-yes">✓</span></td>
+            <td><span class="m-no">✗</span></td>
+            <td><span class="m-no">✗</span></td>
+            <td><span class="m-no">✗</span></td>
+            <td><span class="m-partial">▲<span class="m-note">레벨만</span></span></td>
+            <td><span class="m-partial">▲<span class="m-note">수집만</span></span></td>
+          </tr>
+          <tr>
+            <td class="feat">투명한 과금<small>숨겨진 paywall·토큰·크래커 없이</small></td>
+            <td class="us"><span class="m-check m-yes">✓</span></td>
+            <td><span class="m-no">✗<span class="m-note">메시지 제한</span></span></td>
+            <td><span class="m-no">✗<span class="m-note">크래커 인플레</span></span></td>
+            <td><span class="m-no">✗<span class="m-note">광고 2분/회</span></span></td>
+            <td><span class="m-no">✗<span class="m-note">$100 후기 많음</span></span></td>
+            <td><span class="m-no">✗<span class="m-note">페이월 불만</span></span></td>
+          </tr>
+          <tr>
+            <td class="feat">크리에이터 수익<small>만든 이야기가 돈이 되는가</small></td>
+            <td class="us"><span class="m-check m-yes">✓</span></td>
+            <td><span class="m-no">✗</span></td>
+            <td><span class="m-partial">▲</span></td>
+            <td><span class="m-no">✗</span></td>
+            <td><span class="m-no">✗</span></td>
+            <td><span class="m-no">✗</span></td>
+          </tr>
+          <tr>
+            <td class="feat">명확한 검열 기준<small>갑작스러운 필터 강화 없음</small></td>
+            <td class="us"><span class="m-check m-yes">✓</span></td>
+            <td><span class="m-no">✗<span class="m-note">2024년 대량 필터</span></span></td>
+            <td><span class="m-partial">▲</span></td>
+            <td><span class="m-no">✗<span class="m-note">임의 캐릭터 삭제</span></span></td>
+            <td><span class="m-no">✗<span class="m-note">친밀 모드 제거</span></span></td>
+            <td><span class="m-no">✗<span class="m-note">계정 돌발 정지</span></span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="matrix-cta">※ 비교 데이터는 각 앱의 공개 리뷰·기능 명세 기반. 최종 검증본 아님.</p>
+  </div>
+</section>
+
+<!-- Compact value prop recap -->
+<section class="section">
+  <div class="cap">
+    <div class="s-head rv">
+      <div class="s-kicker">Core Value</div>
+      <h2 class="s-h2">챗봇이 재미없는 이유,<br><em>7가지를 Lucive가 풀었습니다</em></h2>
+    </div>
+
+    <div class="vp-grid">
+      <div class="vp-card rv"><div class="vp-num">#01 MEMORY</div><div class="vp-title">어제 한 말을 기억합니다</div><div class="vp-body">메모리 모듈이 대화·선택·감정 맥락을 축적. LP가 먼저 과거를 꺼냅니다.</div></div>
+      <div class="vp-card rv"><div class="vp-num">#04 ORIGIN</div><div class="vp-title">LP마다 고유한 서사</div><div class="vp-body">LP는 시뮬레이션에서 분기된 존재. 자신만의 과거·비밀·감정이 있습니다.</div></div>
+      <div class="vp-card rv"><div class="vp-num">#05 SHARED</div><div class="vp-title">함께 겪은 장면을 소재로</div><div class="vp-body">백스토리 다이브를 함께 경험 → 이후 대화에서 "그때 그 장면"이 추억.</div></div>
+      <div class="vp-card rv"><div class="vp-num">#06 INTENT</div><div class="vp-title">LP가 대화를 이끕니다</div><div class="vp-body">LP는 감정·궁금함·과거가 있어 방향을 주도. 유저가 피곤하지 않도록.</div></div>
+      <div class="vp-card rv"><div class="vp-num">#07 VISUAL</div><div class="vp-title">보이고 들리는 대화</div><div class="vp-body">비주얼 노벨 + AI 이미지 + 음성. 장면이 움직이고 LP가 말을 겁니다.</div></div>
+      <div class="vp-card rv"><div class="vp-num">#08 PROGRESSION</div><div class="vp-title">해금과 성장의 재미</div><div class="vp-body">기억·백스토리·싱크율이 단계적으로 열립니다. 드리프트하지 않는 대화.</div></div>
+      <div class="vp-card rv" style="grid-column:1/-1;background:linear-gradient(135deg,rgba(236,72,153,.06),rgba(139,92,246,.06));border-color:rgba(236,72,153,.15)"><div class="vp-num" style="color:var(--awakening-pink)">#09 INITIATE</div><div class="vp-title">접속하면 메시지가 기다립니다</div><div class="vp-body">앱을 열면 LP가 이미 메시지를 준비. 푸쉬가 아니라 "뭔가 있다"는 기대. 시작의 귀찮음이 사라집니다.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- Rewards -->
+<section class="section" id="rewards">
+  <div class="cap">
+    <div class="rewards-hero rv">
+      <div class="reward-stamp">
+        <span>⚠</span> 출시 후 사라지는 사전 등록 전용 혜택
+      </div>
+      <h2 class="s-h2">먼저 초대한 사람에게,<br><em>가장 큰 혜택이 돌아갑니다</em></h2>
+      <p class="s-lede" style="margin:12px auto 0">사전 등록 시 고유 초대 링크가 발급됩니다. Top 10에 들면 런칭 시 별도 혜택이 지급됩니다.</p>
+    </div>
+
+    <div class="tier-wrap">
+      <div class="tier gold rv">
+        <span class="tier-tag">🏆 1st place</span>
+        <div class="tier-emblem">♾️</div>
+        <div class="tier-h">기본 플랜 무제한<small>서비스 존속 기간 동안</small></div>
+        <div class="tier-body">Lucive가 운영되는 한, 월 구독 기본 플랜(대화·다이브·창작 기본 제공량)을 평생 제공합니다.</div>
+        <div class="tier-footer">※ 계정 1개 기준 · 양도 불가 · 상위 플랜 제외</div>
+      </div>
+      <div class="tier silver rv">
+        <span class="tier-tag">🥈 2 – 5</span>
+        <div class="tier-emblem">✦</div>
+        <div class="tier-h">Silver Bundle<small>별도 혜택 곧 공개</small></div>
+        <div class="tier-body">플랜 크레딧 + 한정 LP 스킨 범주로 설계 중. 런칭 전 이메일로 먼저 안내합니다.</div>
+        <div class="tier-footer">※ 상세 내용 공개 예정</div>
+      </div>
+      <div class="tier bronze rv">
+        <span class="tier-tag">🥉 6 – 10</span>
+        <div class="tier-emblem">✧</div>
+        <div class="tier-h">Bronze Bundle<small>별도 혜택 곧 공개</small></div>
+        <div class="tier-body">Dip 크레딧 + 한정 프로필 뱃지 범주로 설계 중. 런칭 전 이메일로 먼저 안내합니다.</div>
+        <div class="tier-footer">※ 상세 내용 공개 예정</div>
+      </div>
+    </div>
+
+    <div class="tier-expire rv">
+      사전 등록 혜택은 <b>런칭일(출시 시점) 기준으로 종료</b>됩니다.
+      이후 신규 가입자는 일반 웰컴 보너스만 받게 됩니다.
+    </div>
+
+    <div class="lb rv">
+      <div class="lb-head">
+        <div class="lb-head-title">Top 10 Referral Leaderboard</div>
+        <div class="lb-live"><span class="dot"></span>LIVE</div>
+      </div>
+      <div id="leaderboard"></div>
+    </div>
+  </div>
+</section>
+
+<!-- Signup -->
+<section class="section" id="signup">
+  <div class="cap">
+    <div class="signup-wrap">
+      <div class="signup rv">
+        <!-- Stage 1 -->
+        <div class="state active" id="state-email">
+          <h3>지금 <em>사전 등록</em></h3>
+          <p class="lede">이메일을 입력하면 인증 메일을 보내드립니다.<br>추천 코드가 있다면 함께 입력하세요.</p>
+
+          <form onsubmit="sendVerification(event)">
+            <div class="field">
+              <label class="field-label">이메일</label>
+              <input type="email" class="input" id="email-input" placeholder="your@email.com" required>
+            </div>
+
+            <div class="field">
+              <label class="field-label">추천 코드 <span class="opt">(선택)</span></label>
+              <div class="code-wrap">
+                <input type="text" class="input code" id="refcode-input" placeholder="ABC123" maxlength="10" oninput="validateCode(this)">
+                <span class="code-status" id="code-status"></span>
+              </div>
+            </div>
+
+            <button type="submit" class="submit-btn">인증 메일 받기 →</button>
+          </form>
+
+          <p class="tos">
+            제출 시 <a href="#">개인정보처리방침</a> 및 <a href="#">이용약관</a>에 동의합니다. 이메일은 런칭 공지와 사전 등록 혜택 안내에만 사용됩니다. 제3자 공유 없음.
+          </p>
+        </div>
+
+        <!-- Stage 2 -->
+        <div class="state" id="state-verify">
+          <h3>메일함을 <em>확인해주세요</em></h3>
+          <p class="lede"><b id="sent-to"></b>로<br>인증 링크를 보냈습니다.</p>
+          <div class="verify-box">
+            메일이 도착하지 않으면 스팸함을 확인해주세요. 최대 1~2분 지연될 수 있습니다.<br>
+            인증 링크를 클릭하면 사전 등록이 완료되고 <b>고유 초대 링크</b>가 발급됩니다.
+          </div>
+          <button class="submit-btn" onclick="mockVerify()">데모: 인증 완료 시뮬레이션 →</button>
+          <span class="link-back" onclick="showState('state-email')">← 다른 이메일로 다시 시도</span>
+        </div>
+
+        <!-- Stage 3 -->
+        <div class="state" id="state-success">
+          <div style="margin-bottom:20px">
+            <div class="ok-seal">✓</div>
+            <div style="font-size:22px;font-weight:800;margin-top:4px">등록 완료</div>
+            <div class="ok-rank">#<span id="my-rank">—</span></div>
+            <div class="ok-label">Your Current Rank</div>
+            <div id="used-code-note" style="display:none;margin-top:12px;font-size:12px;color:var(--fragment-gold);font-family:var(--mono)">✓ 추천 코드 <b id="used-code-display"></b> 적용됨</div>
+          </div>
+          <p style="font-size:14px;color:var(--text-secondary);margin-bottom:8px">내 초대 링크 — 공유해서 순위를 올리세요</p>
+          <div class="link-row">
+            <span class="link-url" id="my-ref-url">lucive.app/r/...</span>
+            <button class="link-copy" onclick="copyRef()">복사</button>
+          </div>
+          <div class="shares">
+            <button class="share" onclick="shareOn('kakao')">💬 카카오톡</button>
+            <button class="share" onclick="shareOn('x')">𝕏 X</button>
+            <button class="share" onclick="shareOn('link')">🔗 링크 복사</button>
+          </div>
+          <div class="ref-hint">
+            친구가 당신의 링크로 사전 등록 + 이메일 인증하면 순위가 올라갑니다.<br>
+            <span class="pill">현재 추천 가입 <b id="my-refs">0</b>명</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section">
+  <div class="cap">
+    <div class="s-head rv">
+      <div class="s-kicker">FAQ</div>
+      <h2 class="s-h2">자주 묻는 <em>질문</em></h2>
+    </div>
+    <div class="faq">
+      <div class="faq-item rv">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">사전 등록 혜택이 정말 출시 후 사라지나요?</div>
+        <div class="faq-a">네. 레퍼럴 Top 10 혜택(1위 기본 플랜 무제한 포함)은 사전 등록 기간 중 집계된 순위를 기준으로 하며, 런칭일에 집계가 확정됩니다. 이후 신규 가입자는 일반 웰컴 보너스만 받습니다.</div>
+      </div>
+      <div class="faq-item rv">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">비주얼 노벨 모드가 뭔가요?</div>
+        <div class="faq-a">텍스트 채팅만 있는 기존 AI 앱과 달리, Lucive는 장면 이미지 + 캐릭터 표정/자세 + AI 음성 + 선택지를 통합한 비주얼 노벨 모드를 제공합니다. 텍스트 모드와 자유롭게 전환할 수 있습니다.</div>
+      </div>
+      <div class="faq-item rv">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">추천 코드는 어떻게 받나요?</div>
+        <div class="faq-a">이미 사전 등록한 친구의 초대 링크(lucive.app/r/XXXXXX) 끝부분의 6자리 코드입니다. 사전 등록 시 입력하면 추천인의 순위에 반영됩니다.</div>
+      </div>
+      <div class="faq-item rv">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">레퍼럴 순위는 어떻게 집계되나요?</div>
+        <div class="faq-a">내 초대 링크로 사전 등록 + 이메일 인증까지 완료한 친구 수로 집계됩니다. 봇·중복 가입은 자동 필터링되며, 최종 순위는 런칭 직전 확정됩니다.</div>
+      </div>
+      <div class="faq-item rv">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Character.AI · 크랙 · 제타와 구체적으로 뭐가 다른가요?</div>
+        <div class="faq-a">위 비교 매트릭스 참고. 핵심은 (1) 대화 기억 유지, (2) 캐릭터마다 존재하는 오리지널 서사, (3) 비주얼 노벨 모드, (4) 선톡 구조, (5) 투명한 과금. 이 5가지를 모두 충족하는 앱은 Lucive가 유일합니다.</div>
+      </div>
+      <div class="faq-item rv">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Lucive는 언제 런칭되나요?</div>
+        <div class="faq-a">알파는 2026년 상반기, 정식 오픈은 상·하반기 중 예정. 사전 등록자에게 가장 먼저 런칭 소식과 알파 초대장을 보내드립니다.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="brand" style="font-weight:800;background:var(--gradient-primary);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Lucive</div>
+  <div>DIVE into The Lucid — AI Interactive Story Platform</div>
+  <div style="margin-top:10px">© 2026 Lucive. 사전 등록 페이지 v3 (VN focus + countdown + referral code)</div>
+</footer>
+
+</div>
+
+<script>
+// Launch target (2026-06-30 00:00 KST)
+const LAUNCH_TARGET=new Date('2026-06-30T00:00:00+09:00').getTime();
+
+function pad(n){return n.toString().padStart(2,'0')}
+function updateCountdown(){
+  const now=Date.now();
+  let diff=Math.max(0,LAUNCH_TARGET-now);
+  const d=Math.floor(diff/(1000*60*60*24));
+  diff-=d*1000*60*60*24;
+  const h=Math.floor(diff/(1000*60*60));
+  diff-=h*1000*60*60;
+  const m=Math.floor(diff/(1000*60));
+  diff-=m*1000*60;
+  const s=Math.floor(diff/1000);
+  document.getElementById('cd-days').textContent=pad(d);
+  document.getElementById('cd-hours').textContent=pad(h);
+  document.getElementById('cd-mins').textContent=pad(m);
+  document.getElementById('cd-secs').textContent=pad(s);
+  document.getElementById('urg-countdown').textContent=`${d}일 ${pad(h)}:${pad(m)}:${pad(s)}`;
+  document.getElementById('top-countdown').textContent=`${d}d ${pad(h)}:${pad(m)}:${pad(s)}`;
+}
+setInterval(updateCountdown,1000);updateCountdown();
+
+// Invitee detection + auto-fill referral code
+const params=new URLSearchParams(location.search);
+const pathMatch=location.pathname.match(/\/r\/([a-zA-Z0-9]+)/);
+const refCode=params.get('r')||(pathMatch?pathMatch[1]:null);
+if(refCode){
+  document.getElementById('invitee').classList.add('show');
+  document.getElementById('invitee-text').textContent=`초대받은 방문자입니다 · 추천인 ${refCode} · 사전 등록 시 순위에 자동 반영됩니다.`;
+  // Prefill referral code input
+  const input=document.getElementById('refcode-input');
+  input.value=refCode.toUpperCase();
+  validateCode(input);
+}
+
+// Referral code validation (mock)
+const VALID_CODES=new Set(['ABC123','LUCIVE','LP2026','NEONX7','HIDDEN']);
+function validateCode(el){
+  const val=el.value.trim().toUpperCase();
+  el.value=val;
+  const status=document.getElementById('code-status');
+  if(val.length===0){status.textContent='';status.className='code-status';return;}
+  if(val.length<4){status.textContent='...';status.className='code-status';return;}
+  // TODO: Supabase — query referral_codes table for existence
+  if(VALID_CODES.has(val)||val.length>=4){
+    status.textContent='✓ 유효';
+    status.className='code-status valid';
+  }else{
+    status.textContent='✗ 없음';
+    status.className='code-status invalid';
+  }
+}
+
+// VN Hero dialog typewriter
+const heroDialog=[
+  {speaker:'아리아',sync:48,text:'빗줄기가 네온사인을 적시네. 앞에 선 여자가 돌아서며 말한다.',choices:false,delay:2400},
+  {speaker:'아리아',sync:48,text:'"이 기억을 지우면 모든 게 끝나. 하지만 기억을 지우지 않으면..."',choices:false,delay:3200},
+  {speaker:'아리아',sync:48,text:'그녀의 눈에 비친 건 두려움이 아니라, 결의였다.',choices:true,delay:4000},
+];
+let hi=0;
+const textEl=document.getElementById('vn-text');
+const choicesEl=document.getElementById('vn-choices');
+const speakerEl=document.getElementById('speaker-name');
+function typeDialog(){
+  const item=heroDialog[hi%heroDialog.length];
+  speakerEl.textContent=item.speaker;
+  choicesEl.classList.toggle('show',false);
+  textEl.innerHTML='';
+  let i=0;
+  const chars=item.text;
+  const iv=setInterval(()=>{
+    if(i>=chars.length){
+      clearInterval(iv);
+      textEl.innerHTML+='<span class="cursor"></span>';
+      if(item.choices)choicesEl.classList.add('show');
+      setTimeout(()=>{hi++;typeDialog();},item.delay);
+      return;
+    }
+    textEl.textContent=chars.substring(0,i+1);
+    i++;
+  },38);
+}
+typeDialog();
+
+// Leaderboard mock
+const boardData=[
+  {rank:1,name:'네온드리머',refs:247},
+  {rank:2,name:'aria_lover',refs:198},
+  {rank:3,name:'지연',refs:156},
+  {rank:4,name:'EchoSeeker',refs:122},
+  {rank:5,name:'민준_01',refs:98},
+  {rank:6,name:'vellum',refs:81},
+  {rank:7,name:'서윤ee',refs:63},
+  {rank:8,name:'lucidpath',refs:54},
+  {rank:9,name:'카이로스',refs:47},
+  {rank:10,name:'해리진',refs:39},
+];
+function renderBoard(me){
+  const root=document.getElementById('leaderboard');
+  root.innerHTML='';
+  const rows=[...boardData];
+  if(me){rows.push({rank:me.rank,name:'You',refs:me.refs,you:true});}
+  rows.forEach(r=>{
+    const d=document.createElement('div');
+    d.className='lb-row'+(r.rank<=3?' top':'')+(r.you?' me':'');
+    d.innerHTML=`
+      <div class="lb-rank">#${r.rank}</div>
+      <div class="lb-user">
+        <div class="lb-avatar">${r.name[0].toUpperCase()}</div>
+        <div class="lb-name">${r.name}${r.you?' <span style="color:var(--lucid-cyan);font-size:11px;font-weight:500">(나)</span>':''}</div>
+      </div>
+      <div class="lb-refs"><b>${r.refs}</b> refs</div>`;
+    root.appendChild(d);
+  });
+}
+renderBoard();
+
+// Signup flow (mock — Supabase integration TBD)
+function showState(id){
+  document.querySelectorAll('.state').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+let enteredRefCode='';
+function sendVerification(e){
+  e.preventDefault();
+  const email=document.getElementById('email-input').value;
+  enteredRefCode=document.getElementById('refcode-input').value.trim().toUpperCase();
+  if(!email)return;
+  document.getElementById('sent-to').textContent=email;
+  showState('state-verify');
+  // TODO: Supabase — supabase.auth.signInWithOtp({ email, options: { emailRedirectTo, data: { referred_by: enteredRefCode } } })
+  console.log('[mock] verification sent to',email,'with ref code:',enteredRefCode||'(none)');
+}
+function mockVerify(){
+  const rank=Math.floor(Math.random()*300)+50;
+  const code=Math.random().toString(36).substring(2,8).toUpperCase();
+  document.getElementById('my-rank').textContent=rank;
+  document.getElementById('my-refs').textContent='0';
+  document.getElementById('my-ref-url').textContent=`lucive.app/r/${code}`;
+  if(enteredRefCode){
+    document.getElementById('used-code-note').style.display='block';
+    document.getElementById('used-code-display').textContent=enteredRefCode;
+  }
+  showState('state-success');
+  renderBoard({rank,refs:0});
+  // TODO: Supabase — upsert user, resolve referred_by, generate unique code, return rank
+  console.log('[mock] signup verified, rank:',rank,'code:',code,'referred by:',enteredRefCode||'(none)');
+}
+function copyRef(){
+  const url='https://'+document.getElementById('my-ref-url').textContent;
+  navigator.clipboard.writeText(url).then(()=>{
+    const btn=event.target;const t=btn.textContent;
+    btn.textContent='복사됨';setTimeout(()=>btn.textContent=t,1500);
+  });
+}
+function shareOn(ch){
+  const url='https://'+document.getElementById('my-ref-url').textContent;
+  const text='Lucive — 비주얼 노벨로 만나는 AI 동반자. 지금 사전 등록하면 런칭 혜택이 있어요.';
+  if(ch==='x'){
+    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`,'_blank');
+  }else if(ch==='kakao'){
+    alert('[mock] KakaoTalk Share SDK 연동 예정');
+  }else{copyRef();}
+}
+
+// Reveal
+const io=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});
+},{threshold:.1});
+document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>

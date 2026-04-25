@@ -1,0 +1,49 @@
+# --- Secrets · NEVER commit ---
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+secrets/
+
+# --- API key fallbacks · scan defensively ---
+*api_key*
+*API_KEY*
+api-keys.txt
+
+# --- Local artifacts ---
+.tmp_pptx/
+.tmp/
+.cache/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- Python build artifacts ---
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+.venv/
+venv/
+
+# --- Editor / IDE ---
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# --- Node ---
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# --- OS ---
+*.log
+*.tmp
+
+# --- Local-only generated assets that we keep out of repo (uncomment if needed) ---
+# pre-register/assets/v15/
+# pre-register/assets/v16/

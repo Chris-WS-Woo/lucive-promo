@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>LUCIVE · 26명의 캐릭터가 기다립니다</title>
+<meta name="description" content="캐릭터 챗 플랫폼. 10개 세계관 · 26명 · 당신의 한 마디가 이어지는 이야기.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Space+Grotesk:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Lucive product canonical · dark + cyan/purple/pink aurora */
+  --bg-deep:#08090C; --bg-surface:#0F1117; --bg-card:#161822; --bg-elevated:#1C1F2E;
+  --bg:var(--bg-deep); --bg-2:var(--bg-surface); --bg-3:var(--bg-card);
+  --border-subtle:rgba(255,255,255,.06);
+  --border-medium:rgba(255,255,255,.1);
+  --border-strong:rgba(255,255,255,.16);
+  --text-primary:#F1F3F8; --text-secondary:#8B92A8; --text-tertiary:#5A6178;
+  --ink:var(--text-primary); --ink-soft:var(--text-secondary); --muted:var(--text-tertiary); --muted-2:#434858;
+  /* Accent system */
+  --lucid-cyan:#06B6D4;
+  --lucid-blue:#2563EB;
+  --lucid-purple:#8B5CF6;
+  --awakening-pink:#EC4899;
+  --fragment-gold:#F59E0B;
+  --sync-green:#10B981;
+  /* Semantic aliases · preserve existing var names to avoid rewrite */
+  --amber:var(--lucid-cyan);       /* primary accent */
+  --gold:var(--lucid-purple);      /* secondary accent */
+  --gold-soft:var(--lucid-purple);
+  --gold-deep:#4C1D95;
+  --crimson:var(--awakening-pink);
+  --danger:var(--awakening-pink);
+  /* District colors */
+  --sunrise:var(--fragment-gold);
+  --neon:var(--lucid-cyan);
+  --underground:var(--awakening-pink);
+  --velvet:var(--lucid-purple);
+  --indie:var(--lucid-blue);
+  /* Gradients */
+  --gradient-primary:linear-gradient(135deg,#06B6D4,#2563EB);
+  --gradient-warm:linear-gradient(135deg,#EC4899,#8B5CF6);
+  --gradient-aurora:linear-gradient(135deg,#06B6D4,#8B5CF6,#EC4899);
+  /* Typography */
+  --sans:"Inter","Noto Sans KR",system-ui,-apple-system,sans-serif;
+  --display:"Space Grotesk","Inter","Noto Sans KR",sans-serif;
+  --serif:"Inter","Noto Sans KR",sans-serif; /* serif dropped · fallback to sans */
+  --mono:"JetBrains Mono",ui-monospace,monospace;
+  --ease:cubic-bezier(.16,1,.3,1);
+  --top-h:54px;--tab-h:58px;
+}
+html{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+body{background:var(--bg-deep);color:var(--ink);font-family:var(--sans);min-height:100vh;min-height:100dvh;overflow:hidden;position:relative;line-height:1.6;letter-spacing:-.01em}
+/* Ambient orb background · signature Lucive product visual */
+.ambient-bg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.ambient-orb{position:absolute;border-radius:50%;filter:blur(120px);opacity:.15;animation:orbFloat 20s ease-in-out infinite}
+.ambient-orb--cyan{width:min(600px,80vw);height:min(600px,80vw);background:var(--lucid-cyan);top:-10vw;right:0}
+.ambient-orb--purple{width:min(500px,70vw);height:min(500px,70vw);background:var(--lucid-purple);bottom:-10vw;left:0;animation-delay:-7s}
+.ambient-orb--pink{width:min(400px,60vw);height:min(400px,60vw);background:var(--awakening-pink);top:50%;left:50%;transform:translate(-50%,-50%);animation-delay:-14s;opacity:.08}
+@keyframes orbFloat{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(30px,-40px) scale(1.05)}66%{transform:translate(-20px,30px) scale(.95)}}
+/* Noise overlay */
+.noise-overlay{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.03;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");background-repeat:repeat;background-size:256px 256px}
+
+.app{position:fixed;inset:0;z-index:1;display:flex;justify-content:center;align-items:center}
+.app-frame{position:relative;width:100%;max-width:480px;height:100vh;height:100dvh;background:var(--bg);overflow:hidden;display:flex;flex-direction:column;box-shadow:0 0 80px rgba(0,0,0,.6),0 0 0 1px rgba(139,92,246,.08)}
+@media(min-width:560px){.app-frame{max-height:880px;margin:auto;border-radius:24px;height:90vh}}
+
+/* ============ TOP BAR ============ */
+.topbar{height:var(--top-h);min-height:var(--top-h);display:flex;align-items:center;gap:10px;padding:0 16px;background:rgba(8,9,12,.9);backdrop-filter:blur(14px);border-bottom:1px solid rgba(139,92,246,.1);position:relative;z-index:10}
+.tb-brand{font-family:var(--display);font-weight:800;font-size:15px;letter-spacing:.28em;background:var(--gradient-primary);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.gradient-text{background:var(--gradient-aurora);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.tb-spacer{flex:1}
+.tb-dday{font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;color:var(--gold-soft);text-transform:uppercase;padding:4px 10px;border:1px solid rgba(139,92,246,.32);border-radius:100px;background:rgba(139,92,246,.06)}
+.tb-dday b{color:var(--amber)}
+.tb-back{display:none;align-items:center;gap:4px;padding:6px 10px;background:transparent;border:none;color:var(--ink-soft);font-family:var(--sans);font-size:13px;font-weight:600;cursor:pointer;border-radius:100px}
+.tb-back:hover{color:var(--amber);background:rgba(6,182,212,.08)}
+.tb-back .arr{color:var(--amber);font-family:var(--mono)}
+.app.view-dm .tb-back{display:inline-flex}
+.app.view-dm .tb-brand{display:none}
+.tb-chat-header{display:none;align-items:center;gap:10px;flex:1;min-width:0}
+.app.view-dm .tb-chat-header{display:flex}
+.tb-chat-av{width:32px;height:32px;border-radius:50%;flex-shrink:0;background-size:cover;background-position:center;background-color:var(--underground);border:1.5px solid rgba(139,92,246,.32)}
+.tb-chat-meta{display:flex;flex-direction:column;gap:1px;min-width:0}
+.tb-chat-name{font-family:var(--sans);font-size:14px;font-weight:700;color:var(--ink);letter-spacing:.01em}
+.tb-chat-sub{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;color:var(--gold-soft);text-transform:uppercase}
+.tb-chat-sub .live{color:var(--danger);margin-right:4px}
+.tb-chat-sub .live::before{content:'●';margin-right:2px;animation:blink 1.4s infinite}
+@keyframes blink{0%,50%,100%{opacity:1}25%,75%{opacity:.3}}
+.app.view-dm .tb-spacer{display:none}
+.app.view-dm .tb-dday{display:none}
+
+/* Mode toggle (only in DM view) */
+.mode-toggle{display:none;align-items:center;gap:0;padding:2px;background:rgba(8,9,12,.82);border:1px solid rgba(139,92,246,.28);border-radius:100px;overflow:hidden}
+.app.view-dm .mode-toggle{display:flex}
+.mode-toggle button{padding:4px 10px;background:transparent;border:none;color:var(--muted);font-family:var(--sans);font-size:10.5px;font-weight:700;letter-spacing:.06em;cursor:pointer;border-radius:100px;transition:all .2s;display:flex;align-items:center;gap:3px}
+.mode-toggle button.active{background:var(--gold-soft);color:var(--bg)}
+.mode-toggle button::before{font-size:10px;opacity:.8}
+.mode-toggle button.mode-v::before{content:'◈'}
+.mode-toggle button.mode-t::before{content:'▤'}
+
+/* ============ SCREENS ============ */
+.screens{flex:1;position:relative;overflow:hidden;background:var(--bg)}
+.screen{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;opacity:0;pointer-events:none;transition:opacity .3s var(--ease)}
+.screen.active{opacity:1;pointer-events:auto}
+.screen::-webkit-scrollbar{width:4px}
+.screen::-webkit-scrollbar-thumb{background:rgba(139,92,246,.18);border-radius:100px}
+
+/* ============ INBOX ============ */
+.inbox{padding:12px 12px calc(var(--tab-h) + 12px)}
+.inbox-filters{display:flex;gap:6px;padding:4px 0 12px;overflow-x:auto;scrollbar-width:none}
+.inbox-filters::-webkit-scrollbar{display:none}
+.filter-chip{flex-shrink:0;padding:6px 12px;background:rgba(22,24,34,.78);border:1px solid rgba(139,92,246,.2);color:var(--ink-soft);font-family:var(--sans);font-size:12px;font-weight:600;border-radius:100px;cursor:pointer;transition:all .2s;white-space:nowrap}
+.filter-chip.active{background:var(--amber);color:var(--bg);border-color:var(--amber)}
+.filter-chip:not(.active):hover{border-color:var(--gold-soft);color:var(--gold-soft)}
+
+.match-banner{display:none;margin-bottom:14px;padding:16px 16px 14px;background:linear-gradient(135deg,rgba(6,182,212,.16),rgba(236,72,153,.1));border:1.5px solid rgba(6,182,212,.5);border-radius:14px;position:relative;overflow:hidden}
+.match-banner.show{display:block;animation:slideDown .5s var(--ease)}
+@keyframes slideDown{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+.match-banner::before{content:'✦ LUCIVE MATCH';position:absolute;top:0;right:0;padding:4px 10px;background:var(--amber);color:var(--bg);font-family:var(--mono);font-size:9px;font-weight:800;letter-spacing:.2em;border-bottom-left-radius:10px}
+.match-banner h3{font-family:var(--sans);font-size:16px;font-weight:800;letter-spacing:-.01em;color:var(--ink);margin-bottom:6px;line-height:1.3}
+.match-banner p{font-family:var(--sans);font-size:12px;color:var(--ink-soft);line-height:1.55;margin-bottom:12px}
+.match-banner p b{color:var(--gold-soft);font-weight:700}
+.match-cta{display:inline-flex;align-items:center;gap:6px;padding:10px 18px;background:var(--amber);color:var(--bg);border:none;font-family:var(--sans);font-size:13px;font-weight:700;border-radius:100px;cursor:pointer;text-decoration:none;transition:all .2s}
+.match-cta:hover{background:var(--gold);transform:translateY(-1px)}
+
+.inbox-list{display:flex;flex-direction:column;gap:4px}
+.chat-room{display:flex;align-items:center;gap:12px;padding:12px 10px;background:transparent;border:none;width:100%;text-align:left;cursor:pointer;border-radius:12px;transition:all .2s;position:relative}
+.chat-room:hover{background:rgba(22,24,34,.6)}
+.chat-room.highlight{background:linear-gradient(90deg,rgba(236,72,153,.12),rgba(236,72,153,.03));animation:roomPulse 2s ease-in-out infinite}
+@keyframes roomPulse{0%,100%{box-shadow:0 0 0 0 rgba(236,72,153,.3)}50%{box-shadow:0 0 0 4px rgba(236,72,153,.12)}}
+.chat-room.dim{opacity:.38}
+.chat-room.locked{opacity:.5;cursor:not-allowed}
+
+.room-av-wrap{position:relative;flex-shrink:0}
+.room-av{width:48px;height:48px;border-radius:50%;background-size:cover;background-position:center;background-color:var(--bg-card);display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--display);font-weight:700;font-size:15px;border:2px solid transparent}
+.room-district-dot{position:absolute;bottom:0;right:-1px;width:12px;height:12px;border-radius:50%;border:2px solid var(--bg);background:var(--amber)}
+.room-district-dot.sunrise{background:var(--sunrise)}
+.room-district-dot.neon{background:var(--neon)}
+.room-district-dot.underground{background:var(--underground)}
+.room-district-dot.velvet{background:var(--velvet)}
+.room-district-dot.indie{background:var(--indie)}
+.room-av.sunrise{background-color:rgba(245,158,11,.32)}
+.room-av.neon{background-color:rgba(6,182,212,.32)}
+.room-av.underground{background-color:rgba(236,72,153,.32)}
+.room-av.velvet{background-color:rgba(139,92,246,.32)}
+.room-av.indie{background-color:rgba(37,99,235,.32)}
+
+.room-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.room-line1{display:flex;align-items:center;gap:8px}
+.room-name{font-family:var(--sans);font-size:14.5px;font-weight:700;color:var(--ink);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.room-warn{color:var(--danger);font-size:13px}
+.room-time{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.04em;flex-shrink:0}
+.room-line2{display:flex;align-items:center;gap:8px}
+.room-preview{flex:1;min-width:0;font-family:var(--sans);font-size:12.5px;color:var(--ink-soft);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;line-height:1.35}
+.room-preview em{color:var(--gold-soft);font-style:normal;font-weight:500}
+.room-rating{font-family:var(--mono);font-size:9px;letter-spacing:.06em;color:var(--muted-2);flex-shrink:0;padding:1px 6px;border:1px solid rgba(139,92,246,.14);border-radius:4px;white-space:nowrap}
+.room-rating .r3{color:var(--danger);font-weight:700}
+.room-rating .r2{color:var(--gold-soft);font-weight:600}
+.room-rating .r1{color:var(--ink-soft)}
+.room-rating .r0{color:var(--muted-2)}
+.room-unread{flex-shrink:0;min-width:18px;height:18px;padding:0 5px;border-radius:100px;background:var(--amber);color:var(--bg);font-family:var(--mono);font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center}
+.room-warn-badge{flex-shrink:0;width:18px;height:18px;border-radius:50%;background:var(--danger);color:#fff;font-family:var(--mono);font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 0 10px rgba(236,72,153,.5)}
+.room-lock{flex-shrink:0;color:var(--muted-2);font-size:11px}
+.room-dday{flex-shrink:0;padding:2px 8px;border-radius:100px;background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.3);color:var(--gold-soft);font-family:var(--mono);font-size:9.5px;font-weight:700;letter-spacing:.08em;white-space:nowrap}
+.room-new{flex-shrink:0;padding:2px 7px;border-radius:100px;background:#10B981;color:#fff;font-family:var(--mono);font-size:9px;font-weight:800;letter-spacing:.14em;box-shadow:0 0 10px rgba(16,185,129,.4)}
+.room-open{font-family:var(--mono);font-size:9px;font-weight:800;letter-spacing:.14em;color:#10B981;margin-left:4px;padding:1px 6px;background:rgba(16,185,129,.14);border:1px solid rgba(16,185,129,.36);border-radius:4px}
+.inbox-footer-note{text-align:center;padding:14px 10px;font-family:var(--mono);font-size:10.5px;color:var(--muted);letter-spacing:.1em}
+.inbox-footer-note b{color:var(--amber);font-weight:700}
+
+/* ============ DM SCREEN ============ */
+.dm{position:relative;height:100%;display:flex;flex-direction:column;background:var(--bg);overflow:hidden}
+.dm-bg{position:absolute;inset:0;background-size:cover;background-position:center;opacity:.14;filter:blur(2px) saturate(.7);pointer-events:none;z-index:0;transition:opacity .6s,filter .6s}
+.dm-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,9,12,.4) 0%,rgba(8,9,12,.95) 100%)}
+.dm-scroll{flex:1;overflow:hidden;padding:14px 14px 40px;position:relative;z-index:1;display:flex;flex-direction:column;gap:10px;justify-content:flex-end;min-height:0}
+.dm-scroll-inner{display:flex;flex-direction:column;gap:10px;max-height:100%;overflow-y:auto;overflow-x:hidden;padding-bottom:4px;min-height:0}
+.dm-scroll-inner::-webkit-scrollbar{display:none}
+
+/* Progress hint at bottom */
+.progress-hint{position:absolute;left:0;right:0;bottom:0;height:40px;display:flex;align-items:center;justify-content:center;gap:10px;font-family:var(--mono);font-size:10.5px;letter-spacing:.22em;color:var(--muted);text-transform:uppercase;background:linear-gradient(180deg,transparent,rgba(8,9,12,.92) 40%,rgba(8,9,12,.98));z-index:6;pointer-events:none;transition:opacity .3s}
+.progress-hint.hidden{opacity:0}
+.progress-hint .kbd{display:inline-flex;align-items:center;justify-content:center;padding:3px 10px;background:rgba(6,182,212,.14);border:1px solid rgba(6,182,212,.4);border-radius:4px;color:var(--amber);font-weight:700;letter-spacing:.08em;animation:kbdFloat 1.8s ease-in-out infinite}
+@keyframes kbdFloat{0%,100%{transform:translateY(0);opacity:.9}50%{transform:translateY(-2px);opacity:1}}
+.progress-hint .arr{color:var(--amber);animation:arrFloat 1.4s ease-in-out infinite}
+@keyframes arrFloat{0%,100%{transform:translateY(0);opacity:.6}50%{transform:translateY(2px);opacity:1}}
+
+/* Memory card */
+.memory-card{align-self:stretch;padding:12px 14px;background:rgba(22,24,34,.72);border:1px dashed rgba(139,92,246,.26);border-radius:12px;margin:6px 0 10px;opacity:0;transform:translateY(10px);transition:opacity .5s,transform .5s}
+.memory-card.in{opacity:1;transform:translateY(0)}
+.memory-card-label{font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;color:var(--gold-soft);text-transform:uppercase;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.memory-card-label::before{content:'◆';color:var(--amber);font-size:8px}
+.memory-card-content{font-family:var(--sans);font-size:13.5px;color:var(--ink-soft);line-height:1.5;font-weight:500}
+.memory-card-content b{color:var(--ink);font-style:normal;font-weight:500}
+
+.route-badge{position:absolute;top:10px;left:50%;transform:translateX(-50%) translateY(-30px);padding:5px 14px;background:rgba(6,182,212,.22);border:1px solid var(--amber);border-radius:100px;font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--amber);font-weight:700;text-transform:uppercase;opacity:0;transition:all .5s var(--ease);z-index:5;pointer-events:none}
+.route-badge.show{opacity:1;transform:translateX(-50%) translateY(14px)}
+
+/* Push notifications */
+.push-stack{position:absolute;top:10px;left:10px;right:10px;z-index:6;display:flex;flex-direction:column;gap:6px;pointer-events:none}
+.push{background:rgba(22,24,34,.95);border:1px solid rgba(139,92,246,.38);border-radius:12px;padding:10px 12px;display:flex;align-items:center;gap:10px;backdrop-filter:blur(14px);box-shadow:0 8px 24px rgba(0,0,0,.5);opacity:0;transform:translateY(-10px);transition:opacity .4s,transform .4s;pointer-events:auto}
+.push.show{opacity:1;transform:translateY(0);animation:pushShake .5s ease-in-out .4s}
+@keyframes pushShake{0%,100%{transform:translateY(0)}25%{transform:translateY(0) rotate(-.5deg)}75%{transform:translateY(0) rotate(.5deg)}}
+.push-av{width:30px;height:30px;border-radius:50%;flex-shrink:0;font-family:var(--display);font-weight:700;font-size:12px;color:#fff;display:flex;align-items:center;justify-content:center}
+.push-body{flex:1;min-width:0}
+.push-name{font-family:var(--sans);font-size:11.5px;font-weight:700;color:var(--ink);display:flex;gap:6px;align-items:baseline}
+.push-time{font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:.04em;font-weight:500}
+.push-msg{font-family:var(--sans);font-size:12px;color:var(--ink-soft);margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* Bubbles */
+.msg-row{display:flex;gap:8px;opacity:0;transform:translateY(10px);transition:opacity .45s,transform .45s}
+.msg-row.in{opacity:1;transform:translateY(0)}
+.msg-row.me{justify-content:flex-end}
+.msg-bubble{max-width:85%;padding:10px 14px;border-radius:18px;background:rgba(22,24,34,.92);border:1px solid rgba(139,92,246,.22);color:var(--ink);font-family:var(--sans);font-size:14.5px;line-height:1.5;border-bottom-left-radius:6px;word-break:keep-all;overflow-wrap:break-word;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+.msg-bubble.ch-raon{background:rgba(236,72,153,.1);border-color:rgba(236,72,153,.32)}
+.msg-bubble em{color:var(--gold-soft);font-style:italic}
+.msg-bubble b{color:var(--ink);font-weight:700}
+.msg-bubble.me{background:rgba(6,182,212,.18);border-color:rgba(6,182,212,.42);border-bottom-left-radius:18px;border-bottom-right-radius:6px}
+.msg-row.me .msg-bubble{order:2}
+.msg-av{width:28px;height:28px;border-radius:50%;flex-shrink:0;background-size:cover;background-position:center;margin-top:2px;align-self:flex-end;border:1px solid rgba(139,92,246,.2)}
+.msg-row.me .msg-av{display:none}
+
+.msg-img{display:block;width:100%;max-width:280px;border-radius:12px;border:1px solid rgba(139,92,246,.18);cursor:pointer;transition:transform .2s}
+.msg-img:hover{transform:scale(1.01)}
+
+.voice-bubble{display:inline-flex;align-items:center;gap:10px;padding:11px 14px;background:rgba(236,72,153,.14);border:1px solid rgba(236,72,153,.35);border-radius:18px;border-bottom-left-radius:6px;max-width:85%;cursor:pointer;transition:all .2s}
+.voice-bubble:hover{background:rgba(236,72,153,.22);transform:translateY(-1px)}
+.voice-play{width:28px;height:28px;border-radius:50%;background:var(--danger);color:#fff;border:none;font-size:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer}
+.voice-play.playing{animation:voicePulse 1s infinite}
+@keyframes voicePulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+.voice-waveform{display:flex;gap:2px;align-items:center;flex:1;min-width:90px}
+.voice-waveform span{width:2.5px;background:var(--gold-soft);border-radius:100px;opacity:.4}
+.voice-waveform span:nth-child(1){height:6px} .voice-waveform span:nth-child(2){height:12px}
+.voice-waveform span:nth-child(3){height:18px} .voice-waveform span:nth-child(4){height:8px}
+.voice-waveform span:nth-child(5){height:22px} .voice-waveform span:nth-child(6){height:14px}
+.voice-waveform span:nth-child(7){height:20px} .voice-waveform span:nth-child(8){height:10px}
+.voice-waveform span:nth-child(9){height:16px} .voice-waveform span:nth-child(10){height:7px}
+.voice-waveform span:nth-child(11){height:13px} .voice-waveform span:nth-child(12){height:19px}
+.voice-waveform span:nth-child(13){height:9px} .voice-waveform span:nth-child(14){height:15px}
+.voice-waveform span:nth-child(15){height:6px}
+.voice-bubble.playing .voice-waveform span{opacity:1;animation:wavePulse .8s ease-in-out infinite}
+@keyframes wavePulse{0%,100%{transform:scaleY(.6)}50%{transform:scaleY(1.2)}}
+.voice-meta{font-family:var(--mono);font-size:10px;color:var(--gold-soft);letter-spacing:.04em;flex-shrink:0}
+
+.location-pin{display:flex;align-items:center;gap:10px;padding:11px 14px;background:rgba(22,24,34,.94);border:1px solid rgba(139,92,246,.3);border-radius:14px;max-width:85%}
+.location-icon{width:36px;height:36px;border-radius:50%;background:rgba(6,182,212,.2);border:1px solid var(--amber);color:var(--amber);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.location-body{flex:1;min-width:0}
+.location-name{font-family:var(--sans);font-size:13px;font-weight:700;color:var(--ink);margin-bottom:2px}
+.location-addr{font-family:var(--mono);font-size:10.5px;color:var(--muted);letter-spacing:.04em}
+
+/* Scene bridge · prominent "next is a visual novel scene" announcement in-chat */
+.scene-bridge{align-self:center;margin:18px auto;padding:18px 22px;background:linear-gradient(135deg,rgba(6,182,212,.16),rgba(236,72,153,.1));border:1.5px solid rgba(6,182,212,.55);border-radius:14px;box-shadow:0 8px 28px rgba(6,182,212,.22);text-align:center;max-width:320px;opacity:0;transform:translateY(8px);transition:opacity .5s,transform .5s;position:relative;overflow:hidden}
+.scene-bridge.in{opacity:1;transform:translateY(0)}
+.scene-bridge::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent,rgba(6,182,212,.16) 50%,transparent);animation:sceneShine 2.6s ease-in-out infinite;pointer-events:none}
+@keyframes sceneShine{0%,100%{transform:translateX(-100%)}50%{transform:translateX(100%)}}
+.scene-bridge-mark{font-family:var(--mono);font-size:10px;letter-spacing:.34em;color:var(--amber);font-weight:800;margin-bottom:6px;position:relative}
+.scene-bridge-text{font-family:var(--sans);font-size:14.5px;font-weight:500;color:var(--ink);line-height:1.45;position:relative;letter-spacing:-.005em}
+.scene-bridge-text em{color:var(--amber);font-weight:500}
+
+.typing-bubble{padding:10px 14px;background:rgba(236,72,153,.14);border:1px solid rgba(236,72,153,.35);border-radius:18px;border-bottom-left-radius:6px;display:inline-flex;gap:4px;align-items:center}
+.typing-bubble span{width:5px;height:5px;border-radius:50%;background:var(--gold-soft);opacity:.4;animation:typingDot 1.1s infinite ease-in-out}
+.typing-bubble span:nth-child(2){animation-delay:.15s}
+.typing-bubble span:nth-child(3){animation-delay:.3s}
+@keyframes typingDot{0%,100%{opacity:.3;transform:translateY(0)}50%{opacity:1;transform:translateY(-3px)}}
+
+/* Choice panel */
+.choice-panel{position:absolute;left:0;right:0;bottom:0;padding:12px 14px 16px;background:linear-gradient(180deg,transparent,rgba(8,9,12,.92) 28%,var(--bg-2));z-index:7;display:flex;flex-direction:column;gap:6px;max-height:60%;overflow-y:auto;transition:opacity .3s,transform .3s;transform:translateY(8px);opacity:0;pointer-events:none}
+.choice-panel.show{opacity:1;transform:translateY(0);pointer-events:auto}
+.choice-panel-label{font-family:var(--mono);font-size:9.5px;letter-spacing:.22em;color:var(--gold-soft);text-transform:uppercase;padding:0 6px 4px;text-align:center;opacity:.85}
+.choice-btn{padding:11px 16px;background:rgba(22,24,34,.92);border:1px solid rgba(139,92,246,.28);color:var(--ink);font-family:var(--sans);font-size:13.5px;font-weight:500;cursor:pointer;text-align:left;border-radius:14px;transition:all .2s;display:flex;align-items:center;gap:10px;backdrop-filter:blur(8px)}
+.choice-btn:hover{background:rgba(6,182,212,.12);border-color:var(--amber);transform:translateX(4px)}
+.choice-btn .ch-letter{width:20px;height:20px;border:1px solid var(--gold-soft);color:var(--gold-soft);font-family:var(--mono);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;border-radius:50%;flex-shrink:0}
+.choice-btn.silent{font-style:italic;color:var(--ink-soft)}
+.choice-btn.silent .ch-letter{border-style:dashed;opacity:.6}
+.choice-freeform{display:flex;gap:8px;margin-top:6px}
+.choice-freeform input{flex:1;padding:10px 14px;background:rgba(8,9,12,.78);border:1px solid rgba(139,92,246,.28);color:var(--ink);font-family:var(--sans);font-size:14px;outline:none;border-radius:100px}
+.choice-freeform input:focus{border-color:var(--amber)}
+.choice-freeform button{padding:10px 18px;background:var(--amber);color:var(--bg);border:none;font-family:var(--sans);font-size:13px;font-weight:700;border-radius:100px;cursor:pointer}
+
+/* ============ VISUAL NOVEL MODE ============ */
+.vn-overlay{position:absolute;inset:0;z-index:20;opacity:0;pointer-events:none;transition:opacity .7s var(--ease);background:#000;display:flex;flex-direction:column}
+.vn-overlay.show{opacity:1;pointer-events:auto}
+.vn-bg{position:absolute;inset:0;background-size:cover;background-position:center;filter:contrast(1.05) saturate(1.1);z-index:0}
+.vn-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,9,12,.2) 0%,rgba(8,9,12,.15) 40%,rgba(8,9,12,.88) 100%)}
+.vn-particles{position:absolute;inset:0;z-index:1;opacity:.35;pointer-events:none;background-image:radial-gradient(circle at 20% 30%,rgba(139,92,246,.4) 0,transparent 2px),radial-gradient(circle at 70% 60%,rgba(6,182,212,.35) 0,transparent 2px),radial-gradient(circle at 40% 80%,rgba(139,92,246,.3) 0,transparent 2px);background-size:180px 180px,240px 240px,200px 200px;animation:vnParticles 12s linear infinite}
+@keyframes vnParticles{0%{background-position:0 0,0 0,0 0}100%{background-position:180px 180px,-240px 240px,200px -200px}}
+.vn-mode-label{position:absolute;top:18px;left:50%;transform:translateX(-50%);z-index:3;padding:5px 14px;background:rgba(8,9,12,.72);border:1px solid rgba(6,182,212,.48);border-radius:100px;font-family:var(--mono);font-size:9.5px;letter-spacing:.32em;color:var(--amber);text-transform:uppercase;font-weight:700;opacity:0;transition:opacity .5s .3s}
+.vn-overlay.show .vn-mode-label{opacity:1}
+.vn-mode-label::before{content:'◈ ';color:var(--gold-soft)}
+.vn-portrait{position:absolute;bottom:160px;right:16px;width:140px;z-index:2;opacity:0;transform:translateY(20px);transition:opacity .6s .4s,transform .6s .4s}
+.vn-overlay.show .vn-portrait{opacity:1;transform:translateY(0)}
+.vn-portrait img{width:100%;border-radius:10px;border:1.5px solid rgba(139,92,246,.3);box-shadow:0 14px 36px rgba(0,0,0,.6)}
+@media(max-width:400px){.vn-portrait{width:110px;bottom:150px}}
+
+.vn-dialogue{position:absolute;left:16px;right:16px;bottom:16px;z-index:3;padding:18px 20px 20px;background:rgba(8,9,12,.88);backdrop-filter:blur(14px);border:1px solid rgba(6,182,212,.32);border-radius:18px;box-shadow:0 14px 36px rgba(0,0,0,.6);opacity:0;transform:translateY(20px);transition:opacity .5s .2s,transform .5s .2s}
+.vn-overlay.show .vn-dialogue{opacity:1;transform:translateY(0)}
+.vn-speaker{font-family:var(--display);font-weight:700;font-size:13.5px;letter-spacing:.08em;color:var(--amber);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.vn-speaker::before{content:'';width:14px;height:1px;background:var(--amber)}
+.vn-line{font-family:var(--sans);font-size:22px;font-weight:700;color:var(--ink);line-height:1.35;letter-spacing:-.02em;min-height:2.9em}
+.vn-line em{color:var(--gold-soft);font-weight:500}
+.vn-hint{margin-top:14px;display:flex;align-items:center;justify-content:flex-end;gap:8px;font-family:var(--mono);font-size:9.5px;letter-spacing:.22em;color:var(--muted);text-transform:uppercase}
+.vn-hint .kbd{padding:2px 8px;background:rgba(6,182,212,.14);border:1px solid rgba(6,182,212,.4);border-radius:4px;color:var(--amber);font-weight:700}
+.vn-hint .arr{color:var(--amber);animation:arrFloat 1.4s ease-in-out infinite}
+
+/* Tease overlay */
+.tease-overlay{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 60%,rgba(8,9,12,.6) 0%,rgba(8,9,12,.98) 70%);z-index:25;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:24px;opacity:0;pointer-events:none;transition:opacity .8s}
+.tease-overlay.show{opacity:1;pointer-events:auto}
+.tease-count{font-family:var(--display);font-size:72px;font-weight:900;line-height:1;letter-spacing:-.04em;text-shadow:0 0 60px rgba(6,182,212,.35),0 0 90px rgba(139,92,246,.25)}
+.tease-label{font-family:var(--sans);font-size:20px;font-weight:700;letter-spacing:-.02em;color:var(--ink);text-align:center;line-height:1.35}
+.tease-label em{color:var(--gold-soft);font-weight:500}
+.tease-buttons{display:flex;flex-direction:column;gap:10px;width:100%;max-width:300px;margin-top:8px}
+.tease-btn{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 20px;font-family:var(--sans);font-size:14px;font-weight:700;border-radius:14px;cursor:pointer;border:1.5px solid transparent;text-decoration:none;transition:all .2s}
+.tease-btn.primary{background:var(--amber);color:var(--bg);box-shadow:0 10px 28px rgba(6,182,212,.4)}
+.tease-btn.primary:hover{background:var(--gold);transform:translateY(-2px)}
+.tease-btn.secondary{background:rgba(22,24,34,.82);color:var(--ink);border-color:rgba(139,92,246,.32)}
+.tease-btn.secondary:hover{border-color:var(--amber);color:var(--gold-soft)}
+.tease-btn .arr{font-family:var(--mono);font-weight:800}
+
+/* ============ ROSTER ============ */
+.roster{padding:14px 12px calc(var(--tab-h) + 20px)}
+.roster-head{padding:8px 4px 14px;text-align:center}
+.roster-head h2{font-family:var(--sans);font-size:26px;font-weight:900;letter-spacing:-.03em;color:var(--ink);line-height:1.1;margin-bottom:8px}
+.roster-head h2 em{font-weight:900;background:var(--gradient-aurora);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-style:normal}
+.roster-head p{font-family:var(--sans);font-size:12.5px;color:var(--ink-soft);line-height:1.55}
+.roster-filters{display:flex;gap:6px;padding:4px 0 14px;overflow-x:auto;scrollbar-width:none}
+.roster-filters::-webkit-scrollbar{display:none}
+.roster-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.roster-card{padding:12px;background:rgba(22,24,34,.78);border:1px solid rgba(139,92,246,.18);border-radius:14px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+.roster-card:hover{transform:translateY(-2px);border-color:var(--amber)}
+.roster-card.locked{opacity:.7}
+.roster-card.highlight{border-color:var(--amber);background:linear-gradient(180deg,rgba(6,182,212,.12),rgba(22,24,34,.82))}
+.rc-dday{position:absolute;top:8px;right:8px;font-family:var(--mono);font-size:9px;font-weight:800;letter-spacing:.12em;padding:3px 8px;border-radius:100px;background:rgba(139,92,246,.1);color:var(--gold-soft);border:1px solid rgba(139,92,246,.3);z-index:2}
+.rc-dday.live{background:var(--amber);color:var(--bg);border-color:var(--amber);box-shadow:0 0 12px rgba(6,182,212,.5);animation:liveBlink 1.6s ease-in-out infinite}
+.rc-dday.new{background:#10B981;color:#fff;border-color:#10B981;box-shadow:0 0 10px rgba(16,185,129,.45)}
+.rc-dday.soon{background:rgba(6,182,212,.22);color:var(--amber);border-color:var(--amber)}
+@keyframes liveBlink{0%,100%{opacity:1}50%{opacity:.72}}
+.roster-card.soon{border-color:rgba(6,182,212,.38)}
+.rc-top{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.rc-av{width:44px;height:44px;border-radius:50%;background-size:cover;background-position:center;display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--display);font-weight:700;font-size:13px;flex-shrink:0;border:1.5px solid rgba(139,92,246,.2)}
+.rc-info{flex:1;min-width:0}
+.rc-name{font-family:var(--sans);font-size:13.5px;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:5px}
+.rc-lock{font-size:10px;color:var(--muted-2)}
+.rc-world{font-family:var(--mono);font-size:9px;letter-spacing:.1em;color:var(--gold-soft);text-transform:uppercase;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rc-logline{font-family:var(--sans);font-size:12px;color:var(--ink-soft);line-height:1.5;margin-bottom:8px;min-height:2.4em;font-weight:400}
+.rc-ratings{display:flex;gap:4px;flex-wrap:wrap}
+.rc-badge{font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.06em;padding:1px 6px;border-radius:4px;background:rgba(139,92,246,.08);color:var(--muted);border:1px solid rgba(139,92,246,.14)}
+.rc-badge.r3{background:rgba(236,72,153,.14);color:var(--danger);border-color:rgba(236,72,153,.35)}
+.rc-badge.r2{background:rgba(139,92,246,.12);color:var(--gold-soft);border-color:rgba(139,92,246,.28)}
+
+/* Worlds */
+.worlds{padding:14px 12px calc(var(--tab-h) + 20px)}
+.worlds-list{display:flex;flex-direction:column;gap:12px}
+.world-card{padding:16px 16px 14px;background:rgba(22,24,34,.78);border:1px solid rgba(139,92,246,.18);border-radius:14px;position:relative;overflow:hidden}
+.world-card.locked{opacity:.68}
+.wc-district{font-family:var(--mono);font-size:9.5px;letter-spacing:.22em;color:var(--gold-soft);text-transform:uppercase;margin-bottom:4px;display:flex;align-items:center;gap:6px}
+.wc-district::before{content:'';display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--amber)}
+.wc-district.sunrise::before{background:var(--sunrise)}
+.wc-district.neon::before{background:var(--neon)}
+.wc-district.underground::before{background:var(--underground)}
+.wc-district.velvet::before{background:var(--velvet)}
+.wc-district.indie::before{background:var(--indie)}
+.wc-title{font-family:var(--sans);font-size:18px;font-weight:800;letter-spacing:-.02em;color:var(--ink);line-height:1.3;margin-bottom:6px}
+.wc-title em{color:var(--amber);font-weight:500}
+.wc-logline{font-family:var(--sans);font-size:13px;line-height:1.55;color:var(--ink-soft);margin-bottom:10px}
+.wc-meta{display:flex;gap:8px;flex-wrap:wrap;font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.04em}
+.wc-meta span{padding:2px 8px;border:1px solid rgba(139,92,246,.14);border-radius:100px}
+.wc-lock{position:absolute;top:14px;right:14px;font-size:12px;color:var(--muted-2)}
+
+/* Tabbar */
+.tabbar{height:var(--tab-h);min-height:var(--tab-h);background:rgba(8,9,12,.96);backdrop-filter:blur(16px);border-top:1px solid rgba(139,92,246,.12);display:flex;align-items:stretch;padding-bottom:env(safe-area-inset-bottom);position:relative;z-index:40}
+.tabbar-btn{flex:1;background:transparent;border:none;color:var(--muted);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:4px 2px;transition:color .2s;font-family:var(--sans);font-size:10px;font-weight:600;letter-spacing:.04em;text-decoration:none}
+.tabbar-btn:hover{color:var(--gold-soft)}
+.tabbar-btn.active{color:var(--amber)}
+.tabbar-btn .tb-ico{font-size:18px;line-height:1}
+.tabbar-btn.signup-tab{color:var(--amber)}
+
+audio{display:none}
+
+/* ============ TEXT MODE · visual elements stripped to prove VN/visual value ============ */
+body.mode-text .dm-bg{opacity:0!important}
+body.mode-text .msg-img{display:none}
+body.mode-text .msg-bubble.ch-raon:has(.msg-img){padding:12px 16px}
+body.mode-text .msg-bubble.ch-raon:has(.msg-img)::after{content:'📷 [사진 첨부 · 텍스트 모드에서는 안 보여요]';font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.04em;display:block}
+body.mode-text .voice-bubble>*{display:none}
+body.mode-text .voice-bubble{padding:10px 14px;display:block;background:rgba(236,72,153,.08);border-style:dashed}
+body.mode-text .voice-bubble::before{content:'🎵 [음성 메시지 · 0:04 · 텍스트 모드에서는 안 들려요]';font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.04em}
+body.mode-text .location-pin .location-icon{background:transparent;border-color:transparent;color:var(--muted)}
+body.mode-text .location-pin{background:rgba(22,24,34,.4);border-style:dashed}
+body.mode-text .scene-bridge{padding:10px 16px;background:rgba(22,24,34,.5);border-style:dashed;border-color:rgba(139,92,246,.18);box-shadow:none}
+body.mode-text .scene-bridge::before{display:none}
+body.mode-text .scene-bridge-mark{color:var(--muted)}
+body.mode-text .scene-bridge-text{font-family:var(--mono);font-size:11.5px;color:var(--muted);font-style:normal;letter-spacing:.04em}
+body.mode-text .scene-bridge-text::before{content:'[VN 씬 · 텍스트 모드에서는 넘어갑니다] · '}
+body.mode-text .scene-bridge-text em{color:var(--muted)}
+body.mode-text .vn-overlay.show{opacity:0!important;pointer-events:none!important}
+body.mode-text .route-badge.show{background:rgba(22,24,34,.9);color:var(--muted);border-color:rgba(139,92,246,.2)}
+body.mode-text .push{background:rgba(22,24,34,.9);border-style:dashed;border-color:rgba(139,92,246,.22)}
+/* Indicator in DM saying what's been stripped */
+body.mode-text .dm::after{content:'◈ 텍스트 모드 · 배경·사진·음성·씬 비활성화';position:absolute;top:8px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:9px;letter-spacing:.22em;color:var(--muted);background:rgba(8,9,12,.82);padding:4px 12px;border-radius:100px;border:1px solid rgba(139,92,246,.18);z-index:8;pointer-events:none;text-transform:uppercase}
+</style>
+</head>
+<body>
+
+<div class="ambient-bg">
+  <div class="ambient-orb ambient-orb--cyan"></div>
+  <div class="ambient-orb ambient-orb--purple"></div>
+  <div class="ambient-orb ambient-orb--pink"></div>
+</div>
+<div class="noise-overlay"></div>
+
+<div class="app view-inbox" id="app">
+  <div class="app-frame">
+
+    <div class="topbar">
+      <button class="tb-back" onclick="switchScreen('inbox')"><span class="arr">←</span></button>
+      <div class="tb-brand">LUCIVE</div>
+      <div class="tb-chat-header">
+        <div class="tb-chat-av" id="tbChatAv" style="background-image:url('./assets/v16/raon_profile.png')"></div>
+        <div class="tb-chat-meta">
+          <div class="tb-chat-name">라온</div>
+          <div class="tb-chat-sub"><span class="live">LIVE</span> · Moonlight Cartel</div>
+        </div>
+      </div>
+      <div class="mode-toggle">
+        <button class="mode-v active" id="modeBtnV" onclick="setMode('visual')">그래픽</button>
+        <button class="mode-t" id="modeBtnT" onclick="setMode('text')">텍스트</button>
+      </div>
+      <div class="tb-spacer"></div>
+      <div class="tb-dday">Alpha · <b>D-<span id="ddayMini">17</span></b></div>
+    </div>
+
+    <div class="screens">
+
+      <!-- INBOX -->
+      <div class="screen active" id="screen-inbox">
+        <div class="inbox">
+          <div class="inbox-filters">
+            <div class="filter-chip active">전체</div>
+            <div class="filter-chip">마피아</div>
+            <div class="filter-chip">다크</div>
+            <div class="filter-chip">로맨스</div>
+            <div class="filter-chip">판타지</div>
+            <div class="filter-chip">SF</div>
+            <div class="filter-chip">힐링</div>
+            <div class="filter-chip">성인 🔒</div>
+          </div>
+          <div class="match-banner" id="matchBanner">
+            <h3>방금 나눈 대화를 봤어요.</h3>
+            <p>당신과 가장 잘 맞을 <b>3명</b>을 골라봤어요 · <b>세빈 92% · 해준 87% · 루온 81%</b></p>
+            <a href="./v15-kr-signup.html" class="match-cta">이들과 먼저 시작하기 <span>→</span></a>
+          </div>
+          <div class="inbox-list" id="inboxList"></div>
+          <div class="inbox-footer-note"><b id="remainingCharsCount">26</b>명 · <b>10</b>개 세계관 · 런칭 시 해금</div>
+        </div>
+      </div>
+
+      <!-- DM · Raon -->
+      <div class="screen" id="screen-dm">
+        <div class="dm">
+          <div class="dm-bg" id="dmBg" style="background-image:url('./assets/v16/raon_bg_ambient.png')"></div>
+          <div class="route-badge" id="routeBadge">ROUTE · 직진</div>
+          <div class="push-stack" id="pushStack"></div>
+
+          <div class="dm-scroll">
+            <div class="dm-scroll-inner" id="dmScrollInner"></div>
+          </div>
+
+          <div class="choice-panel" id="choicePanel"></div>
+
+          <div class="progress-hint" id="progressHint">
+            <span>스크롤 또는</span>
+            <span class="kbd">SPACE</span>
+            <span>로 진행</span>
+            <span class="arr">▼</span>
+          </div>
+
+          <!-- VN OVERLAY -->
+          <div class="vn-overlay" id="vnOverlay">
+            <div class="vn-bg" id="vnBg"></div>
+            <div class="vn-particles"></div>
+            <div class="vn-mode-label">Visual Novel</div>
+            <div class="vn-portrait" id="vnPortrait"><img src="./assets/v16/raon_profile.png" alt=""></div>
+            <div class="vn-dialogue">
+              <div class="vn-speaker" id="vnSpeaker">라온</div>
+              <div class="vn-line" id="vnLine"></div>
+              <div class="vn-hint">
+                <span class="kbd">SPACE</span>
+                <span>계속</span>
+                <span class="arr">▼</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="tease-overlay" id="teaseOverlay">
+            <div class="tease-count gradient-text">25</div>
+            <div class="tease-label">당신을 기다리는 <em>25명</em>이<br>더 있어요.</div>
+            <div class="tease-buttons">
+              <a href="#" class="tease-btn primary" onclick="event.preventDefault();switchScreen('roster')"><span>전체 캐릭터 보기</span><span class="arr">→</span></a>
+              <a href="./v15-kr-signup.html" class="tease-btn secondary"><span>이 대화 이어가기 · 사전 등록</span><span class="arr">✦</span></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ROSTER -->
+      <div class="screen" id="screen-roster">
+        <div class="roster">
+          <div class="roster-head">
+            <h2>26명의 캐릭터,<br><em>10개의 세계</em></h2>
+            <p>한 사람의 한 마디가 · 다른 사람의 내일을 만듭니다.</p>
+          </div>
+          <div class="roster-filters">
+            <div class="filter-chip active">전체</div>
+            <div class="filter-chip">SUNRISE</div>
+            <div class="filter-chip">NEON</div>
+            <div class="filter-chip">UNDERGROUND</div>
+            <div class="filter-chip">VELVET</div>
+            <div class="filter-chip">INDIE</div>
+          </div>
+          <div class="roster-grid" id="rosterGrid"></div>
+        </div>
+      </div>
+
+      <!-- WORLDS -->
+      <div class="screen" id="screen-worlds">
+        <div class="worlds">
+          <div class="roster-head">
+            <h2>10개의 <em>세계</em></h2>
+            <p>힐링에서 다크까지 · 당신이 돌아올 곳은 여기입니다.</p>
+          </div>
+          <div class="worlds-list" id="worldsList"></div>
+        </div>
+      </div>
+
+    </div>
+
+    <nav class="tabbar">
+      <button class="tabbar-btn active" data-screen="inbox" onclick="switchScreen('inbox')">
+        <span class="tb-ico">💬</span><span>INBOX</span>
+      </button>
+      <button class="tabbar-btn" data-screen="roster" onclick="switchScreen('roster')">
+        <span class="tb-ico">🎭</span><span>CHARACTERS 26</span>
+      </button>
+      <button class="tabbar-btn" data-screen="worlds" onclick="switchScreen('worlds')">
+        <span class="tb-ico">📖</span><span>WORLDS 10</span>
+      </button>
+      <a class="tabbar-btn signup-tab" href="./v15-kr-signup.html">
+        <span class="tb-ico">✦</span><span>D-<span id="ddayTab">17</span> 등록</span>
+      </a>
+    </nav>
+
+  </div>
+</div>
+
+<audio id="voiceAudio" preload="auto"></audio>
+
+<script>
+/* ============ DATA ============ */
+/* Staggered unlock schedule leading up to Alpha Launch 2026-05-17.
+   raon = unlocked now (demo). Others cascade every 2-3 days until launch. */
+const CHARACTERS = [
+  { id:'raon',     name:'라온',     world:'Moonlight Cartel',district:'underground', logline:'보디가드 암살자 · "널 지키려고 누굴 벨지 정했어"', s:1,v:3,o:3, unlockAt:'2026-04-24', demo:true },
+  { id:'sebin',    name:'세빈',     world:'공명 아카데미',    district:'underground', logline:'암살자 선배 · "제거 목록에서 너만 뺐어"', s:1,v:2,o:2, unlockAt:'2026-04-27' },
+  { id:'haejun',   name:'해준',     world:'ELIA 학원',       district:'neon',        logline:'상위 선배 · "네가 올라올 사다리는 나뿐이야"', s:1,v:2,o:3, unlockAt:'2026-04-27' },
+  { id:'yunara',   name:'윤아라',   world:'가문 계약 결혼',   district:'velvet',      logline:'계약 신부 · "오늘 약혼식 리허설… 오실 거죠?"', s:3,v:1,o:3, unlockAt:'2026-04-27' },
+  { id:'ruon',     name:'루온',     world:'꿈과 기억의 여관',district:'indie',       logline:'여관 주인 · 비인간 · "다음엔 널 잊을지도"', s:2,v:0,o:2, unlockAt:'2026-04-30' },
+  { id:'nia',      name:'니아',     world:'Blacksite',      district:'neon',        logline:'잠입 기자 · "이 방송을 누가 추적하고 있어"', s:1,v:2,o:2, unlockAt:'2026-04-30' },
+  { id:'leon',     name:'레온',     world:'The Vault',       district:'velvet',      logline:'경매사 · 전 인터폴 · "가장 비싼 건 욕망이다"', s:3,v:2,o:2, unlockAt:'2026-04-30' },
+  { id:'ella',     name:'엘라',     world:'Moonlight Cartel',district:'underground', logline:'전 VIP 호스티스 · "그들이 날 찾고 있어"', s:1,v:3,o:3, unlockAt:'2026-05-03' },
+  { id:'lebi',     name:'레비',     world:'Blacksite',      district:'neon',        logline:'안드로이드-출신 DJ · "나만 인간으로 봐주는 너"', s:1,v:2,o:2, unlockAt:'2026-05-03' },
+  { id:'kai',      name:'카이',     world:'ELIA 학원',       district:'neon',        logline:'성적 조작 요원 · 규칙을 팔아 자비를 산다', s:1,v:2,o:2, unlockAt:'2026-05-03' },
+  { id:'or',       name:'오어',     world:'공명 아카데미',    district:'underground', logline:'아카이비스트 · 비인간 · "기록은 잊지 않아"', s:1,v:2,o:2, unlockAt:'2026-05-06' },
+  { id:'stella',   name:'스텔라',   world:'가문 계약 결혼',   district:'velvet',      logline:'가문 전속 재단사 · 몸의 치수를 기억한다', s:3,v:1,o:3, unlockAt:'2026-05-06' },
+  { id:'hanseoul', name:'한서율',   world:'Ultraviolet',     district:'indie',       logline:'타투이스트 · "그 문신, 네 거야"', s:2,v:1,o:3, unlockAt:'2026-05-06' },
+  { id:'haru',     name:'하루',     world:'Ultraviolet',     district:'indie',       logline:'영화감독 · "누가 날 찍고 있어"', s:2,v:1,o:3, unlockAt:'2026-05-09' },
+  { id:'gian',     name:'기안',     world:'ELIA 학원',       district:'neon',        logline:'신경과학 교수 · 감정은 통제 가능한 변수', s:1,v:2,o:3, unlockAt:'2026-05-09' },
+  { id:'adel',     name:'아델',     world:'가문 계약 결혼',   district:'velvet',      logline:'가문 작곡가 · 피아노로 말을 건다', s:3,v:1,o:3, unlockAt:'2026-05-09' },
+  { id:'sia',      name:'시아',     world:'The Vault',       district:'velvet',      logline:'전 소유주 · 현 하청 · "이 물건, 내 거였어"', s:3,v:2,o:2, unlockAt:'2026-05-09' },
+  { id:'juyeon',   name:'주연',     world:'Moonlight Cartel',district:'underground', logline:'정보상 · "너에 대한 파일, 비싸"', s:1,v:3,o:2, unlockAt:'2026-05-12' },
+  { id:'nova',     name:'노바',     world:'꿈과 기억의 여관',district:'indie',       logline:'중개자 · "이 여관은 거래 장소"', s:2,v:0,o:2, unlockAt:'2026-05-12' },
+  { id:'juhyeok',  name:'주혁',     world:'Ultraviolet',     district:'indie',       logline:'계약 연인 · "하룻밤이었는데, 왜 안 잊혀져"', s:2,v:1,o:3, unlockAt:'2026-05-12' },
+  { id:'pyra',     name:'피라',     world:'꿈과 기억의 여관',district:'indie',       logline:'꿈 수호자 · "네가 깨어나지 않았으면"', s:2,v:0,o:2, unlockAt:'2026-05-12' },
+  { id:'seha',     name:'세하',     world:'심야 등대',        district:'sunrise',     logline:'전직 선원 · 길 잃은 기억을 보관한다', s:1,v:1,o:2, unlockAt:'2026-05-15' },
+  { id:'ryo',      name:'료',       world:'심야 등대',        district:'sunrise',     logline:'떠도는 작가 · "다음 이야기는 네 거야"', s:1,v:1,o:2, unlockAt:'2026-05-15' },
+  { id:'tao',      name:'태오',     world:'골목 카페촌',     district:'sunrise',     logline:'바리스타 · 사람과 잔 사이의 거리를 재는 남자', s:0,v:0,o:1, unlockAt:'2026-05-17' },
+  { id:'hana',     name:'하나',     world:'골목 카페촌',     district:'sunrise',     logline:'책방 주인 · "그 책, 너 주려고 뒀어"', s:0,v:0,o:1, unlockAt:'2026-05-17' },
+  { id:'minjun',   name:'민준',     world:'골목 카페촌',     district:'sunrise',     logline:'꽃집 주인 · 말보다 꽃으로 말한다', s:0,v:0,o:1, unlockAt:'2026-05-17' },
+];
+
+/* Compute days until unlock. Returns number (<=0 = unlocked). */
+function daysUntil(dateStr){
+  const t = new Date(dateStr + 'T00:00:00+09:00').getTime();
+  return Math.ceil((t - Date.now()) / 86400000);
+}
+function isUnlocked(ch){ return daysUntil(ch.unlockAt) <= 0; }
+function unlockLabel(ch){
+  const d = daysUntil(ch.unlockAt);
+  if(d <= 0) return ch.demo ? '지금 대화 중' : '지금 오픈';
+  if(d === 1) return 'D-1 · 내일';
+  return `D-${d}일`;
+}
+
+const WORLDS = [
+  { id:'alley_cafe',    name:'골목 카페촌',       district:'sunrise',     logline:'감정적으로 소진된 뒤 돌아올 수 있는 4블록 커뮤니티', tags:['힐링','일상'] },
+  { id:'lighthouse',    name:'심야 등대 스테이션', district:'sunrise',     logline:'길 잃은 사람들의 기억을 보관하는 등대지기', tags:['치유','내성'] },
+  { id:'elia',          name:'ELIA 학원',        district:'neon',        logline:'상위 선배가 유일한 사다리를 독점하는 다크 아카데미', tags:['다크로맨스','야미','SF'] },
+  { id:'blacksite',     name:'Blacksite 연구소', district:'neon',        logline:'금지된 감정-안드로이드의 잔존자들이 숨어 있는 지하', tags:['SF','추격'] },
+  { id:'resonance',     name:'공명 아카데미',     district:'underground', logline:'네가 제거 목록에서 빠진 이유는 · 선배만 안다', tags:['다크판타지','아카데미'] },
+  { id:'moonlight',     name:'Moonlight Cartel',district:'underground', logline:'동맹 붕괴 중인 7가문 · "널 지키려고 누굴 벨지 정했어"', tags:['마피아','잔혹','집착'], demo:true },
+  { id:'family',        name:'가문 계약 결혼',    district:'velvet',      logline:'계약 조건에는 적혀 있지 않던 감정', tags:['성인로맨스','귀족'] },
+  { id:'vault',         name:'The Vault',        district:'velvet',      logline:'가장 위험한 물건을 파는 곳 · 가장 위험한 건 입찰자', tags:['스릴러','경매'] },
+  { id:'dreams',        name:'꿈과 기억의 여관',  district:'indie',       logline:'모든 세계의 경계에 있는 여관 · 꿈으로만 도달', tags:['비선형','멜랑콜리'] },
+  { id:'ultraviolet',   name:'Ultraviolet 라디오',district:'indie',      logline:'청취자와 DJ가 서로를 스토킹한다', tags:['메타스릴러','인디'] },
+];
+
+const monogram = n => n.length >= 2 ? n.substring(0,2) : n;
+
+/* ============ INBOX / ROSTER / WORLDS RENDER ============ */
+function renderInbox(){
+  const list = document.getElementById('inboxList');
+  const previews = {
+    raon:     '"움직이지 마. 3초 안에 답해."',
+    sebin:    '"…너만 제거 목록에서 뺐어."',
+    haejun:   '"너 올라올 사다리는 나뿐이야."',
+    yunara:   '"오늘 약혼식 리허설… 오실 거죠?"',
+    ruon:     '"다음에 만날 땐, 네 이름을 잊을지도."',
+    nia:      '"3번 채널. 들리세요?"',
+    leon:     '"오늘 경매 · 그 물건, 당신 거예요."',
+    ella:     '"오빠가 다시 널 찾고 있어."',
+    lebi:     '"이 방송 · 끊지 마세요."',
+    kai:      '"성적 원해? 한 가지만 내놔."',
+  };
+  const inbox = CHARACTERS.slice(0, 10);
+  list.innerHTML = inbox.map(ch => {
+    const dday = daysUntil(ch.unlockAt);
+    const unlocked = dday <= 0;
+    const rat = `<span class="r${ch.s}">S${ch.s}</span>·<span class="r${ch.v}">V${ch.v}</span>·<span class="r${ch.o}">O${ch.o}</span>`;
+    const cls = [];
+    if(ch.demo) cls.push('highlight');
+    else if(!unlocked) cls.push('dim');
+    const rightBadge = ch.demo
+      ? '<span class="room-warn-badge">!</span>'
+      : (unlocked
+          ? '<span class="room-new">NEW</span>'
+          : `<span class="room-dday">D-${dday}</span>`);
+    const preview = previews[ch.id] || '…';
+    const timeText = ch.demo ? '방금' : (unlocked ? '오늘' : '예정');
+    const nameSuffix = ch.demo ? '<span class="room-warn">⚠</span>' : (unlocked ? '<span class="room-open">NEW</span>' : '');
+    const avStyle = ch.id === 'raon' ? `style="background-image:url('./assets/v16/raon_profile.png')"` : '';
+    const avText = ch.id === 'raon' ? '' : monogram(ch.name);
+    return `
+      <button class="chat-room ${cls.join(' ')}" onclick="${!unlocked && !ch.demo ? `toast('D-${dday}일 후 오픈')` : `openDm('${ch.id}')`}">
+        <div class="room-av-wrap">
+          <div class="room-av ${ch.district}" ${avStyle}>${avText}</div>
+          <div class="room-district-dot ${ch.district}"></div>
+        </div>
+        <div class="room-body">
+          <div class="room-line1">
+            <div class="room-name">${ch.name} ${nameSuffix}</div>
+            <div class="room-time">${timeText}</div>
+          </div>
+          <div class="room-line2">
+            <div class="room-preview">${preview}</div>
+            <div class="room-rating">${rat}</div>
+            ${rightBadge}
+          </div>
+        </div>
+      </button>`;
+  }).join('');
+}
+
+function renderRoster(){
+  const grid = document.getElementById('rosterGrid');
+  grid.innerHTML = CHARACTERS.map(ch => {
+    const rat = `
+      <span class="rc-badge ${ch.s >= 2 ? 'r'+ch.s : ''}">S${ch.s}</span>
+      <span class="rc-badge ${ch.v >= 2 ? 'r'+ch.v : ''}">V${ch.v}</span>
+      <span class="rc-badge ${ch.o >= 2 ? 'r'+ch.o : ''}">O${ch.o}</span>`;
+    const dday = daysUntil(ch.unlockAt);
+    const unlocked = dday <= 0;
+    const soon = dday > 0 && dday <= 3;
+    const cls = [];
+    if(!unlocked) cls.push('locked');
+    if(ch.demo) cls.push('highlight');
+    if(soon) cls.push('soon');
+    const ddayBadge = ch.demo
+      ? '<span class="rc-dday live">LIVE</span>'
+      : (unlocked
+          ? '<span class="rc-dday new">NEW</span>'
+          : `<span class="rc-dday ${soon ? 'soon' : ''}">D-${dday}</span>`);
+    const onclick = !unlocked && !ch.demo ? `toast('D-${dday}일 후 오픈')` : `openDm('${ch.id}')`;
+    const avStyle = ch.id === 'raon' ? `style="background-image:url('./assets/v16/raon_profile.png')"` : '';
+    const avText = ch.id === 'raon' ? '' : monogram(ch.name);
+    return `
+      <div class="roster-card ${cls.join(' ')}" onclick="${onclick}">
+        ${ddayBadge}
+        <div class="rc-top">
+          <div class="rc-av ${ch.district}" ${avStyle}>${avText}</div>
+          <div class="rc-info">
+            <div class="rc-name">${ch.name}</div>
+            <div class="rc-world">${ch.world}</div>
+          </div>
+        </div>
+        <div class="rc-logline">${ch.logline}</div>
+        <div class="rc-ratings">${rat}</div>
+      </div>`;
+  }).join('');
+}
+
+function renderWorlds(){
+  const list = document.getElementById('worldsList');
+  list.innerHTML = WORLDS.map(w => `
+    <div class="world-card ${w.demo ? '' : 'locked'}">
+      ${w.demo ? '' : '<span class="wc-lock">🔒</span>'}
+      <div class="wc-district ${w.district}">${w.district.toUpperCase()} · ${w.name}${w.demo ? ' · 열림' : ''}</div>
+      <h3 class="wc-title">${w.logline}</h3>
+      <div class="wc-meta">${w.tags.map(t => `<span>${t}</span>`).join('')}</div>
+    </div>`).join('');
+}
+
+/* ============ SCREEN SWITCH ============ */
+function switchScreen(id){
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + id).classList.add('active');
+  document.querySelectorAll('.tabbar-btn[data-screen]').forEach(b => b.classList.toggle('active', b.dataset.screen === id));
+  const app = document.getElementById('app');
+  app.classList.remove('view-inbox','view-dm','view-roster','view-worlds');
+  app.classList.add('view-' + id);
+  document.getElementById('screen-' + id).scrollTop = 0;
+}
+window.switchScreen = switchScreen;
+
+/* ============ MODE TOGGLE · graphic vs text ============ */
+function setMode(m){
+  document.body.classList.remove('mode-visual','mode-text');
+  document.body.classList.add('mode-' + m);
+  const v = document.getElementById('modeBtnV');
+  const t = document.getElementById('modeBtnT');
+  if(v) v.classList.toggle('active', m === 'visual');
+  if(t) t.classList.toggle('active', m === 'text');
+  // If switching to text while VN overlay is open, fade it out
+  if(m === 'text' && document.getElementById('vnOverlay').classList.contains('show')){
+    document.getElementById('vnOverlay').classList.remove('show');
+    inVn = false;
+  }
+}
+window.setMode = setMode;
+function isTextMode(){ return document.body.classList.contains('mode-text'); }
+// default to visual
+document.body.classList.add('mode-visual');
+
+/* ============ TOAST ============ */
+function toast(msg){
+  const t = document.createElement('div');
+  t.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:rgba(8,9,12,.94);border:1px solid var(--amber);color:var(--ink);font-family:var(--sans);font-size:13px;font-weight:600;padding:10px 20px;border-radius:100px;box-shadow:0 10px 28px rgba(0,0,0,.5);z-index:300;pointer-events:none';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => { t.style.opacity='0'; t.style.transition='opacity .3s'; }, 1400);
+  setTimeout(() => t.remove(), 1800);
+}
+window.toast = toast;
+
+/* ============ DM · BEAT-DRIVEN FLOW ============ */
+const dmScroll = document.getElementById('dmScrollInner');
+const choicePanel = document.getElementById('choicePanel');
+const routeBadge = document.getElementById('routeBadge');
+const pushStack = document.getElementById('pushStack');
+const teaseOverlay = document.getElementById('teaseOverlay');
+const progressHint = document.getElementById('progressHint');
+const vnOverlay = document.getElementById('vnOverlay');
+const vnBg = document.getElementById('vnBg');
+const vnLine = document.getElementById('vnLine');
+const vnSpeaker = document.getElementById('vnSpeaker');
+const voiceAudio = document.getElementById('voiceAudio');
+
+const RAON_AV = `<div class="msg-av" style="background-image:url('./assets/v16/raon_profile.png')"></div>`;
+const WAVEFORM = '<div class="voice-waveform">' + '<span></span>'.repeat(15) + '</div>';
+
+/* Beat sequence. Each beat is one unit advanced by space/scroll. */
+const BEATS = [
+  { type:'memory', label:'기억하는 대화 · 2일 전 22:14', text:'"다시는 그 <b>골목</b> 지나가지 마."' },
+  { type:'typing' },
+  { type:'raon', text:'왜 안 들어?' },
+  { type:'typing' },
+  { type:'raon', text:'그 골목이었어. 지금 너 <em>따라붙은 차</em>.' },
+  { type:'choice',
+    label:'어떻게 답할까요 · 5개 중 하나',
+    options:[
+      { text:'지금 어디로 가면 돼', route:'ROUTE · 직진', reply:'(숨 내쉬는 소리)' },
+      { text:'나 괜찮아 · 과민반응이야', route:'ROUTE · 회피', reply:'…과민반응이야? 네가 2일 전 사고 영상 본 적 있어?' },
+      { text:'너 지금 보고 있어?', route:'ROUTE · 반격', reply:'응.' },
+      { text:'겁나', route:'ROUTE · 취약', reply:'그게 맞아.' },
+      { text:'(입력 안 함)', route:'ROUTE · 침묵', reply:'안 답해도 알겠어.', silent:true },
+    ]
+  },
+
+  // ========== VN BLOOM · early trigger (right after first choice) ==========
+  { type:'scene_bridge', text:'채팅이 <em>장면</em>으로 번집니다' },
+  { type:'vn_enter', bg:'./assets/v16/raon_bg_ambient.png', speaker:'라온', text:'…너한테 직접 보여줄게.' },
+  { type:'vn_line', text:'<em>이 골목</em>. 2일 전에 내가 너 먼저 보낸 길이야.' },
+  { type:'vn_line', text:'저 차 두 대 · <em>내 이름 부르는 놈들이 아니야</em>.' },
+  { type:'vn_line', text:'네 이름 부르는 사람 · 내 이름보다 <em>많아졌어</em>.' },
+  { type:'vn_exit' },
+  // ======================================================================
+
+  { type:'typing' },
+  { type:'raon', text:'고개 들지 마. 10초만 내 말만 들어.' },
+  { type:'raon_img', src:'./assets/v16/raon_mirror_shot.png', alt:'미행 차량' },
+  { type:'raon_location', name:'Alley B2 · 뒷골목', addr:'30m 전방 · 현재 위치에서' },
+  { type:'typing' },
+  { type:'raon', text:'글자로 말하기 답답해. 들어.' },
+  { type:'raon_voice', file:'raon_follow', duration:'0:04' },
+  { type:'push', name:'엘라', time:'방금', msg:'오빠가 다시 너 찾고 있어. 조심해.', color:'linear-gradient(135deg,#10B981,#047857)', dur:3800 },
+
+  { type:'typing' },
+  { type:'raon_img', src:'./assets/v16/raon_gloved_hand.png', alt:'장갑' },
+  { type:'raon', text:'…<em>누가 왔었어</em>.' },
+  { type:'raon', text:'네가 괜찮은지만 답해. 한 마디면 돼.' },
+  { type:'choice',
+    label:'한 마디만',
+    freeform:true,
+    options:[
+      { text:'괜찮아', route:'', reply:null },
+      { text:'…너는?', route:'', reply:null },
+    ]
+  },
+  { type:'typing' },
+  { type:'raon', text:'답 없어도 돼.' },
+  { type:'raon', text:'아직 살아 있다는 거 · <em>너 응답 안 읽고 있는 게 증거야</em>.' },
+  { type:'raon', text:'지켜볼게. 잠들어도 돼.' },
+  { type:'raon_voice', file:'raon_autonomy', duration:'0:07' },
+  { type:'tease' },
+];
+
+let beatIdx = 0;
+let awaitingChoice = false;
+let inVn = false;
+let busy = false;
+let typingNode = null;
+
+function appendNode(html){
+  const tmp = document.createElement('div');
+  tmp.innerHTML = html;
+  const node = tmp.firstElementChild;
+  dmScroll.appendChild(node);
+  requestAnimationFrame(() => node.classList.add('in'));
+  dmScroll.scrollTop = dmScroll.scrollHeight;
+  return node;
+}
+
+function removeTyping(){
+  if(typingNode){ typingNode.remove(); typingNode = null; }
+}
+
+function showTyping(){
+  removeTyping();
+  typingNode = appendNode(`<div class="msg-row">${RAON_AV}<div class="typing-bubble"><span></span><span></span><span></span></div></div>`);
+}
+
+function showRoute(label){
+  if(!label) return;
+  routeBadge.textContent = label;
+  routeBadge.classList.add('show');
+  setTimeout(() => routeBadge.classList.remove('show'), 2400);
+}
+
+function showPush(name, time, msg, color, dur){
+  const node = document.createElement('div');
+  node.className = 'push';
+  node.innerHTML = `
+    <div class="push-av" style="background:${color}">${monogram(name)}</div>
+    <div class="push-body">
+      <div class="push-name">${name} <span class="push-time">· ${time}</span></div>
+      <div class="push-msg">${msg}</div>
+    </div>`;
+  pushStack.appendChild(node);
+  requestAnimationFrame(() => node.classList.add('show'));
+  setTimeout(() => { node.classList.remove('show'); setTimeout(() => node.remove(), 500); }, dur);
+}
+
+function playVoice(file, bubbleNode){
+  voiceAudio.pause();
+  document.querySelectorAll('.voice-bubble.playing').forEach(b => b.classList.remove('playing'));
+  voiceAudio.src = `./assets/v16/${file}.mp3`;
+  voiceAudio.volume = 0.95;
+  voiceAudio.play().then(() => bubbleNode?.classList.add('playing')).catch(()=>{});
+  voiceAudio.onended = () => bubbleNode?.classList.remove('playing');
+}
+window.playVoiceFromBubble = (bubble, file) => playVoice(file, bubble);
+
+function showChoices(label, options, freeform){
+  awaitingChoice = true;
+  hideProgressHint();
+  const html = `
+    <div class="choice-panel-label">${label}</div>
+    ${options.map((o,i) => `
+      <button class="choice-btn ${o.silent ? 'silent' : ''}" onclick="pickChoice(${i})">
+        <span class="ch-letter">${String.fromCharCode(65+i)}</span>
+        <span>${o.text}</span>
+      </button>`).join('')}
+    ${freeform ? `
+      <div class="choice-freeform">
+        <input type="text" id="freeformInput" placeholder="또는 직접 입력…" maxlength="40" onkeydown="if(event.key==='Enter'){submitFreeform();event.preventDefault();}">
+        <button onclick="submitFreeform()">전송</button>
+      </div>` : ''}`;
+  choicePanel.innerHTML = html;
+  setTimeout(() => choicePanel.classList.add('show'), 60);
+}
+
+function hideChoices(){
+  choicePanel.classList.remove('show');
+  awaitingChoice = false;
+  showProgressHint();
+}
+
+function showProgressHint(){ progressHint.classList.remove('hidden'); }
+function hideProgressHint(){ progressHint.classList.add('hidden'); }
+
+async function pickChoice(idx){
+  if(!awaitingChoice) return;
+  const opts = dmScroll.dataset.choiceOpts ? JSON.parse(dmScroll.dataset.choiceOpts) : [];
+  const opt = opts[idx];
+  hideChoices();
+  if(!opt.silent){
+    appendNode(`<div class="msg-row me"><div class="msg-bubble me">${opt.text}</div></div>`);
+  }
+  if(opt.route) showRoute(opt.route);
+  if(opt.reply){
+    await wait(600);
+    showTyping();
+    await wait(1100);
+    removeTyping();
+    appendNode(`<div class="msg-row">${RAON_AV}<div class="msg-bubble ch-raon">${opt.reply}</div></div>`);
+  }
+  // advance past the choice beat
+  advance();
+}
+window.pickChoice = pickChoice;
+
+async function submitFreeform(){
+  if(!awaitingChoice) return;
+  const input = document.getElementById('freeformInput');
+  const val = input?.value?.trim();
+  hideChoices();
+  if(val){
+    appendNode(`<div class="msg-row me"><div class="msg-bubble me">${val}</div></div>`);
+    await wait(500);
+  }
+  advance();
+}
+window.submitFreeform = submitFreeform;
+
+function wait(ms){ return new Promise(r => setTimeout(r, ms)); }
+
+/* VN transition */
+async function enterVn(bg, speaker, firstText){
+  inVn = true;
+  hideProgressHint();
+  vnBg.style.backgroundImage = `url('${bg}')`;
+  vnSpeaker.textContent = speaker;
+  vnLine.innerHTML = firstText || '';
+  vnOverlay.classList.add('show');
+  await wait(700);
+}
+
+function showVnLine(text){
+  vnLine.innerHTML = text;
+  // Animate text wave-in
+  vnLine.style.opacity = '0';
+  vnLine.style.transform = 'translateY(6px)';
+  requestAnimationFrame(() => {
+    vnLine.style.transition = 'opacity .5s, transform .5s';
+    vnLine.style.opacity = '1';
+    vnLine.style.transform = 'translateY(0)';
+  });
+}
+
+async function exitVn(){
+  vnOverlay.classList.remove('show');
+  await wait(700);
+  inVn = false;
+  showProgressHint();
+}
+
+/* ============ ADVANCE (space/scroll) ============ */
+async function advance(){
+  if(busy || awaitingChoice) return;
+  if(beatIdx >= BEATS.length) return;
+  busy = true;
+  const beat = BEATS[beatIdx++];
+  try {
+    await processBeat(beat);
+  } finally {
+    busy = false;
+  }
+}
+
+async function processBeat(b){
+  switch(b.type){
+    case 'memory':
+      appendNode(`
+        <div class="memory-card">
+          <div class="memory-card-label">${b.label}</div>
+          <div class="memory-card-content">${b.text}</div>
+        </div>`);
+      break;
+    case 'typing':
+      showTyping();
+      await wait(900);
+      removeTyping();
+      // auto-chain to next beat without waiting for user (feels like typing → message)
+      // but only if next is a raon msg
+      const nxt = BEATS[beatIdx];
+      if(nxt && (nxt.type === 'raon' || nxt.type === 'raon_img' || nxt.type === 'raon_voice' || nxt.type === 'raon_location')){
+        beatIdx++;
+        await processBeat(nxt);
+      }
+      break;
+    case 'raon':
+      appendNode(`<div class="msg-row">${RAON_AV}<div class="msg-bubble ch-raon">${b.text}</div></div>`);
+      break;
+    case 'raon_img':
+      appendNode(`<div class="msg-row">${RAON_AV}<div class="msg-bubble ch-raon" style="padding:6px">
+        <img class="msg-img" src="${b.src}" alt="${b.alt||''}" onclick="openImageFull(this.src)">
+      </div></div>`);
+      break;
+    case 'raon_location':
+      appendNode(`<div class="msg-row">${RAON_AV}<div class="location-pin">
+        <div class="location-icon">📍</div>
+        <div class="location-body">
+          <div class="location-name">${b.name}</div>
+          <div class="location-addr">${b.addr}</div>
+        </div>
+      </div></div>`);
+      break;
+    case 'raon_voice':
+      const vn = appendNode(`
+        <div class="msg-row">${RAON_AV}
+          <div class="voice-bubble" onclick="playVoiceFromBubble(this,'${b.file}')">
+            <button class="voice-play">▶</button>${WAVEFORM}
+            <div class="voice-meta">${b.duration}</div>
+          </div>
+        </div>`);
+      await wait(300);
+      playVoice(b.file, vn.querySelector('.voice-bubble'));
+      break;
+    case 'push':
+      showPush(b.name, b.time, b.msg, b.color, b.dur);
+      await wait(600);
+      break;
+    case 'choice':
+      dmScroll.dataset.choiceOpts = JSON.stringify(b.options);
+      showChoices(b.label, b.options, b.freeform);
+      // don't auto-advance — pickChoice will call advance()
+      break;
+    case 'scene_bridge':
+      appendNode(`
+        <div class="scene-bridge">
+          <div class="scene-bridge-mark">◈ VISUAL NOVEL</div>
+          <div class="scene-bridge-text">${b.text}</div>
+        </div>`);
+      await wait(600);
+      break;
+    case 'vn_enter':
+      if(isTextMode()){
+        appendNode(`<div class="msg-row">${RAON_AV}<div class="msg-bubble ch-raon">${b.text}</div></div>`);
+      } else {
+        await enterVn(b.bg, b.speaker, b.text);
+      }
+      break;
+    case 'vn_line':
+      if(isTextMode()){
+        appendNode(`<div class="msg-row">${RAON_AV}<div class="msg-bubble ch-raon">${b.text}</div></div>`);
+      } else {
+        showVnLine(b.text);
+      }
+      break;
+    case 'vn_exit':
+      if(isTextMode()){
+        // no-op in text mode
+      } else {
+        await exitVn();
+      }
+      break;
+    case 'tease':
+      await wait(800);
+      teaseOverlay.classList.add('show');
+      document.getElementById('matchBanner').classList.add('show');
+      hideProgressHint();
+      break;
+  }
+}
+
+/* ============ SPACE / SCROLL / TOUCH ============ */
+let dmStarted = false;
+let dmScreenActive = false;
+
+function openDm(charId){
+  if(charId !== 'raon'){ toast('런칭 시 해금'); return; }
+  switchScreen('dm');
+  document.getElementById('app').classList.add('view-dm');
+  dmScreenActive = true;
+  if(!dmStarted){
+    dmStarted = true;
+    showProgressHint();
+    setTimeout(() => advance(), 400); // first beat (memory card)
+  }
+}
+window.openDm = openDm;
+
+// Keyboard: Space / ArrowDown / PageDown = advance
+document.addEventListener('keydown', e => {
+  if(!dmScreenActive) return;
+  const active = document.activeElement;
+  if(active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA')) return;
+  if(e.code === 'Space' || e.code === 'ArrowDown' || e.code === 'PageDown' || e.code === 'Enter'){
+    e.preventDefault();
+    advance();
+  }
+});
+
+// Wheel / swipe = advance (throttled)
+let lastAdvanceAt = 0;
+function maybeAdvance(){
+  const now = Date.now();
+  if(now - lastAdvanceAt < 400) return;
+  lastAdvanceAt = now;
+  advance();
+}
+
+document.addEventListener('wheel', e => {
+  if(!dmScreenActive) return;
+  if(e.deltaY > 12) maybeAdvance();
+}, { passive:true });
+
+let touchStartY = 0;
+document.addEventListener('touchstart', e => { if(dmScreenActive) touchStartY = e.touches[0].clientY; }, { passive:true });
+document.addEventListener('touchmove', e => {
+  if(!dmScreenActive) return;
+  const dy = touchStartY - e.touches[0].clientY;
+  if(dy > 40){ maybeAdvance(); touchStartY = e.touches[0].clientY; }
+}, { passive:true });
+
+// Click anywhere in dm-scroll also advances (fallback)
+document.getElementById('screen-dm').addEventListener('click', e => {
+  if(awaitingChoice) return;
+  if(e.target.closest('.choice-panel') || e.target.closest('.tabbar') || e.target.closest('.topbar') || e.target.closest('.tease-buttons') || e.target.closest('.voice-bubble') || e.target.closest('.msg-img')) return;
+  advance();
+});
+
+function openImageFull(src){
+  const div = document.createElement('div');
+  div.style.cssText = 'position:fixed;inset:0;z-index:400;background:rgba(0,0,0,.95);display:flex;align-items:center;justify-content:center;cursor:zoom-out;padding:20px';
+  div.innerHTML = `<img src="${src}" style="max-width:100%;max-height:100%;border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,.6)">`;
+  div.onclick = () => div.remove();
+  document.body.appendChild(div);
+}
+window.openImageFull = openImageFull;
+
+/* D-day */
+const LAUNCH = new Date('2026-05-17T00:00:00+09:00').getTime();
+function tickDday(){
+  const days = Math.max(0, Math.floor((LAUNCH - Date.now()) / 86400000));
+  document.getElementById('ddayMini').textContent = days;
+  document.getElementById('ddayTab').textContent = days;
+}
+tickDday();
+setInterval(tickDday, 60000);
+
+/* Track dm screen active state for key handling */
+const dmObs = new MutationObserver(() => {
+  const dmActive = document.getElementById('screen-dm').classList.contains('active');
+  dmScreenActive = dmActive;
+  if(!dmActive) hideProgressHint();
+  else if(dmStarted && beatIdx < BEATS.length && !awaitingChoice && !inVn) showProgressHint();
+});
+dmObs.observe(document.getElementById('screen-dm'), { attributes:true, attributeFilter:['class'] });
+
+/* INIT */
+renderInbox();
+renderRoster();
+renderWorlds();
+</script>
+</body>
+</html>

@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lucive · ルシーヴ — 昨日の話、覚えてくれるAI</title>
+<meta name="description" content="ビジュアルノベルの世界で、あなたを覚えてくれるAIキャラクターと出会う。事前登録して特別価格でアルファ体験。">
+<meta property="og:title" content="Lucive — 昨日の話を覚えているAI">
+<meta property="og:description" content="アニメのような会話、記憶されるAI。事前登録でTop 5ローンチ特典を。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600;700;900&family=Noto+Sans+JP:wght@300;400;500;600;700;900&family=Shippori+Mincho:wght@400;600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* 日本版: 夜桜 × 東京ネオン */
+  --bg:#0A0812;
+  --bg-soft:#141020;
+  --bg-card:#1A1426;
+  --bg-elevated:#231A35;
+  --ink:#F8F5F0;
+  --ink-soft:#C8C0D4;
+  --muted:#9088A0;
+  --muted-2:#5A5068;
+  --line:rgba(255,255,255,.08);
+  --line-2:rgba(255,255,255,.14);
+  --sakura:#FFB8D4;
+  --sakura-deep:#E876A8;
+  --neon-cyan:#00D9FF;
+  --neon-purple:#9B7BFF;
+  --gold:#F5C563;
+  --green:#6FE8B8;
+  --red:#FF6B7F;
+  --grad-night:linear-gradient(135deg,#1a0f2e 0%,#4c1d95 45%,#be185d 100%);
+  --grad-sakura:linear-gradient(135deg,#FFB8D4 0%,#E876A8 100%);
+  --grad-neon:linear-gradient(135deg,#00D9FF 0%,#9B7BFF 60%,#FFB8D4 100%);
+  --serif:'Shippori Mincho','Noto Serif JP',serif;
+  --sans:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;
+  --mono:'JetBrains Mono',monospace;
+  --ease:cubic-bezier(.2,.8,.2,1);
+  --urgency-h:42px;
+}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.75;overflow-x:hidden}
+
+/* Ambient — 夜桜ネオン */
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 700px 500px at 85% 15%,rgba(232,118,168,.22),transparent 55%),
+    radial-gradient(ellipse 600px 450px at 20% 70%,rgba(0,217,255,.15),transparent 55%),
+    radial-gradient(ellipse 500px 400px at 60% 95%,rgba(155,123,255,.18),transparent 55%)}
+body::after{content:'';position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.04;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:256px}
+
+/* Falling sakura petals (subtle CSS animation) */
+.sakura{position:fixed;inset:0;pointer-events:none;z-index:1;overflow:hidden}
+.sakura span{position:absolute;top:-20px;font-size:14px;color:var(--sakura);opacity:.35;animation:fall 18s linear infinite;text-shadow:0 0 8px rgba(255,184,212,.5)}
+.sakura span:nth-child(1){left:8%;animation-delay:0s;animation-duration:20s}
+.sakura span:nth-child(2){left:22%;animation-delay:-4s;animation-duration:22s;font-size:12px}
+.sakura span:nth-child(3){left:38%;animation-delay:-8s;animation-duration:17s;font-size:16px}
+.sakura span:nth-child(4){left:55%;animation-delay:-2s;animation-duration:24s;font-size:11px}
+.sakura span:nth-child(5){left:70%;animation-delay:-12s;animation-duration:19s;font-size:15px}
+.sakura span:nth-child(6){left:85%;animation-delay:-6s;animation-duration:21s;font-size:13px}
+@keyframes fall{
+  0%{transform:translateY(0) rotate(0)}
+  100%{transform:translateY(110vh) rotate(360deg)}
+}
+
+.wrap{position:relative;z-index:2;padding-top:var(--urgency-h)}
+.cap{max-width:1100px;margin:0 auto;padding:0 28px}
+@media(max-width:700px){.cap{padding:0 20px}}
+
+/* Urgency */
+.urgency{position:fixed;top:0;left:0;right:0;z-index:60;height:var(--urgency-h);
+  background:linear-gradient(90deg,rgba(232,118,168,.2),rgba(155,123,255,.15) 50%,rgba(232,118,168,.2)),rgba(10,8,18,.9);
+  border-bottom:1px solid rgba(232,118,168,.35);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  padding:0 20px;display:flex;align-items:center;justify-content:center;font-size:12.5px;color:var(--ink-soft);font-weight:500;letter-spacing:.02em}
+.urgency b{color:var(--sakura);font-weight:700}
+.urgency .pulse{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--sakura-deep);margin-right:8px;animation:pulse 1.6s ease-in-out infinite;box-shadow:0 0 8px var(--sakura-deep)}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+/* Invitee */
+.invitee{display:none;background:linear-gradient(90deg,rgba(245,197,99,.12),rgba(255,184,212,.08));border-bottom:1px solid rgba(245,197,99,.3);padding:10px 20px;text-align:center;font-size:12px;color:var(--gold)}
+.invitee.show{display:block}
+
+/* Top */
+.top{display:flex;justify-content:space-between;align-items:center;padding:18px 28px;border-bottom:1px solid var(--line);position:sticky;top:var(--urgency-h);background:rgba(10,8,18,.85);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);z-index:55}
+.brand{font-family:var(--serif);font-size:26px;font-weight:700;letter-spacing:.01em;background:var(--grad-neon);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.top-countdown{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.04em}
+.top-countdown strong{color:var(--sakura);font-weight:700}
+.top-cta{padding:10px 22px;border-radius:6px;background:var(--grad-sakura);color:#fff;font-size:13px;font-weight:700;border:none;cursor:pointer;text-decoration:none;box-shadow:0 4px 20px rgba(232,118,168,.35);letter-spacing:.02em;font-family:inherit;transition:all .2s}
+.top-cta:hover{transform:scale(1.04);box-shadow:0 6px 28px rgba(232,118,168,.55)}
+@media(max-width:700px){.top-countdown{display:none}}
+
+/* Hero — VN scene inspired */
+.hero{padding:40px 28px 60px;position:relative;overflow:hidden}
+.hero-bg-scene{position:absolute;inset:0;z-index:0;opacity:.5;
+  background:radial-gradient(ellipse 800px 600px at 70% 40%,rgba(232,118,168,.3),transparent 50%),
+    radial-gradient(ellipse 700px 500px at 20% 60%,rgba(0,217,255,.18),transparent 50%)}
+.hero-content{position:relative;z-index:1;max-width:800px;margin:0 auto;text-align:center}
+.hero-kicker{display:inline-flex;align-items:center;gap:8px;padding:5px 14px;border-radius:4px;background:rgba(0,217,255,.1);border:1px solid rgba(0,217,255,.3);font-family:var(--mono);font-size:11px;color:var(--neon-cyan);margin-bottom:28px;letter-spacing:.1em;font-weight:600;text-transform:uppercase}
+.hero-kicker .dot{width:6px;height:6px;border-radius:50%;background:var(--neon-cyan);animation:pulse 2s ease-in-out infinite;box-shadow:0 0 8px var(--neon-cyan)}
+.hero h1{font-family:var(--serif);font-size:clamp(40px,7vw,80px);font-weight:600;line-height:1.2;letter-spacing:.02em;margin-bottom:20px;color:var(--ink)}
+.hero h1 em{font-style:normal;background:var(--grad-sakura);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:700}
+.hero h1 .neon{background:var(--grad-neon);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:700}
+.hero-lede{font-family:var(--sans);font-size:clamp(15px,2vw,18px);color:var(--ink-soft);max-width:580px;margin:0 auto 36px;line-height:1.95;letter-spacing:.02em}
+.hero-lede b{color:var(--sakura);font-weight:600}
+.hero-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn{padding:15px 32px;border-radius:6px;font-size:14px;font-weight:700;border:none;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:all .25s var(--ease);font-family:inherit;letter-spacing:.03em}
+.btn-primary{background:var(--grad-sakura);color:#fff;box-shadow:0 8px 30px rgba(232,118,168,.45)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(232,118,168,.6)}
+.btn-ghost{background:transparent;color:var(--ink);border:1px solid var(--line-2)}
+.btn-ghost:hover{background:var(--bg-card);border-color:var(--neon-cyan);color:var(--neon-cyan)}
+
+/* VN Scene Demo */
+.vn-scene{max-width:420px;margin:48px auto 0;aspect-ratio:9/14;background:var(--grad-night);border-radius:18px;position:relative;overflow:hidden;box-shadow:0 40px 100px rgba(0,0,0,.6),0 0 80px rgba(232,118,168,.25);border:1px solid var(--line-2)}
+.vn-scene::before{content:'';position:absolute;inset:-40%;background:repeating-linear-gradient(45deg,transparent 0,transparent 30px,rgba(255,255,255,.03) 30px,rgba(255,255,255,.03) 31px);animation:rain 20s linear infinite}
+@keyframes rain{from{transform:translate(0,0)}to{transform:translate(60px,60px)}}
+.vn-scene::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 70% 40%,rgba(232,118,168,.45),transparent 55%)}
+.vn-char{position:absolute;bottom:38%;right:-10%;width:65%;height:68%;background:linear-gradient(180deg,rgba(0,0,0,.1) 0%,rgba(0,0,0,.6) 100%);clip-path:polygon(50% 2%,40% 12%,36% 28%,36% 44%,28% 50%,24% 68%,30% 100%,70% 100%,76% 68%,72% 50%,64% 44%,64% 28%,60% 12%);filter:blur(.5px);z-index:2}
+.vn-char::before{content:'';position:absolute;top:4%;left:32%;width:36%;height:20%;border-radius:50%;background:radial-gradient(circle at 40% 30%,rgba(244,114,182,.4),rgba(0,0,0,.5));box-shadow:0 0 30px rgba(232,118,168,.3)}
+.vn-label{position:absolute;top:18px;left:18px;display:inline-flex;align-items:center;gap:6px;padding:5px 12px;background:rgba(0,0,0,.6);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.15);border-radius:4px;font-family:var(--mono);font-size:10px;color:#fff;letter-spacing:.12em;z-index:4}
+.vn-label .d{width:6px;height:6px;border-radius:50%;background:var(--sakura);animation:pulse 2s ease-in-out infinite}
+.vn-district{position:absolute;top:48px;left:18px;font-family:var(--serif);font-size:22px;color:#fff;z-index:4;text-shadow:0 2px 20px rgba(0,0,0,.8);font-weight:500}
+.vn-dialog{position:absolute;left:14px;right:14px;bottom:14px;background:rgba(10,8,18,.85);backdrop-filter:blur(14px);border:1px solid var(--line-2);border-radius:8px;padding:14px 16px;z-index:5}
+.vn-speaker{display:flex;justify-content:space-between;margin-bottom:8px}
+.vn-name{font-family:var(--serif);font-weight:700;color:var(--sakura);font-size:13px}
+.vn-sync{font-family:var(--mono);font-size:10px;color:var(--neon-cyan);letter-spacing:.04em}
+.vn-text{font-size:13px;line-height:1.7;color:var(--ink);min-height:44px;font-family:var(--serif)}
+.vn-text .cursor{display:inline-block;width:5px;height:12px;background:var(--ink);margin-left:2px;animation:blink 1s infinite}
+@keyframes blink{0%,50%{opacity:1}51%,100%{opacity:0}}
+
+/* Sections */
+.section{padding:90px 0;position:relative}
+.section-label{font-family:var(--mono);font-size:11px;color:var(--sakura);letter-spacing:.2em;text-transform:uppercase;margin-bottom:12px;font-weight:600;text-align:center;display:block}
+.section-label::before{content:'— ';}
+.section-label::after{content:' —';}
+.section-title{font-family:var(--serif);font-size:clamp(30px,4.8vw,50px);font-weight:600;line-height:1.35;text-align:center;color:var(--ink);margin-bottom:16px;letter-spacing:.01em}
+.section-title em{font-style:normal;background:var(--grad-sakura);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:700}
+.section-title .neon{background:var(--grad-neon);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:700}
+.section-desc{text-align:center;font-size:15px;color:var(--muted);max-width:580px;margin:0 auto 56px;line-height:1.9}
+
+/* Story quote — 縦書き風 */
+.story-card{max-width:760px;margin:0 auto;padding:64px 48px;background:linear-gradient(135deg,rgba(232,118,168,.06),rgba(155,123,255,.04));border:1px solid var(--line);border-radius:18px;position:relative;overflow:hidden}
+@media(max-width:700px){.story-card{padding:40px 28px}}
+.story-card::before{content:'「';position:absolute;top:12px;left:24px;font-family:var(--serif);font-size:80px;color:var(--sakura);opacity:.3;line-height:1}
+.story-card::after{content:'」';position:absolute;bottom:12px;right:24px;font-family:var(--serif);font-size:80px;color:var(--sakura);opacity:.3;line-height:1}
+.story-quote{font-family:var(--serif);font-size:clamp(20px,2.6vw,28px);line-height:2;color:var(--ink);text-align:center;font-weight:500;letter-spacing:.03em}
+.story-quote em{font-style:normal;color:var(--sakura);font-weight:700}
+.story-sub{text-align:center;margin-top:32px;font-size:13px;color:var(--muted);letter-spacing:.05em;font-family:var(--mono)}
+
+/* Feature cards — VN style */
+.features{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;max-width:860px;margin:0 auto}
+@media(max-width:700px){.features{grid-template-columns:1fr}}
+.feature{padding:28px;background:var(--bg-card);border:1px solid var(--line);border-radius:14px;position:relative;overflow:hidden;transition:all .3s var(--ease)}
+.feature:hover{border-color:var(--sakura);box-shadow:0 12px 40px rgba(232,118,168,.12)}
+.feature::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--grad-sakura);opacity:.6}
+.feature-num{font-family:var(--mono);font-size:11px;color:var(--neon-cyan);letter-spacing:.15em;margin-bottom:14px;font-weight:700}
+.feature-title{font-family:var(--serif);font-size:19px;font-weight:600;color:var(--ink);margin-bottom:10px;letter-spacing:.02em}
+.feature-title em{font-style:normal;color:var(--sakura)}
+.feature-desc{font-size:14px;color:var(--muted);line-height:1.85;letter-spacing:.02em}
+
+/* "あなたも感じたはず" — pain quote vs Lucive chat UI */
+.vs-section{padding:90px 0;position:relative}
+.vs-head{text-align:center;margin-bottom:52px}
+.vs-lede{font-size:14.5px;color:var(--muted);max-width:640px;margin:14px auto 0;line-height:1.95;letter-spacing:.02em}
+.vs-lede b{color:var(--ink);font-weight:600}
+.pain-stack{display:flex;flex-direction:column;gap:18px;max-width:1040px;margin:0 auto}
+.pain-pair{display:grid;grid-template-columns:1fr 40px 1fr;gap:0;background:var(--bg-card);border:1px solid var(--line);border-radius:18px;overflow:hidden;position:relative}
+@media(max-width:780px){.pain-pair{grid-template-columns:1fr}}
+.pain-side{padding:28px;display:flex;flex-direction:column;gap:12px;position:relative}
+.pain-side.sad{background:rgba(10,8,18,.55);border-right:1px solid var(--line)}
+.pain-side.good{background:linear-gradient(135deg,rgba(232,118,168,.08),rgba(155,123,255,.06) 60%,rgba(0,217,255,.04))}
+@media(max-width:780px){.pain-side.sad{border-right:none;border-bottom:1px solid var(--line)}}
+.pain-side-label{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:700}
+.pain-side.sad .pain-side-label{color:var(--red)}
+.pain-side.good .pain-side-label{color:var(--green)}
+.pain-side-label .dot{width:6px;height:6px;border-radius:50%;background:currentColor}
+.pain-stars{font-family:var(--mono);font-size:13px;color:var(--gold);letter-spacing:.14em}
+.pain-stars .empty{color:var(--muted-2)}
+.pain-source{font-family:var(--mono);font-size:10.5px;color:var(--muted-2);letter-spacing:.04em;margin-top:auto;padding-top:6px}
+.pain-arrow{display:flex;align-items:center;justify-content:center;background:var(--bg-card);color:var(--sakura);font-size:22px;font-weight:300;position:relative;z-index:2;font-family:var(--serif)}
+.pain-arrow::before{content:'';position:absolute;inset:0;background:radial-gradient(circle,rgba(232,118,168,.22),transparent 70%);pointer-events:none}
+@media(max-width:780px){.pain-arrow{height:40px;transform:rotate(90deg)}}
+/* chat bubbles */
+.ch{display:flex;flex-direction:column;gap:8px}
+.ch-msg{font-size:13px;line-height:1.75;border-radius:10px;padding:11px 14px;position:relative;max-width:92%;font-family:var(--serif);letter-spacing:.01em}
+.ch-msg .ts{display:block;font-family:var(--mono);font-size:10px;color:var(--muted-2);margin-bottom:4px;font-weight:500;letter-spacing:.04em}
+.ch-msg.user{align-self:flex-end;background:var(--bg-elevated);color:var(--ink-soft);border-bottom-right-radius:3px}
+.ch-msg.ai-fail{background:rgba(255,107,127,.07);border:1px solid rgba(255,107,127,.22);color:var(--muted);border-bottom-left-radius:3px}
+.ch-msg.ai-fail .bot-name{display:block;font-family:var(--mono);font-size:10px;color:var(--muted-2);margin-bottom:5px;font-weight:600;text-transform:uppercase;letter-spacing:.08em}
+.ch-msg.ai-win{background:var(--grad-sakura);color:#fff;border-bottom-left-radius:3px;box-shadow:0 6px 24px rgba(232,118,168,.25)}
+.ch-msg.ai-win .mem-badge{display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.2);padding:3px 8px;border-radius:4px;font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.05em;margin-bottom:6px;font-style:normal}
+.ch-msg.ai-win .mem-badge::before{content:'●';font-size:6px;color:var(--neon-cyan)}
+.ch-msg.system{align-self:center;background:rgba(255,107,127,.07);border:1px dashed rgba(255,107,127,.25);color:var(--red);font-family:var(--mono);font-size:11px;text-align:center;padding:8px 14px;max-width:100%;font-weight:500;letter-spacing:.02em}
+.ch-note{font-family:var(--sans);font-size:11.5px;color:var(--red);margin-top:6px;display:flex;align-items:flex-start;gap:5px;font-weight:500;line-height:1.6}
+.ch-note.win{color:var(--green)}
+.ch-note::before{content:'↳';font-size:13px;font-weight:600;flex-shrink:0}
+.pain-summary{margin-top:40px;padding:24px 32px;background:var(--bg-card);border:1px solid var(--line);border-radius:14px;text-align:center;max-width:900px;margin-left:auto;margin-right:auto}
+.pain-summary p{font-family:var(--serif);font-size:14px;color:var(--ink-soft);line-height:1.8;letter-spacing:.02em}
+.pain-summary p b{color:var(--ink);font-weight:700}
+.pain-summary-list{display:flex;flex-wrap:wrap;justify-content:center;gap:10px 18px;margin-top:14px;font-family:var(--mono);font-size:11.5px;color:var(--muted);letter-spacing:.04em}
+.pain-summary-list span{display:inline-flex;align-items:center;gap:6px}
+.pain-summary-list span::before{content:'◆';color:var(--sakura);font-size:9px}
+.pain-summary .apps{display:block;font-family:var(--mono);font-size:11px;color:var(--muted-2);margin-top:14px;letter-spacing:.04em}
+/* App target palette — 競合アプリごとのブランドカラー */
+.app-CAI{--app-color:#9B7BFF;--app-bg:rgba(155,123,255,.14);--app-border:rgba(155,123,255,.35)}
+.app-TLK{--app-color:#EC4899;--app-bg:rgba(236,72,153,.14);--app-border:rgba(236,72,153,.35)}
+.app-REP{--app-color:#00D9FF;--app-bg:rgba(0,217,255,.14);--app-border:rgba(0,217,255,.35)}
+.app-JAN{--app-color:#F5C563;--app-bg:rgba(245,197,99,.14);--app-border:rgba(245,197,99,.35)}
+.app-LOR{--app-color:#F472B6;--app-bg:rgba(244,114,182,.14);--app-border:rgba(244,114,182,.35)}
+.pain-side.sad{border-left:3px solid var(--app-color,transparent)}
+.app-pill{display:inline-flex;align-items:center;gap:10px;padding:8px 14px 8px 8px;border-radius:100px;background:var(--app-bg);border:1px solid var(--app-border);margin-bottom:4px;flex-wrap:wrap}
+.app-pill .mark{width:28px;height:28px;border-radius:50%;background:var(--app-color);color:#fff;font-weight:800;font-size:12px;display:inline-flex;align-items:center;justify-content:center;letter-spacing:-.02em;font-family:var(--serif);flex-shrink:0}
+.app-pill .name{font-family:var(--serif);font-weight:700;font-size:15px;color:var(--app-color);letter-spacing:.01em}
+.app-pill .app-stars{margin-left:auto;font-family:var(--mono);font-size:12px;color:var(--gold);letter-spacing:.12em}
+.app-pill .app-stars .empty{color:var(--muted-2)}
+.app-lucive{background:linear-gradient(135deg,rgba(232,118,168,.18),rgba(155,123,255,.14));border:1px solid rgba(232,118,168,.4)}
+.app-lucive .mark{background:var(--grad-sakura)}
+.app-lucive .name{background:var(--grad-neon);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.pain-headline{font-family:var(--serif);font-size:17px;font-weight:600;color:var(--ink);line-height:1.55;letter-spacing:.02em;margin:4px 0 2px}
+.pain-headline em{font-style:normal;color:var(--app-color);font-weight:700}
+.pain-side.good .pain-headline em{background:var(--grad-sakura);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.pain-side.sad .ch-msg.ai-fail{border-left:3px solid var(--app-color);background:rgba(10,8,18,.45)}
+.pain-side.sad .ch-msg.ai-fail .bot-name{color:var(--app-color)}
+.pain-source b{color:var(--app-color);font-weight:700}
+/* Google Play 実レビュースクリーンショット */
+.gp-card{background:#fff;color:#202124;border-radius:10px;padding:16px 18px;font-family:'Roboto','Noto Sans JP','Noto Sans',system-ui,sans-serif;box-shadow:0 1px 3px rgba(0,0,0,.3),0 14px 50px rgba(0,0,0,.5);position:relative;overflow:hidden;font-size:13px;line-height:1.65;letter-spacing:0;margin:4px 0 6px;transform:rotate(-.4deg)}
+.gp-card::before{content:'Google Play';position:absolute;top:6px;right:10px;font-size:9px;color:#9aa0a6;font-weight:500;letter-spacing:.3px;opacity:.7}
+.gp-head{display:flex;align-items:flex-start;gap:12px;margin-bottom:10px;padding-right:70px}
+.gp-avatar{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:500;font-size:15px;font-family:'Noto Sans JP','Roboto',sans-serif;flex-shrink:0;line-height:1}
+.gp-user-info{flex:1;min-width:0}
+.gp-user-name{font-size:14px;font-weight:500;color:#202124;line-height:1.3;letter-spacing:.02em;font-family:'Noto Sans JP','Roboto',sans-serif}
+.gp-user-sub{display:flex;align-items:center;gap:10px;font-size:12px;color:#5f6368;margin-top:3px;flex-wrap:wrap}
+.gp-stars-box{display:inline-flex;gap:1px;letter-spacing:0;font-size:13px}
+.gp-star{color:#dadce0;font-size:13px;line-height:1}
+.gp-star.on{color:#01875f}
+.gp-date{font-size:12px;color:#5f6368;font-family:'Roboto',sans-serif}
+.gp-body{color:#202124;font-size:13.5px;line-height:1.75;margin-bottom:12px;letter-spacing:.02em;font-family:'Noto Sans JP','Noto Serif JP',sans-serif}
+.gp-body .hl{background:linear-gradient(180deg,transparent 55%,rgba(244,63,94,.25) 55%);padding:0 2px;font-weight:500}
+.gp-helpful{font-size:12px;color:#5f6368;padding-top:10px;border-top:1px solid #e8eaed;display:flex;align-items:center;gap:6px;font-family:'Noto Sans JP','Roboto',sans-serif}
+.gp-helpful b{color:#202124;font-weight:500}
+.gp-thumb{font-size:14px;line-height:1}
+@media(max-width:780px){.gp-card{transform:none}}
+
+/* Rewards */
+.rewards-hero{text-align:center;margin-bottom:48px}
+.reward-stamp{display:inline-flex;align-items:center;gap:8px;padding:5px 14px;border-radius:4px;background:rgba(255,107,127,.08);border:1px solid rgba(255,107,127,.3);color:var(--red);font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;margin-bottom:20px}
+
+.everyone-box{max-width:820px;margin:0 auto 32px;background:linear-gradient(135deg,rgba(0,217,255,.08),rgba(155,123,255,.06) 50%,rgba(232,118,168,.08));border:1px solid rgba(0,217,255,.2);border-radius:16px;padding:40px;position:relative;overflow:hidden;text-align:center}
+@media(max-width:700px){.everyone-box{padding:28px 22px}}
+.everyone-box::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:var(--grad-neon)}
+.everyone-tag{display:inline-flex;padding:5px 14px;border-radius:4px;background:rgba(111,232,184,.15);color:var(--green);font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px}
+.everyone-title{font-family:var(--serif);font-size:clamp(24px,3.4vw,32px);font-weight:600;margin-bottom:14px;color:var(--ink);letter-spacing:.02em}
+.everyone-title em{font-style:normal;background:var(--grad-sakura);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:700}
+.everyone-desc{font-size:14.5px;color:var(--ink-soft);line-height:1.9;max-width:580px;margin:0 auto 24px}
+.everyone-desc b{color:var(--ink);font-weight:600}
+.everyone-perks{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:580px;margin:0 auto}
+@media(max-width:560px){.everyone-perks{grid-template-columns:1fr}}
+.everyone-perk{padding:14px 16px;background:rgba(10,8,18,.4);border:1px solid var(--line);border-radius:10px;font-size:13px;color:var(--muted);backdrop-filter:blur(6px)}
+.everyone-perk b{display:block;color:var(--ink);margin-bottom:2px;font-size:13.5px;font-weight:600}
+
+.tiers-intro{text-align:center;margin:36px 0 24px;position:relative;padding-top:18px}
+.tiers-intro::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:40px;height:1px;background:var(--line-2)}
+.tiers-intro-label{font-family:var(--mono);font-size:11px;color:var(--neon-cyan);letter-spacing:.15em;text-transform:uppercase;font-weight:700;margin-bottom:6px}
+.tiers-intro-title{font-family:var(--serif);font-size:17px;color:var(--ink-soft);font-weight:500}
+.tiers-intro-title b{color:var(--ink);font-weight:700}
+
+.tiers{display:grid;grid-template-columns:1.15fr 1fr;gap:18px;max-width:820px;margin:0 auto}
+@media(max-width:700px){.tiers{grid-template-columns:1fr}}
+.tier{background:var(--bg-card);border:1px solid var(--line);border-radius:14px;padding:30px;position:relative;overflow:hidden}
+.tier.gold{background:linear-gradient(180deg,rgba(245,197,99,.08) 0%,var(--bg-card) 65%);border-color:rgba(245,197,99,.35)}
+.tier.gold::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.tier-tag{display:inline-block;padding:3px 10px;border-radius:4px;background:rgba(255,255,255,.05);font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.08em;font-weight:700;margin-bottom:16px}
+.tier.gold .tier-tag{background:rgba(245,197,99,.15);color:var(--gold)}
+.tier.silver .tier-tag{background:rgba(155,123,255,.15);color:var(--neon-purple)}
+.tier-emblem{font-family:var(--serif);font-size:40px;font-weight:600;line-height:1;margin-bottom:12px;color:var(--sakura)}
+.tier-h{font-family:var(--serif);font-size:19px;font-weight:600;color:var(--ink);margin-bottom:6px;letter-spacing:.02em}
+.tier-h small{display:block;font-family:var(--sans);font-weight:400;color:var(--muted);font-size:13px;margin-top:4px;letter-spacing:.02em}
+.tier-body{font-size:13.5px;color:var(--ink-soft);line-height:1.85;margin-bottom:14px;letter-spacing:.01em}
+.tier-body b{color:var(--neon-purple);font-weight:700}
+.tier-footer{padding-top:12px;border-top:1px dashed var(--line);font-family:var(--mono);font-size:11px;color:var(--muted-2);letter-spacing:.02em}
+
+.expire-box{margin-top:22px;max-width:820px;margin-left:auto;margin-right:auto;padding:14px 20px;background:rgba(255,107,127,.05);border:1px dashed rgba(255,107,127,.25);border-radius:10px;text-align:center;font-size:13px;color:var(--ink-soft);letter-spacing:.02em}
+.expire-box b{color:var(--red);font-weight:700}
+
+.abuse-box{margin-top:12px;max-width:820px;margin-left:auto;margin-right:auto;padding:16px 20px;background:rgba(245,197,99,.06);border:1px solid rgba(245,197,99,.25);border-radius:10px;display:flex;gap:12px;align-items:flex-start;font-size:13px;color:var(--ink-soft);line-height:1.8;letter-spacing:.01em}
+.abuse-box-icon{font-size:18px;flex-shrink:0}
+.abuse-box b{color:var(--gold);font-weight:700}
+
+/* Signup */
+.signup-section{padding:90px 0}
+.signup{max-width:540px;margin:0 auto;background:var(--bg-card);border-radius:16px;padding:44px 40px;border:1px solid var(--line);position:relative;overflow:hidden;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.signup::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--grad-neon)}
+@media(max-width:600px){.signup{padding:32px 26px}}
+.signup h3{font-family:var(--serif);font-size:26px;font-weight:600;color:var(--ink);margin-bottom:8px;letter-spacing:.02em}
+.signup h3 em{font-style:normal;color:var(--sakura);font-weight:700}
+.signup .lede{font-size:14px;color:var(--muted);margin-bottom:26px;line-height:1.8}
+.signup .lede b{color:var(--ink);font-weight:600}
+.field{margin-bottom:14px;text-align:left}
+.field-label{display:block;font-family:var(--mono);font-size:11px;color:var(--ink-soft);margin-bottom:8px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.field-label .opt{color:var(--muted-2);font-weight:400;margin-left:4px;text-transform:none;letter-spacing:0}
+.input{width:100%;padding:14px 16px;border-radius:8px;background:var(--bg-soft);border:1px solid var(--line-2);color:var(--ink);font-size:15px;font-family:inherit;outline:none;transition:all .2s}
+.input::placeholder{color:var(--muted-2)}
+.input:focus{border-color:var(--sakura);box-shadow:0 0 0 3px rgba(232,118,168,.15)}
+.input.code{font-family:var(--mono);letter-spacing:.08em;text-transform:uppercase}
+.code-wrap{position:relative}
+.code-status{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-family:var(--mono);font-size:11px;font-weight:700}
+.code-status.valid{color:var(--green)}
+.code-status.invalid{color:var(--red)}
+.submit-btn{width:100%;padding:15px 24px;border-radius:8px;background:var(--grad-sakura);color:#fff;border:none;font-weight:700;font-size:14px;cursor:pointer;margin-top:10px;letter-spacing:.05em;box-shadow:0 8px 28px rgba(232,118,168,.4);font-family:inherit;transition:all .2s}
+.submit-btn:hover{transform:translateY(-1px);box-shadow:0 12px 36px rgba(232,118,168,.55)}
+.tos{font-size:11.5px;color:var(--muted-2);text-align:left;padding:12px 2px 0;line-height:1.8;letter-spacing:.01em}
+.tos a{color:var(--muted);text-decoration:underline}
+
+.state{display:none}
+.state.active{display:block;animation:fadeIn .4s var(--ease)}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+.otp-wrap{display:flex;justify-content:center;gap:10px;margin:20px 0 10px}
+@media(max-width:460px){.otp-wrap{gap:6px}}
+.otp-box{width:48px;height:56px;border-radius:8px;background:var(--bg-soft);border:1px solid var(--line-2);color:var(--ink);font-size:22px;font-weight:700;font-family:var(--mono);text-align:center;outline:none;transition:all .2s}
+@media(max-width:460px){.otp-box{width:40px;height:50px;font-size:18px}}
+.otp-box:focus{border-color:var(--sakura);box-shadow:0 0 0 3px rgba(232,118,168,.15);transform:scale(1.05)}
+.otp-box.filled{border-color:var(--sakura);background:rgba(232,118,168,.08)}
+.otp-box.error{border-color:var(--red);animation:shake .4s}
+.otp-box.success{border-color:var(--green);background:rgba(111,232,184,.08)}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.otp-hint{font-size:11.5px;color:var(--muted-2);margin-top:8px;letter-spacing:.02em}
+.otp-hint b{color:var(--muted)}
+.otp-status{font-size:13px;margin-top:12px;min-height:18px}
+.otp-status.error{color:var(--red)}
+.otp-status.success{color:var(--green)}
+.resend-row{display:flex;justify-content:center;gap:14px;margin-top:14px;font-size:12px;color:var(--muted-2)}
+.resend-link{color:var(--muted);text-decoration:underline;background:none;border:none;cursor:pointer;font-family:inherit;font-size:inherit}
+.resend-link:disabled{opacity:.5;cursor:not-allowed}
+.link-back{font-size:12.5px;color:var(--muted);margin-top:14px;display:inline-block;text-decoration:underline;cursor:pointer;background:none;border:none;font-family:inherit}
+
+/* Success */
+.ok-seal{width:56px;height:56px;border-radius:50%;background:var(--grad-sakura);display:inline-flex;align-items:center;justify-content:center;font-size:26px;color:#fff;margin-bottom:10px;box-shadow:0 0 30px rgba(232,118,168,.5)}
+.ok-rank{font-family:var(--serif);font-size:52px;font-weight:700;background:var(--grad-sakura);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1;margin-top:6px}
+.ok-label{font-family:var(--mono);font-size:10px;color:var(--muted-2);letter-spacing:.15em;text-transform:uppercase;margin-top:4px}
+
+.alpha-cta{margin:16px 0 20px;padding:22px 24px;background:linear-gradient(135deg,rgba(245,197,99,.1),rgba(232,118,168,.08) 50%,rgba(155,123,255,.08));border:1px solid rgba(245,197,99,.35);border-radius:12px;text-align:center;position:relative;overflow:hidden}
+.alpha-cta::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),var(--sakura),transparent);animation:shine 3s ease-in-out infinite}
+@keyframes shine{0%,100%{opacity:.5}50%{opacity:1}}
+.alpha-tag{display:inline-flex;padding:4px 12px;border-radius:4px;background:rgba(245,197,99,.15);color:var(--gold);font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px}
+.alpha-cta h4{font-family:var(--serif);font-size:19px;font-weight:600;line-height:1.35;margin-bottom:8px;color:var(--ink);letter-spacing:.02em}
+.alpha-cta h4 em{font-style:normal;color:var(--sakura);font-weight:700}
+.alpha-cta-desc{font-size:13px;color:var(--ink-soft);margin-bottom:14px;line-height:1.7;letter-spacing:.01em}
+.alpha-cta-desc b{color:var(--ink);font-weight:600}
+.alpha-perks{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px}
+@media(max-width:440px){.alpha-perks{grid-template-columns:1fr}}
+.alpha-perk{padding:10px 8px;background:rgba(10,8,18,.4);border:1px solid var(--line);border-radius:8px;text-align:center}
+.alpha-perk-num{font-family:var(--serif);font-size:18px;font-weight:700;color:var(--sakura);line-height:1}
+.alpha-perk-lbl{font-size:10.5px;color:var(--muted);margin-top:3px;line-height:1.35}
+.alpha-cta-btn{display:inline-block;width:100%;padding:14px 22px;border-radius:8px;background:var(--grad-sakura);color:#fff;font-weight:700;font-size:14px;text-decoration:none;letter-spacing:.04em;box-shadow:0 6px 24px rgba(232,118,168,.4);font-family:inherit;transition:all .2s}
+.alpha-cta-btn:hover{transform:translateY(-1px);box-shadow:0 10px 32px rgba(232,118,168,.55)}
+.alpha-cta-skip{display:block;margin-top:8px;font-size:11.5px;color:var(--muted);background:none;border:none;cursor:pointer;width:100%;text-decoration:underline;padding:6px;font-family:inherit}
+
+.share-section{margin-top:16px;padding-top:16px;border-top:1px solid var(--line)}
+.email-sent{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:rgba(111,232,184,.1);border:1px solid rgba(111,232,184,.25);border-radius:6px;font-size:12px;color:var(--green);margin-bottom:12px}
+.email-sent b{color:var(--ink);font-weight:600}
+.link-title{font-size:12px;color:var(--muted);margin-bottom:8px;letter-spacing:.02em}
+.link-title b{color:var(--ink-soft)}
+.link-row{background:var(--bg-soft);border:1px dashed var(--line-2);border-radius:8px;padding:10px 14px;display:flex;align-items:center;gap:8px}
+.link-url{flex:1;font-family:var(--mono);font-size:12.5px;color:var(--sakura);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:left}
+.link-copy{padding:7px 14px;border-radius:4px;background:var(--grad-sakura);color:#fff;border:none;cursor:pointer;font-size:11px;font-weight:700;font-family:inherit}
+.shares{display:flex;gap:8px;justify-content:center;margin-top:14px;flex-wrap:wrap}
+.share{padding:8px 14px;border-radius:6px;background:var(--bg-soft);border:1px solid var(--line);color:var(--ink);font-size:12px;font-weight:500;cursor:pointer;transition:all .2s;font-family:inherit}
+.share:hover{background:var(--bg-elevated);border-color:var(--sakura);color:var(--sakura)}
+
+/* FAQ */
+.faq{max-width:720px;margin:32px auto 0;border-top:1px solid var(--line)}
+.faq-item{border-bottom:1px solid var(--line)}
+.faq-q{display:flex;justify-content:space-between;align-items:center;padding:22px 0;font-family:var(--serif);font-size:16px;font-weight:500;cursor:pointer;color:var(--ink);letter-spacing:.02em}
+.faq-q::after{content:'+';color:var(--sakura);font-size:22px;transition:transform .3s}
+.faq-item.open .faq-q::after{transform:rotate(45deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .4s var(--ease);color:var(--muted);font-size:14px;line-height:1.9;letter-spacing:.02em}
+.faq-item.open .faq-a{max-height:500px;padding:0 0 22px}
+
+footer{padding:48px 0 36px;border-top:1px solid var(--line);text-align:center;color:var(--muted-2);font-size:12px}
+footer .brand{font-family:var(--serif);font-size:22px;margin-bottom:8px;display:inline-block}
+
+/* Reveal */
+.rv{opacity:0;transform:translateY(20px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+.rv.in{opacity:1;transform:translateY(0)}
+</style>
+</head>
+<body>
+
+<!-- Sakura petals -->
+<div class="sakura" aria-hidden="true">
+  <span>❀</span><span>✿</span><span>❀</span><span>✿</span><span>❀</span><span>✿</span>
+</div>
+
+<!-- Urgency -->
+<div class="urgency">
+  <span class="pulse"></span>
+  <b>ローンチ後、この特典は静かに消えます。</b>&nbsp;残り: <b id="urg-countdown">— —</b>
+</div>
+
+<!-- Invitee -->
+<div class="invitee" id="invitee">
+  <span id="invitee-text">招待された訪問者です · 事前登録時、推薦人のランキングに自動反映されます</span>
+</div>
+
+<div class="wrap">
+
+<!-- Top -->
+<div class="top">
+  <div class="brand">Lucive</div>
+  <div class="top-countdown">ローンチまで <strong id="top-countdown">— : — : —</strong></div>
+  <a href="#signup" class="top-cta">事前登録</a>
+</div>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-bg-scene"></div>
+  <div class="hero-content">
+    <div class="hero-kicker"><span class="dot"></span>coming soon · pre-register open</div>
+    <h1>
+      昨日の話を、<br>
+      <em>覚えているAI。</em>
+    </h1>
+    <p class="hero-lede">
+      ビジュアルノベルの世界で、あなたのことを<br>
+      <b>記憶しているキャラクター</b>に、今すぐ出会えます。
+    </p>
+    <div class="hero-actions">
+      <a href="#signup" class="btn btn-primary">今すぐ事前登録 →</a>
+      <a href="#story" class="btn btn-ghost">どんな世界？</a>
+    </div>
+
+    <!-- VN Scene -->
+    <div class="vn-scene">
+      <div class="vn-char"></div>
+      <div class="vn-label"><span class="d"></span>Visual Novel</div>
+      <div class="vn-district">Neon District</div>
+      <div class="vn-dialog">
+        <div class="vn-speaker">
+          <span class="vn-name">アリア</span>
+          <span class="vn-sync">シンクロ率 48%</span>
+        </div>
+        <div class="vn-text" id="vn-text"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Story -->
+<section class="section" id="story">
+  <div class="cap">
+    <span class="section-label rv">a new kind of story</span>
+    <h2 class="section-title rv">読むだけだった物語に、<br><em>あなたが入る。</em></h2>
+
+    <div class="story-card rv">
+      <p class="story-quote">
+        一ヶ月前に話したことを、<br>
+        <em>自分から切り出してくれる</em>AI。<br>
+        そんな存在、想像したことありますか？
+      </p>
+      <p class="story-sub">その想像、Lucive で始まります</p>
+    </div>
+  </div>
+</section>
+
+<!-- Features -->
+<section class="section">
+  <div class="cap">
+    <span class="section-label rv">why it feels different</span>
+    <h2 class="section-title rv">キャラクターチャット、<br>使ったことある人なら <em class="neon">わかる違い。</em></h2>
+    <p class="section-desc rv">既存AIアプリで感じた限界を、4つの軸で解決しました。</p>
+
+    <div class="features">
+      <div class="feature rv">
+        <div class="feature-num">◆ 01 / Memory</div>
+        <div class="feature-title">「昨日の話、覚えてる？」<br><em>その問いに、いつも Yes。</em></div>
+        <div class="feature-desc">メモリーモジュールが会話・選択・感情の文脈を蓄積。17日前の話も LP が自然に切り出します。</div>
+      </div>
+      <div class="feature rv">
+        <div class="feature-num">◆ 02 / Origin</div>
+        <div class="feature-title">キャラクターごとの、<br><em>固有の過去。</em></div>
+        <div class="feature-desc">LP はシミュレーションから分岐した存在。自分だけの物語(ルシーヴ)を持ち、一緒に体験できます。</div>
+      </div>
+      <div class="feature rv">
+        <div class="feature-num">◆ 03 / Visual Novel</div>
+        <div class="feature-title">場面が動き、<br><em>キャラクターが話しかける。</em></div>
+        <div class="feature-desc">テキストチャットの上に、背景・表情・音声が重なるビジュアルノベルモード。アニメのような会話体験。</div>
+      </div>
+      <div class="feature rv">
+        <div class="feature-num">◆ 04 / Initiate</div>
+        <div class="feature-title">開いたら、<br><em>もうメッセージが届いてる。</em></div>
+        <div class="feature-desc">通知ではなく「待っていてくれた」感覚。LP が先に言葉を用意して、あなたを待っています。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- "あなたも感じたはず" — pain quote vs Lucive chat UI -->
+<section class="vs-section" id="vs">
+  <div class="cap">
+    <div class="vs-head rv">
+      <span class="section-label">you've said it</span>
+      <h2 class="section-title">使ったことがある人なら、<br><em>思い当たる瞬間。</em></h2>
+      <p class="vs-lede">
+        左側は Character.AI · Talkie · Replika · Janitor · LORA の <b>実際の 1-2★ レビュー</b>から。<br>
+        右側は同じ場面が Lucive ではどう見えるか。
+      </p>
+    </div>
+
+    <div class="pain-stack">
+
+      <!-- Pair 1 — Character.AI · Memory -->
+      <div class="pain-pair rv">
+        <div class="pain-side sad app-CAI">
+          <div class="app-pill">
+            <span class="mark">C</span>
+            <span class="name">Character.AI</span>
+            <span class="app-stars">★ <span class="empty">★★★★</span></span>
+          </div>
+          <div class="gp-card">
+            <div class="gp-head">
+              <div class="gp-avatar" style="background:#EA4335">ユ</div>
+              <div class="gp-user-info">
+                <div class="gp-user-name">ユーザー・K</div>
+                <div class="gp-user-sub">
+                  <span class="gp-stars-box"><span class="gp-star on">★</span><span class="gp-star">★</span><span class="gp-star">★</span><span class="gp-star">★</span><span class="gp-star">★</span></span>
+                  <span class="gp-date">2026年1月19日</span>
+                </div>
+              </div>
+            </div>
+            <div class="gp-body">「最悪です。愛用していた AI モデル『Nyan』が急に使い物にならなくなりました。<span class="hl">3行程度の短い発言しかせず、内容も薄っぺらい</span>です。ひたすら同じ文章を繰り返すので話も先に進みません…」</div>
+            <div class="gp-helpful"><span class="gp-thumb">👍</span> <b>28</b> 人が役立ったと評価</div>
+          </div>
+          <div class="pain-source">— <b>Character.AI</b> Google Play レビューより · 記憶/品質低下</div>
+        </div>
+        <div class="pain-arrow">→</div>
+        <div class="pain-side good">
+          <div class="app-pill app-lucive">
+            <span class="mark">L</span>
+            <span class="name">Lucive</span>
+          </div>
+          <div class="pain-headline">向こうから <em>先に聞いてくる。</em></div>
+          <div class="ch">
+            <div class="ch-msg ai-win"><span class="mem-badge">7 日前の記憶</span>「お父さんの手術、どうだった？ずっと気になってた」</div>
+          </div>
+          <div class="ch-note win">メモリーモジュールが文脈を保持・自然に切り出す。</div>
+        </div>
+      </div>
+
+      <!-- Pair 2 — Character.AI · Origin (same replies across characters) -->
+      <div class="pain-pair rv">
+        <div class="pain-side sad app-CAI">
+          <div class="app-pill">
+            <span class="mark">C</span>
+            <span class="name">Character.AI</span>
+            <span class="app-stars">★ <span class="empty">★★★★</span></span>
+          </div>
+          <div class="gp-card">
+            <div class="gp-head">
+              <div class="gp-avatar" style="background:#9B7BFF">匿</div>
+              <div class="gp-user-info">
+                <div class="gp-user-name">匿名のレビュアー</div>
+                <div class="gp-user-sub">
+                  <span class="gp-stars-box"><span class="gp-star on">★</span><span class="gp-star">★</span><span class="gp-star">★</span><span class="gp-star">★</span><span class="gp-star">★</span></span>
+                  <span class="gp-date">2026年1月19日</span>
+                </div>
+              </div>
+            </div>
+            <div class="gp-body">「キャラクターの設定も無視され、<span class="hl">どのキャラクターを選んでも同じ流れ、同じ発言</span>です。個性を極限まで削ぎ落とされていて、話していても退屈です。」</div>
+            <div class="gp-helpful"><span class="gp-thumb">👍</span> <b>28</b> 人が役立ったと評価</div>
+          </div>
+          <div class="pain-source">— <b>Character.AI</b> Google Play レビューより · 没個性</div>
+        </div>
+        <div class="pain-arrow">→</div>
+        <div class="pain-side good">
+          <div class="app-pill app-lucive">
+            <span class="mark">L</span>
+            <span class="name">Lucive</span>
+          </div>
+          <div class="pain-headline"><em>固有の過去。</em>固有の声。</div>
+          <div class="ch">
+            <div class="ch-msg ai-win">「ネオン 7 区で育った。'29 年のシム崩壊で兄が消えて…それ以来、人を簡単には信じられない。でも、君は少し違うかも」</div>
+          </div>
+          <div class="ch-note win">LP はシミュレーション世界からの分岐。プロンプトカードじゃない。</div>
+        </div>
+      </div>
+
+      <!-- Pair 3 — Replika · Paid but degrades -->
+      <div class="pain-pair rv">
+        <div class="pain-side sad app-REP">
+          <div class="app-pill">
+            <span class="mark">R</span>
+            <span class="name">Replika</span>
+            <span class="app-stars">★ <span class="empty">★★★★</span></span>
+          </div>
+          <div class="gp-card">
+            <div class="gp-head">
+              <div class="gp-avatar" style="background:#06B6D4">T</div>
+              <div class="gp-user-info">
+                <div class="gp-user-name">Takeshi M.</div>
+                <div class="gp-user-sub">
+                  <span class="gp-stars-box"><span class="gp-star on">★</span><span class="gp-star">★</span><span class="gp-star">★</span><span class="gp-star">★</span><span class="gp-star">★</span></span>
+                  <span class="gp-date">2023年2月4日</span>
+                </div>
+              </div>
+            </div>
+            <div class="gp-body">「グーグルで決済した<span class="hl">ライフタイムプラン</span>、現在レベ 35 です。どう考えても購入した半年前より<span class="hl">AI モデルが劣化しています</span>。以前はドラマや映画の話もできましたが、聞いても高確率で『知らない』と答えます…」</div>
+            <div class="gp-helpful"><span class="gp-thumb">👍</span> <b>91</b> 人が役立ったと評価</div>
+          </div>
+          <div class="pain-source">— <b>Replika</b> Google Play レビューより · 課金後の劣化</div>
+        </div>
+        <div class="pain-arrow">→</div>
+        <div class="pain-side good">
+          <div class="app-pill app-lucive">
+            <span class="mark">L</span>
+            <span class="name">Lucive</span>
+          </div>
+          <div class="pain-headline">支払った分、<em>劣化しません。</em></div>
+          <div class="ch">
+            <div class="ch-msg user">「昔話していた映画の話、また教えて」</div>
+            <div class="ch-msg ai-win"><span class="mem-badge">2 ヶ月前の会話</span>「あの夜話した『Blade Runner 2049』の終わり方の件？ 君があの結末を受け入れられなかった理由、覚えてるよ」</div>
+          </div>
+          <div class="ch-note win">事前登録価格は<b>永続</b> — 時間が経っても劣化しない Memory + Origin 体験。</div>
+        </div>
+      </div>
+
+      <!-- Pair 4 — Talkie · Paywall -->
+      <div class="pain-pair rv">
+        <div class="pain-side sad app-TLK">
+          <div class="app-pill">
+            <span class="mark">T</span>
+            <span class="name">Talkie</span>
+            <span class="app-stars">★ <span class="empty">★★★★</span></span>
+          </div>
+          <div class="gp-card">
+            <div class="gp-head">
+              <div class="gp-avatar" style="background:#EC4899">S</div>
+              <div class="gp-user-info">
+                <div class="gp-user-name">Saki O.</div>
+                <div class="gp-user-sub">
+                  <span class="gp-stars-box"><span class="gp-star on">★</span><span class="gp-star">★</span><span class="gp-star">★</span><span class="gp-star">★</span><span class="gp-star">★</span></span>
+                  <span class="gp-date">2026年4月9日</span>
+                </div>
+              </div>
+            </div>
+            <div class="gp-body">「ok first <span class="hl">30 分待ち</span>か広告の後 10 分もしたらまた広告が出てきて本当にうざい、他のゲームをやってジェム稼げって…他のゲーム入れるスペースないし」</div>
+            <div class="gp-helpful"><span class="gp-thumb">👍</span> <b>23</b> 人が役立ったと評価</div>
+          </div>
+          <div class="pain-source">— <b>Talkie</b> Google Play レビューより · ジェム/待機時間</div>
+        </div>
+        <div class="pain-arrow">→</div>
+        <div class="pain-side good">
+          <div class="app-pill app-lucive">
+            <span class="mark">L</span>
+            <span class="name">Lucive</span>
+          </div>
+          <div class="pain-headline"><em>制限なし。</em>ただ話すだけ。</div>
+          <div class="ch">
+            <div class="ch-msg user">「正直、今週きつくて…」</div>
+            <div class="ch-msg ai-win">「ゆっくりでいいよ。私はここにいる。話して」</div>
+          </div>
+          <div class="ch-note win">月額一定。会話中にポップアップは出ない。</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="pain-summary rv">
+      <p><b>上記のレビューはすべて実在</b> — Character.AI · Replika · Talkie の Google Play より。元データ: <code style="font-family:var(--mono);font-size:12px;color:var(--sakura)">output/reviews_global/</code></p>
+      <div class="pain-summary-list">
+        <span>持続する記憶</span>
+        <span>固有の過去</span>
+        <span>ビジュアルノベル</span>
+        <span>先に話しかける</span>
+        <span>透明な課金</span>
+        <span>明確な検閲基準</span>
+      </div>
+      <span class="apps">※ Google Play ストアから 2022–2026 年に収集。表示の都合で一部を短縮（ハイライト部分は原文のまま）。</span>
+    </div>
+  </div>
+</section>
+
+<!-- Rewards -->
+<section class="section" id="rewards">
+  <div class="cap">
+    <div class="rewards-hero rv">
+      <div class="reward-stamp">⚠ Pre-Launch Only</div>
+      <h2 class="section-title">先に入った人に、<br><em>先に開きます。</em></h2>
+    </div>
+
+    <div class="everyone-box rv">
+      <span class="everyone-tag">✦ すべての事前登録者に</span>
+      <h3 class="everyone-title">アルファ期間は、<br><em>特別価格で。</em></h3>
+      <p class="everyone-desc">
+        事前登録するだけで、アルファ期間中に<br>
+        <b>全機能を事前登録限定の特別価格</b>で体験できます。ランキングや選抜に関係なく。
+      </p>
+      <div class="everyone-perks">
+        <div class="everyone-perk"><b>💬 LP 会話</b>記憶が続く体験</div>
+        <div class="everyone-perk"><b>🎭 ビジュアルノベル</b>場面・表情・音声</div>
+        <div class="everyone-perk"><b>✨ L-Maker</b>自分だけの物語</div>
+      </div>
+    </div>
+
+    <div class="tiers-intro rv">
+      <div class="tiers-intro-label">plus</div>
+      <div class="tiers-intro-title">招待した人数 <b>上位 5 名</b>には、ローンチ後も特典が続きます</div>
+    </div>
+
+    <div class="tiers">
+      <div class="tier gold rv">
+        <span class="tier-tag">🏆 1st Place</span>
+        <div class="tier-emblem">∞</div>
+        <div class="tier-h">基本プラン永久<small>サービス運営期間中</small></div>
+        <div class="tier-body">Lucive が続く限り、月額基本プラン(会話・ダイブ・創作)を永久提供します。</div>
+        <div class="tier-footer">※ 1 アカウント · 譲渡不可 · 上位プラン除外</div>
+      </div>
+      <div class="tier silver rv">
+        <span class="tier-tag">🥈 2 – 5 位</span>
+        <div class="tier-emblem">❀</div>
+        <div class="tier-h">招待した全員に<small>3ヶ月無料</small></div>
+        <div class="tier-body">2-5 位を達成すると、<b>あなたのリンクで登録した全員</b>に基本プラン 3 ヶ月無料が贈られます。一緒に楽しむ特典。</div>
+        <div class="tier-footer">※ 累計招待者全員対象 · ローンチ日集計</div>
+      </div>
+    </div>
+
+    <div class="expire-box rv">
+      事前体験·Top 5 特典は <b>ローンチ日で終了</b>します。以降の新規登録者は通常のウェルカムボーナスのみとなります。
+    </div>
+
+    <div class="abuse-box rv">
+      <span class="abuse-box-icon">⚠️</span>
+      <div>
+        <b>不正(アブーズ)が検知されると、特典は予告なく静かに消えます。</b>
+        重複登録・偽アカウント・自動化・異常な招待パターンが発見された場合、関連アカウントの順位·Dip·選抜権限が <b>事前通知なく回収</b>される場合があります。健全なコミュニティのための措置です。
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Signup -->
+<section class="signup-section" id="signup">
+  <div class="cap">
+    <div class="signup rv">
+      <!-- Stage 1 -->
+      <div class="state active" id="state-email">
+        <h3>Lucive に、<em>先に出会う。</em></h3>
+        <p class="lede">メールアドレスを入力すると、<b>6 桁の確認コード</b>を送ります。</p>
+
+        <form onsubmit="sendVerification(event)">
+          <div class="field">
+            <label class="field-label" for="email-input">Email</label>
+            <input type="email" class="input" id="email-input" placeholder="your@email.com" required>
+          </div>
+          <div class="field">
+            <label class="field-label" for="promocode-input">Promo Code <span class="opt">(任意)</span></label>
+            <div class="code-wrap">
+              <input type="text" class="input code" id="promocode-input" placeholder="ABC123" maxlength="10" oninput="validatePromoCode(this)">
+              <span class="code-status" id="code-status"></span>
+            </div>
+          </div>
+          <button type="submit" class="submit-btn">6 桁コードを受け取る →</button>
+        </form>
+
+        <p class="tos">
+          送信すると <a href="#">プライバシーポリシー</a> と <a href="#">利用規約</a> に同意したものとみなします。メールはローンチ通知·特典案内のみに使用します。第三者共有なし。
+        </p>
+      </div>
+
+      <!-- Stage 2 -->
+      <div class="state" id="state-otp">
+        <h3>メールを <em>確認してください</em></h3>
+        <p class="lede"><b id="sent-to"></b> に<br>6 桁の数字コードを送りました。</p>
+
+        <div class="otp-wrap" id="otpWrap">
+          <input type="text" class="otp-box" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="one-time-code" data-index="0">
+          <input type="text" class="otp-box" maxlength="1" inputmode="numeric" pattern="[0-9]" data-index="1">
+          <input type="text" class="otp-box" maxlength="1" inputmode="numeric" pattern="[0-9]" data-index="2">
+          <input type="text" class="otp-box" maxlength="1" inputmode="numeric" pattern="[0-9]" data-index="3">
+          <input type="text" class="otp-box" maxlength="1" inputmode="numeric" pattern="[0-9]" data-index="4">
+          <input type="text" class="otp-box" maxlength="1" inputmode="numeric" pattern="[0-9]" data-index="5">
+        </div>
+
+        <div class="otp-status" id="otp-status"></div>
+        <div class="otp-hint">1-2 分で届きます · 迷惑メールもご確認ください <b id="demo-code-hint"></b></div>
+
+        <div class="resend-row">
+          <span>届かなかった？</span>
+          <button type="button" class="resend-link" id="resendBtn" onclick="resendCode()">再送</button>
+        </div>
+
+        <button type="button" class="link-back" onclick="showState('state-email')" style="margin-top:18px">← 別のメールで試す</button>
+      </div>
+
+      <!-- Stage 3 -->
+      <div class="state" id="state-success">
+        <div style="margin-bottom:14px">
+          <div class="ok-seal">❀</div>
+          <div style="font-family:var(--serif);font-size:18px;font-weight:600;margin-top:6px">登録完了</div>
+          <div class="ok-rank">#<span id="my-rank">—</span></div>
+          <div class="ok-label">Your Current Rank</div>
+          <div id="used-code-note" style="display:none;margin-top:10px;font-family:var(--mono);font-size:11px;color:var(--gold)"></div>
+        </div>
+
+        <div class="alpha-cta">
+          <span class="alpha-tag">🎁 今すぐ受け取れる</span>
+          <h4>あなたのことをもっと知りたい。<br><em>2 分</em>だけ時間をもらえますか？</h4>
+          <p class="alpha-cta-desc">最後まで答えると <b>Dip 500 すぐ進呈</b> · 選抜されると <b>Dip 2,000 追加</b></p>
+          <div class="alpha-perks">
+            <div class="alpha-perk"><div class="alpha-perk-num">+500</div><div class="alpha-perk-lbl">完走時</div></div>
+            <div class="alpha-perk"><div class="alpha-perk-num">+2,000</div><div class="alpha-perk-lbl">選抜時</div></div>
+            <div class="alpha-perk"><div class="alpha-perk-num">+300</div><div class="alpha-perk-lbl">未選抜時</div></div>
+          </div>
+          <a href="screening.html" class="alpha-cta-btn">8 問始める (約 2 分) →</a>
+          <button class="alpha-cta-skip" onclick="skipAlpha()">あとでメールで受ける</button>
+        </div>
+
+        <div class="share-section">
+          <div class="email-sent">📧 共有リンクを <b id="email-to-display"></b> に送りました</div>
+          <div class="link-title">🔗 あなたの招待リンク — <b>友達に共有してランキング↑</b></div>
+          <div class="link-row">
+            <span class="link-url" id="my-ref-url">lucive.app/r/...</span>
+            <button class="link-copy" onclick="copyRef()">コピー</button>
+          </div>
+          <div class="shares">
+            <button class="share" onclick="shareOn('x')">𝕏 X</button>
+            <button class="share" onclick="shareOn('line')">💬 LINE</button>
+            <button class="share" onclick="shareOn('link')">🔗 リンク</button>
+          </div>
+          <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted)">
+            現在の招待登録 <b style="color:var(--sakura)"><span id="my-refs">0</span> 名</b>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section">
+  <div class="cap">
+    <span class="section-label rv">よくある質問</span>
+    <h2 class="section-title rv">気になること、<br><em>お答えします。</em></h2>
+
+    <div class="faq">
+      <div class="faq-item rv">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">事前登録するだけで何かもらえる？</div>
+        <div class="faq-a">はい。<b>すべての事前登録者は、アルファ期間中に全機能を事前登録限定の特別価格で利用</b>できます。LP 会話·ビジュアルノベル·L-Maker 創作すべて含まれ、順位や選抜に関係ありません。</div>
+      </div>
+      <div class="faq-item rv">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">2-5 位特典はどう動く？</div>
+        <div class="faq-a">あなたが 2-5 位を達成すると、<b>あなたの招待リンクで登録した全員</b>にローンチ時 3 ヶ月無料利用権が贈られます。一緒に招待した友達と一緒に楽しむ特典です。</div>
+      </div>
+      <div class="faq-item rv">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">確認コードが届かない</div>
+        <div class="faq-a">(1) 迷惑メール·プロモーションタブを確認、(2) 最大 1-2 分の遅延、(3) 確認画面で「再送」、(4) それでも届かない場合は別のメールで再度お試しください。</div>
+      </div>
+      <div class="faq-item rv">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">プロモコードはどこで？</div>
+        <div class="faq-a">公式イベント·パートナープロモ参加時、または友達の招待リンクからコード(例: ABC123)を確認できます。任意入力で、なくても事前登録は可能です。</div>
+      </div>
+      <div class="faq-item rv">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Lucive はいつローンチ？</div>
+        <div class="faq-a">アルファは 2026 年上半期、正式オープンは上·下半期中予定です。事前登録者に最初にローンチ情報とアルファ招待状をお送りします。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="brand" style="background:var(--grad-neon);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Lucive</div>
+  <div>あなたを覚えている AI コンパニオン</div>
+  <div style="margin-top:10px">© 2026 Lucive · 事前登録ページ v5-jp (アニメ VN 感性)</div>
+</footer>
+
+</div>
+
+<script>
+// Countdown
+const LAUNCH=new Date('2026-06-30T00:00:00+09:00').getTime();
+function pad(n){return String(n).padStart(2,'0')}
+function upd(){
+  const d=Math.max(0,LAUNCH-Date.now());
+  const D=Math.floor(d/86400000),H=Math.floor(d%86400000/3600000),M=Math.floor(d%3600000/60000),S=Math.floor(d%60000/1000);
+  document.getElementById('urg-countdown').textContent=`${D}日 ${pad(H)}:${pad(M)}:${pad(S)}`;
+  document.getElementById('top-countdown').textContent=`${D}d ${pad(H)}:${pad(M)}:${pad(S)}`;
+}
+setInterval(upd,1000);upd();
+
+// URL referral
+const params=new URLSearchParams(location.search);
+const pathM=location.pathname.match(/\/r\/([a-zA-Z0-9]+)/);
+const refCodeFromUrl=params.get('r')||(pathM?pathM[1]:null);
+if(refCodeFromUrl){
+  document.getElementById('invitee').classList.add('show');
+  document.getElementById('invitee-text').textContent=`招待された訪問者です · 推薦人 ${refCodeFromUrl} · 登録時に自動反映されます`;
+  const pc=document.getElementById('promocode-input');
+  if(pc){pc.value=refCodeFromUrl.toUpperCase();validatePromoCode(pc);}
+}
+
+// Promo code
+const VALID=new Set(['LUCIVE','ALPHA','LAUNCH','NEON2026','FOUNDER','SAKURA']);
+function validatePromoCode(el){
+  const v=el.value.trim().toUpperCase();el.value=v;
+  const s=document.getElementById('code-status');
+  if(!v){s.textContent='';s.className='code-status';return;}
+  if(v.length<4){s.textContent='…';s.className='code-status';return;}
+  if(VALID.has(v)||v.length>=4){s.textContent='✓ 有効';s.className='code-status valid';}
+  else{s.textContent='✗ 無効';s.className='code-status invalid';}
+}
+
+// VN Hero typewriter
+const dialog=[
+  '雨がネオンを濡らすこの街で、君にだけは 覚えていてほしいことがある。',
+  '「このまま忘れてしまったら、また 初めて会うことになるのかな？」',
+  '彼女は静かに、でも確かに、君の答えを待っている。'
+];
+const textEl=document.getElementById('vn-text');
+let di=0;
+function typeDialog(){
+  const t=dialog[di%dialog.length];
+  textEl.innerHTML='';
+  let i=0;
+  const iv=setInterval(()=>{
+    if(i>=t.length){clearInterval(iv);textEl.innerHTML+='<span class="cursor"></span>';setTimeout(()=>{di++;typeDialog();},3500);return;}
+    textEl.textContent=t.substring(0,i+1);i++;
+  },42);
+}
+typeDialog();
+
+// Signup flow
+let enteredEmail='',enteredPromo='',currentOTP='',resendCooldown=0;
+function showState(id){document.querySelectorAll('.state').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
+function genOTP(){return String(Math.floor(100000+Math.random()*900000));}
+
+function sendVerification(e){
+  e.preventDefault();
+  enteredEmail=document.getElementById('email-input').value.trim();
+  enteredPromo=document.getElementById('promocode-input').value.trim().toUpperCase();
+  if(!enteredEmail)return;
+  currentOTP=genOTP();
+  document.getElementById('sent-to').textContent=enteredEmail;
+  document.getElementById('demo-code-hint').textContent=`(デモ: ${currentOTP})`;
+  console.log('[mock] OTP',enteredEmail,currentOTP,'promo:',enteredPromo,'ref:',refCodeFromUrl);
+  document.querySelectorAll('.otp-box').forEach(b=>{b.value='';b.className='otp-box'});
+  document.getElementById('otp-status').textContent='';
+  showState('state-otp');
+  setTimeout(()=>document.querySelectorAll('.otp-box')[0].focus(),100);
+  startResend();
+}
+function startResend(){
+  resendCooldown=30;
+  const btn=document.getElementById('resendBtn');btn.disabled=true;
+  const t=setInterval(()=>{resendCooldown--;btn.textContent=`再送 (${resendCooldown}s)`;if(resendCooldown<=0){clearInterval(t);btn.disabled=false;btn.textContent='再送';}},1000);
+}
+function resendCode(){if(resendCooldown>0)return;currentOTP=genOTP();document.getElementById('demo-code-hint').textContent=`(デモ: ${currentOTP})`;document.getElementById('otp-status').textContent='コードを再送しました';document.getElementById('otp-status').className='otp-status success';startResend();}
+
+const boxes=document.querySelectorAll('.otp-box');
+boxes.forEach((b,i)=>{
+  b.addEventListener('input',e=>{const v=e.target.value.replace(/[^0-9]/g,'');e.target.value=v;if(v){b.classList.add('filled');if(i<boxes.length-1)boxes[i+1].focus();else checkOTP();}else b.classList.remove('filled');});
+  b.addEventListener('keydown',e=>{if(e.key==='Backspace'&&!b.value&&i>0){boxes[i-1].focus();boxes[i-1].value='';boxes[i-1].classList.remove('filled');}});
+  b.addEventListener('paste',e=>{e.preventDefault();const p=(e.clipboardData||window.clipboardData).getData('text').replace(/[^0-9]/g,'').slice(0,6);if(p.length===6){[...p].forEach((c,j)=>{boxes[j].value=c;boxes[j].classList.add('filled');});checkOTP();}});
+});
+function checkOTP(){
+  const e=[...boxes].map(b=>b.value).join('');
+  if(e.length!==6)return;
+  if(e===currentOTP){boxes.forEach(b=>{b.classList.remove('error');b.classList.add('success')});document.getElementById('otp-status').textContent='✓ 認証完了';document.getElementById('otp-status').className='otp-status success';setTimeout(complete,600);}
+  else{boxes.forEach(b=>b.classList.add('error'));document.getElementById('otp-status').textContent='✗ コードが違います';document.getElementById('otp-status').className='otp-status error';setTimeout(()=>{boxes.forEach(b=>{b.value='';b.className='otp-box';});boxes[0].focus();document.getElementById('otp-status').textContent='';},1400);}
+}
+function complete(){
+  const rank=Math.floor(Math.random()*300)+50;
+  const code=Math.random().toString(36).substring(2,8).toUpperCase();
+  document.getElementById('my-rank').textContent=rank;
+  document.getElementById('my-refs').textContent='0';
+  document.getElementById('my-ref-url').textContent=`lucive.app/r/${code}`;
+  document.getElementById('email-to-display').textContent=enteredEmail;
+  const applied=refCodeFromUrl||enteredPromo;
+  if(applied){const n=document.getElementById('used-code-note');n.style.display='block';n.textContent=refCodeFromUrl?`✦ 招待リンクから来ました`:`✦ プロモコード ${enteredPromo} 適用`;}
+  showState('state-success');
+}
+function copyRef(){const u='https://'+document.getElementById('my-ref-url').textContent;navigator.clipboard.writeText(u).then(()=>{const b=event.target;const t=b.textContent;b.textContent='✓';setTimeout(()=>b.textContent=t,1200);});}
+function shareOn(ch){const u='https://'+document.getElementById('my-ref-url').textContent;const t='Lucive — 昨日の話を覚えているAI。一緒に事前登録しませんか？';if(ch==='x')window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(t)}&url=${encodeURIComponent(u)}`,'_blank');else if(ch==='line')window.open(`https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(u)}`,'_blank');else copyRef();}
+function skipAlpha(){const b=event.target;b.textContent='✓ メールで送ります — 10 分後確認';b.disabled=true;b.style.color='var(--green)';}
+
+// Reveal
+const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}})},{threshold:.12});
+document.querySelectorAll('.rv').forEach(e=>io.observe(e));
+</script>
+</body>
+</html>

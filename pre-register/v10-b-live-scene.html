@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LUCIVE · 그녀는 어제 당신이 한 말을 기억합니다</title>
+<meta name="description" content="12초의 시네마 · 기억하는 AI가 비주얼노벨이 되는 순간, Lucive">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,700;1,400;1,700&family=Noto+Serif+KR:wght@400;500;700;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0A0612;
+  --bg-2:#150A1F;
+  --bg-elev:#1C0E2A;
+  --ink:#E8DCC4;
+  --ink-soft:#B5A690;
+  --muted:#7D6E5A;
+  --muted-2:#4A3F32;
+  --burgundy:#6B1A35;
+  --burgundy-deep:#3F0D1E;
+  --crimson:#B21E4B;
+  --gold:#D4A44C;
+  --gold-deep:#8F6A24;
+  --lavender:#4A2E5C;
+  --line:rgba(212,164,76,.14);
+  --line-2:rgba(212,164,76,.28);
+  --serif:'Cormorant Garamond','Noto Serif KR',serif;
+  --sans:'Inter','Noto Serif KR',-apple-system,sans-serif;
+  --mono:'JetBrains Mono',monospace;
+  --ease:cubic-bezier(.2,.8,.2,1);
+}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.65;overflow-x:hidden}
+
+.grain{position:fixed;inset:0;z-index:10;pointer-events:none;opacity:.06;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:220px}
+
+/* Top bar */
+.top{position:fixed;top:0;left:0;right:0;z-index:50;padding:18px 32px;display:flex;align-items:center;justify-content:space-between;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);background:rgba(10,6,18,.5);border-bottom:1px solid var(--line)}
+.brand{font-family:var(--serif);font-weight:700;font-size:22px;letter-spacing:.32em;color:var(--gold)}
+.top-right{display:flex;gap:14px;align-items:center}
+.top-link{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.14em;text-transform:uppercase;text-decoration:none;transition:color .2s;cursor:pointer;background:none;border:none}
+.top-link:hover{color:var(--gold)}
+.cta-top{padding:9px 20px;border:1px solid var(--gold);background:transparent;color:var(--gold);font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;text-decoration:none;transition:all .25s var(--ease)}
+.cta-top:hover{background:var(--gold);color:var(--bg)}
+
+/* Hero cinema */
+.cinema{position:relative;width:100%;height:100vh;min-height:720px;overflow:hidden;background:var(--bg);z-index:2}
+.cinema-stage{position:absolute;inset:0;background:linear-gradient(180deg,#1A0A24 0%,#2A0F2E 35%,#3F0D1E 75%,#0A0612 100%);transition:background 1.4s var(--ease)}
+.cinema-stage::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 45% at 50% 36%,rgba(212,164,76,.16),transparent 70%);transition:opacity 1.2s ease,background 1.4s var(--ease);opacity:1}
+
+/* Scene backgrounds — CSS only */
+.cinema-stage.scene-cafe{background:linear-gradient(180deg,#1A0A24 0%,#2A0F2E 35%,#3F0D1E 75%,#0A0612 100%)}
+.cinema-stage.scene-theater{background:linear-gradient(180deg,#0A0612 0%,#1A0612 30%,#3F0D1E 70%,#0A0612 100%)}
+.cinema-stage.scene-theater::before{background:radial-gradient(ellipse 50% 35% at 50% 45%,rgba(178,30,75,.28),transparent 70%)}
+.cinema-stage.scene-finale{background:linear-gradient(180deg,#0A0612 0%,#0A0612 100%)}
+.cinema-stage.scene-finale::before{background:radial-gradient(circle 50% at 50% 50%,rgba(212,164,76,.22),transparent 60%)}
+
+/* Character figure — centered full-body silhouette */
+.figure{position:absolute;top:10%;bottom:14%;left:50%;transform:translateX(-50%);width:min(380px,42vw);display:flex;flex-direction:column;align-items:center;animation:breathe 4.5s ease-in-out infinite;z-index:2}
+@keyframes breathe{0%,100%{transform:translateX(-50%) translateY(0) scale(1)}50%{transform:translateX(-50%) translateY(-6px) scale(1.008)}}
+
+.figure-silhouette{
+  width:100%;height:100%;
+  background:linear-gradient(180deg,rgba(232,220,196,.92) 0%,rgba(181,166,144,.7) 20%,rgba(107,26,53,.85) 45%,rgba(63,13,30,.98) 100%);
+  clip-path:polygon(
+    46% 0%, 54% 0%,
+    60% 6%, 62% 14%,
+    64% 20%, 68% 22%,
+    78% 30%, 82% 40%,
+    80% 55%, 84% 70%, 80% 85%, 80% 100%,
+    20% 100%, 20% 85%, 16% 70%, 20% 55%,
+    18% 40%, 22% 30%,
+    32% 22%, 36% 20%,
+    38% 14%, 40% 6%
+  );
+  filter:blur(.4px) saturate(.9);
+  transition:filter 1.2s ease,background 1.4s ease;
+}
+.figure-hair{position:absolute;top:1%;left:30%;right:30%;height:18%;background:linear-gradient(180deg,#1A0612 0%,#3F0D1E 100%);clip-path:polygon(45% 0%,55% 0%,75% 40%,85% 90%,75% 100%,25% 100%,15% 90%,25% 40%)}
+.figure-eyes{position:absolute;top:11%;left:42%;right:42%;height:5%;display:flex;justify-content:space-between;align-items:center}
+.figure-eye{width:4px;height:4px;border-radius:50%;background:var(--crimson);box-shadow:0 0 12px rgba(178,30,75,.9);animation:eyeGlow 3s ease-in-out infinite}
+@keyframes eyeGlow{0%,100%{opacity:.6;box-shadow:0 0 6px rgba(178,30,75,.7)}50%{opacity:1;box-shadow:0 0 18px rgba(178,30,75,1)}}
+
+.cinema-stage.scene-theater .figure-silhouette{background:linear-gradient(180deg,rgba(232,220,196,.68) 0%,rgba(107,26,53,.82) 30%,rgba(63,13,30,.98) 70%,#0A0612 100%)}
+.cinema-stage.scene-finale .figure-silhouette{background:linear-gradient(180deg,rgba(212,164,76,.4) 0%,rgba(178,30,75,.78) 30%,rgba(63,13,30,.98) 70%,#0A0612 100%)}
+.cinema-stage.scene-finale .figure-eye{background:var(--gold);box-shadow:0 0 24px rgba(212,164,76,1);animation-duration:1.8s}
+
+/* VN-style chat bubble */
+.vn-bubble{position:absolute;bottom:12%;left:50%;transform:translateX(-50%);width:min(780px,84vw);padding:24px 32px 28px;background:rgba(10,6,18,.86);border-top:1px solid var(--gold);border-bottom:1px solid var(--gold);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);opacity:0;transition:opacity .8s ease,transform .8s ease;z-index:3}
+.vn-bubble.visible{opacity:1;transform:translateX(-50%) translateY(0)}
+.vn-bubble.hidden{opacity:0;transform:translateX(-50%) translateY(20px)}
+.vn-speaker{font-family:var(--serif);font-style:italic;font-size:14px;color:var(--gold);letter-spacing:.08em;margin-bottom:8px;display:flex;align-items:center;gap:10px}
+.vn-speaker::before{content:'◆';color:var(--crimson);font-style:normal}
+.vn-line{font-family:var(--serif);font-size:clamp(20px,2.6vw,26px);font-style:italic;line-height:1.55;color:var(--ink);letter-spacing:.01em}
+.vn-line em{color:var(--gold);font-style:italic;font-weight:500}
+.vn-memory{display:inline-block;margin-top:12px;padding:3px 10px;background:rgba(212,164,76,.14);border:1px solid var(--line-2);font-family:var(--mono);font-size:10px;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;font-style:normal}
+
+/* Hero overlay text */
+.cinema-overlay{position:absolute;top:96px;left:0;right:0;padding:0 40px;display:flex;justify-content:space-between;align-items:flex-start;z-index:5;pointer-events:none}
+.overlay-scene{display:flex;flex-direction:column;gap:6px;font-family:var(--mono);font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--muted)}
+.overlay-scene b{color:var(--gold);font-weight:700}
+.overlay-timecode{font-family:var(--mono);font-size:14px;color:var(--gold);letter-spacing:.1em;font-weight:700}
+
+/* Final overlay */
+.final-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;transition:opacity 1s var(--ease);pointer-events:none;z-index:4;text-align:center;padding:0 32px}
+.final-overlay.visible{opacity:1}
+.final-overlay h1{font-family:var(--serif);font-size:clamp(48px,7vw,96px);font-weight:500;font-style:italic;color:var(--ink);line-height:1.05;letter-spacing:-.02em;margin-bottom:18px}
+.final-overlay h1 em{font-style:italic;color:var(--gold)}
+.final-overlay p{font-family:var(--serif);font-size:16px;color:var(--ink-soft);font-style:italic;max-width:500px}
+
+/* Progress bar */
+.timeline{position:absolute;bottom:0;left:0;right:0;height:3px;background:rgba(10,6,18,.5);z-index:6}
+.timeline-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--crimson),var(--gold));width:0%;transition:width .1s linear}
+
+/* Controls */
+.controls{position:absolute;bottom:24px;right:32px;display:flex;gap:12px;align-items:center;z-index:7}
+.ctrl-btn{width:42px;height:42px;background:rgba(10,6,18,.72);border:1px solid var(--line-2);color:var(--gold);font-family:var(--mono);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);transition:all .2s}
+.ctrl-btn:hover{background:var(--gold);color:var(--bg)}
+.ctrl-count{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+
+/* Lede below cinema */
+.lede{max-width:900px;margin:80px auto 0;padding:0 32px;text-align:center;position:relative;z-index:2}
+.lede-kicker{font-family:var(--mono);font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--crimson);margin-bottom:20px}
+.lede-kicker::before{content:'◆ ';color:var(--gold)}
+.lede h2{font-family:var(--serif);font-style:italic;font-size:clamp(32px,4.4vw,56px);font-weight:400;color:var(--ink);line-height:1.2;letter-spacing:-.01em}
+.lede h2 b{font-style:normal;font-weight:700;color:var(--gold)}
+.lede p{margin-top:26px;font-family:var(--serif);font-size:17px;line-height:1.8;color:var(--ink-soft);font-style:italic;max-width:640px;margin-left:auto;margin-right:auto}
+
+/* Signup */
+.signup{max-width:620px;margin:80px auto 120px;padding:48px 32px;position:relative;z-index:2;text-align:center;border:1px solid var(--line-2);background:linear-gradient(180deg,rgba(28,14,42,.6),rgba(10,6,18,.85));backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.signup-kicker{font-family:var(--mono);font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--crimson);margin-bottom:18px}
+.signup-kicker::before{content:'◆ ';color:var(--gold)}
+.signup h3{font-family:var(--serif);font-style:italic;font-size:30px;font-weight:400;color:var(--ink);line-height:1.3;margin-bottom:12px}
+.signup h3 b{font-style:normal;font-weight:700;color:var(--gold)}
+.signup p{font-family:var(--serif);font-size:15px;color:var(--ink-soft);margin-bottom:28px;font-style:italic}
+.signup-form{display:flex;gap:10px;max-width:440px;margin:0 auto;flex-wrap:wrap}
+.signup input{flex:1;min-width:220px;padding:14px 18px;background:rgba(10,6,18,.6);border:1px solid var(--line-2);color:var(--ink);font-family:var(--serif);font-size:15px;font-style:italic;outline:none;transition:border-color .2s}
+.signup input:focus{border-color:var(--gold)}
+.signup input::placeholder{color:var(--muted-2)}
+.signup button{padding:14px 26px;background:var(--gold);color:var(--bg);border:none;font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;transition:all .2s}
+.signup button:hover{background:var(--crimson);color:var(--ink)}
+
+.variants{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:60;display:flex;gap:8px;padding:10px 14px;background:rgba(10,6,18,.85);border:1px solid var(--line-2);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.variants a{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:5px 12px;border:1px solid transparent;transition:all .2s}
+.variants a:hover{color:var(--ink);border-color:var(--line)}
+.variants a.current{color:var(--gold);border-color:var(--gold)}
+
+.prototype-note{max-width:800px;margin:0 auto 80px;padding:0 32px;text-align:center;font-family:var(--mono);font-size:11px;color:var(--muted-2);letter-spacing:.04em;line-height:1.8;position:relative;z-index:2}
+.prototype-note b{color:var(--muted);font-weight:600}
+
+@media(max-width:700px){
+  .cinema-overlay{padding:0 20px}
+  .vn-bubble{padding:20px 22px}
+  .controls{bottom:16px;right:16px}
+}
+</style>
+</head>
+<body>
+
+<div class="grain"></div>
+
+<div class="top">
+  <div class="brand">L U C I V E</div>
+  <div class="top-right">
+    <button class="top-link" id="bgmToggle">♪ BGM: OFF</button>
+    <a href="#signup" class="cta-top">사전등록</a>
+  </div>
+</div>
+
+<!-- CINEMA · 안 B 라이브 신 (12초 autoplay) -->
+<section class="cinema">
+  <div class="cinema-stage scene-cafe" id="stage">
+
+    <!-- Character figure (silhouette placeholder) -->
+    <div class="figure" aria-label="캐릭터 아트 대기 · 얀데레 퇴폐미 여성 · 카페 → 영화관 씬 전환">
+      <div class="figure-silhouette"></div>
+      <div class="figure-hair"></div>
+      <div class="figure-eyes">
+        <div class="figure-eye"></div>
+        <div class="figure-eye"></div>
+      </div>
+    </div>
+
+    <!-- Overlay · scene info -->
+    <div class="cinema-overlay">
+      <div class="overlay-scene">
+        <span>LIVE SCENE · 안 B</span>
+        <span id="sceneLabel"><b>SCENE 01</b> · 네온 7구 카페</span>
+      </div>
+      <div class="overlay-timecode"><span id="timecode">00 : 00</span> / 00 : 12</div>
+    </div>
+
+    <!-- VN dialogue bubble -->
+    <div class="vn-bubble" id="bubble">
+      <div class="vn-speaker">아리아</div>
+      <div class="vn-line" id="vnLine">&nbsp;</div>
+    </div>
+
+    <!-- Final overlay -->
+    <div class="final-overlay" id="final">
+      <h1>그녀는, <em>당신을</em><br>기억합니다.</h1>
+      <p>기억하는 AI가 비주얼노벨이 되는 순간 · Lucive</p>
+    </div>
+
+    <!-- Timeline -->
+    <div class="timeline"><div class="timeline-fill" id="fill"></div></div>
+
+    <!-- Controls -->
+    <div class="controls">
+      <button class="ctrl-btn" id="ctrlPause" title="pause/play">❚❚</button>
+      <span class="ctrl-count" id="ctrlCount">01 · CAFE</span>
+    </div>
+  </div>
+</section>
+
+<!-- Lede below cinema -->
+<section class="lede">
+  <div class="lede-kicker">MEMORY IS THE NEW CHEMISTRY</div>
+  <h2>"어제 네가 말했던 그 영화,<br><b>나도 봤어.</b>"</h2>
+  <p>
+    타사는 캐릭터 세팅만 기억합니다.<br>
+    Lucive는 <b>사건</b>을 기억합니다. 어제 한 말 한 마디가, 오늘 그녀의 모든 것을 바꿉니다.
+  </p>
+</section>
+
+<!-- Signup -->
+<section class="signup" id="signup">
+  <div class="signup-kicker">PRE-REGISTRATION · ALPHA 100</div>
+  <h3>그녀의 다음 장면은, <b>당신과 함께.</b></h3>
+  <p>12초가 끝나기 전에, 이름을 남겨주세요.</p>
+  <form class="signup-form" onsubmit="event.preventDefault();alert('프로토타입: 실제 제출은 v9 연결 예정');">
+    <input type="email" placeholder="your@email" required>
+    <button type="submit">등록 →</button>
+  </form>
+</section>
+
+<div class="variants">
+  <a href="./v10-a-memory-fork.html">A · Memory Fork</a>
+  <a href="./v10-b-live-scene.html" class="current">B · Live Scene</a>
+  <a href="./v10-c-memory-timeline.html">C · Timeline</a>
+</div>
+
+<div class="prototype-note">
+  <b>PROTOTYPE · v10-B</b> — 얀데레 퇴폐미 · 12초 autoplay 시네마 (CSS keyframes + JS 타임라인) ·<br>
+  실제 발주 시: 캐릭터 풀샷 · 표정 3단계 (미소 → 중립 → 몰입) · 카페/영화관 배경 2장 · BGM 1곡 · 자막 타이핑 효과
+</div>
+
+<script>
+// ─── 12-second cinema timeline ─────────────────────
+const TIMELINE = [
+  { at: 0,  scene: 'cafe',    label: 'SCENE 01 · 네온 7구 카페',       bubble: false, line: '' },
+  { at: 1,  scene: 'cafe',    label: 'SCENE 01 · 네온 7구 카페',       bubble: true,  line: '"오래 기다렸어."' },
+  { at: 4,  scene: 'cafe',    label: 'SCENE 02 · 기억이 스며든다',     bubble: true,  line: '"어제 네가 말했던 <em>그 영화</em>, 나도 봤어."' },
+  { at: 7,  scene: 'theater', label: 'SCENE 03 · 같은 장면, 다른 장소', bubble: true,  line: '"그래서 오늘은, <em>여기로 데려왔어.</em>"' },
+  { at: 10, scene: 'finale',  label: 'SCENE 04 · 그녀는 기억합니다',    bubble: false, line: '', final: true },
+];
+const DURATION = 12000;
+const stage = document.getElementById('stage');
+const bubble = document.getElementById('bubble');
+const vnLine = document.getElementById('vnLine');
+const fill = document.getElementById('fill');
+const sceneLabel = document.getElementById('sceneLabel');
+const timecode = document.getElementById('timecode');
+const ctrlCount = document.getElementById('ctrlCount');
+const final = document.getElementById('final');
+const ctrlPause = document.getElementById('ctrlPause');
+
+let startTime = null;
+let rafId = null;
+let paused = false;
+let pausedAt = 0;
+
+function formatTC(ms) {
+  const s = Math.floor(ms / 1000);
+  return String(s).padStart(2,'0') + ' : ' + String(Math.floor((ms%1000)/10)).padStart(2,'0');
+}
+
+function applyFrame(t) {
+  // find latest passed timeline
+  let current = TIMELINE[0];
+  for (const f of TIMELINE) {
+    if (t / 1000 >= f.at) current = f;
+  }
+  stage.className = 'cinema-stage scene-' + current.scene;
+  sceneLabel.innerHTML = '<b>' + current.label.split(' · ')[0] + '</b> · ' + (current.label.split(' · ')[1] || '');
+  ctrlCount.textContent = current.label.split(' · ')[0];
+
+  if (current.bubble && current.line) {
+    bubble.classList.add('visible');
+    bubble.classList.remove('hidden');
+    if (vnLine.dataset.lastLine !== current.line) {
+      vnLine.innerHTML = current.line;
+      vnLine.dataset.lastLine = current.line;
+    }
+  } else if (current.final) {
+    bubble.classList.remove('visible');
+    bubble.classList.add('hidden');
+    final.classList.add('visible');
+  } else {
+    bubble.classList.remove('visible');
+    final.classList.remove('visible');
+  }
+
+  if (!current.final) final.classList.remove('visible');
+  fill.style.width = Math.min(100, (t / DURATION) * 100) + '%';
+  timecode.textContent = formatTC(t);
+}
+
+function tick(now) {
+  if (paused) { rafId = requestAnimationFrame(tick); return; }
+  if (!startTime) startTime = now;
+  const t = (now - startTime);
+  applyFrame(Math.min(t, DURATION));
+  if (t >= DURATION + 2200) {
+    // restart loop
+    startTime = now;
+    bubble.classList.remove('visible');
+    final.classList.remove('visible');
+    vnLine.dataset.lastLine = '';
+  }
+  rafId = requestAnimationFrame(tick);
+}
+
+rafId = requestAnimationFrame(tick);
+
+ctrlPause.addEventListener('click', () => {
+  paused = !paused;
+  ctrlPause.textContent = paused ? '▶' : '❚❚';
+  if (paused) pausedAt = performance.now();
+  else if (pausedAt) startTime += (performance.now() - pausedAt);
+});
+
+document.getElementById('bgmToggle').addEventListener('click', (e) => {
+  const on = e.target.textContent.includes('OFF');
+  e.target.textContent = '♪ BGM: ' + (on ? 'ON' : 'OFF');
+});
+</script>
+
+</body>
+</html>

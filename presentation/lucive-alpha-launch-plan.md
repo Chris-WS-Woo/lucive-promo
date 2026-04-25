@@ -1,0 +1,108 @@
+# Lucive 알파 런칭 계획
+
+## 1. 이번 알파에서 검증할 것
+
+1. **자발적 복귀**: 스토리 기반 LP 경험이 푸쉬 없이도 자발적 복귀를 만든다.
+   KPI: `D7 리텐션, D30 리텐션`
+   성공 기준: `D7 50% 이상, D30 35% 이상`
+   오너: `Alpha Test PO + LUCIVE Product Team`
+
+2. **관계 지속성**: 유저는 앱 자체가 아니라 같은 LP와의 관계를 이어가기 위해 돌아온다.
+   KPI: `같은 LP 재방문율, 같은 LP 재방문 인터뷰`
+   성공 기준: `복귀 유저가 같은 LP를 명확히 선호하고 그 이유를 설명할 수 있음`
+   오너: `Alpha Test PO + LUCIVE Product Team`
+
+3. **서사 견인력**: LP 3개와 스토리 15개 구조가 1~2일 단위 복귀 이유를 만든다.
+   KPI: `유저당 복귀 세션 수, 스토리 소비 깊이, FGI 코멘트`
+   성공 기준: `런칭 주간 스토리만으로 최소 1주일 복귀 동기 확보`
+   오너: `AI Engine Team`
+
+4. **몰입도**: 세계관, 이미지, 보이스가 다소 거친 알파 UX를 상쇄할 만큼 몰입을 만든다.
+   KPI: `평균 세션 길이, 온보딩 완료율, FGI 인용문`
+   성공 기준: `세션 15분 이상, 온보딩 80% 이상, 몰입 관련 긍정 코멘트 확보`
+   오너: `AI Engine Team + Alpha Test PO`
+
+5. **커뮤니티 견인력**: 개발 소식과 커뮤니티 운영이 모집 전환과 기대감을 올린다.
+   KPI: `커뮤니티 입장률, 설문 완료율, 커뮤니티 참여자 품질 비교`
+   성공 기준: `5월 1일 전 채널 오픈, 모집 전환에 실제 기여`
+   오너: `Growth Marketing Team + Alpha Test PO`
+
+## 2. 준비 및 운영 타임라인
+
+- `2026-04-23` ~ `2026-04-25`: 목적, 일정, LP 3, 캠페인 메시지 확정
+- `2026-04-26` ~ `2026-04-28`: 랜딩 / 사전등록 / 설문 QA 및 세계관 요약 정리
+- `2026-04-29` ~ `2026-04-30`: 공식 채널 오픈, 운영 가이드, 5/1~5/7 콘텐츠 로드맵 준비
+- `2026-05-01`: 공식 채널 + 유료 캠페인 동시 오픈
+- `2026-05-01` ~ `2026-05-07`: 모집 진행, 커뮤니티/개발 스토리라인 운영
+- `2026-05-06`: 모집 마감일 5/8 vs 5/15 최종 결정
+- `2026-05-08` ~ `2026-05-12`: 선발, 온보딩, KPI 트래커, 버그 응대, FGI 후속 설문 마무리
+- `2026-05-14`: 전체 리허설과 Go/No-Go 판단
+- `2026-05-22`: 권장 알파 런칭일
+
+## 3. 오너십 구조
+
+- `AI Engine Team`: LP / 스토리 / 세계관 / 공개용 재료 / 이미지 / 보이스
+- `LUCIVE Product Team`: 랜딩 운영 / 본 프로덕트 운영 / 버그 접수 / 핫픽스 / 첫 72시간 운영
+- `Growth Marketing Team`: 캠페인 / 이메일 / 공식 채널 / 커뮤니티 운영 포맷
+- `Alpha Test PO`: 설문 / 트래킹 / KPI / FGI / 마스터 로스터 / 전체 readiness 게이트
+
+## 4. Go / No-Go 기준
+
+- `Go`: 모든 Blocker 완료, Critical 대부분 완료, 첫 72시간 운영 가능
+- `Conditional Go`: 일부 Critical을 수작업으로 커버 가능하나 Blocker는 없음
+- `No-Go`: 제품, 퍼널, 공식 채널, KPI 측정, 첫 주 운영 중 하나라도 Blocker 존재
+
+## 5. 전체 체크리스트
+
+| 영역 | 세부 영역 | 항목 | 중요도 | 담당팀 | Alpha Test PO 체크 | 데드라인 | 완료 기준 | Go/No-Go 영향 |
+|---|---|---|---|---|---|---|---|---|
+| 의사결정 | 알파 목적 | 알파 목적과 성공 정의 확정 | Blocker | Alpha Test PO | Alpha Test PO | 2026-04-23 | 감정적 연결, 자발적 복귀, 운영 가능성, KPI 측정 범위가 1페이지로 승인됨 | 목적이 흐리면 No-Go |
+| 의사결정 | 기본 일정 | 5월 1일 채널 오픈 / 캠페인 시작 기준 일정 확정 | Blocker | Alpha Test PO | Alpha Test PO | 2026-04-23 | 4/28 퍼널 검증, 5/1 채널/캠페인 오픈, 5/8 또는 5/15 모집 마감 게이트, 5/22 권장 런칭 일정 확정 | 런칭 게이트가 모호하면 No-Go |
+| 제품 | LP 구성 | 핵심 LP 3개 확정 | Blocker | AI Engine Team | Alpha Test PO | 2026-04-25 | LP 3개의 이름, 역할, 감정 포지션, 우선순위 확정 | LP 구성이 흔들리면 No-Go |
+| 제품 | LP 구성 | LP별 감정 훅과 차별 포인트 정의 | Critical | AI Engine Team | Alpha Test PO | 2026-04-27 | 각 LP의 판타지, 갈등, 복귀 이유 문서화 | 없으면 검증력이 약해짐 |
+| 제품 | 플레이 가능성 | LP 1 플레이 품질 기준 도달 | Blocker | AI Engine Team | Alpha Test PO | 2026-05-02 | LP 1이 첫 세션과 재방문 세션을 큰 붕괴 없이 유지 | 쇼케이스 LP가 약하면 No-Go |
+| 제품 | 플레이 가능성 | LP 2, LP 3 플레이 가능 수준 도달 | Blocker | AI Engine Team | Alpha Test PO | 2026-05-08 | LP 2, LP 3이 허용 가능한 일관성으로 플레이 가능 | 하나가 약하면 Conditional Go, 하나가 unusable이면 No-Go |
+| 제품 | 관계 지속성 | 기억/일관성 통과 기준 정의 | Blocker | AI Engine Team | Alpha Test PO | 2026-04-28 | 이름, 관계 상태, 세계관 일관성, 금지 붕괴 항목 체크리스트 완성 | 같은 LP 재방문을 판단할 수 없으면 No-Go |
+| 제품 | 안정성 | 치명 버그 심각도와 핫픽스 기준 확정 | Blocker | LUCIVE Product Team | Alpha Test PO | 2026-05-10 | 진행 불가, 응답 불가, 캐릭터 붕괴 버그의 triage 기준 완성 | 첫 주 버그 운영이 안 되면 No-Go |
+| 콘텐츠 | 스토리 슬레이트 | 스토리 15개 목록과 크기 티어 확정 | Blocker | AI Engine Team | Alpha Test PO | 2026-04-28 | 15개 스토리의 LP 연결, 유형, 우선순위 확정 | 복귀 콘텐츠 계획이 없으면 No-Go |
+| 콘텐츠 | 스토리 슬레이트 | 커뮤니티 티징 및 런칭 주간용 선행 스토리 5개 완성 | Blocker | AI Engine Team | Alpha Test PO | 2026-05-01 | 5개 스토리가 티징과 실제 플레이에 모두 사용 가능 | 커뮤니티 예고가 실체 없는 상태면 No-Go |
+| 콘텐츠 | 스토리 슬레이트 | 플레이 가능한 스토리 최소 10개 확보 | Blocker | AI Engine Team | Alpha Test PO | 2026-05-08 | 10개 이상의 스토리가 QA 통과 후 플레이 가능 | 복귀 루프가 얕으면 No-Go |
+| 콘텐츠 | 몰입 자산 | LP 3개 세계관 요약본 준비 | Blocker | AI Engine Team | Alpha Test PO | 2026-04-27 | LP 1, 2, 3 각각 1페이지 세계관 요약 존재 | 커뮤니티 스토리라인 재료가 없으면 No-Go |
+| 콘텐츠 | 몰입 자산 | LP 3개 채팅용 이미지 최소 세트 준비 | Blocker | AI Engine Team | Alpha Test PO | 2026-05-01 | 각 LP별 티징 가능한 이미지 팩 준비 | 없으면 몰입감 약화 |
+| 콘텐츠 | 몰입 자산 | LP 3개 보이스 샘플 최소 세트 준비 | Critical | AI Engine Team | Alpha Test PO | 2026-05-04 | 각 LP별 인트로 및 핵심 감정 비트 샘플 확보 | 늦어지면 Conditional Go |
+| 콘텐츠 | 커뮤니티 재료 | 일자별 커뮤니티 공개용 스포일러 안전 문구 준비 | Critical | AI Engine Team | Alpha Test PO | 2026-04-29 | 매일 게시 가능한 대사, 설정 조각, 스토리 훅 승인 완료 | 커뮤니티 로드맵 약화 |
+| 마케팅 | 메시지 | 알파 핵심 캠페인 메시지 확정 | Blocker | Growth Marketing Team | Alpha Test PO | 2026-04-25 | KR/JP/US 타깃용 기본 메시지 세트 확정 | 획득 메시지가 흔들리면 No-Go |
+| 마케팅 | 자산 | 바이럴 가능 자산 3종 제작 | Critical | Growth Marketing Team | Alpha Test PO | 2026-04-30 | 캐릭터 티저, 스토리 티저, 홍보 스토리라인 자산 준비 | 모집 효율 저하 |
+| 마케팅 | 랜딩 퍼널 | 랜딩 및 사전등록 E2E 검증 | Blocker | LUCIVE Product Team | Alpha Test PO | 2026-04-28 | 모바일/데스크톱에서 랜딩, 등록, 리다이렉트, 기본 로깅 확인 | 모집 퍼널이 깨지면 No-Go |
+| 마케팅 | 스크리닝 퍼널 | 설문 응답 저장과 스크리닝 동선 검증 | Blocker | Alpha Test PO | Alpha Test PO | 2026-04-28 | 응답이 선발용 필드와 함께 안정적으로 저장됨 | 스크리닝 데이터가 불안정하면 No-Go |
+| 마케팅 | 유료 집행 | X / Meta / Google SA 세팅 완료 | Blocker | Growth Marketing Team | Alpha Test PO | 2026-04-30 | 채널, 크리에이티브, 카피, UTM, 예산표 준비 | 5월 1일 집행이 밀리면 No-Go |
+| 마케팅 | 유료 집행 | 유료 마케팅 시작 | Blocker | Growth Marketing Team | Alpha Test PO | 2026-05-01 | 캠페인 활성화 및 기본 트래킹 검증 | 모집 시작이 밀리면 No-Go |
+| 커뮤니티 | 공식 채널 | KR 카카오 오픈채팅 오픈 | Blocker | Growth Marketing Team | Alpha Test PO | 2026-04-29 | 소개글, 규칙, 피드백 경로, 고정 공지 포함해 오픈 | KR 유입이 머물 곳 없으면 No-Go |
+| 커뮤니티 | 공식 채널 | JP LINE 채널 오픈 | Blocker | Growth Marketing Team | Alpha Test PO | 2026-04-30 | 입장 링크, 웰컴 메시지, 규칙 검증 | JP 캠페인이 채널 없이 열리면 No-Go |
+| 커뮤니티 | 공식 채널 | US Discord 서버 오픈 | Blocker | Growth Marketing Team | Alpha Test PO | 2026-04-30 | 채널 구조, 소개, 권한, FAQ, 피드백 경로 준비 | US 캠페인이 채널 없이 열리면 No-Go |
+| 커뮤니티 | 운영 가이드 | 커뮤니티 운영 가이드 공개 | Blocker | Growth Marketing Team | Alpha Test PO | 2026-04-28 | 톤, 응답 규칙, 에스컬레이션, 스포일러 정책, 업데이트 주기 문서화 | 운영 규칙 없이 채널 오픈하면 No-Go |
+| 커뮤니티 | 콘텐츠 로드맵 | 5/1~5/7 커뮤니티 콘텐츠 로드맵 발행 | Blocker | Growth Marketing Team | Alpha Test PO | 2026-04-29 | LP 공개, 스토리 티저, 개발 소식, 모집 리마인드의 일자별 캘린더 완성 | 채널이 비어 있으면 No-Go |
+| 커뮤니티 | 콘텐츠 포맷 | 재사용 가능한 커뮤니티 게시 포맷 3종 준비 | Critical | Growth Marketing Team | Alpha Test PO | 2026-04-29 | 진행 노트, 캐릭터 공개, 스토리 스니펫 템플릿 승인 | 운영 속도 저하 |
+| 운영 인프라 | 페이지 운영 | 배포/롤백/수정 오너 프로세스 정의 | Blocker | LUCIVE Product Team | Alpha Test PO | 2026-04-24 | 배포 담당, 롤백 기준, 긴급 수정 경로 문서화 | 랜딩을 안전하게 운영 못 하면 No-Go |
+| 운영 인프라 | 링크 QA | 전체 링크 QA 시트 준비 | Blocker | LUCIVE Product Team | Alpha Test PO | 2026-04-28 | CTA, 이메일, 설문, 채널 링크를 한 시트에서 검증 가능 | 유저 경로 링크가 불안하면 No-Go |
+| 운영 인프라 | 분석 계획 | 페이지/퍼널 트래킹 삽입 계획 확정 | Critical | Alpha Test PO | Alpha Test PO | 2026-04-30 | 유입 및 퍼널 전환 이벤트와 스크립트 대상 정의 | 모집 학습이 약해짐 |
+| DB / 운영 | 원장 | 알파 마스터 로스터 생성 | Blocker | Alpha Test PO | Alpha Test PO | 2026-04-29 | 모집 상태, 시장, 유입, 대기, 커뮤니티 입장이 단일 원장에서 추적됨 | 대상 상태 추적 불가면 No-Go |
+| DB / 운영 | 필드 설계 | 로스터 필드와 상태값 체계 정의 | Blocker | Alpha Test PO | Alpha Test PO | 2026-04-29 | 이메일, 시장, 유입, 설문, 선발, 커뮤니티, FGI, CS 필드 잠금 | 운영 상태가 모호하면 No-Go |
+| DB / 운영 | 데이터 규칙 | 중복 처리와 접근 권한 규칙 정의 | Critical | Alpha Test PO | Alpha Test PO | 2026-05-02 | 중복 처리와 수정 권한이 문서화됨 | 운영 실수 리스크 증가 |
+| 선발 | 스크리닝 | 스크리닝 기준표와 점수표 확정 | Blocker | Alpha Test PO | Alpha Test PO | 2026-05-02 | 챗봇 경험, 서사 취향, 피드백 품질 중심 기준 문서화 | 감 선발이 되면 No-Go |
+| 선발 | 운영 | 모집 운영 시트와 메일 체크리스트 확정 | Critical | Alpha Test PO | Alpha Test PO | 2026-05-01 | 유입, 점수, 초대 상태, 커뮤니티 입장까지 추적 가능 | 선발 실행 속도 저하 |
+| 선발 | 게이트 | 5/8 vs 5/15 모집 마감 게이트 결정 | Blocker | Alpha Test PO | Alpha Test PO | 2026-05-06 | 볼륨, 품질, 광고 학습 기준으로 최종 결정 | 늦게까지 마감일 미정이면 No-Go |
+| 선발 | 커뮤니케이션 | 선발/대기 메일 발송 완료 | Blocker | Growth Marketing Team | Alpha Test PO | 2026-05-12 | 선발, 대기, 사전 가이드 메일 발송 및 QA 완료 | 유저에게 결과를 깔끔히 못 알리면 No-Go |
+| 본 프로덕트 운영 | 첫 72시간 | 첫 72시간 운영 커버리지와 모니터링 역할 지정 | Blocker | LUCIVE Product Team | Alpha Test PO | 2026-05-12 | 런칭일, 버그 triage, 공지, escalation 담당자 명시 | 첫 주말 오너가 없으면 No-Go |
+| 본 프로덕트 운영 | 버그 접수 | 버그 리포트 채널, 태그, 심각도 기준 표준화 | Blocker | LUCIVE Product Team | Alpha Test PO | 2026-05-10 | 단일 버그 접수 경로와 상태/심각도 태그 체계 완성 | 피드백이 채팅 속에 묻히면 No-Go |
+| 본 프로덕트 운영 | 유저 응대 | 버그/이슈/핫픽스 회신 템플릿 준비 | Critical | LUCIVE Product Team | Alpha Test PO | 2026-05-11 | 접수, 확인중, 수정완료, 알려진 이슈 템플릿 준비 | 신뢰 리스크 증가 |
+| 리서치 / FGI | 후속 설문 | FGI / UT 후속 설문 준비 | Critical | Alpha Test PO | Alpha Test PO | 2026-05-08 | 복귀 이유, 몰입, 마찰, LP 선호 질문 포함 | 정성 학습이 약해짐 |
+| 리서치 / FGI | 대상 관리 | FGI 후보 상태값과 선별 규칙 추가 | Critical | Alpha Test PO | Alpha Test PO | 2026-05-08 | 잔존, 이탈, 추천 유입, FGI 후보가 로스터에서 구분됨 | 인터뷰 모집 어려움 |
+| 리서치 / FGI | 인터뷰 운영 | 인터뷰 템플릿과 동의 문구 준비 | Critical | Alpha Test PO | Alpha Test PO | 2026-05-10 | 질문지, 노트 템플릿, 기록 동의 문구 준비 | 인용문 품질 약화 |
+| 측정 | KPI 정의 | KPI 이벤트와 산식 정의 | Blocker | Alpha Test PO | Alpha Test PO | 2026-04-29 | D7, D30, 같은 LP 재방문, 온보딩 완료, 세션 길이, 추천 관련 KPI 정의 | 무엇도 증명 못 하면 No-Go |
+| 측정 | 계측 | 이벤트 로깅 구현 및 QA | Blocker | LUCIVE Product Team | Alpha Test PO | 2026-05-05 | 테스트 환경에서 이벤트가 정확히 발화 | KPI 수집이 불안하면 No-Go |
+| 측정 | 리포팅 | KPI 트래커와 일일 리포트 시트 구축 | Critical | Alpha Test PO | Alpha Test PO | 2026-05-08 | 매일 볼 수 있는 KPI 시트와 공유 루틴 준비 | 일일 통제력 약화 |
+| 측정 | 해석 | 인터뷰 가이드와 KPI 연결 인용문 포맷 준비 | Critical | Alpha Test PO | Alpha Test PO | 2026-05-09 | FGI 질문이 감정적 연결과 복귀 행동과 직접 연결됨 | 서사적 증거 약화 |
+| 런칭 운영 | 리허설 | 전체 런칭 리허설 실행 | Blocker | LUCIVE Product Team | Alpha Test PO | 2026-05-14 | 초대, 입장, 플레이, 피드백, 이슈 공지, KPI 체크까지 드라이런 완료 | 드라이런에서 큰 결함이 나오면 No-Go |
+| 런칭 운영 | 게이트 판단 | Go / No-Go 신호등 판단 공표 | Blocker | Alpha Test PO | Alpha Test PO | 2026-05-14 | Blocker/Critical 상태 기반으로 최종 판단 공표 | 공식 런칭 게이트 |
+| 런칭 운영 | 런칭 | 권장 알파 런칭 실행 | Blocker | All Teams | Alpha Test PO | 2026-05-22 | 목요일 저녁 런칭 및 첫 주말 운영 커버리지 확보 | Blocker 미해결 시 런칭 지연 |

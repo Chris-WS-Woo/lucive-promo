@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>당신의 순위가 움직였습니다</title>
+<meta name="color-scheme" content="light">
+<meta name="supported-color-schemes" content="light">
+<style>
+  body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+  table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+  img { -ms-interpolation-mode: bicubic; border: 0; outline: none; text-decoration: none; }
+  body { margin: 0 !important; padding: 0 !important; width: 100% !important; }
+  a { color: #2563EB; text-decoration: none; }
+  @media only screen and (max-width: 640px) {
+    .container { width: 100% !important; }
+    .padded { padding-left: 20px !important; padding-right: 20px !important; }
+    .h1 { font-size: 26px !important; line-height: 1.3 !important; }
+    .btn-primary { width: 100% !important; display: block !important; box-sizing: border-box !important; }
+  }
+</style>
+</head>
+<body style="margin:0;padding:0;background-color:#F8FAFC;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans KR','Apple SD Gothic Neo',Arial,sans-serif;color:#1E293B;">
+<div style="display:none;max-height:0;overflow:hidden;mso-hide:all;">
+  누군가가 당신의 링크를 눌렀고, 당신은 더 가까워졌습니다. 현재 순위와 다음 목표를 확인해 보세요.
+</div>
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:#F8FAFC;">
+  <tr>
+    <td align="center" style="padding:40px 20px;">
+      <table role="presentation" class="container" cellpadding="0" cellspacing="0" border="0" width="600" style="max-width:600px;width:100%;background-color:#FFFFFF;border-radius:20px;overflow:hidden;">
+        <tr>
+          <td style="background:linear-gradient(135deg,#06B6D4 0%,#2563EB 52%,#8B5CF6 100%);padding:32px 40px;text-align:center;">
+            <div style="font-size:24px;font-weight:900;letter-spacing:0.28em;color:#ffffff;margin-bottom:6px;">L&nbsp;U&nbsp;C&nbsp;I&nbsp;V&nbsp;E</div>
+            <div style="font-size:12px;color:rgba(255,255,255,0.86);font-family:'JetBrains Mono',ui-monospace,monospace;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;">RANK UPDATED</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="padded" style="padding:46px 48px 18px 48px;text-align:center;background-color:#FFFFFF;">
+            <h1 class="h1" style="font-size:30px;font-weight:900;line-height:1.3;letter-spacing:-0.02em;margin:0 0 18px 0;color:#1E293B;">당신의 순위가<br>움직였습니다</h1>
+            <p style="font-size:15px;line-height:1.82;color:#64748B;margin:0;">누군가가 당신의 링크를 통해 들어왔고, 당신은 한 칸 더 앞으로 왔습니다.</p>
+          </td>
+        </tr>
+        <tr>
+          <td class="padded" style="padding:0 48px 28px 48px;background-color:#FFFFFF;">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background:linear-gradient(135deg,rgba(6,182,212,0.10),rgba(139,92,246,0.06));border:1px solid rgba(6,182,212,0.28);border-radius:16px;">
+              <tr>
+                <td style="padding:28px 28px 24px 28px;text-align:center;">
+                  <div style="font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#06B6D4;font-weight:700;margin-bottom:10px;">현재 순위</div>
+                  <div style="font-size:64px;font-weight:900;line-height:1;letter-spacing:-0.02em;color:#1E293B;margin-bottom:8px;">#{{user_rank}}</div>
+                  <div style="font-size:13px;color:#64748B;line-height:1.7;">추천 {{referral_count}}명 · 다음 목표 구간까지 {{next_goal_gap}}명</div>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td class="padded" style="padding:0 48px 40px 48px;background-color:#FFFFFF;text-align:center;">
+            <a href="{{referral_share_url}}" class="btn-primary" style="display:inline-block;background:linear-gradient(135deg,#06B6D4,#2563EB);color:#ffffff;padding:16px 40px;border-radius:100px;font-weight:700;font-size:15px;text-decoration:none;box-shadow:0 8px 32px rgba(6,182,212,0.35);">한 번 더 밀어 올리기 →</a>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:24px 48px 40px 48px;background-color:#F8FAFC;border-top:1px solid #E2E8F0;text-align:center;">
+            <div style="font-size:18px;font-weight:800;background:linear-gradient(135deg,#06B6D4,#2563EB);-webkit-background-clip:text;-webkit-text-fill-color:transparent;color:#06B6D4;margin-bottom:8px;">Lucive</div>
+            <p style="font-size:11px;color:#94A3B8;line-height:1.7;margin:0;">DIVE into The Lucid · AI Interactive Story Platform<br>© 2026 Lucive · 본 메일은 추천 리더보드 대상자에게 발송됩니다.<br><a href="{{unsubscribe_url}}" style="color:#94A3B8;text-decoration:underline;">수신 거부</a> · <a href="{{privacy_url}}" style="color:#94A3B8;text-decoration:underline;">개인정보 처리방침</a></p>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+</body>
+</html>

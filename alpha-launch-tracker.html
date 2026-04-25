@@ -1,0 +1,2916 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lucive Alpha Launch Tracker</title>
+  <style>
+    :root {
+      --bg: #f4f1ea;
+      --panel: rgba(255, 252, 247, 0.88);
+      --panel-strong: #fffaf3;
+      --line: #dccfb8;
+      --text: #2b241b;
+      --muted: #786b5a;
+      --blocker: #b42318;
+      --critical: #dd6b20;
+      --medium: #2b6cb0;
+      --good: #2f855a;
+      --red: #c53030;
+      --yellow: #d69e2e;
+      --green: #2f855a;
+      --shadow: 0 18px 48px rgba(68, 49, 22, 0.10);
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(233, 194, 128, 0.24), transparent 28%),
+        radial-gradient(circle at top right, rgba(111, 167, 145, 0.18), transparent 24%),
+        linear-gradient(180deg, #f7f3ec 0%, #f0eadf 100%);
+    }
+
+    .page {
+      width: min(1440px, calc(100% - 32px));
+      margin: 24px auto 48px;
+    }
+
+    .hero,
+    .panel {
+      background: var(--panel);
+      border: 1px solid rgba(220, 207, 184, 0.92);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    .hero {
+      padding: 28px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(135deg, rgba(233, 194, 128, 0.14), transparent 45%),
+        linear-gradient(315deg, rgba(111, 167, 145, 0.10), transparent 50%);
+      pointer-events: none;
+    }
+
+    .hero-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      align-items: flex-start;
+      position: relative;
+      z-index: 1;
+    }
+
+    h1, h2, h3, p { margin: 0; }
+
+    .kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(255, 250, 243, 0.9);
+      border: 1px solid rgba(220, 207, 184, 0.92);
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .hero h1 {
+      margin-top: 14px;
+      font-size: clamp(30px, 5vw, 46px);
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      max-width: 760px;
+    }
+
+    .hero p {
+      margin-top: 14px;
+      max-width: 820px;
+      color: var(--muted);
+      line-height: 1.65;
+      font-size: 15px;
+    }
+
+    .signal-wrap {
+      min-width: 300px;
+      padding: 18px;
+      border-radius: 20px;
+      background: rgba(255, 250, 243, 0.84);
+      border: 1px solid rgba(220, 207, 184, 0.96);
+    }
+
+    .signal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .signal-header strong {
+      display: block;
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .signal-header span {
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+
+    .traffic {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .light {
+      height: 74px;
+      border-radius: 18px;
+      border: 1px solid rgba(43, 36, 27, 0.08);
+      display: grid;
+      place-items: center;
+      background: rgba(43, 36, 27, 0.04);
+      color: rgba(43, 36, 27, 0.26);
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .light.active {
+      color: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px rgba(43, 36, 27, 0.18);
+    }
+
+    .light.red.active { background: linear-gradient(180deg, #e35d5d, var(--red)); }
+    .light.yellow.active { background: linear-gradient(180deg, #f0c55c, var(--yellow)); }
+    .light.green.active { background: linear-gradient(180deg, #53b67c, var(--green)); }
+
+    .hero-grid,
+    .meta-grid,
+    .section-grid {
+      display: grid;
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .hero-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .meta-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .section-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+    .stat,
+    .team-card,
+    .section-card {
+      background: var(--panel-strong);
+      border: 1px solid rgba(220, 207, 184, 0.95);
+      border-radius: 18px;
+      padding: 18px;
+    }
+
+    .stat-label,
+    .team-label,
+    .section-label {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .stat-value,
+    .team-value,
+    .section-value {
+      display: block;
+      margin-top: 8px;
+      font-size: 30px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+
+    .stat-note,
+    .team-note,
+    .section-note {
+      display: block;
+      margin-top: 8px;
+      color: var(--muted);
+      line-height: 1.55;
+      font-size: 13px;
+    }
+
+    .panel {
+      padding: 22px;
+      margin-top: 18px;
+    }
+
+    .panel-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: flex-end;
+      margin-bottom: 18px;
+    }
+
+    .panel-title {
+      font-size: 26px;
+      letter-spacing: -0.03em;
+    }
+
+    .panel-sub {
+      color: var(--muted);
+      margin-top: 6px;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .toolbar button {
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--text);
+      padding: 10px 14px;
+      border-radius: 999px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .toolbar button:hover { background: #fbf7ef; }
+
+    .section {
+      margin-top: 20px;
+      border-top: 1px solid rgba(220, 207, 184, 0.72);
+      padding-top: 18px;
+    }
+
+    .section:first-of-type {
+      margin-top: 0;
+      border-top: 0;
+      padding-top: 0;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .section-head h3 {
+      font-size: 22px;
+      letter-spacing: -0.03em;
+    }
+
+    .section-summary {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      border-radius: 16px;
+      border: 1px solid rgba(220, 207, 184, 0.86);
+      background: rgba(255, 252, 247, 0.92);
+    }
+
+    table {
+      width: 100%;
+      min-width: 1120px;
+      border-collapse: collapse;
+    }
+
+    thead th {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      background: #faf3e7;
+      color: var(--muted);
+      text-align: left;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 14px 14px;
+      border-bottom: 1px solid rgba(220, 207, 184, 0.92);
+    }
+
+    tbody td {
+      padding: 14px;
+      border-top: 1px solid rgba(220, 207, 184, 0.56);
+      vertical-align: top;
+      background: rgba(255, 252, 247, 0.88);
+    }
+
+    tbody tr.done td {
+      background: rgba(231, 245, 236, 0.86);
+    }
+
+    tbody tr.overdue td {
+      background: rgba(255, 241, 241, 0.9);
+    }
+
+    .task-check {
+      width: 22px;
+      height: 22px;
+      margin-top: 2px;
+      accent-color: var(--green);
+      cursor: pointer;
+    }
+
+    .task-title {
+      font-weight: 800;
+      font-size: 15px;
+      line-height: 1.45;
+    }
+
+    .task-sub {
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      white-space: nowrap;
+    }
+
+    .pill.blocker { background: rgba(180, 35, 24, 0.10); color: var(--blocker); }
+    .pill.critical { background: rgba(221, 107, 32, 0.12); color: var(--critical); }
+    .pill.medium { background: rgba(43, 108, 176, 0.12); color: var(--medium); }
+    .pill.good { background: rgba(47, 133, 90, 0.12); color: var(--good); }
+
+    .deadline strong {
+      display: block;
+      font-size: 15px;
+    }
+
+    .deadline span {
+      display: block;
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .deadline.overdue strong { color: var(--red); }
+    .deadline.soon strong { color: var(--yellow); }
+    .deadline.safe strong { color: var(--green); }
+
+    .checks {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--text);
+      line-height: 1.6;
+      font-size: 13px;
+    }
+
+    .checks li + li { margin-top: 3px; }
+
+    .evidence-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-width: 220px;
+    }
+
+    .evidence-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--medium);
+      text-decoration: none;
+      font-size: 13px;
+      line-height: 1.45;
+      font-weight: 700;
+    }
+
+    .evidence-link:hover {
+      color: var(--text);
+      text-decoration: underline;
+    }
+
+    .evidence-link::before {
+      content: "↗";
+      color: var(--muted);
+      font-size: 12px;
+      transform: translateY(-1px);
+    }
+
+    .evidence-missing {
+      color: var(--critical);
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1.5;
+    }
+
+    .footer-note {
+      margin-top: 18px;
+      color: var(--muted);
+      line-height: 1.65;
+      font-size: 13px;
+    }
+
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .kpi-card {
+      background: var(--panel-strong);
+      border: 1px solid rgba(220, 207, 184, 0.95);
+      border-radius: 18px;
+      padding: 18px;
+    }
+
+    .kpi-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: flex-start;
+    }
+
+    .kpi-name {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+
+    .kpi-tier {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(43, 36, 27, 0.06);
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      white-space: nowrap;
+    }
+
+    .kpi-desc {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .kpi-meta {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .kpi-box {
+      border: 1px solid rgba(220, 207, 184, 0.9);
+      border-radius: 14px;
+      padding: 12px;
+      background: rgba(255, 252, 247, 0.9);
+    }
+
+    .kpi-box-label {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .kpi-box-value {
+      display: block;
+      margin-top: 6px;
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+
+    .kpi-progress {
+      margin-top: 16px;
+    }
+
+    .kpi-progress-bar {
+      height: 12px;
+      border-radius: 999px;
+      background: rgba(43, 36, 27, 0.08);
+      overflow: hidden;
+    }
+
+    .kpi-progress-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: 999px;
+      transition: width 0.25s ease;
+      background: linear-gradient(90deg, #d97706, #2f855a);
+    }
+
+    .kpi-progress-note {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .kpi-controls {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .kpi-controls label {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .kpi-controls input {
+      width: 100%;
+      margin-top: 6px;
+      border: 1px solid rgba(220, 207, 184, 0.95);
+      border-radius: 12px;
+      padding: 10px 12px;
+      background: #fffdf8;
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .kpi-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 11px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      white-space: nowrap;
+    }
+
+    .kpi-status.green {
+      background: rgba(47, 133, 90, 0.12);
+      color: var(--green);
+    }
+
+    .kpi-status.yellow {
+      background: rgba(214, 158, 46, 0.14);
+      color: #a06a00;
+    }
+
+    .kpi-status.red {
+      background: rgba(197, 48, 48, 0.12);
+      color: var(--red);
+    }
+
+    .kpi-summary-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .market-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .market-card {
+      background: var(--panel-strong);
+      border: 1px solid rgba(220, 207, 184, 0.95);
+      border-radius: 18px;
+      padding: 18px;
+    }
+
+    .market-card h3 {
+      font-size: 22px;
+      letter-spacing: -0.03em;
+    }
+
+    .market-sub {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .market-stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .market-stat {
+      border: 1px solid rgba(220, 207, 184, 0.86);
+      border-radius: 14px;
+      padding: 12px;
+      background: rgba(255, 252, 247, 0.92);
+    }
+
+    .market-stat strong {
+      display: block;
+      font-size: 22px;
+      letter-spacing: -0.03em;
+    }
+
+    .market-stat span {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 800;
+    }
+
+    .market-signal {
+      margin-top: 16px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .market-signal.green {
+      background: rgba(47, 133, 90, 0.12);
+      color: var(--green);
+    }
+
+    .market-signal.yellow {
+      background: rgba(214, 158, 46, 0.14);
+      color: #a06a00;
+    }
+
+    .market-signal.red {
+      background: rgba(197, 48, 48, 0.12);
+      color: var(--red);
+    }
+
+    .market-list {
+      margin-top: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .market-item {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 12px;
+      align-items: start;
+      border: 1px solid rgba(220, 207, 184, 0.82);
+      border-radius: 14px;
+      padding: 12px;
+      background: rgba(255, 252, 247, 0.88);
+    }
+
+    .market-item-main strong {
+      display: block;
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .market-item-main span {
+      display: block;
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .market-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      white-space: nowrap;
+      background: rgba(43, 36, 27, 0.06);
+      color: var(--muted);
+    }
+
+    .channel-table td:first-child,
+    .channel-table th:first-child {
+      min-width: 180px;
+    }
+
+    .channel-table td:nth-child(2),
+    .channel-table th:nth-child(2) {
+      min-width: 220px;
+    }
+
+    @media (max-width: 1120px) {
+      .hero-top { flex-direction: column; }
+      .signal-wrap { width: 100%; min-width: 0; }
+      .hero-grid, .meta-grid, .section-grid, .kpi-summary-grid, .market-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .kpi-grid { grid-template-columns: 1fr; }
+      .panel-head { flex-direction: column; align-items: flex-start; }
+    }
+
+    @media (max-width: 700px) {
+      .page { width: min(100% - 20px, 1440px); }
+      .hero, .panel { padding: 18px; }
+      .hero-grid, .meta-grid, .section-grid, .kpi-summary-grid, .kpi-meta, .kpi-controls, .market-grid, .market-stats { grid-template-columns: 1fr; }
+      .signal-header span { font-size: 22px; }
+      .light { height: 62px; }
+      .market-item { grid-template-columns: auto 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <section class="hero">
+      <div class="hero-top">
+        <div>
+          <span class="kicker">Alpha Ops Dashboard</span>
+          <h1>5월 17일 알파 시작 준비 트래커</h1>
+          <p>
+            현재 운영 인원 기준으로 역산한 MM 계획을 바탕으로, 모집/선발/온보딩/제품/측정/운영 준비를 한 화면에서 체크할 수 있게 정리했습니다.
+            상단 신호등은 <strong>Blocker</strong>와 <strong>Critical</strong> 항목 진행 상태, 전체 완료율, 마감 초과 여부를 기준으로 자동 계산됩니다.
+          </p>
+        </div>
+        <aside class="signal-wrap">
+          <div class="signal-header">
+            <div>
+              <strong>May 17 Readiness</strong>
+              <span id="signalText">계산 중...</span>
+            </div>
+            <div class="deadline safe" id="daysLeft"></div>
+          </div>
+          <div class="traffic">
+            <div class="light red" id="lightRed">Red</div>
+            <div class="light yellow" id="lightYellow">Yellow</div>
+            <div class="light green" id="lightGreen">Green</div>
+          </div>
+        </aside>
+      </div>
+
+      <div class="hero-grid">
+        <div class="stat">
+          <span class="stat-label">전체 진행률</span>
+          <span class="stat-value" id="overallProgress">0%</span>
+          <span class="stat-note" id="overallNote">0 / 0 완료</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Blocker 완료율</span>
+          <span class="stat-value" id="blockerProgress">0%</span>
+          <span class="stat-note" id="blockerNote">0 / 0 완료</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Critical 완료율</span>
+          <span class="stat-value" id="criticalProgress">0%</span>
+          <span class="stat-note" id="criticalNote">0 / 0 완료</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">지연 중 항목</span>
+          <span class="stat-value" id="overdueCount">0</span>
+          <span class="stat-note" id="overdueNote">지연 없음</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <div>
+          <h2 class="panel-title">팀별 가용 MM</h2>
+          <p class="panel-sub">1 MM = 20 working days 기준. `5월 12일` 선발 완료와 `5월 17일` 알파 시작 사이에 4일 버퍼를 남기는 구조입니다.</p>
+        </div>
+      </div>
+      <div class="meta-grid">
+        <div class="team-card">
+          <span class="team-label">AI 엔진팀</span>
+          <span class="team-value">3명</span>
+          <span class="team-note">5월 12일 기준 `2.4 MM` / 5월 17일 기준 `2.85 MM`</span>
+        </div>
+        <div class="team-card">
+          <span class="team-label">백엔드 / 프론트엔드 운영팀</span>
+          <span class="team-value">5명</span>
+          <span class="team-note">5월 12일 기준 `4.0 MM` / 5월 17일 기준 `4.75 MM`</span>
+        </div>
+        <div class="team-card">
+          <span class="team-label">마케팅</span>
+          <span class="team-value">1명</span>
+          <span class="team-note">5월 12일 기준 `0.8 MM` / 5월 17일 기준 `0.95 MM`</span>
+        </div>
+        <div class="team-card">
+          <span class="team-label">알파 테스트 PO</span>
+          <span class="team-value">1명</span>
+          <span class="team-note">5월 12일 기준 `0.8 MM` / 5월 17일 기준 `0.95 MM`</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <div>
+          <h2 class="panel-title">섹션별 진행 요약</h2>
+          <p class="panel-sub">섹션 단위로 어느 곳이 병목인지 바로 확인할 수 있게 요약했습니다.</p>
+        </div>
+      </div>
+      <div class="section-grid" id="sectionGrid"></div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <div>
+          <h2 class="panel-title">제품 준비 상황판</h2>
+          <p class="panel-sub">제품 준비 비저빌리티를 위해 핵심 개수를 따로 관리합니다. 현재값만 입력하면 목표 대비 준비율이 바로 계산됩니다.</p>
+        </div>
+        <div class="toolbar">
+          <button type="button" id="resetProductBtn">제품 준비값 초기화</button>
+        </div>
+      </div>
+
+      <div class="kpi-summary-grid">
+        <div class="stat">
+          <span class="stat-label">제품 준비 평균 달성률</span>
+          <span class="stat-value" id="productOverallProgress">0%</span>
+          <span class="stat-note" id="productOverallNote">전체 항목 기준</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">핵심 LP 준비</span>
+          <span class="stat-value" id="productLpSummary">0 / 3</span>
+          <span class="stat-note" id="productLpNote">알파 핵심 LP 수</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">핵심 스토리 준비</span>
+          <span class="stat-value" id="productStorySummary">0 / 15</span>
+          <span class="stat-note" id="productStoryNote">2일 1회 복귀 가정 기준</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">마케팅 바이럴 자산</span>
+          <span class="stat-value" id="productViralSummary">0 / 3</span>
+          <span class="stat-note" id="productViralNote">최소 바이럴 세트 수</span>
+        </div>
+      </div>
+
+      <div class="kpi-grid" id="productGrid"></div>
+      <p class="footer-note">
+        제품 준비 기준:
+        `핵심 LP 3개`, `핵심 스토리 15개`, `각 LP별 세계관/그림/목소리 준비`, `바이럴용 마케팅 자산 3개`.
+      </p>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <div>
+          <h2 class="panel-title">KPI 트래커</h2>
+          <p class="panel-sub">목표 수준과 현재값을 직접 입력하면 달성률과 상태가 계산됩니다. 알파 기간에는 `현재값`만 업데이트하면 되고, 목표값은 초기 합의 기준으로 유지하면 됩니다.</p>
+        </div>
+        <div class="toolbar">
+          <button type="button" id="resetKpiBtn">KPI 현재값 초기화</button>
+        </div>
+      </div>
+
+      <div class="kpi-summary-grid">
+        <div class="stat">
+          <span class="stat-label">핵심 KPI 평균 달성률</span>
+          <span class="stat-value" id="kpiCoreProgress">0%</span>
+          <span class="stat-note" id="kpiCoreNote">Tier 1 기준</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">전체 KPI 평균 달성률</span>
+          <span class="stat-value" id="kpiOverallProgress">0%</span>
+          <span class="stat-note" id="kpiOverallNote">전체 지표 기준</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">목표 달성 KPI</span>
+          <span class="stat-value" id="kpiHitCount">0</span>
+          <span class="stat-note" id="kpiHitNote">0 / 0 달성</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">VC 스토리라인 상태</span>
+          <span class="stat-value" id="kpiStorySignal">Red</span>
+          <span class="stat-note" id="kpiStoryNote">D7 / AIP / 온보딩 중심</span>
+        </div>
+      </div>
+
+      <div class="kpi-grid" id="kpiGrid"></div>
+      <p class="footer-note">
+        KPI 상태 규칙:
+        `Green` = 목표 100% 이상.
+        `Yellow` = 목표의 70% 이상.
+        `Red` = 목표의 70% 미만.
+        추천 유저 retention 비교처럼 증감형 지표는 `0 이상`이면 목표 달성으로 계산합니다.
+      </p>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <div>
+          <h2 class="panel-title">마켓별 준비 상황판</h2>
+          <p class="panel-sub">한국, 일본, 미국을 각각 별도 마켓으로 보고 현지화 자산과 채널 준비 상태를 체크합니다. 각 마켓 신호등은 해당 시장의 Blocker/Critical 항목 진행률과 지연 여부를 기준으로 계산됩니다.</p>
+        </div>
+      </div>
+
+      <div class="market-grid" id="marketGrid"></div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <div>
+          <h2 class="panel-title">채널별 준비 상황판</h2>
+          <p class="panel-sub">채널은 마케팅 운영 기준으로 따로 관리합니다. 어떤 채널이 실제 집행 가능한 상태인지와 어떤 마켓의 문안/에셋이 빠졌는지 확인할 수 있습니다.</p>
+        </div>
+      </div>
+      <div class="table-wrap channel-table">
+        <table>
+          <thead>
+            <tr>
+              <th>채널</th>
+              <th>준비 항목</th>
+              <th>중요도</th>
+              <th>데드라인</th>
+              <th>KR</th>
+              <th>JP</th>
+              <th>US</th>
+              <th>근거 문서</th>
+            </tr>
+          </thead>
+          <tbody id="channelTableBody"></tbody>
+        </table>
+      </div>
+      <p class="footer-note">
+        채널별 표는 마켓별 현지화가 동시에 끝나야 실집행 가능하다는 관점으로 봐야 합니다.
+        예를 들어 `Discord`가 준비되어도 `US` 메시지/자산이 비어 있으면 미국향 운영은 아직 준비 완료가 아닙니다.
+      </p>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <div>
+          <h2 class="panel-title">체크리스트</h2>
+          <p class="panel-sub">체크 상태는 브라우저 로컬 저장소에 저장됩니다. 우측 체크포인트는 완료 확인 기준으로 보시면 됩니다.</p>
+        </div>
+        <div class="toolbar">
+          <button type="button" id="expandAllBtn">모든 섹션 펼치기</button>
+          <button type="button" id="collapseAllBtn">모든 섹션 접기</button>
+          <button type="button" id="resetBtn">체크 초기화</button>
+        </div>
+      </div>
+      <div id="sections"></div>
+      <p class="footer-note">
+        신호등 규칙:
+        `Green` = Blocker 100% 완료 + Critical 85% 이상 + 지연 Blocker/Critical 없음.
+        `Yellow` = Blocker 80% 이상 + 치명적 지연 2개 이하.
+        `Red` = 그 외 또는 지연 Blocker 존재.
+      </p>
+    </section>
+  </div>
+
+  <script>
+    const TARGET_DATE = "2026-05-17";
+    const STORAGE_KEY = "lucive-alpha-launch-tracker-v1";
+    const KPI_STORAGE_KEY = "lucive-alpha-kpi-tracker-v1";
+    const MARKET_STORAGE_KEY = "lucive-alpha-market-tracker-v1";
+    const PRODUCT_STORAGE_KEY = "lucive-alpha-product-readiness-v1";
+
+    const tasks = [
+      {
+        id: "msg-core",
+        section: "마케팅",
+        title: "알파 모집 핵심 메시지 확정",
+        severity: "Blocker",
+        owner: "마케팅",
+        deadline: "2026-04-24",
+        desc: "모든 홍보물의 기준 문장.",
+        checks: ["한 줄 가치제안 확정", "제타/크랙 대비 차이 명시", "왜 지금 신청해야 하는지 한 문장으로 정리"]
+      },
+      {
+        id: "channel-main",
+        section: "커뮤니티",
+        title: "메인 커뮤니티 채널 결정",
+        severity: "Blocker",
+        owner: "PO",
+        deadline: "2026-04-24",
+        desc: "오픈카톡/디스코드 우선순위 확정.",
+        checks: ["메인 채널 1개 결정", "보조 채널 운영 여부 결정", "운영 리소스 기준으로 유지 가능성 확인"]
+      },
+      {
+        id: "copy-segment",
+        section: "마케팅",
+        title: "타깃 세그먼트별 카피 분기",
+        severity: "Critical",
+        owner: "마케팅",
+        deadline: "2026-04-25",
+        desc: "핵심 타깃별 언어 분리.",
+        checks: ["제타 유저용 카피", "크랙 유저용 카피", "웹소설/웹툰 독자용 카피"]
+      },
+      {
+        id: "aip-core",
+        section: "제품 / 콘텐츠",
+        title: "알파 핵심 LP 3개 확정",
+        severity: "Blocker",
+        owner: "AI 엔진팀",
+        deadline: "2026-04-25",
+        desc: "검증 대상 LP를 3개 수준으로 고정해야 제품 준비와 지표 해석이 가능.",
+        checks: ["핵심 LP 3개 이름 확정", "각 LP의 역할과 검증 포인트 정의", "같은 LP 재방문 해석이 가능하도록 기준 통일"]
+      },
+      {
+        id: "community-structure",
+        section: "커뮤니티",
+        title: "커뮤니티 구조 설계",
+        severity: "Critical",
+        owner: "PO",
+        deadline: "2026-04-27",
+        desc: "공지/질문/버그/후기 채널 구조 결정.",
+        checks: ["공지 채널 분리", "질문 및 Q&A 채널 분리", "버그 및 후기 채널 분리"]
+      },
+      {
+        id: "visual-key",
+        section: "에셋",
+        title: "모집 대표 키비주얼 1종 제작",
+        severity: "Blocker",
+        owner: "마케팅",
+        deadline: "2026-04-28",
+        desc: "LP와 공지문에 공용으로 쓰는 대표 비주얼.",
+        checks: ["Hero 영역 적용 가능", "모바일 크롭 안전", "브랜드 톤 일치"]
+      },
+      {
+        id: "copy-lp",
+        section: "마케팅",
+        title: "LP 카피 최종본 확정",
+        severity: "Blocker",
+        owner: "마케팅",
+        deadline: "2026-04-29",
+        desc: "헤드라인, CTA, FAQ 문구 최종 정리.",
+        checks: ["Hero 카피 확정", "CTA 문구 확정", "FAQ 5문항 이상 정리"]
+      },
+      {
+        id: "asset-characters",
+        section: "에셋",
+        title: "캐릭터 대표 이미지 2~3종 확보",
+        severity: "Critical",
+        owner: "마케팅",
+        deadline: "2026-04-29",
+        desc: "감정 연결을 시각적으로 설득하는 자산.",
+        checks: ["캐릭터 톤 구분", "썸네일 사용 가능", "소개 카드와 공용 사용 가능"]
+      },
+      {
+        id: "asset-social-template",
+        section: "에셋",
+        title: "SNS 카드 템플릿 제작",
+        severity: "Critical",
+        owner: "마케팅",
+        deadline: "2026-04-29",
+        desc: "반복 게시용 기본 포맷.",
+        checks: ["1:1 템플릿", "4:5 템플릿", "세로 스토리형 템플릿"]
+      },
+      {
+        id: "announce-open",
+        section: "마케팅",
+        title: "모집 공지문 기본본 작성",
+        severity: "Blocker",
+        owner: "마케팅",
+        deadline: "2026-04-30",
+        desc: "커뮤니티/SNS/DM 공용 기본본.",
+        checks: ["짧은 버전 작성", "긴 버전 작성", "커뮤니티용/DM용 변형 준비"]
+      },
+      {
+        id: "asset-world",
+        section: "에셋",
+        title: "세계관 / 무드 비주얼 세트 제작",
+        severity: "Critical",
+        owner: "마케팅",
+        deadline: "2026-04-30",
+        desc: "웹소설/웹툰 독자층의 몰입 포인트.",
+        checks: ["장면감 전달", "관계성 무드 전달", "모집 게시물 재활용 가능"]
+      },
+      {
+        id: "lp-final",
+        section: "마케팅",
+        title: "모집 LP 최종본 확정",
+        severity: "Blocker",
+        owner: "백엔드/프론트엔드 운영팀",
+        deadline: "2026-05-01",
+        desc: "모집 전환의 핵심 페이지.",
+        checks: ["핵심 CTA 배치", "FAQ 반영", "설문 연결 흐름 확인"]
+      },
+      {
+        id: "world-summary",
+        section: "제품 / 콘텐츠",
+        title: "세계관 요약본 작성",
+        severity: "Critical",
+        owner: "AI 엔진팀",
+        deadline: "2026-05-01",
+        desc: "운영과 마케팅이 같이 보는 1페이지 문서.",
+        checks: ["1페이지 요약", "핵심 관계 축 정리", "운영/마케팅 공용 사용 가능"]
+      },
+      {
+        id: "character-doc",
+        section: "제품 / 콘텐츠",
+        title: "캐릭터 설정 문서 정리",
+        severity: "Blocker",
+        owner: "AI 엔진팀",
+        deadline: "2026-05-01",
+        desc: "설정 붕괴를 막기 위한 기준 문서.",
+        checks: ["말투 정의", "과거/비밀 정의", "붕괴 금지 포인트 정리"]
+      },
+      {
+        id: "metric-events",
+        section: "KPI / 측정",
+        title: "이벤트 정의서 작성",
+        severity: "Blocker",
+        owner: "백엔드/프론트엔드 운영팀",
+        deadline: "2026-05-01",
+        desc: "무엇을 측정할지 확정하는 기준 문서.",
+        checks: ["signup 정의", "onboarding_complete 정의", "AIP_selected/session/revisit 정의"]
+      },
+      {
+        id: "asset-compare",
+        section: "에셋",
+        title: "비교형 홍보 카드 3종 제작",
+        severity: "Critical",
+        owner: "마케팅",
+        deadline: "2026-05-01",
+        desc: "기존 앱 불만을 직접 찌르는 소재.",
+        checks: ["기억력 비교 카드", "캐릭터 일관성 비교 카드", "몰입/장면감 비교 카드"]
+      },
+      {
+        id: "screening-final",
+        section: "선발 / 온보딩",
+        title: "스크리닝 설문 최종 확정",
+        severity: "Blocker",
+        owner: "PO",
+        deadline: "2026-05-02",
+        desc: "선발 데이터 수집의 출발점.",
+        checks: ["문항 확정", "분기 로직 확인", "제출 후 저장 흐름 확인"]
+      },
+      {
+        id: "selection-score",
+        section: "선발 / 온보딩",
+        title: "선발 점수표 작성",
+        severity: "Blocker",
+        owner: "PO",
+        deadline: "2026-05-02",
+        desc: "감이 아니라 기준으로 뽑기 위한 문서.",
+        checks: ["AI 챗 경험 반영", "서사 취향 반영", "피드백 가능성/참여 가능 시간 반영"]
+      },
+      {
+        id: "retention-def",
+        section: "KPI / 측정",
+        title: "D7 / D30 리텐션 정의 확정",
+        severity: "Blocker",
+        owner: "백엔드/프론트엔드 운영팀",
+        deadline: "2026-05-02",
+        desc: "핵심 thesis 측정 기준.",
+        checks: ["코호트 기준 합의", "푸쉬 없는 상태로 해석 조건 합의", "날짜 계산 방식 통일"]
+      },
+      {
+        id: "same-aip-def",
+        section: "KPI / 측정",
+        title: "같은 AIP 재방문 정의 확정",
+        severity: "Blocker",
+        owner: "백엔드/프론트엔드 운영팀",
+        deadline: "2026-05-02",
+        desc: "이번 알파의 핵심 보조 지표.",
+        checks: ["첫 주요 AIP 정의", "재방문 시 비교 기준 정의", "복수 AIP 사용 시 처리 규칙 정의"]
+      },
+      {
+        id: "onboarding-funnel",
+        section: "KPI / 측정",
+        title: "온보딩 퍼널 정의",
+        severity: "Blocker",
+        owner: "백엔드/프론트엔드 운영팀",
+        deadline: "2026-05-02",
+        desc: "사전등록 → 초대 → 첫 플레이 완료 퍼널.",
+        checks: ["단계별 이벤트 정의", "퍼널 이탈 구간 표시", "완료 기준 명시"]
+      },
+      {
+        id: "story-core",
+        section: "제품 / 콘텐츠",
+        title: "핵심 스토리 15개 플레이 가능 수준 확보",
+        severity: "Blocker",
+        owner: "AI 엔진팀",
+        deadline: "2026-05-03",
+        desc: "2일에 1번 복귀하는 유저를 기준으로 최소 스토리 풀을 확보해야 함.",
+        checks: ["핵심 스토리 15개 목록화", "첫 10분 훅이 있는 스토리 포함", "복귀 이유가 생기는 후속 전개 포함"]
+      },
+      {
+        id: "lp-assets-core",
+        section: "제품 / 콘텐츠",
+        title: "핵심 LP 3개별 세계관 / 그림 / 목소리 준비",
+        severity: "Blocker",
+        owner: "AI 엔진팀 + 마케팅",
+        deadline: "2026-05-08",
+        desc: "각 핵심 LP에 대해 최소한의 세계관 문서, 채팅용 그림, 보이스가 모두 준비되어야 함.",
+        checks: ["LP별 세계관 요약 존재", "채팅에 쓸 그림 세트 존재", "보이스 샘플 또는 운영용 음성 자산 존재"]
+      },
+      {
+        id: "selection-criteria",
+        section: "선발 / 온보딩",
+        title: "선발 기준 문서화",
+        severity: "Critical",
+        owner: "PO",
+        deadline: "2026-05-03",
+        desc: "합격/대기/보류 기준선 확정.",
+        checks: ["우선 선발층 정의", "합격/대기/보류 기준선 정리", "팀 합의 완료"]
+      },
+      {
+        id: "faq-marketing",
+        section: "마케팅",
+        title: "FAQ형 홍보 문안 작성",
+        severity: "Medium",
+        owner: "마케팅",
+        deadline: "2026-05-03",
+        desc: "반복 문의 대응 효율 개선.",
+        checks: ["기존 앱과 차이", "무료/유료 안내", "무엇을 테스트하는지 설명"]
+      },
+      {
+        id: "reminder-copy",
+        section: "마케팅",
+        title: "모집 리마인드 공지 세트 작성",
+        severity: "Critical",
+        owner: "마케팅",
+        deadline: "2026-05-04",
+        desc: "오픈 이후 중간 리마인드용.",
+        checks: ["오픈 3일차 공지", "마감 임박 공지", "선발 직전 공지"]
+      },
+      {
+        id: "first-session-hook",
+        section: "제품 / 콘텐츠",
+        title: "첫 세션 감정 훅 정리",
+        severity: "Critical",
+        owner: "AI 엔진팀",
+        deadline: "2026-05-04",
+        desc: "초반 이탈 방지 핵심.",
+        checks: ["첫 10분 내 감정 포인트", "유저가 답하고 싶어지는 질문 존재", "다음 세션 기대감 형성"]
+      },
+      {
+        id: "session-metric",
+        section: "KPI / 측정",
+        title: "세션 길이 측정 로직 구현",
+        severity: "Critical",
+        owner: "백엔드/프론트엔드 운영팀",
+        deadline: "2026-05-04",
+        desc: "몰입 지표의 기초.",
+        checks: ["세션 시작 이벤트", "세션 종료 기준 정리", "백그라운드 처리 규칙 반영"]
+      },
+      {
+        id: "ops-roles",
+        section: "운영",
+        title: "운영자 역할 분담 확정",
+        severity: "Blocker",
+        owner: "PO",
+        deadline: "2026-05-05",
+        desc: "누가 공지/문의/triage를 담당하는지 명확히.",
+        checks: ["공지 담당 지정", "문의/커뮤니티 담당 지정", "피드백 triage 담당 지정"]
+      },
+      {
+        id: "community-rules",
+        section: "커뮤니티",
+        title: "운영 규칙 및 톤앤매너 확정",
+        severity: "Critical",
+        owner: "PO",
+        deadline: "2026-05-05",
+        desc: "운영 불신을 막기 위한 기본 룰.",
+        checks: ["금지 행위 정리", "스포일러/민감 대화 규칙 정리", "이슈 대응 문장 톤 합의"]
+      },
+      {
+        id: "metric-dau-mau",
+        section: "KPI / 측정",
+        title: "DAU / MAU 집계 방식 확정",
+        severity: "Critical",
+        owner: "백엔드/프론트엔드 운영팀",
+        deadline: "2026-05-05",
+        desc: "습관화 지표 집계 기준.",
+        checks: ["활성 유저 정의", "중복 제거 규칙", "집계 주기 확정"]
+      },
+      {
+        id: "metric-referral",
+        section: "KPI / 측정",
+        title: "추천 유입 추적 방식 구현",
+        severity: "Critical",
+        owner: "백엔드/프론트엔드 운영팀",
+        deadline: "2026-05-05",
+        desc: "추천 품질 가설을 보기 위한 최소 추적.",
+        checks: ["추천 코드 또는 링크 부여", "가입 소스 저장", "추천 유입 분리 표시"]
+      },
+      {
+        id: "memory-points",
+        section: "제품 / 콘텐츠",
+        title: "기억 / 서사 포인트 정의",
+        severity: "Critical",
+        owner: "AI 엔진팀",
+        deadline: "2026-05-05",
+        desc: "같은 AIP 재방문 체감의 핵심.",
+        checks: ["무엇을 기억해야 하는지 정의", "어떤 식으로 다시 언급할지 정의", "붕괴 금지 사례 정리"]
+      },
+      {
+        id: "community-open",
+        section: "커뮤니티",
+        title: "커뮤니티 오픈",
+        severity: "Blocker",
+        owner: "PO",
+        deadline: "2026-05-06",
+        desc: "선발 후 바로 유입할 운영 공간 오픈.",
+        checks: ["초대 링크 정상 동작", "권한 설정 확인", "운영자 계정 준비 완료"]
+      },
+      {
+        id: "community-pinned",
+        section: "커뮤니티",
+        title: "고정 공지 3종 게시",
+        severity: "Blocker",
+        owner: "PO",
+        deadline: "2026-05-06",
+        desc: "환영/규칙/피드백 제출 안내 고정.",
+        checks: ["환영 공지 게시", "규칙 공지 게시", "피드백 제출법 고정"]
+      },
+      {
+        id: "asset-character-cards",
+        section: "에셋",
+        title: "캐릭터 소개 카드 제작",
+        severity: "Critical",
+        owner: "마케팅",
+        deadline: "2026-05-06",
+        desc: "같은 AIP 재방문 유도 보조 자산.",
+        checks: ["이름/성격/관계 훅 정리", "왜 다시 찾게 되는지 문장 포함", "커뮤니티/LP 공용 사용 가능"]
+      },
+      {
+        id: "viral-assets-core",
+        section: "마케팅",
+        title: "바이럴용 캐릭터 이미지 / 맛보기 / 홍보 스토리라인 자산 3종 확보",
+        severity: "Blocker",
+        owner: "마케팅",
+        deadline: "2026-05-06",
+        desc: "실제로 바이럴을 돌릴 수 있는 최소 콘텐츠 세트를 3개 확보해야 함.",
+        checks: ["캐릭터 이미지 기반 자산", "맛보기 또는 티저형 콘텐츠", "홍보용 스토리라인 기반 콘텐츠 3개 이상"]
+      },
+      {
+        id: "selection-sheet",
+        section: "선발 / 온보딩",
+        title: "선발 관리 시트 준비",
+        severity: "Blocker",
+        owner: "PO",
+        deadline: "2026-05-07",
+        desc: "실무 운영 실수 방지.",
+        checks: ["지원자 상태 칼럼", "점수 칼럼", "선발 결과/커뮤니티 입장 여부 칼럼"]
+      },
+      {
+        id: "mail-assets",
+        section: "선발 / 온보딩",
+        title: "등록 / 선발 / 대기 메일 확정",
+        severity: "Blocker",
+        owner: "백엔드/프론트엔드 운영팀",
+        deadline: "2026-05-08",
+        desc: "5월 12일 / 5월 17일 기준 일정 반영.",
+        checks: ["날짜 문구 수정", "링크 변수 확인", "모바일 렌더링 확인"]
+      },
+      {
+        id: "metric-boards",
+        section: "KPI / 측정",
+        title: "핵심 KPI 집계 가능 상태 만들기",
+        severity: "Blocker",
+        owner: "백엔드/프론트엔드 운영팀",
+        deadline: "2026-05-08",
+        desc: "D7, AIP 재방문, 온보딩, 세션 길이 최소 집계.",
+        checks: ["일일 집계 가능", "수동 시트든 대시보드든 확인 가능", "추천 유입 분리 확인 가능"]
+      },
+      {
+        id: "metric-push-log",
+        section: "KPI / 측정",
+        title: "푸쉬 / 운영 개입 로그 분리",
+        severity: "Critical",
+        owner: "백엔드/프론트엔드 운영팀",
+        deadline: "2026-05-08",
+        desc: "푸쉬 없는 리텐션 해석을 위한 전제.",
+        checks: ["푸쉬 발송 로그 분리", "운영성 개입 기록 분리", "리텐션 해석 시 제외 가능"]
+      },
+      {
+        id: "announce-selection",
+        section: "마케팅",
+        title: "선발 / 대기 / 시작 공지 카피 확정",
+        severity: "Critical",
+        owner: "마케팅",
+        deadline: "2026-05-08",
+        desc: "선발 완료 이후 공지물 세트.",
+        checks: ["선발 공지 카피", "대기자 공지 카피", "알파 시작 공지 카피"]
+      },
+      {
+        id: "feedback-form",
+        section: "운영",
+        title: "피드백 수집 폼 및 태그 구조 확정",
+        severity: "Blocker",
+        owner: "백엔드/프론트엔드 운영팀",
+        deadline: "2026-05-09",
+        desc: "피드백이 정리 가능한 형태로 모여야 함.",
+        checks: ["버그/개선/캐릭터/세계관/기타 분류", "재현 정보 입력 가능", "운영자가 분류하기 쉬운 구조"]
+      },
+      {
+        id: "mail-test",
+        section: "선발 / 온보딩",
+        title: "메일 / 링크 / 설문 실테스트 완료",
+        severity: "Blocker",
+        owner: "백엔드/프론트엔드 운영팀",
+        deadline: "2026-05-09",
+        desc: "실사용 테스트 필수.",
+        checks: ["실제 수신함 확인", "CTA 클릭 확인", "커뮤니티 링크/설문 링크 흐름 확인"]
+      },
+      {
+        id: "community-calendar",
+        section: "커뮤니티",
+        title: "첫 주 커뮤니티 콘텐츠 캘린더 작성",
+        severity: "Medium",
+        owner: "PO",
+        deadline: "2026-05-09",
+        desc: "오픈 후 침묵 상태 방지.",
+        checks: ["매일 올릴 주제 정리", "질문 유도 포스트 포함", "운영 공지 타이밍 반영"]
+      },
+      {
+        id: "ops-incident",
+        section: "운영",
+        title: "치명 이슈 대응 프로세스 및 공지 템플릿 작성",
+        severity: "Critical",
+        owner: "PO",
+        deadline: "2026-05-10",
+        desc: "장애 시 신뢰를 지키는 운영 최소 장치.",
+        checks: ["보고 플로우 정리", "확인중/수정중/완료 템플릿 작성", "보상/사과 문구 기준 정리"]
+      },
+      {
+        id: "ops-triage",
+        section: "운영",
+        title: "버그 triage 기준 확정",
+        severity: "Critical",
+        owner: "PO",
+        deadline: "2026-05-10",
+        desc: "무엇부터 고칠지 기준 정리.",
+        checks: ["치명/높음/중간/낮음 정의", "캐릭터 붕괴 우선순위 반영", "진행 불가 이슈 최상위 지정"]
+      },
+      {
+        id: "interview-guide",
+        section: "인터뷰 / 정성 데이터",
+        title: "인터뷰 질문지 초안 작성",
+        severity: "Critical",
+        owner: "PO",
+        deadline: "2026-05-10",
+        desc: "정량을 설명하는 정성 확보.",
+        checks: ["왜 돌아왔는지 질문", "왜 같은 AIP인지 질문", "기존 앱과 무엇이 달랐는지 질문"]
+      },
+      {
+        id: "product-scope",
+        section: "제품 / 콘텐츠",
+        title: "알파 범위 밖 기능 명시",
+        severity: "Medium",
+        owner: "AI 엔진팀",
+        deadline: "2026-05-10",
+        desc: "기대치 관리용 문서.",
+        checks: ["이번에 없는 기능 정리", "미완성 요소 표시", "운영 공지에 반영 가능 상태"]
+      },
+      {
+        id: "ops-faq",
+        section: "운영",
+        title: "운영 FAQ 작성",
+        severity: "Critical",
+        owner: "PO",
+        deadline: "2026-05-11",
+        desc: "반복 문의를 줄이는 기본 문서.",
+        checks: ["접속/보상/버그 항목 포함", "일정 및 피드백 방식 포함", "커뮤니티 링크와 연결"]
+      },
+      {
+        id: "bug-priority",
+        section: "제품 / 콘텐츠",
+        title: "버그 우선순위 리스트 작성",
+        severity: "Critical",
+        owner: "AI 엔진팀",
+        deadline: "2026-05-11",
+        desc: "알파 직전 수정 순서 정리.",
+        checks: ["진행 불가 이슈 정리", "캐릭터 붕괴 이슈 정리", "기억 이탈 / UI 문제 정리"]
+      },
+      {
+        id: "selection-send",
+        section: "선발 / 온보딩",
+        title: "선발 결과 발송 준비 완료",
+        severity: "Blocker",
+        owner: "PO",
+        deadline: "2026-05-11",
+        desc: "5월 12일 발송 직전 준비.",
+        checks: ["합격/대기/보류 리스트 완료", "메일 발송 대상 확인", "커뮤니티 입장 링크 준비"]
+      },
+      {
+        id: "selection-complete",
+        section: "선발 / 온보딩",
+        title: "선발 완료 및 결과 발송",
+        severity: "Blocker",
+        owner: "PO",
+        deadline: "2026-05-12",
+        desc: "약속한 모집/선발 완료일.",
+        checks: ["선발 메일 발송", "대기 메일 발송", "커뮤니티 입장 여부 확인"]
+      },
+      {
+        id: "ops-emergency",
+        section: "운영",
+        title: "비상 연락 체계 확정",
+        severity: "Critical",
+        owner: "PO",
+        deadline: "2026-05-12",
+        desc: "장애 대응 속도 확보.",
+        checks: ["긴급 연락 채널 정리", "팀별 응답 책임자 지정", "야간/주말 대응 기준 정리"]
+      },
+      {
+        id: "onboarding-guide",
+        section: "선발 / 온보딩",
+        title: "온보딩 가이드 완성",
+        severity: "Blocker",
+        owner: "PO",
+        deadline: "2026-05-13",
+        desc: "알파 입장 후 혼선 방지.",
+        checks: ["접속 방법 안내", "무엇을 테스트할지 설명", "무엇을 기대하지 말아야 하는지 명시"]
+      },
+      {
+        id: "play-guide",
+        section: "선발 / 온보딩",
+        title: "첫 30분 플레이 가이드 작성",
+        severity: "Critical",
+        owner: "PO",
+        deadline: "2026-05-14",
+        desc: "초기 이탈과 분산 체험 방지.",
+        checks: ["어떤 캐릭터부터 시작할지 제안", "어떤 장면을 보게 할지 제안", "같은 AIP 재방문 유도 포인트 반영"]
+      },
+      {
+        id: "first-mission",
+        section: "선발 / 온보딩",
+        title: "첫 미션 설계",
+        severity: "Critical",
+        owner: "PO",
+        deadline: "2026-05-14",
+        desc: "알파 첫날 행동 유도 장치.",
+        checks: ["재방문 이유가 생기는 미션", "관계형 답변을 유도하는 질문", "피드백 제출까지 이어지는 흐름"]
+      },
+      {
+        id: "interview-schedule",
+        section: "인터뷰 / 정성 데이터",
+        title: "인터뷰 일정 및 대상 기준 확정",
+        severity: "Medium",
+        owner: "PO",
+        deadline: "2026-05-14",
+        desc: "Week 3 인터뷰를 미리 준비.",
+        checks: ["잔존 유저 기준", "이탈 유저 기준", "추천 유입 유저 기준"]
+      },
+      {
+        id: "asset-start",
+        section: "에셋",
+        title: "알파 시작 공지용 이미지 준비",
+        severity: "Medium",
+        owner: "마케팅",
+        deadline: "2026-05-14",
+        desc: "시작일 분위기와 공지 품질 보강.",
+        checks: ["시작 공지 이미지", "첫 미션 공지용 이미지", "모바일 규격 확인"]
+      },
+      {
+        id: "start-copy",
+        section: "마케팅",
+        title: "알파 시작 공지문 최종 확정",
+        severity: "Blocker",
+        owner: "마케팅",
+        deadline: "2026-05-15",
+        desc: "5월 17일 직전 최종 공지.",
+        checks: ["시작일/접속법 명시", "테스트 목표 명시", "피드백 경로 명시"]
+      },
+      {
+        id: "ops-daily",
+        section: "운영",
+        title: "일일 체크인 루틴 및 요약 템플릿 준비",
+        severity: "Medium",
+        owner: "PO",
+        deadline: "2026-05-15",
+        desc: "알파 첫 주 매일 확인 구조.",
+        checks: ["매일 볼 숫자 정리", "커뮤니티 체크 포인트 정리", "내부 공유 포맷 정리"]
+      },
+      {
+        id: "known-issues",
+        section: "커뮤니티",
+        title: "알려진 이슈 게시물 준비",
+        severity: "Critical",
+        owner: "PO",
+        deadline: "2026-05-16",
+        desc: "운영 신뢰의 핵심.",
+        checks: ["확인중/수정중/완료 상태값 포함", "갱신 주기 정리", "고정 게시 가능 상태"]
+      },
+      {
+        id: "ops-rehearsal",
+        section: "운영",
+        title: "운영 리허설 1회 완료",
+        severity: "Blocker",
+        owner: "PO + 전 팀",
+        deadline: "2026-05-16",
+        desc: "실전 전 마지막 검증.",
+        checks: ["메일 발송 시뮬레이션", "커뮤니티 입장 시뮬레이션", "피드백 제출/장애 공지 시뮬레이션"]
+      },
+      {
+        id: "engine-tuning",
+        section: "제품 / 콘텐츠",
+        title: "알파 시작 전 최종 튜닝",
+        severity: "Critical",
+        owner: "AI 엔진팀",
+        deadline: "2026-05-16",
+        desc: "첫 체감과 재방문 이유를 조정하는 버퍼.",
+        checks: ["첫 세션 체감 재점검", "기억/일관성 최종 점검", "치명적 응답 붕괴 재확인"]
+      },
+      {
+        id: "alpha-launch",
+        section: "운영",
+        title: "5월 17일 알파 시작",
+        severity: "Blocker",
+        owner: "전 팀",
+        deadline: "2026-05-17",
+        desc: "실제 알파 스타트.",
+        checks: ["시작 공지 게시", "첫 미션 배포", "초기 문의 응답 루틴 가동"]
+      }
+    ];
+
+    const kpis = [
+      {
+        id: "d30_retention",
+        name: "D30 Retention",
+        tier: "Tier 1",
+        unit: "%",
+        target: 35,
+        current: 0,
+        desc: "푸쉬 없이 30일 후 자발적으로 복귀한 비율. 감정적 관계 형성의 가장 직접적인 증거.",
+        note: "푸쉬나 강한 운영 개입 없이 측정해야 의미가 큽니다."
+      },
+      {
+        id: "same_aip_return",
+        name: "같은 AIP 재방문율",
+        tier: "Tier 1",
+        unit: "%",
+        target: 60,
+        current: 0,
+        desc: "복귀 유저 중 같은 AIP와 계속 대화 중인 비율. 앱 재방문이 아니라 관계 지속의 신호.",
+        note: "복귀율과 함께 봐야 합니다. 재방문은 높은데 AIP가 자주 바뀌면 해석이 약해집니다."
+      },
+      {
+        id: "dau_mau",
+        name: "DAU / MAU",
+        tier: "Tier 1",
+        unit: "%",
+        target: 50,
+        current: 0,
+        desc: "유저가 습관적으로 들어오는지 보여주는 핵심 지표.",
+        note: "리텐션이 높아도 DAU/MAU가 낮으면 일상 습관 서비스로 보기 어렵습니다."
+      },
+      {
+        id: "session_length",
+        name: "평균 세션 길이",
+        tier: "Tier 2",
+        unit: "분",
+        target: 15,
+        current: 0,
+        desc: "한 번 들어왔을 때 얼마나 몰입해서 머무는지 측정.",
+        note: "AI companion 앱 평균 15~25분대 기준."
+      },
+      {
+        id: "onboarding_completion",
+        name: "온보딩 완료율",
+        tier: "Tier 2",
+        unit: "%",
+        target: 80,
+        current: 0,
+        desc: "사전등록 → 초대 → 실제 첫 플레이 완료까지의 전환율.",
+        note: "첫인상이 충분히 설득력 있는지 보여줍니다."
+      },
+      {
+        id: "d7_retention",
+        name: "D7 Retention",
+        tier: "Tier 2",
+        unit: "%",
+        target: 50,
+        current: 0,
+        desc: "D30 전에 먼저 보여줄 수 있는 초기 관계 형성 신호.",
+        note: "VC 미팅 전 interim proof로 가장 중요합니다."
+      },
+      {
+        id: "referral_rate",
+        name: "친구 추천율",
+        tier: "Tier 3",
+        unit: "%",
+        target: 20,
+        current: 0,
+        desc: "사전등록자 중 실제로 친구를 추천한 비율.",
+        note: "단독 사용 금지. 추천 유저 retention과 반드시 묶어서 해석해야 합니다."
+      },
+      {
+        id: "referral_retention_delta",
+        name: "추천 유저 retention 우위",
+        tier: "Tier 3",
+        unit: "%p",
+        target: 0,
+        current: 0,
+        desc: "추천 유저 retention - 직접 등록 유저 retention 차이.",
+        note: "0 이상이면 추천이 품질 필터 역할을 한다고 해석할 수 있습니다.",
+        mode: "delta"
+      }
+    ];
+
+    const productReadiness = [
+      {
+        id: "core_lp_count",
+        name: "핵심 LP 수",
+        unit: "개",
+        target: 3,
+        current: 0,
+        desc: "알파에서 집중 검증할 핵심 LP 개수.",
+        note: "핵심 LP가 3개 미만이면 제품 경험 폭이 부족하고, 3개를 넘으면 제작 리소스가 분산됩니다."
+      },
+      {
+        id: "core_story_count",
+        name: "핵심 스토리 수",
+        unit: "개",
+        target: 15,
+        current: 0,
+        desc: "2일에 1번 복귀하는 유저를 기준으로 필요한 최소 스토리 풀.",
+        note: "스토리 수는 단순 숫자보다 실제 플레이 가능 상태가 중요합니다."
+      },
+      {
+        id: "lp_asset_ready_count",
+        name: "세계관 / 그림 / 목소리 준비 LP 수",
+        unit: "개",
+        target: 3,
+        current: 0,
+        desc: "각 핵심 LP별로 세계관 문서, 채팅용 그림, 보이스까지 준비된 수.",
+        note: "셋 중 하나라도 빠지면 완전 준비 상태로 보지 않습니다."
+      },
+      {
+        id: "viral_asset_count",
+        name: "바이럴용 마케팅 자산 수",
+        unit: "개",
+        target: 3,
+        current: 0,
+        desc: "캐릭터 이미지/맛보기/스토리라인 기반으로 즉시 배포 가능한 홍보 자산 수.",
+        note: "최소 3개가 있어야 채널별 반복 노출과 테스트가 가능합니다."
+      }
+    ];
+
+    const markets = [
+      {
+        id: "kr",
+        name: "한국",
+        desc: "제타/크랙 유저, 웹소설/웹툰 독자 중심. 공식 알파 테스트 채널은 카카오톡 오픈채팅.",
+        items: [
+          {
+            id: "kr-lp",
+            title: "KR LP 최종본 확정",
+            severity: "Blocker",
+            deadline: "2026-05-01",
+            note: "KR signup/prologue/live 중 운영 기준 최종본 1개 확정",
+            evidence: [
+              { label: "KR Signup LP", href: "pre-register/v15-kr-signup.html" },
+              { label: "KR Prologue LP", href: "pre-register/v15-kr-prologue.html" }
+            ]
+          },
+          {
+            id: "kr-copy",
+            title: "KR 현지화 카피 세트",
+            severity: "Blocker",
+            deadline: "2026-04-25",
+            note: "제타/크랙 불만 번역, 커뮤니티/SNS/DM 문안 포함",
+            evidence: [
+              { label: "홍보 기획 전략", href: "strategy/홍보_기획_전략.md" },
+              { label: "크랙 vs 제타 리뷰 분석", href: "output/reviews/analysis_report.md" }
+            ]
+          },
+          {
+            id: "kr-assets",
+            title: "KR 대표 에셋 세트",
+            severity: "Critical",
+            deadline: "2026-05-01",
+            note: "키비주얼, 비교 카드, 캐릭터 소개 카드",
+            evidence: [
+              { label: "에셋 제작 가이드", href: "strategy/에셋_제작_가이드_KR.md" },
+              { label: "KR 아트 에셋", href: "pre-register/assets/aria/scene_aria_idle.png" }
+            ]
+          },
+          {
+            id: "kr-community",
+            title: "KR 공식 알파 채널 = 카카오톡 오픈채팅 세팅",
+            severity: "Blocker",
+            deadline: "2026-05-06",
+            note: "한국 공식 채널은 카카오톡 오픈채팅으로 고정. 공지 구조와 입장 동선까지 세팅",
+            evidence: [
+              { label: "런칭주 액션플랜", href: "strategy/런칭주_액션플랜_KR.md" },
+              { label: "알파 피드백 파이프라인", href: "strategy/알파_피드백_파이프라인.md" }
+            ]
+          }
+        ]
+      },
+      {
+        id: "jp",
+        name: "일본",
+        desc: "반복 없음, 캐릭터 일관성, 세계관 정합성을 더 민감하게 보는 서사 소비층 대응. 공식 알파 테스트 채널은 LINE.",
+        items: [
+          {
+            id: "jp-lp",
+            title: "JP LP 운영본 확정",
+            severity: "Blocker",
+            deadline: "2026-05-04",
+            note: "일본 시장용 시안 중 집행 기준 1개 확정",
+            evidence: [
+              { label: "JP Unified LP", href: "pre-register/v9-jp-unified.html" },
+              { label: "사전등록 README", href: "pre-register/README.md" }
+            ]
+          },
+          {
+            id: "jp-copy",
+            title: "JP 현지화 카피 세트",
+            severity: "Blocker",
+            deadline: "2026-05-02",
+            note: "반복/기억/과금 축 중심 카피 정리",
+            evidence: [
+              { label: "글로벌 리뷰 분석", href: "output/reviews_global/global_analysis_report.md" },
+              { label: "홍보 기획 전략", href: "strategy/홍보_기획_전략.md" }
+            ]
+          },
+          {
+            id: "jp-assets",
+            title: "JP 대표 에셋 세트",
+            severity: "Critical",
+            deadline: "2026-05-05",
+            note: "JP 톤에 맞는 정적 카드와 캐릭터/씬 에셋 정리",
+            evidence: [
+              { label: "에셋 제작 가이드", href: "strategy/에셋_제작_가이드_KR.md" },
+              { label: "Figma 템플릿 세팅", href: "strategy/figma_마스터_템플릿_세팅_KR.md" }
+            ]
+          },
+          {
+            id: "jp-channel",
+            title: "JP 공식 알파 채널 = LINE 세팅",
+            severity: "Blocker",
+            deadline: "2026-05-07",
+            note: "일본 공식 채널은 LINE으로 고정. 입장/공지/리마인드 흐름까지 준비",
+            evidence: [
+              { label: "홍보 기획 전략", href: "strategy/홍보_기획_전략.md" },
+              { label: "런칭주 액션플랜", href: "strategy/런칭주_액션플랜_KR.md" }
+            ]
+          }
+        ]
+      },
+      {
+        id: "us",
+        name: "미국",
+        desc: "Character.AI / Replika 경험자, 스토리와 기억력, paywall 피로를 겪은 AI companion 유저 대응. 공식 알파 테스트 채널은 Discord.",
+        items: [
+          {
+            id: "us-lp",
+            title: "US LP 운영본 확정",
+            severity: "Blocker",
+            deadline: "2026-05-04",
+            note: "EN unified LP 중 집행 기준 1개 확정",
+            evidence: [
+              { label: "EN Unified LP", href: "pre-register/v9-en-unified.html" },
+              { label: "사전등록 README", href: "pre-register/README.md" }
+            ]
+          },
+          {
+            id: "us-copy",
+            title: "US 현지화 카피 세트",
+            severity: "Blocker",
+            deadline: "2026-05-02",
+            note: "memory / paywall / character consistency 중심 카피",
+            evidence: [
+              { label: "글로벌 리뷰 분석", href: "output/reviews_global/global_analysis_report.md" },
+              { label: "홍보 기획 전략", href: "strategy/홍보_기획_전략.md" }
+            ]
+          },
+          {
+            id: "us-assets",
+            title: "US 대표 에셋 세트",
+            severity: "Critical",
+            deadline: "2026-05-05",
+            note: "Discord/Reddit/X 유입용 카드와 스크린샷 정리",
+            evidence: [
+              { label: "에셋 제작 가이드", href: "strategy/에셋_제작_가이드_KR.md" },
+              { label: "EN LP", href: "pre-register/v9-en-unified.html" }
+            ]
+          },
+          {
+            id: "us-channel",
+            title: "US 공식 알파 채널 = Discord 세팅",
+            severity: "Blocker",
+            deadline: "2026-05-07",
+            note: "미국 공식 채널은 Discord로 고정. 초대, 공지, 피드백 흐름까지 연결",
+            evidence: [
+              { label: "홍보 기획 전략", href: "strategy/홍보_기획_전략.md" },
+              { label: "글로벌 리뷰 분석", href: "output/reviews_global/global_analysis_report.md" }
+            ]
+          }
+        ]
+      }
+    ];
+
+    const channelRows = [
+      {
+        id: "channel-discord",
+        channel: "Discord",
+        item: "미국 공식 알파 테스트 채널 세팅",
+        severity: "Blocker",
+        deadline: "2026-05-07",
+        marketRefs: { kr: null, jp: null, us: "us-channel" },
+        evidence: [
+          { label: "런칭주 액션플랜", href: "strategy/런칭주_액션플랜_KR.md" },
+          { label: "알파 피드백 파이프라인", href: "strategy/알파_피드백_파이프라인.md" }
+        ]
+      },
+      {
+        id: "channel-kakao",
+        channel: "카카오톡 오픈채팅",
+        item: "한국 공식 알파 테스트 채널 세팅",
+        severity: "Blocker",
+        deadline: "2026-05-06",
+        marketRefs: { kr: "kr-community", jp: null, us: null },
+        evidence: [
+          { label: "런칭주 액션플랜", href: "strategy/런칭주_액션플랜_KR.md" },
+          { label: "홍보 기획 전략", href: "strategy/홍보_기획_전략.md" }
+        ]
+      },
+      {
+        id: "channel-line",
+        channel: "LINE",
+        item: "일본 공식 알파 테스트 채널 세팅",
+        severity: "Blocker",
+        deadline: "2026-05-07",
+        marketRefs: { kr: null, jp: "jp-channel", us: null },
+        evidence: [
+          { label: "JP Unified LP", href: "pre-register/v9-jp-unified.html" },
+          { label: "홍보 기획 전략", href: "strategy/홍보_기획_전략.md" }
+        ]
+      },
+      {
+        id: "channel-x",
+        channel: "X / Twitter",
+        item: "마켓별 짧은 카피 / 카드 / 링크 운영",
+        severity: "Critical",
+        deadline: "2026-05-04",
+        marketRefs: { kr: "kr-copy", jp: "jp-copy", us: "us-copy" },
+        evidence: [
+          { label: "홍보 기획 전략", href: "strategy/홍보_기획_전략.md" },
+          { label: "SNS 콘텐츠 5종", href: "copy/SNS_콘텐츠_5종.md" }
+        ]
+      },
+      {
+        id: "channel-reddit",
+        channel: "Reddit",
+        item: "US 중심 서사형 AI 유저용 포스트 세트",
+        severity: "Medium",
+        deadline: "2026-05-07",
+        marketRefs: { kr: null, jp: null, us: "us-channel" },
+        evidence: [
+          { label: "글로벌 리뷰 분석", href: "output/reviews_global/global_analysis_report.md" },
+          { label: "EN Unified LP", href: "pre-register/v9-en-unified.html" }
+        ]
+      },
+      {
+        id: "channel-email",
+        channel: "Email",
+        item: "등록 / 선발 / 대기 / 시작 메일 현지화",
+        severity: "Blocker",
+        deadline: "2026-05-08",
+        marketRefs: { kr: "kr-copy", jp: "jp-copy", us: "us-copy" },
+        evidence: [
+          { label: "이메일 README", href: "emails/README.md" },
+          { label: "KR 등록 확인 메일", href: "emails/00_kr_등록_확인.html" }
+        ]
+      }
+    ];
+
+    const sectionOrder = [
+      "마케팅",
+      "에셋",
+      "커뮤니티",
+      "선발 / 온보딩",
+      "제품 / 콘텐츠",
+      "KPI / 측정",
+      "운영",
+      "인터뷰 / 정성 데이터"
+    ];
+
+    const evidenceOverrides = {
+      "msg-core": [
+        { label: "홍보 기획 전략", href: "strategy/홍보_기획_전략.md" },
+        { label: "크랙 vs 제타 리뷰 분석", href: "output/reviews/analysis_report.md" },
+        { label: "글로벌 리뷰 분석", href: "output/reviews_global/global_analysis_report.md" }
+      ],
+      "copy-segment": [
+        { label: "시장 전략 4분면 분석", href: "strategy/시장전략_4분면_분석.md" },
+        { label: "크랙 vs 제타 리뷰 분석", href: "output/reviews/analysis_report.md" },
+        { label: "글로벌 리뷰 분석", href: "output/reviews_global/global_analysis_report.md" }
+      ],
+      "visual-key": [
+        { label: "에셋 제작 가이드", href: "strategy/에셋_제작_가이드_KR.md" },
+        { label: "KR 프로로그 LP", href: "pre-register/v15-kr-prologue.html" },
+        { label: "아리아 원본 에셋", href: "pre-register/assets/aria/scene_aria_idle.png" }
+      ],
+      "announce-open": [
+        { label: "홍보 기획 전략", href: "strategy/홍보_기획_전략.md" },
+        { label: "SNS 콘텐츠 5종", href: "copy/SNS_콘텐츠_5종.md" },
+        { label: "KR Signup LP", href: "pre-register/v15-kr-signup.html" }
+      ],
+      "lp-final": [
+        { label: "KR 가입 LP", href: "pre-register/v15-kr-signup.html" },
+        { label: "KR 프로로그 LP", href: "pre-register/v15-kr-prologue.html" },
+        { label: "사전등록 README", href: "pre-register/README.md" }
+      ],
+      "screening-final": [
+        { label: "알파 스크리닝 설문 설계", href: "strategy/알파_스크리닝_설문_설계_KR.md" },
+        { label: "스크리닝 페이지", href: "pre-register/screening.html" },
+        { label: "선발 점수 스크립트", href: "scripts/score_alpha_screening.js" }
+      ],
+      "selection-score": [
+        { label: "알파 스크리닝 설문 설계", href: "strategy/알파_스크리닝_설문_설계_KR.md" },
+        { label: "선발 점수 스크립트", href: "scripts/score_alpha_screening.js" },
+        { label: "스크리닝 페이지", href: "pre-register/screening.html" }
+      ],
+      "mail-assets": [
+        { label: "이메일 README", href: "emails/README.md" },
+        { label: "등록 확인 메일", href: "emails/00_kr_등록_확인.html" },
+        { label: "알파 선발 메일", href: "emails/02_알파_선발.html" }
+      ],
+      "mail-test": [
+        { label: "이메일 README", href: "emails/README.md" },
+        { label: "대기자 메일", href: "emails/03_알파_대기자.html" },
+        { label: "등록 확인 메일", href: "emails/00_kr_등록_확인.html" }
+      ],
+      "feedback-form": [
+        { label: "알파 피드백 파이프라인", href: "strategy/알파_피드백_파이프라인.md" },
+        { label: "Tally E2E 가이드", href: "strategy/Tally_E2E_시연_가이드.md" },
+        { label: "폼 인스펙트 결과", href: "tools/tally/form-inspect.json" }
+      ],
+      "metric-events": [
+        { label: "알파 피드백 파이프라인", href: "strategy/알파_피드백_파이프라인.md" },
+        { label: "사전등록 README", href: "pre-register/README.md" },
+        { label: "스크리닝 페이지", href: "pre-register/screening.html" }
+      ],
+      "retention-def": [
+        { label: "알파 피드백 파이프라인", href: "strategy/알파_피드백_파이프라인.md" },
+        { label: "크랙 vs 제타 리뷰 분석", href: "output/reviews/analysis_report.md" },
+        { label: "글로벌 리뷰 분석", href: "output/reviews_global/global_analysis_report.md" }
+      ],
+      "same-aip-def": [
+        { label: "루시브 캐논 요약", href: "strategy/LUCIVE_canon_summary.md" },
+        { label: "LP 리서치 스토리보드", href: "strategy/LP_리서치_스토리보드_v10.md" },
+        { label: "KR 프로로그 LP", href: "pre-register/v14-kr-prologue.html" }
+      ],
+      "story-core": [
+        { label: "루시브 캐논 요약", href: "strategy/LUCIVE_canon_summary.md" },
+        { label: "v12 회귀 프롤로그 연구", href: "strategy/v12_회귀프롤로그_석현.md" },
+        { label: "KR 프로로그 LP", href: "pre-register/v15-kr-prologue.html" }
+      ],
+      "world-summary": [
+        { label: "루시브 캐논 요약", href: "strategy/LUCIVE_canon_summary.md" },
+        { label: "아카데미하렘 프롤로그 리서치", href: "strategy/아카데미하렘_프롤로그_리서치_v12.md" },
+        { label: "KR 프로로그 LP", href: "pre-register/v14-kr-prologue.html" }
+      ],
+      "character-doc": [
+        { label: "루시브 캐논 요약", href: "strategy/LUCIVE_canon_summary.md" },
+        { label: "v12 회귀 프롤로그 연구", href: "strategy/v12_회귀프롤로그_석현.md" },
+        { label: "아리아 원본 JSON", href: "pre-register/assets/aria/aria-v1-raw.json" }
+      ],
+      "asset-character-cards": [
+        { label: "에셋 제작 가이드", href: "strategy/에셋_제작_가이드_KR.md" },
+        { label: "아리아 이미지", href: "pre-register/assets/aria/aria_v1_0.png" },
+        { label: "니아 이미지", href: "pre-register/assets/aria/nia_v1.png" }
+      ],
+      "asset-world": [
+        { label: "아카데미하렘 프롤로그 리서치", href: "strategy/아카데미하렘_프롤로그_리서치_v12.md" },
+        { label: "v12 회귀 프롤로그 연구", href: "strategy/v12_회귀프롤로그_석현.md" },
+        { label: "v12 배경 에셋", href: "pre-register/assets/v12/bg_21_desk_sunset.png" }
+      ],
+      "community-open": [
+        { label: "런칭주 액션플랜", href: "strategy/런칭주_액션플랜_KR.md" },
+        { label: "홍보 기획 전략", href: "strategy/홍보_기획_전략.md" },
+        { label: "세션 핸드오프", href: "strategy/세션_핸드오프_2026-04-19.md" }
+      ],
+      "community-pinned": [
+        { label: "알파 피드백 파이프라인", href: "strategy/알파_피드백_파이프라인.md" },
+        { label: "런칭주 액션플랜", href: "strategy/런칭주_액션플랜_KR.md" },
+        { label: "이메일 README", href: "emails/README.md" }
+      ],
+      "feedback-form": [
+        { label: "알파 피드백 파이프라인", href: "strategy/알파_피드백_파이프라인.md" },
+        { label: "Tally E2E 가이드", href: "strategy/Tally_E2E_시연_가이드.md" }
+      ],
+      "ops-incident": [
+        { label: "알파 피드백 파이프라인", href: "strategy/알파_피드백_파이프라인.md" },
+        { label: "런칭주 액션플랜", href: "strategy/런칭주_액션플랜_KR.md" }
+      ],
+      "ops-triage": [
+        { label: "알파 피드백 파이프라인", href: "strategy/알파_피드백_파이프라인.md" },
+        { label: "세션 핸드오프", href: "strategy/세션_핸드오프_2026-04-19.md" }
+      ],
+      "ops-faq": [
+        { label: "이메일 README", href: "emails/README.md" },
+        { label: "사전등록 README", href: "pre-register/README.md" }
+      ],
+      "metric-referral": [
+        { label: "사전등록 README", href: "pre-register/README.md" },
+        { label: "KR Signup LP", href: "pre-register/v15-kr-signup.html" }
+      ],
+      "metric-dau-mau": [
+        { label: "알파 피드백 파이프라인", href: "strategy/알파_피드백_파이프라인.md" }
+      ],
+      "session-metric": [
+        { label: "알파 피드백 파이프라인", href: "strategy/알파_피드백_파이프라인.md" }
+      ],
+      "onboarding-guide": [
+        { label: "알파 스크리닝 설문 설계", href: "strategy/알파_스크리닝_설문_설계_KR.md" },
+        { label: "이메일 README", href: "emails/README.md" }
+      ],
+      "play-guide": [
+        { label: "루시브 캐논 요약", href: "strategy/LUCIVE_canon_summary.md" },
+        { label: "LP 리서치 스토리보드", href: "strategy/LP_리서치_스토리보드_v10.md" }
+      ],
+      "first-mission": [
+        { label: "루시브 캐논 요약", href: "strategy/LUCIVE_canon_summary.md" },
+        { label: "KR 프로로그 LP", href: "pre-register/v15-kr-prologue.html" }
+      ],
+      "interview-guide": [
+        { label: "크랙 vs 제타 리뷰 분석", href: "output/reviews/analysis_report.md" },
+        { label: "글로벌 리뷰 분석", href: "output/reviews_global/global_analysis_report.md" }
+      ],
+      "interview-schedule": [
+        { label: "크랙 vs 제타 리뷰 분석", href: "output/reviews/analysis_report.md" },
+        { label: "글로벌 리뷰 분석", href: "output/reviews_global/global_analysis_report.md" }
+      ],
+      "start-copy": [
+        { label: "이메일 README", href: "emails/README.md" },
+        { label: "런칭주 액션플랜", href: "strategy/런칭주_액션플랜_KR.md" }
+      ],
+      "ops-roles": [
+        { label: "세션 핸드오프", href: "strategy/세션_핸드오프_2026-04-19.md" },
+        { label: "런칭주 액션플랜", href: "strategy/런칭주_액션플랜_KR.md" }
+      ],
+      "ops-emergency": [
+        { label: "런칭주 액션플랜", href: "strategy/런칭주_액션플랜_KR.md" },
+        { label: "세션 핸드오프", href: "strategy/세션_핸드오프_2026-04-19.md" }
+      ],
+      "known-issues": [
+        { label: "알파 피드백 파이프라인", href: "strategy/알파_피드백_파이프라인.md" },
+        { label: "런칭주 액션플랜", href: "strategy/런칭주_액션플랜_KR.md" }
+      ],
+      "ops-rehearsal": [
+        { label: "알파 피드백 파이프라인", href: "strategy/알파_피드백_파이프라인.md" },
+        { label: "Tally E2E 가이드", href: "strategy/Tally_E2E_시연_가이드.md" },
+        { label: "이메일 README", href: "emails/README.md" }
+      ],
+      "alpha-launch": [
+        { label: "런칭주 액션플랜", href: "strategy/런칭주_액션플랜_KR.md" },
+        { label: "알파 피드백 파이프라인", href: "strategy/알파_피드백_파이프라인.md" }
+      ]
+    };
+
+    const severityClass = {
+      Blocker: "blocker",
+      Critical: "critical",
+      Medium: "medium",
+      "Good to Have": "good"
+    };
+
+    const state = loadState();
+    const kpiState = loadKpiState();
+    const marketState = loadMarketState();
+    const productState = loadProductState();
+    let collapsedSections = {};
+
+    const sectionsEl = document.getElementById("sections");
+    const sectionGridEl = document.getElementById("sectionGrid");
+    const kpiGridEl = document.getElementById("kpiGrid");
+    const productGridEl = document.getElementById("productGrid");
+    const marketGridEl = document.getElementById("marketGrid");
+    const channelTableBodyEl = document.getElementById("channelTableBody");
+
+    document.getElementById("resetBtn").addEventListener("click", () => {
+      if (!confirm("모든 체크를 초기화할까요?")) return;
+      Object.keys(state).forEach((key) => delete state[key]);
+      saveState();
+      render();
+    });
+
+    document.getElementById("resetKpiBtn").addEventListener("click", () => {
+      if (!confirm("KPI 현재값을 모두 초기화할까요?")) return;
+      Object.keys(kpiState).forEach((key) => delete kpiState[key]);
+      saveKpiState();
+      render();
+    });
+
+    document.getElementById("resetProductBtn").addEventListener("click", () => {
+      if (!confirm("제품 준비값을 모두 초기화할까요?")) return;
+      Object.keys(productState).forEach((key) => delete productState[key]);
+      saveProductState();
+      render();
+    });
+
+    function loadMarketState() {
+      try {
+        return JSON.parse(localStorage.getItem(MARKET_STORAGE_KEY) || "{}");
+      } catch (error) {
+        return {};
+      }
+    }
+
+    function saveMarketState() {
+      localStorage.setItem(MARKET_STORAGE_KEY, JSON.stringify(marketState));
+    }
+
+    function loadProductState() {
+      try {
+        return JSON.parse(localStorage.getItem(PRODUCT_STORAGE_KEY) || "{}");
+      } catch (error) {
+        return {};
+      }
+    }
+
+    function saveProductState() {
+      localStorage.setItem(PRODUCT_STORAGE_KEY, JSON.stringify(productState));
+    }
+
+    document.getElementById("expandAllBtn").addEventListener("click", () => {
+      collapsedSections = {};
+      render();
+    });
+
+    document.getElementById("collapseAllBtn").addEventListener("click", () => {
+      sectionOrder.forEach((section) => { collapsedSections[section] = true; });
+      render();
+    });
+
+    function loadState() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+      } catch (error) {
+        return {};
+      }
+    }
+
+    function loadKpiState() {
+      try {
+        return JSON.parse(localStorage.getItem(KPI_STORAGE_KEY) || "{}");
+      } catch (error) {
+        return {};
+      }
+    }
+
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    function saveKpiState() {
+      localStorage.setItem(KPI_STORAGE_KEY, JSON.stringify(kpiState));
+    }
+
+    function isDone(id) {
+      return Boolean(state[id]);
+    }
+
+    function parseDate(dateStr) {
+      return new Date(dateStr + "T00:00:00");
+    }
+
+    function formatDate(dateStr) {
+      const [y, m, d] = dateStr.split("-");
+      return `${Number(m)}월 ${Number(d)}일`;
+    }
+
+    function getDaysDiff(fromDate, toDate) {
+      const ms = parseDate(toDate) - new Date(fromDate.getFullYear(), fromDate.getMonth(), fromDate.getDate());
+      return Math.round(ms / 86400000);
+    }
+
+    function deadlineClass(task, today) {
+      if (isDone(task.id)) return "safe";
+      const diff = getDaysDiff(today, task.deadline);
+      if (diff < 0) return "overdue";
+      if (diff <= 2) return "soon";
+      return "safe";
+    }
+
+    function deadlineLabel(task, today) {
+      const diff = getDaysDiff(today, task.deadline);
+      if (isDone(task.id)) return "완료";
+      if (diff < 0) return `${Math.abs(diff)}일 지연`;
+      if (diff === 0) return "오늘 마감";
+      return `${diff}일 남음`;
+    }
+
+    function getEvidence(task) {
+      return [];
+    }
+
+    function getKpiCurrent(kpi) {
+      const saved = kpiState[kpi.id];
+      return Number.isFinite(saved) ? saved : kpi.current;
+    }
+
+    function getKpiAchievement(kpi) {
+      const current = getKpiCurrent(kpi);
+      if (kpi.mode === "delta") {
+        return current >= kpi.target ? 100 : Math.max(0, Math.round((current / Math.max(1, Math.abs(kpi.target) || 1)) * 100));
+      }
+      if (kpi.target === 0) return 0;
+      return Math.max(0, Math.round((current / kpi.target) * 100));
+    }
+
+    function getKpiStatus(kpi) {
+      const pct = getKpiAchievement(kpi);
+      if (pct >= 100) return "green";
+      if (pct >= 70) return "yellow";
+      return "red";
+    }
+
+    function formatKpiValue(value, unit) {
+      return `${value}${unit}`;
+    }
+
+    function getProductCurrent(item) {
+      const saved = productState[item.id];
+      return Number.isFinite(saved) ? saved : item.current;
+    }
+
+    function getProductAchievement(item) {
+      const current = getProductCurrent(item);
+      if (item.target === 0) return 0;
+      return Math.max(0, Math.round((current / item.target) * 100));
+    }
+
+    function getProductStatus(item) {
+      const pct = getProductAchievement(item);
+      if (pct >= 100) return "green";
+      if (pct >= 70) return "yellow";
+      return "red";
+    }
+
+    function isMarketDone(id) {
+      return Boolean(marketState[id]);
+    }
+
+    function getMarketSignal(items, today) {
+      const blockers = items.filter((item) => item.severity === "Blocker");
+      const criticals = items.filter((item) => item.severity === "Critical");
+      const blockersDone = blockers.filter((item) => isMarketDone(item.id)).length;
+      const criticalsDone = criticals.filter((item) => isMarketDone(item.id)).length;
+      const blockerPct = blockers.length ? (blockersDone / blockers.length) * 100 : 100;
+      const criticalPct = criticals.length ? (criticalsDone / criticals.length) * 100 : 100;
+      const overdueBlocker = blockers.some((item) => !isMarketDone(item.id) && getDaysDiff(today, item.deadline) < 0);
+      const overdueCore = items.some((item) => !isMarketDone(item.id) && (item.severity === "Blocker" || item.severity === "Critical") && getDaysDiff(today, item.deadline) < 0);
+
+      if (blockerPct === 100 && criticalPct >= 75 && !overdueCore) return "green";
+      if (blockerPct >= 50 && !overdueBlocker) return "yellow";
+      return "red";
+    }
+
+    function renderMarkets(today) {
+      marketGridEl.innerHTML = "";
+
+      markets.forEach((market) => {
+        const done = market.items.filter((item) => isMarketDone(item.id)).length;
+        const blockers = market.items.filter((item) => item.severity === "Blocker");
+        const blockersDone = blockers.filter((item) => isMarketDone(item.id)).length;
+        const overdue = market.items.filter((item) => !isMarketDone(item.id) && getDaysDiff(today, item.deadline) < 0).length;
+        const signal = getMarketSignal(market.items, today);
+
+        const card = document.createElement("div");
+        card.className = "market-card";
+        card.innerHTML = `
+          <h3>${market.name}</h3>
+          <p class="market-sub">${market.desc}</p>
+          <div class="market-stats">
+            <div class="market-stat">
+              <strong>${Math.round((done / market.items.length) * 100)}%</strong>
+              <span>준비율</span>
+            </div>
+            <div class="market-stat">
+              <strong>${blockersDone}/${blockers.length}</strong>
+              <span>Blocker</span>
+            </div>
+            <div class="market-stat">
+              <strong>${overdue}</strong>
+              <span>지연</span>
+            </div>
+          </div>
+          <div class="market-signal ${signal}">${signal === "green" ? "Ready" : signal === "yellow" ? "Watch" : "Blocked"}</div>
+          <div class="market-list"></div>
+        `;
+
+        const list = card.querySelector(".market-list");
+        market.items.forEach((item) => {
+          const itemWrap = document.createElement("div");
+          itemWrap.className = "market-item";
+          itemWrap.innerHTML = `
+            <input class="task-check" type="checkbox" ${isMarketDone(item.id) ? "checked" : ""} aria-label="${item.title}">
+            <div class="market-item-main">
+              <strong>${item.title}</strong>
+              <span>${item.note}</span>
+              <div class="evidence-list" style="margin-top:8px"><div class="evidence-missing">근거 링크 검증 필요</div></div>
+            </div>
+            <div>
+              <span class="pill ${severityClass[item.severity]}">${item.severity}</span>
+              <div class="deadline ${!isMarketDone(item.id) && getDaysDiff(today, item.deadline) < 0 ? "overdue" : getDaysDiff(today, item.deadline) <= 2 ? "soon" : "safe"}" style="margin-top:8px">
+                <strong>${formatDate(item.deadline)}</strong>
+                <span>${isMarketDone(item.id) ? "완료" : deadlineLabel(item, today)}</span>
+              </div>
+            </div>
+          `;
+
+          const checkbox = itemWrap.querySelector(".task-check");
+          checkbox.addEventListener("change", () => {
+            marketState[item.id] = checkbox.checked;
+            saveMarketState();
+            render();
+          });
+          list.appendChild(itemWrap);
+        });
+
+        marketGridEl.appendChild(card);
+      });
+    }
+
+    function renderChannels(today) {
+      channelTableBodyEl.innerHTML = "";
+      channelRows.forEach((row) => {
+        const tr = document.createElement("tr");
+        const marketCell = (ref) => {
+          if (!ref) return `<span class="market-badge">N/A</span>`;
+          const done = isMarketDone(ref);
+          return `<span class="market-badge" style="background:${done ? "rgba(47,133,90,.12)" : "rgba(197,48,48,.12)"};color:${done ? "var(--green)" : "var(--red)"}">${done ? "Ready" : "Open"}</span>`;
+        };
+
+        tr.innerHTML = `
+          <td><div class="task-title" style="font-size:14px">${row.channel}</div></td>
+          <td>
+            <div class="task-title" style="font-size:14px">${row.item}</div>
+          </td>
+          <td><span class="pill ${severityClass[row.severity]}">${row.severity}</span></td>
+          <td>
+            <div class="deadline ${getDaysDiff(today, row.deadline) < 0 ? "overdue" : getDaysDiff(today, row.deadline) <= 2 ? "soon" : "safe"}">
+              <strong>${formatDate(row.deadline)}</strong>
+              <span>${deadlineLabel({ id: row.id, deadline: row.deadline }, today)}</span>
+            </div>
+          </td>
+          <td>${marketCell(row.marketRefs.kr)}</td>
+          <td>${marketCell(row.marketRefs.jp)}</td>
+          <td>${marketCell(row.marketRefs.us)}</td>
+          <td><div class="evidence-list"><div class="evidence-missing">근거 링크 검증 필요</div></div></td>
+        `;
+
+        channelTableBodyEl.appendChild(tr);
+      });
+    }
+
+    function renderSummary(today) {
+      const total = tasks.length;
+      const done = tasks.filter((task) => isDone(task.id)).length;
+      const blockers = tasks.filter((task) => task.severity === "Blocker");
+      const blockersDone = blockers.filter((task) => isDone(task.id)).length;
+      const criticals = tasks.filter((task) => task.severity === "Critical");
+      const criticalsDone = criticals.filter((task) => isDone(task.id)).length;
+      const overdue = tasks.filter((task) => !isDone(task.id) && getDaysDiff(today, task.deadline) < 0);
+      const overdueCore = overdue.filter((task) => task.severity === "Blocker" || task.severity === "Critical");
+
+      const overallPct = total ? Math.round((done / total) * 100) : 0;
+      const blockerPct = blockers.length ? Math.round((blockersDone / blockers.length) * 100) : 0;
+      const criticalPct = criticals.length ? Math.round((criticalsDone / criticals.length) * 100) : 0;
+      const targetDiff = getDaysDiff(today, TARGET_DATE);
+
+      document.getElementById("overallProgress").textContent = `${overallPct}%`;
+      document.getElementById("overallNote").textContent = `${done} / ${total} 완료`;
+      document.getElementById("blockerProgress").textContent = `${blockerPct}%`;
+      document.getElementById("blockerNote").textContent = `${blockersDone} / ${blockers.length} 완료`;
+      document.getElementById("criticalProgress").textContent = `${criticalPct}%`;
+      document.getElementById("criticalNote").textContent = `${criticalsDone} / ${criticals.length} 완료`;
+      document.getElementById("overdueCount").textContent = overdue.length;
+      document.getElementById("overdueNote").textContent = overdue.length ? `Blocker/Critical 지연 ${overdueCore.length}개` : "지연 없음";
+
+      const daysLeftEl = document.getElementById("daysLeft");
+      const daysClass = targetDiff < 0 ? "overdue" : targetDiff <= 5 ? "soon" : "safe";
+      daysLeftEl.className = `deadline ${daysClass}`;
+      daysLeftEl.innerHTML = `<strong>${targetDiff >= 0 ? `${targetDiff}일 남음` : `${Math.abs(targetDiff)}일 경과`}</strong><span>목표일 · 5월 17일</span>`;
+
+      let signal = "red";
+      if (blockerPct === 100 && criticalPct >= 85 && overdueCore.length === 0) {
+        signal = "green";
+      } else if (blockerPct >= 80 && overdue.filter((task) => task.severity === "Blocker").length === 0 && overdueCore.length <= 2) {
+        signal = "yellow";
+      }
+
+      document.getElementById("signalText").textContent =
+        signal === "green" ? "Go" :
+        signal === "yellow" ? "At Risk" :
+        "Red Alert";
+
+      document.getElementById("lightRed").classList.toggle("active", signal === "red");
+      document.getElementById("lightYellow").classList.toggle("active", signal === "yellow");
+      document.getElementById("lightGreen").classList.toggle("active", signal === "green");
+    }
+
+    function renderSectionCards(today) {
+      sectionGridEl.innerHTML = "";
+      sectionOrder.forEach((section) => {
+        const list = tasks.filter((task) => task.section === section);
+        const done = list.filter((task) => isDone(task.id)).length;
+        const overdue = list.filter((task) => !isDone(task.id) && getDaysDiff(today, task.deadline) < 0).length;
+        const blockersLeft = list.filter((task) => !isDone(task.id) && task.severity === "Blocker").length;
+        const pct = list.length ? Math.round((done / list.length) * 100) : 0;
+
+        const card = document.createElement("div");
+        card.className = "section-card";
+        card.innerHTML = `
+          <span class="section-label">${section}</span>
+          <span class="section-value">${pct}%</span>
+          <span class="section-note">${done} / ${list.length} 완료 · 지연 ${overdue}개 · 남은 Blocker ${blockersLeft}개</span>
+        `;
+        sectionGridEl.appendChild(card);
+      });
+    }
+
+    function renderKpis() {
+      kpiGridEl.innerHTML = "";
+
+      const core = kpis.filter((kpi) => kpi.tier === "Tier 1");
+      const coreAvg = core.length ? Math.round(core.reduce((sum, kpi) => sum + Math.min(100, getKpiAchievement(kpi)), 0) / core.length) : 0;
+      const overallAvg = kpis.length ? Math.round(kpis.reduce((sum, kpi) => sum + Math.min(100, getKpiAchievement(kpi)), 0) / kpis.length) : 0;
+      const hitCount = kpis.filter((kpi) => getKpiAchievement(kpi) >= 100).length;
+      const storySignal =
+        getKpiAchievement(kpis.find((k) => k.id === "d7_retention")) >= 100 &&
+        getKpiAchievement(kpis.find((k) => k.id === "same_aip_return")) >= 100 &&
+        getKpiAchievement(kpis.find((k) => k.id === "onboarding_completion")) >= 100
+          ? "Green"
+          : getKpiAchievement(kpis.find((k) => k.id === "d7_retention")) >= 70 &&
+            getKpiAchievement(kpis.find((k) => k.id === "same_aip_return")) >= 70
+            ? "Yellow"
+            : "Red";
+
+      document.getElementById("kpiCoreProgress").textContent = `${coreAvg}%`;
+      document.getElementById("kpiCoreNote").textContent = "Tier 1 핵심 지표 평균";
+      document.getElementById("kpiOverallProgress").textContent = `${overallAvg}%`;
+      document.getElementById("kpiOverallNote").textContent = "전체 KPI 평균";
+      document.getElementById("kpiHitCount").textContent = hitCount;
+      document.getElementById("kpiHitNote").textContent = `${hitCount} / ${kpis.length} 달성`;
+      document.getElementById("kpiStorySignal").textContent = storySignal;
+      document.getElementById("kpiStoryNote").textContent =
+        storySignal === "Green" ? "핵심 VC 가설 제시 가능" :
+        storySignal === "Yellow" ? "초기 스토리 가능, 보강 필요" :
+        "핵심 가설 증명 부족";
+
+      kpis.forEach((kpi) => {
+        const current = getKpiCurrent(kpi);
+        const achievement = getKpiAchievement(kpi);
+        const progress = Math.min(achievement, 100);
+        const status = getKpiStatus(kpi);
+
+        const card = document.createElement("div");
+        card.className = "kpi-card";
+        card.innerHTML = `
+          <div class="kpi-top">
+            <div>
+              <div class="kpi-name">${kpi.name}</div>
+              <div class="kpi-desc">${kpi.desc}</div>
+            </div>
+            <span class="kpi-tier">${kpi.tier}</span>
+          </div>
+
+          <div class="kpi-meta">
+            <div class="kpi-box">
+              <span class="kpi-box-label">목표 수준</span>
+              <span class="kpi-box-value">${formatKpiValue(kpi.target, kpi.unit)}</span>
+            </div>
+            <div class="kpi-box">
+              <span class="kpi-box-label">현재값</span>
+              <span class="kpi-box-value">${formatKpiValue(current, kpi.unit)}</span>
+            </div>
+            <div class="kpi-box">
+              <span class="kpi-box-label">달성률</span>
+              <span class="kpi-box-value">${achievement}%</span>
+            </div>
+          </div>
+
+          <div class="kpi-progress">
+            <div class="kpi-top" style="align-items:center">
+              <span class="kpi-status ${status}">${status === "green" ? "On Track" : status === "yellow" ? "Watch" : "Risk"}</span>
+              <div class="kpi-progress-note">${kpi.note}</div>
+            </div>
+            <div class="kpi-progress-bar">
+              <div class="kpi-progress-fill" style="width:${progress}%"></div>
+            </div>
+          </div>
+
+          <div class="kpi-controls">
+            <div>
+              <label for="target-${kpi.id}">목표값</label>
+              <input id="target-${kpi.id}" type="number" step="0.1" value="${kpi.target}" data-kpi-target="${kpi.id}">
+            </div>
+            <div>
+              <label for="current-${kpi.id}">현재값</label>
+              <input id="current-${kpi.id}" type="number" step="0.1" value="${current}" data-kpi-current="${kpi.id}">
+            </div>
+          </div>
+        `;
+
+        const targetInput = card.querySelector(`[data-kpi-target="${kpi.id}"]`);
+        const currentInput = card.querySelector(`[data-kpi-current="${kpi.id}"]`);
+
+        targetInput.addEventListener("change", () => {
+          const next = Number(targetInput.value);
+          if (Number.isFinite(next)) {
+            kpi.target = next;
+            render();
+          }
+        });
+
+        currentInput.addEventListener("change", () => {
+          const next = Number(currentInput.value);
+          if (Number.isFinite(next)) {
+            kpiState[kpi.id] = next;
+            saveKpiState();
+            render();
+          }
+        });
+
+        kpiGridEl.appendChild(card);
+      });
+    }
+
+    function renderProductReadiness() {
+      productGridEl.innerHTML = "";
+
+      const overallAvg = productReadiness.length
+        ? Math.round(productReadiness.reduce((sum, item) => sum + Math.min(100, getProductAchievement(item)), 0) / productReadiness.length)
+        : 0;
+
+      const lpItem = productReadiness.find((item) => item.id === "core_lp_count");
+      const storyItem = productReadiness.find((item) => item.id === "core_story_count");
+      const viralItem = productReadiness.find((item) => item.id === "viral_asset_count");
+
+      document.getElementById("productOverallProgress").textContent = `${overallAvg}%`;
+      document.getElementById("productOverallNote").textContent = "핵심 준비 항목 평균";
+      document.getElementById("productLpSummary").textContent = `${getProductCurrent(lpItem)} / ${lpItem.target}`;
+      document.getElementById("productLpNote").textContent = "알파 핵심 LP 수";
+      document.getElementById("productStorySummary").textContent = `${getProductCurrent(storyItem)} / ${storyItem.target}`;
+      document.getElementById("productStoryNote").textContent = "핵심 스토리 준비 수";
+      document.getElementById("productViralSummary").textContent = `${getProductCurrent(viralItem)} / ${viralItem.target}`;
+      document.getElementById("productViralNote").textContent = "즉시 배포 가능한 자산 수";
+
+      productReadiness.forEach((item) => {
+        const current = getProductCurrent(item);
+        const achievement = getProductAchievement(item);
+        const progress = Math.min(achievement, 100);
+        const status = getProductStatus(item);
+
+        const card = document.createElement("div");
+        card.className = "kpi-card";
+        card.innerHTML = `
+          <div class="kpi-top">
+            <div>
+              <div class="kpi-name">${item.name}</div>
+              <div class="kpi-desc">${item.desc}</div>
+            </div>
+            <span class="kpi-tier">Readiness</span>
+          </div>
+
+          <div class="kpi-meta">
+            <div class="kpi-box">
+              <span class="kpi-box-label">목표 수준</span>
+              <span class="kpi-box-value">${formatKpiValue(item.target, item.unit)}</span>
+            </div>
+            <div class="kpi-box">
+              <span class="kpi-box-label">현재값</span>
+              <span class="kpi-box-value">${formatKpiValue(current, item.unit)}</span>
+            </div>
+            <div class="kpi-box">
+              <span class="kpi-box-label">달성률</span>
+              <span class="kpi-box-value">${achievement}%</span>
+            </div>
+          </div>
+
+          <div class="kpi-progress">
+            <div class="kpi-top" style="align-items:center">
+              <span class="kpi-status ${status}">${status === "green" ? "Ready" : status === "yellow" ? "Watch" : "Risk"}</span>
+              <div class="kpi-progress-note">${item.note}</div>
+            </div>
+            <div class="kpi-progress-bar">
+              <div class="kpi-progress-fill" style="width:${progress}%"></div>
+            </div>
+          </div>
+
+          <div class="kpi-controls">
+            <div>
+              <label for="product-target-${item.id}">목표값</label>
+              <input id="product-target-${item.id}" type="number" step="1" value="${item.target}" data-product-target="${item.id}">
+            </div>
+            <div>
+              <label for="product-current-${item.id}">현재값</label>
+              <input id="product-current-${item.id}" type="number" step="1" value="${current}" data-product-current="${item.id}">
+            </div>
+          </div>
+        `;
+
+        const targetInput = card.querySelector(`[data-product-target="${item.id}"]`);
+        const currentInput = card.querySelector(`[data-product-current="${item.id}"]`);
+
+        targetInput.addEventListener("change", () => {
+          const next = Number(targetInput.value);
+          if (Number.isFinite(next)) {
+            item.target = next;
+            render();
+          }
+        });
+
+        currentInput.addEventListener("change", () => {
+          const next = Number(currentInput.value);
+          if (Number.isFinite(next)) {
+            productState[item.id] = next;
+            saveProductState();
+            render();
+          }
+        });
+
+        productGridEl.appendChild(card);
+      });
+    }
+
+    function renderSections(today) {
+      sectionsEl.innerHTML = "";
+      sectionOrder.forEach((section) => {
+        const list = tasks.filter((task) => task.section === section);
+        const done = list.filter((task) => isDone(task.id)).length;
+        const overdue = list.filter((task) => !isDone(task.id) && getDaysDiff(today, task.deadline) < 0).length;
+
+        const wrap = document.createElement("div");
+        wrap.className = "section";
+
+        const head = document.createElement("div");
+        head.className = "section-head";
+        head.innerHTML = `
+          <div>
+            <h3>${section}</h3>
+            <div class="section-summary">${done} / ${list.length} 완료 · 지연 ${overdue}개</div>
+          </div>
+          <button type="button" class="toggle-btn">${collapsedSections[section] ? "펼치기" : "접기"}</button>
+        `;
+
+        const toggleBtn = head.querySelector(".toggle-btn");
+        toggleBtn.style.border = "1px solid var(--line)";
+        toggleBtn.style.background = "#fff";
+        toggleBtn.style.borderRadius = "999px";
+        toggleBtn.style.padding = "8px 12px";
+        toggleBtn.style.fontWeight = "700";
+        toggleBtn.style.cursor = "pointer";
+        toggleBtn.addEventListener("click", () => {
+          collapsedSections[section] = !collapsedSections[section];
+          render();
+        });
+
+        wrap.appendChild(head);
+
+        if (!collapsedSections[section]) {
+          const tableWrap = document.createElement("div");
+          tableWrap.className = "table-wrap";
+
+          const table = document.createElement("table");
+          table.innerHTML = `
+            <thead>
+              <tr>
+                <th>Done</th>
+                <th>Task</th>
+                <th>중요도</th>
+                <th>담당</th>
+                <th>데드라인</th>
+                <th>근거 문서</th>
+                <th>주요 세부 체크 포인트</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          `;
+
+          const tbody = table.querySelector("tbody");
+          list.forEach((task) => {
+            const tr = document.createElement("tr");
+            const isOverdue = !isDone(task.id) && getDaysDiff(today, task.deadline) < 0;
+            if (isDone(task.id)) tr.classList.add("done");
+            if (isOverdue) tr.classList.add("overdue");
+
+            const severity = severityClass[task.severity];
+            const deadlineCls = deadlineClass(task, today);
+            const checkItems = task.checks.map((item) => `<li>${item}</li>`).join("");
+            const evidenceData = getEvidence(task);
+            const evidenceItems = evidenceData.length
+              ? evidenceData.map((item) => `<a class="evidence-link" href="${item.href}" target="_blank" rel="noopener">${item.label}</a>`).join("")
+              : `<div class="evidence-missing">근거 링크 검증 필요</div>`;
+
+            tr.innerHTML = `
+              <td>
+                <input class="task-check" type="checkbox" ${isDone(task.id) ? "checked" : ""} aria-label="${task.title}">
+              </td>
+              <td>
+                <div class="task-title">${task.title}</div>
+                <div class="task-sub">${task.desc}</div>
+              </td>
+              <td>
+                <span class="pill ${severity}">${task.severity}</span>
+              </td>
+              <td>
+                <div class="task-title" style="font-size:14px">${task.owner}</div>
+              </td>
+              <td>
+                <div class="deadline ${deadlineCls}">
+                  <strong>${formatDate(task.deadline)}</strong>
+                  <span>${deadlineLabel(task, today)}</span>
+                </div>
+              </td>
+              <td>
+                <div class="evidence-list">${evidenceItems}</div>
+              </td>
+              <td>
+                <ul class="checks">${checkItems}</ul>
+              </td>
+            `;
+
+            const checkbox = tr.querySelector(".task-check");
+            checkbox.addEventListener("change", () => {
+              state[task.id] = checkbox.checked;
+              saveState();
+              render();
+            });
+
+            tbody.appendChild(tr);
+          });
+
+          tableWrap.appendChild(table);
+          wrap.appendChild(tableWrap);
+        }
+
+        sectionsEl.appendChild(wrap);
+      });
+    }
+
+    function render() {
+      const today = new Date();
+      renderSummary(today);
+      renderSectionCards(today);
+      renderProductReadiness();
+      renderKpis();
+      renderMarkets(today);
+      renderChannels(today);
+      renderSections(today);
+    }
+
+    render();
+  </script>
+</body>
+</html>

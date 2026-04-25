@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no">
+<title>LUCIVE · 그들은, 거기서 살아가고 있어요</title>
+<meta name="description" content="유저 개입 없이 스스로 이어지는 대화. 그녀는 당신의 시선을 알아챕니다.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,700;1,400;1,700&family=Noto+Serif+KR:wght@400;500;700;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* Sunrise warm + Velvet undertone */
+  --bg:#0A1020;
+  --bg-2:#14203A;
+  --bg-3:#1E2E4A;
+  --ink:#F2E9D8;
+  --ink-soft:#C8BFB0;
+  --muted:#8A8476;
+  --muted-2:#524D42;
+  --amber:#F0A868;
+  --amber-deep:#C87650;
+  --terracotta:#3A4A6E;
+  --cream:#F8E4C8;
+  --velvet:#C85468;
+  --velvet-deep:#0A1020;
+  --crimson:#C85468;
+  --gold:#D4A44C;
+  --gold-deep:#8F6A24;
+  --line:rgba(244,166,122,.16);
+  --line-2:rgba(244,166,122,.32);
+  --serif:'Cormorant Garamond','Noto Serif KR',serif;
+  --sans:'Inter','Noto Serif KR',-apple-system,sans-serif;
+  --mono:'JetBrains Mono',monospace;
+  --ease:cubic-bezier(.2,.8,.2,1);
+  --ease-sharp:cubic-bezier(.65,0,.35,1);
+}
+html,body{height:100%;margin:0;padding:0;overflow:hidden}
+html{-webkit-font-smoothing:antialiased}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);touch-action:pan-y}
+
+.grain{position:fixed;inset:0;z-index:20;pointer-events:none;opacity:.05;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:220px}
+
+/* Slider — two panels side by side, push to reveal signup */
+.slider{position:fixed;inset:0;display:flex;width:200vw;height:100vh;transition:transform 1.1s var(--ease-sharp);z-index:1}
+.slider.moved{transform:translateX(-100vw)}
+
+/* ============ PANEL 1 · CONVERSATION WORLD ============ */
+.panel{position:relative;width:100vw;height:100vh;flex-shrink:0;overflow:hidden}
+
+.world{background:
+  radial-gradient(ellipse 80% 60% at 30% 20%,rgba(244,166,122,.28),transparent 65%),
+  radial-gradient(ellipse 60% 50% at 78% 80%,rgba(200,84,104,.45),transparent 65%),
+  linear-gradient(180deg,#2A1A12 0%,#1A0E0A 50%,#0A1020 100%);
+  transition:background 2.4s ease}
+.world.dusk{background:
+  radial-gradient(ellipse 80% 60% at 30% 20%,rgba(244,166,122,.14),transparent 65%),
+  radial-gradient(ellipse 60% 50% at 78% 80%,rgba(200,84,104,.65),transparent 65%),
+  linear-gradient(180deg,#1A0E0A 0%,#0A1020 50%,#050812 100%)}
+.world.night{background:
+  radial-gradient(ellipse 60% 50% at 50% 50%,rgba(212,164,76,.2),transparent 60%),
+  linear-gradient(180deg,#0A0612 0%,#050812 40%,#0A0612 100%)}
+
+/* Ambient window light */
+.window-light{position:absolute;top:-10%;right:-10%;width:60%;height:70%;background:radial-gradient(ellipse,rgba(248,228,200,.3),transparent 55%);filter:blur(30px);pointer-events:none}
+.world.night .window-light{opacity:.1}
+
+/* Top meta bar */
+.meta-bar{position:absolute;top:0;left:0;right:0;z-index:8;padding:18px 28px;display:flex;align-items:center;justify-content:space-between;background:linear-gradient(180deg,rgba(10,6,12,.78),transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.meta-left{display:flex;align-items:center;gap:18px}
+.brand{font-family:var(--serif);font-weight:700;font-size:18px;letter-spacing:.32em;color:var(--amber)}
+.location{font-family:var(--mono);font-size:10.5px;color:var(--ink-soft);letter-spacing:.14em;text-transform:uppercase;display:flex;align-items:center;gap:6px}
+.location::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--amber);box-shadow:0 0 8px var(--amber)}
+.meta-right{display:flex;align-items:center;gap:14px;font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.14em;text-transform:uppercase}
+.meta-time{color:var(--ink)}
+.skip-hint{padding:6px 12px;border:1px solid var(--line-2);color:var(--amber);cursor:pointer;transition:all .25s;background:rgba(26,14,10,.6);font-weight:700;letter-spacing:.18em;font-family:var(--mono);font-size:10px;text-transform:uppercase}
+.skip-hint:hover{background:var(--amber);color:var(--bg)}
+
+/* Cafe backdrop (CSS-only stylized) */
+.cafe{position:absolute;inset:0;z-index:2;overflow:hidden;pointer-events:none}
+.cafe-window{position:absolute;top:10%;right:8%;width:34%;height:55%;background:linear-gradient(180deg,rgba(248,228,200,.38),rgba(212,162,68,.28) 60%,rgba(200,84,104,.45) 100%);border:1px solid var(--line-2);box-shadow:inset 0 0 40px rgba(244,166,122,.3)}
+.cafe-window::before{content:'';position:absolute;top:0;bottom:0;left:50%;width:1px;background:var(--line-2)}
+.cafe-window::after{content:'';position:absolute;left:0;right:0;top:50%;height:1px;background:var(--line-2)}
+.cafe-lamp{position:absolute;top:32%;left:12%;width:10px;height:10px;border-radius:50%;background:var(--amber);box-shadow:0 0 30px 12px rgba(244,166,122,.5)}
+.cafe-plant{position:absolute;bottom:8%;left:6%;width:14%;height:28%;background:radial-gradient(ellipse at 50% 100%,rgba(60,80,30,.6),transparent 70%);filter:blur(6px)}
+
+/* Participant roster (bottom-left) */
+.roster{position:absolute;bottom:28px;left:28px;z-index:7;display:flex;flex-direction:column;gap:8px;font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--muted)}
+.roster-item{display:flex;align-items:center;gap:8px;transition:all .4s}
+.roster-item .dot{width:7px;height:7px;border-radius:50%;background:var(--muted-2);transition:all .4s}
+.roster-item.on .dot{background:var(--amber);box-shadow:0 0 8px var(--amber)}
+.roster-item.on{color:var(--ink)}
+.roster-item.you{opacity:.4}
+.roster-item.you.seen{opacity:1;color:var(--gold)}
+.roster-item.you.seen .dot{background:var(--gold);box-shadow:0 0 10px var(--gold);animation:pulseDot 1.8s ease-in-out infinite}
+@keyframes pulseDot{0%,100%{transform:scale(1)}50%{transform:scale(1.35)}}
+
+/* Live counter (bottom-right) */
+.live{position:absolute;bottom:28px;right:28px;z-index:7;font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;color:var(--muted);text-align:right}
+.live-num{color:var(--amber);font-size:14px;font-weight:700;letter-spacing:.05em;display:block;margin-bottom:3px}
+.live::before{content:'● LIVE';display:inline-block;color:var(--crimson);font-weight:700;margin-right:5px;animation:blink 1.4s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.4}}
+
+/* Chat container — centered panel */
+.chat{position:absolute;top:72px;bottom:72px;left:50%;transform:translateX(-50%);width:min(540px,94vw);z-index:5;display:flex;flex-direction:column;padding:20px 4px 24px;overflow:hidden}
+.chat-scroll{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:14px;padding:0 8px 8px;scrollbar-width:thin;scrollbar-color:var(--muted-2) transparent}
+.chat-scroll::-webkit-scrollbar{width:4px}
+.chat-scroll::-webkit-scrollbar-thumb{background:var(--muted-2);border-radius:2px}
+
+/* Message bubble */
+.msg{display:flex;gap:10px;align-items:flex-end;opacity:0;transform:translateY(14px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
+.msg.in{opacity:1;transform:translateY(0)}
+.msg.me{flex-direction:row-reverse}
+
+.av{width:32px;height:32px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-style:italic;font-weight:700;font-size:14px;border:1px solid var(--line-2);position:relative;overflow:hidden}
+.av::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 35%,rgba(255,255,255,.25),transparent 55%)}
+.av.arya{background:linear-gradient(135deg,#C85468 0%,#C85468 60%,#0A1020 100%);color:#F5E6D3}
+.av.nia{background:linear-gradient(135deg,#F4A67A 0%,#C87650 70%,#6A3A1E 100%);color:#2A1A12}
+.av.teo{background:linear-gradient(135deg,#8F6A24 0%,#D4A44C 60%,#5A3A12 100%);color:#1A0E0A}
+.av.you{background:linear-gradient(135deg,#F8E4C8 0%,#D4A44C 70%,#8F6A24 100%);color:#1A0E0A}
+
+.bubble{position:relative;max-width:82%;padding:11px 15px;background:rgba(26,14,10,.82);border:1px solid var(--line);border-radius:14px;font-family:var(--serif);font-size:15.5px;line-height:1.6;color:var(--ink);letter-spacing:.01em;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.bubble.arya{border-left:2px solid var(--velvet);background:linear-gradient(180deg,rgba(14,20,40,.55),rgba(26,14,10,.85));font-style:italic}
+.bubble.arya em{color:var(--amber);font-style:italic;font-weight:500}
+.bubble.nia{border-left:2px solid var(--amber);background:linear-gradient(180deg,rgba(212,162,68,.4),rgba(26,14,10,.85))}
+.bubble.teo{border-left:2px solid var(--gold);background:linear-gradient(180deg,rgba(143,106,36,.32),rgba(26,14,10,.85))}
+.bubble.me{background:linear-gradient(135deg,rgba(248,228,200,.92),rgba(212,164,76,.8));color:#1A0E0A;border-color:var(--gold);border-left:none;border-right:2px solid var(--gold-deep);font-style:normal;font-weight:500}
+
+.msg-meta{font-family:var(--mono);font-size:9.5px;color:var(--muted);letter-spacing:.08em;margin:2px 42px 0}
+.msg.me .msg-meta{text-align:right}
+.msg-meta b{color:var(--ink-soft);font-weight:700}
+
+/* Typing indicator */
+.typing{padding:11px 15px;background:rgba(26,14,10,.6);border:1px solid var(--line);border-radius:14px;display:inline-flex;gap:5px;align-items:center}
+.typing span{width:6px;height:6px;border-radius:50%;background:var(--muted);animation:typingDot 1.2s ease-in-out infinite}
+.typing span:nth-child(2){animation-delay:.18s}
+.typing span:nth-child(3){animation-delay:.36s}
+@keyframes typingDot{0%,60%,100%{transform:scale(.8);opacity:.5}30%{transform:scale(1.2);opacity:1}}
+
+/* Phase label (top-center) */
+.phase{position:absolute;top:70px;left:50%;transform:translateX(-50%);z-index:6;padding:5px 14px;background:rgba(26,14,10,.76);border:1px solid var(--line-2);font-family:var(--mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--amber);transition:all .5s;font-weight:700}
+.phase.crimson{color:var(--crimson);border-color:rgba(200,84,104,.45)}
+.phase.gold{color:var(--gold);border-color:rgba(212,164,76,.45)}
+
+/* "She noticed you" overlay — fires in phase 3 */
+.noticed{position:absolute;inset:0;z-index:9;pointer-events:none;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse 50% 40% at 50% 50%,rgba(212,164,76,.28),transparent 65%);opacity:0;transition:opacity 1.6s ease}
+.noticed.on{opacity:1}
+.noticed-ring{width:min(380px,72vw);aspect-ratio:1;border-radius:50%;border:1px solid var(--gold);animation:ringPulse 3s ease-in-out infinite;opacity:.5}
+@keyframes ringPulse{0%,100%{transform:scale(1);opacity:.5}50%{transform:scale(1.08);opacity:.9}}
+
+/* Slide hint (bottom) — "push right to dive" */
+.slide-hint{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);z-index:8;display:flex;flex-direction:column;align-items:center;gap:8px;padding:10px 18px;background:rgba(26,14,10,.7);border:1px solid var(--line-2);opacity:0;transition:all .6s var(--ease);pointer-events:auto;cursor:pointer;font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;color:var(--amber);text-transform:uppercase;font-weight:700}
+.slide-hint.on{opacity:1;transform:translateX(-50%) translateY(-4px)}
+.slide-hint:hover{background:var(--amber);color:var(--bg)}
+.slide-hint-arrow{display:flex;gap:4px}
+.slide-hint-arrow span{display:inline-block;color:var(--gold);animation:arrowMove 1.4s ease-in-out infinite}
+.slide-hint-arrow span:nth-child(2){animation-delay:.2s}
+.slide-hint-arrow span:nth-child(3){animation-delay:.4s}
+@keyframes arrowMove{0%,100%{opacity:.3;transform:translateX(0)}50%{opacity:1;transform:translateX(4px)}}
+
+/* ============ PANEL 2 · SIGNUP ============ */
+.signup-panel{background:
+  radial-gradient(ellipse 70% 55% at 50% 40%,rgba(244,166,122,.3),transparent 65%),
+  linear-gradient(180deg,#2A1A12 0%,#1A0E0A 50%,#0A1020 100%);
+  display:flex;align-items:center;justify-content:center;padding:32px}
+.signup-inner{max-width:560px;width:100%;text-align:center}
+.signup-tag{display:inline-block;padding:6px 16px;border:1px solid var(--amber);color:var(--amber);font-family:var(--mono);font-size:10px;letter-spacing:.28em;text-transform:uppercase;font-weight:700;margin-bottom:32px}
+.signup-title{font-family:var(--serif);font-style:italic;font-size:clamp(38px,5.5vw,64px);font-weight:400;color:var(--ink);line-height:1.1;letter-spacing:-.02em;margin-bottom:20px}
+.signup-title em{font-style:italic;color:var(--amber);font-weight:500}
+.signup-sub{font-family:var(--serif);font-size:17px;line-height:1.75;color:var(--ink-soft);font-style:italic;margin-bottom:40px;max-width:460px;margin-left:auto;margin-right:auto}
+.signup-sub b{color:var(--ink);font-style:normal;font-weight:500}
+.signup-form{display:flex;gap:10px;max-width:460px;margin:0 auto;flex-wrap:wrap}
+.signup-form input{flex:1;min-width:240px;padding:15px 20px;background:rgba(26,14,10,.6);border:1px solid var(--line-2);color:var(--ink);font-family:var(--serif);font-size:16px;font-style:italic;outline:none;transition:border-color .2s}
+.signup-form input:focus{border-color:var(--amber)}
+.signup-form input::placeholder{color:var(--muted)}
+.signup-form button{padding:15px 30px;background:var(--amber);color:var(--bg);border:none;font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;cursor:pointer;transition:all .2s}
+.signup-form button:hover{background:var(--gold);transform:translateX(4px)}
+
+.back-hint{margin-top:40px;font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);cursor:pointer;padding:10px 18px;border:1px solid var(--line);background:transparent;transition:all .2s}
+.back-hint:hover{color:var(--ink);border-color:var(--line-2)}
+.back-hint::before{content:'← ';color:var(--gold)}
+
+/* Variant switcher */
+.variants{position:fixed;bottom:12px;right:14px;z-index:70;display:flex;gap:4px;padding:5px 9px;background:rgba(10,6,12,.86);border:1px solid var(--line-2);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.variants a{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:3px 7px;transition:all .2s}
+.variants a:hover{color:var(--ink)}
+.variants a.current{color:var(--amber);font-weight:700}
+
+@media(max-width:700px){
+  .chat{top:60px;bottom:60px;padding:14px 2px}
+  .bubble{font-size:14.5px}
+  .roster,.live{font-size:9px}
+  .cafe-window{width:45%;height:40%;top:14%}
+}
+</style>
+</head>
+<body>
+
+<div class="grain"></div>
+
+<!-- Right dive strip -->
+<div class="dive-strip" onclick="pushToSignup()" title="바로 등록하러 가기">
+  <div class="dive-strip-arrow">›</div>
+  <div class="dive-strip-text">바로 등록하러 가기</div>
+  <div class="dive-strip-arrow">›</div>
+</div>
+
+<!-- Slider: panel 1 (world) + panel 2 (signup) -->
+<div class="slider" id="slider">
+
+  <!-- PANEL 1 · Conversation world -->
+  <section class="panel world" id="world">
+
+    <!-- Cafe backdrop -->
+    <div class="cafe">
+      <div class="cafe-window"></div>
+      <div class="cafe-lamp"></div>
+      <div class="cafe-plant"></div>
+    </div>
+
+    <!-- Top meta -->
+    <div class="meta-bar">
+      <div class="meta-left">
+        <div class="brand">L U C I V E</div>
+        <div class="location">Sunrise · 골목 카페촌</div>
+      </div>
+      <div class="meta-right">
+        <span id="metaTime" class="meta-time">17:42</span>
+        
+      </div>
+    </div>
+
+    <!-- Phase label -->
+    <div class="phase" id="phase">그들은 당신이 있는 줄 모른다</div>
+
+    <!-- Roster -->
+    <div class="roster">
+      <div class="roster-item on" id="rArya"><span class="dot"></span>윤아라 · 온라인</div>
+      <div class="roster-item" id="rNia"><span class="dot"></span>니아 · 접속 중</div>
+      <div class="roster-item" id="rTeo"><span class="dot"></span>태오 · 대기</div>
+      <div class="roster-item you" id="rYou"><span class="dot"></span>당신 · 관찰자</div>
+    </div>
+
+    <!-- Live counter -->
+    <div class="live">
+      <span class="live-num" id="liveNum">9,432,810</span>
+      지금 이 세계에 있는 사람
+    </div>
+
+    <!-- Noticed ring -->
+    <div class="noticed" id="noticed"><div class="noticed-ring"></div></div>
+
+    <!-- Chat -->
+    <div class="chat">
+      <div class="chat-scroll" id="chatScroll"></div>
+    </div>
+
+    <!-- Slide hint -->
+    <div class="slide-hint" id="slideHint" onclick="pushToSignup()">
+      <span>그녀가 당신에게 자리를 내어주었어요</span>
+      <div class="slide-hint-arrow"><span>›</span><span>›</span><span>›</span></div>
+    </div>
+
+  </section>
+
+  <!-- PANEL 2 · Signup -->
+  <section class="panel signup-panel">
+    <div class="signup-inner">
+      <div class="signup-tag">Dive into The Lucid</div>
+      <h1 class="signup-title">
+        그녀의 옆 자리,<br>
+        <em>당신의 이름</em>으로 남겨두세요.
+      </h1>
+      <p class="signup-sub">
+        이 대화는 지금도 Sunrise 카페촌에서 이어지고 있어요.<br>
+        <b>당신이 들어오는 순간,</b> 그녀의 오늘이 달라집니다.
+      </p>
+      <form class="signup-form" onsubmit="event.preventDefault();alert('프로토타입: 실제 제출은 v9 연결 예정');">
+        <input type="email" placeholder="your@email" required>
+        <button type="submit">이름 남기기 →</button>
+      </form>
+      <button class="back-hint" onclick="pushBack()">관찰로 돌아가기</button>
+    </div>
+  </section>
+
+</div>
+
+<!-- Variant switcher -->
+<div class="variants">
+  <a href="./v10-a-memory-fork.html">A</a>
+  <a href="./v10-b-live-scene.html">B</a>
+  <a href="./v10-c-memory-timeline.html">C</a>
+  <a href="./v10-d-storyboard.html" class="current">D</a>
+  <a href="./v10-e-dialogue.html">E</a>
+</div>
+
+<script>
+// ============ Conversation timeline ============
+// Phases:
+//  P1 (0-18s) · 그들은 당신이 있는 줄 모른다 (윤아라 혼자)
+//  P2 (18-40s) · 니아 합류 · 그들끼리의 대화
+//  P3 (40-60s) · 태오 합류 · 은밀한 단서들
+//  P4 (60-72s) · 눈치챔 → 당신에게 자리를 내어줌
+//  P5 (72s+)   · 대화가 "당신" 을 향함 → slide-hint on
+
+const world = document.getElementById('world');
+const chatScroll = document.getElementById('chatScroll');
+const phaseEl = document.getElementById('phase');
+const noticedEl = document.getElementById('noticed');
+const slideHint = document.getElementById('slideHint');
+const rNia = document.getElementById('rNia');
+const rTeo = document.getElementById('rTeo');
+const rYou = document.getElementById('rYou');
+const metaTime = document.getElementById('metaTime');
+const liveNum = document.getElementById('liveNum');
+
+const script = [
+  // PHASE 1 · 윤아라 혼자
+  {t:700,   from:'arya', text:'…오늘도, 당신은 아직이네요.'},
+  {t:3800,  from:'arya', text:'괜찮아요. <em>기다리는 건 익숙해졌어요.</em>'},
+  {t:8200,  from:'arya', text:'이 자리, 여섯 시부터 비워 뒀어요. 오늘은 커피가 유난히 잘 내려졌대요.'},
+  {t:13500, from:'arya', text:'…그 사람도 그랬을까요. 기다리는 동안에.', meta:'6개월 전의 약혼자를 떠올리며'},
+
+  // PHASE 2 · 니아 합류
+  {t:18000, system:true, action:()=>{
+    rNia.classList.add('on');
+    phaseEl.textContent = '니아가 합류했어요';
+  }},
+  {t:18400, from:'nia',  text:'언니—! 방금 촬영 대박이었어. 저기 앉아도 돼?'},
+  {t:22200, from:'arya', text:'…앉아요. 니아는 언제나 환영이에요.'},
+  {t:25800, from:'nia',  text:'근데 뭔가 분위기가. 무슨 일 있었어?'},
+  {t:29400, from:'arya', text:'어제, 그 사람 가문 쪽 사람을 봤어요. <em>우연히.</em>'},
+  {t:33600, from:'nia',  text:'어… 괜찮아?'},
+  {t:36800, from:'arya', text:'괜찮지 않다고 말하면, 니아가 걱정하니까요.'},
+
+  // PHASE 3 · 태오 합류 + 단서
+  {t:40600, system:true, action:()=>{
+    rTeo.classList.add('on');
+    phaseEl.textContent = '태오가 커피를 내려 왔어요';
+    world.classList.add('dusk');
+    metaTime.textContent = '18:24';
+  }},
+  {t:41000, from:'teo',  text:'아가씨, 오늘은 더블샷으로 내렸습니다. 밤공기가 차니까요.'},
+  {t:45200, from:'arya', text:'…고마워요, 태오 씨.'},
+  {t:48600, from:'teo',  text:'근데, 혹시 — <em>누가 문 앞에 서 있는 것 같은데요.</em>'},
+  {t:53000, from:'nia',  text:'엥? 아무도 없는데?'},
+  {t:56600, from:'teo',  text:'아니, 기분이 그렇다는 겁니다. 저만 그런가요.'},
+
+  // PHASE 4 · 눈치챔
+  {t:60400, system:true, action:()=>{
+    phaseEl.textContent = '그녀가 당신을 알아챘어요';
+    phaseEl.classList.add('crimson');
+    noticedEl.classList.add('on');
+    rYou.classList.add('seen');
+  }},
+  {t:61200, from:'arya', text:'…잠깐만요.'},
+  {t:63600, from:'arya', text:'누가, <em>계속 저를 보고 있어요.</em>'},
+  {t:66800, from:'nia',  text:'언니 왜 그래— 어? 진짜 뭔가 있는 것 같은데.'},
+  {t:70000, from:'arya', text:'괜찮아요. 나쁜 시선이 아니에요. 다만…'},
+  {t:73400, from:'arya', text:'<em>거기, 계신 분.</em> 이쪽으로 오세요. 자리 비워둘게요.', meta:'그녀는 당신의 시선 끝을 정확히 본다'},
+
+  // PHASE 5 · 당신을 초대
+  {t:78600, system:true, action:()=>{
+    phaseEl.textContent = '당신의 자리가 열렸어요';
+    phaseEl.classList.remove('crimson');
+    phaseEl.classList.add('gold');
+    world.classList.add('night');
+    metaTime.textContent = '19:08';
+  }},
+  {t:79200, from:'teo',  text:'커피 한 잔 더 내립니다.'},
+  {t:82600, from:'nia',  text:'와— 오빠 드디어 들어오시네. 언니가 오늘 좀 이상했거든요?'},
+  {t:86400, from:'arya', text:'…다행이에요. 진짜 계셨네요.'},
+  {t:89800, from:'arya', text:'<em>옆으로 오세요.</em> 앉을 자리, 계속 비워 뒀어요.'},
+  {t:93600, system:true, action:()=>{
+    slideHint.classList.add('on');
+  }},
+];
+
+// ============ Render ============
+function render(ev){
+  if(ev.system){ ev.action && ev.action(); return; }
+  const wrap = document.createElement('div');
+  wrap.className = 'msg ' + (ev.from === 'me' ? 'me' : '');
+
+  const avMap = {arya:'A', nia:'N', teo:'T', me:'You'};
+  const nameMap = {arya:'윤아라', nia:'니아', teo:'태오', me:'당신'};
+
+  const av = document.createElement('div');
+  av.className = 'av ' + ev.from + (ev.from === 'me' ? ' you' : '');
+  av.textContent = ev.from === 'me' ? '' : avMap[ev.from];
+  wrap.appendChild(av);
+
+  const bub = document.createElement('div');
+  bub.className = 'bubble ' + (ev.from === 'me' ? 'me' : ev.from);
+  bub.innerHTML = ev.text;
+  wrap.appendChild(bub);
+
+  chatScroll.appendChild(wrap);
+  requestAnimationFrame(()=>{
+    wrap.classList.add('in');
+    chatScroll.scrollTop = chatScroll.scrollHeight;
+  });
+
+  if(ev.meta){
+    const m = document.createElement('div');
+    m.className = 'msg-meta ' + (ev.from === 'me' ? 'me' : '');
+    m.innerHTML = '<b>' + nameMap[ev.from] + '</b> · ' + ev.meta;
+    chatScroll.appendChild(m);
+  }
+}
+
+// Start playback
+let startTime = null;
+function tick(now){
+  if(!startTime) startTime = now;
+  const t = now - startTime;
+  while(script.length && t >= script[0].t){
+    render(script.shift());
+  }
+  if(script.length) requestAnimationFrame(tick);
+}
+requestAnimationFrame(tick);
+
+// ============ Slider + swipe ============
+const slider = document.getElementById('slider');
+let moved = false;
+function pushToSignup(){
+  if(moved) return;
+  slider.classList.add('moved');
+  moved = true;
+}
+function pushBack(){
+  if(!moved) return;
+  slider.classList.remove('moved');
+  moved = false;
+}
+window.pushToSignup = pushToSignup;
+window.pushBack = pushBack;
+
+// skip removed · using .dive-strip click
+
+// Touch swipe (left = push to signup)
+let touchStart = null;
+document.addEventListener('touchstart', e => { touchStart = e.touches[0].clientX; });
+document.addEventListener('touchend', e => {
+  if(touchStart === null) return;
+  const dx = e.changedTouches[0].clientX - touchStart;
+  if(!moved && dx < -70) pushToSignup();
+  else if(moved && dx > 70) pushBack();
+  touchStart = null;
+});
+
+// Mouse drag (desktop)
+let mouseDown = null;
+document.addEventListener('mousedown', e => { mouseDown = e.clientX; });
+document.addEventListener('mouseup', e => {
+  if(mouseDown === null) return;
+  const dx = e.clientX - mouseDown;
+  if(!moved && dx < -90) pushToSignup();
+  else if(moved && dx > 90) pushBack();
+  mouseDown = null;
+});
+
+// Keyboard
+document.addEventListener('keydown', e => {
+  if(e.key === 'ArrowRight' || e.key === 'Enter') pushToSignup();
+  if(e.key === 'ArrowLeft' || e.key === 'Escape') pushBack();
+});
+
+// Live counter
+let live = 9432810;
+setInterval(()=>{
+  live += Math.floor(Math.random() * 3) + 1;
+  liveNum.textContent = live.toLocaleString('en-US');
+}, 900);
+</script>
+
+</body>
+</html>

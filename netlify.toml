@@ -1,0 +1,2 @@
+[build]
+  functions = "pre-register/netlify/functions"

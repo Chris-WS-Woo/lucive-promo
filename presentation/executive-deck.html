@@ -1,0 +1,1349 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LUCIVE 알파 모집 전략 · Executive Presentation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg-deep:#08090C; --bg-surface:#0F1117; --bg-card:#161822; --bg-elevated:#1C1F2E;
+  --border-subtle:rgba(255,255,255,.06); --border-medium:rgba(255,255,255,.1); --border-strong:rgba(255,255,255,.2);
+  --text-primary:#F1F3F8; --text-secondary:#8B92A8; --text-tertiary:#5A6178;
+  --lucid-cyan:#06B6D4; --lucid-blue:#2563EB; --lucid-purple:#8B5CF6;
+  --awakening-pink:#EC4899; --fragment-gold:#F59E0B; --sync-green:#10B981;
+  --alert-red:#EF4444;
+  --gradient-primary:linear-gradient(135deg,#06B6D4,#2563EB);
+  --gradient-warm:linear-gradient(135deg,#EC4899,#8B5CF6);
+  --gradient-aurora:linear-gradient(135deg,#06B6D4,#8B5CF6,#EC4899);
+  --serif:'Instrument Serif',Georgia,serif;
+  --sans:'Inter','Noto Sans KR',-apple-system,BlinkMacSystemFont,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+  --ease:cubic-bezier(.2,.8,.2,1);
+}
+html,body{height:100%}
+body{font-family:var(--sans);background:var(--bg-deep);color:var(--text-primary);line-height:1.55;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+
+/* Ambient */
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse at 20% 30%,rgba(6,182,212,.1),transparent 50%),radial-gradient(ellipse at 80% 70%,rgba(139,92,246,.08),transparent 50%),radial-gradient(ellipse at 50% 100%,rgba(236,72,153,.06),transparent 40%)}
+body::after{content:'';position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.025;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:256px}
+
+.deck{position:relative;z-index:2;scroll-snap-type:y mandatory;height:100vh;overflow-y:scroll;scroll-behavior:smooth}
+.slide{scroll-snap-align:start;min-height:100vh;padding:80px 60px;display:flex;flex-direction:column;justify-content:center;position:relative;max-width:1400px;margin:0 auto}
+@media(max-width:900px){.slide{padding:60px 28px}}
+
+/* Top nav */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:16px 24px;display:flex;justify-content:space-between;align-items:center;background:rgba(8,9,12,.75);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid var(--border-subtle)}
+.nav-brand{font-size:18px;font-weight:900;background:var(--gradient-primary);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-.02em}
+.nav-title{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-secondary);font-weight:600}
+.nav-progress{display:flex;gap:4px}
+.nav-progress-dot{width:20px;height:3px;border-radius:2px;background:rgba(255,255,255,.1);transition:all .3s var(--ease);cursor:pointer}
+.nav-progress-dot.active{background:var(--gradient-aurora);width:36px}
+@media(max-width:900px){.nav-title{display:none}}
+
+/* Bottom nav */
+.nav-bottom{position:fixed;bottom:24px;right:24px;z-index:100;display:flex;gap:8px}
+.nav-btn{width:44px;height:44px;border-radius:50%;background:rgba(22,24,34,.85);border:1px solid var(--border-medium);color:var(--text-primary);cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);font-size:16px;transition:all .2s}
+.nav-btn:hover{background:var(--bg-elevated);border-color:var(--border-strong);transform:scale(1.05)}
+.nav-counter{padding:10px 16px;border-radius:100px;background:rgba(22,24,34,.85);border:1px solid var(--border-medium);color:var(--text-secondary);font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.04em;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);display:inline-flex;align-items:center}
+.nav-counter b{color:var(--text-primary)}
+
+/* Shared */
+.kicker{font-family:var(--mono);font-size:12px;letter-spacing:.15em;text-transform:uppercase;color:var(--lucid-cyan);font-weight:700;margin-bottom:18px;display:inline-flex;align-items:center;gap:8px}
+.kicker::before{content:'';width:24px;height:1px;background:var(--lucid-cyan)}
+h1.title{font-size:clamp(40px,5.5vw,72px);font-weight:900;line-height:1.05;letter-spacing:-.03em;margin-bottom:24px}
+h1.title em{font-style:normal;background:var(--gradient-aurora);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.serif{font-family:var(--serif);font-style:italic;font-weight:400}
+p.lede{font-size:clamp(17px,2vw,22px);color:var(--text-secondary);line-height:1.7;max-width:800px;margin-bottom:36px}
+p.lede b{color:var(--text-primary)}
+.footnote{font-family:var(--mono);font-size:11px;color:var(--text-tertiary);letter-spacing:.05em;position:absolute;bottom:28px;left:60px}
+@media(max-width:900px){.footnote{left:28px}}
+
+/* ==================== SLIDE 0: Cover ==================== */
+#s0{justify-content:center;text-align:center;align-items:center}
+#s0 .cover-mark{font-size:16px;font-family:var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--lucid-cyan);margin-bottom:40px}
+#s0 .cover-title{font-size:clamp(48px,8vw,120px);font-weight:900;line-height:.95;letter-spacing:-.04em;margin-bottom:32px}
+#s0 .cover-title .grad{background:var(--gradient-aurora);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+#s0 .cover-sub{font-family:var(--serif);font-size:clamp(24px,3vw,36px);font-style:italic;color:var(--text-secondary);margin-bottom:48px;max-width:700px}
+#s0 .cover-meta{display:flex;gap:40px;font-family:var(--mono);font-size:12px;color:var(--text-tertiary);letter-spacing:.1em;text-transform:uppercase}
+#s0 .cover-meta b{color:var(--text-primary);font-weight:700}
+#s0 .cover-logo{font-size:30px;font-weight:900;letter-spacing:-.02em;background:var(--gradient-primary);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:60px}
+
+/* ==================== SLIDE 1: Target Market ==================== */
+#s1 .personas{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:40px}
+@media(max-width:900px){#s1 .personas{grid-template-columns:1fr}}
+.persona{padding:36px 32px;border-radius:20px;background:var(--bg-card);border:1px solid var(--border-subtle);position:relative;overflow:hidden}
+.persona::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.persona.a::before{background:var(--gradient-primary)}
+.persona.b::before{background:var(--gradient-warm)}
+.persona-tag{display:inline-flex;align-items:center;gap:8px;padding:5px 12px;border-radius:100px;font-family:var(--mono);font-size:11px;letter-spacing:.1em;font-weight:700;margin-bottom:18px}
+.persona.a .persona-tag{background:rgba(6,182,212,.15);color:var(--lucid-cyan)}
+.persona.b .persona-tag{background:rgba(236,72,153,.15);color:var(--awakening-pink)}
+.persona-name{font-size:28px;font-weight:800;margin-bottom:8px}
+.persona-tagline{font-family:var(--serif);font-size:20px;font-style:italic;color:var(--text-secondary);margin-bottom:20px;line-height:1.4}
+.persona-traits{list-style:none;padding:0}
+.persona-traits li{padding:10px 0;border-bottom:1px dashed var(--border-subtle);font-size:14.5px;color:var(--text-secondary);line-height:1.6}
+.persona-traits li:last-child{border-bottom:none}
+.persona-traits li b{color:var(--text-primary);font-weight:600}
+.persona-traits li::before{content:'→';color:var(--lucid-cyan);margin-right:10px;font-weight:700}
+.persona.b .persona-traits li::before{color:var(--awakening-pink)}
+
+/* ==================== SLIDE 2: Market Analysis ==================== */
+#s2 .market-grid{display:grid;grid-template-columns:2fr 1fr;gap:40px;margin-top:40px}
+@media(max-width:900px){#s2 .market-grid{grid-template-columns:1fr}}
+.funnel-viz{background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:20px;padding:36px}
+.funnel-row{display:flex;align-items:center;gap:20px;margin-bottom:18px}
+.funnel-label{flex:1;display:flex;flex-direction:column}
+.funnel-label-title{font-size:13px;color:var(--text-secondary);font-family:var(--mono);letter-spacing:.05em;text-transform:uppercase;font-weight:600}
+.funnel-label-desc{font-size:12px;color:var(--text-tertiary);margin-top:2px}
+.funnel-bar{height:50px;border-radius:10px;display:flex;align-items:center;justify-content:flex-end;padding:0 18px;color:#fff;font-weight:800;font-family:var(--mono);font-size:14px;letter-spacing:.04em}
+.funnel-bar.f1{background:var(--gradient-primary);width:100%}
+.funnel-bar.f2{background:var(--gradient-warm);width:60%}
+.funnel-bar.f3{background:linear-gradient(135deg,#F59E0B,#EC4899);width:45%}
+.funnel-bar.f4{background:linear-gradient(135deg,#10B981,#06B6D4);width:30%}
+
+.market-stats{display:flex;flex-direction:column;gap:14px}
+.stat-card{background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:16px;padding:22px}
+.stat-label{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-tertiary);font-weight:700;margin-bottom:6px}
+.stat-value{font-size:32px;font-weight:900;letter-spacing:-.02em;line-height:1;background:var(--gradient-aurora);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.stat-desc{font-size:12px;color:var(--text-secondary);margin-top:6px}
+
+/* ==================== SLIDE 3: Recruitment Metrics ==================== */
+#s3 .metrics-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:40px}
+@media(max-width:900px){#s3 .metrics-grid{grid-template-columns:repeat(2,1fr)}}
+.metric-card{padding:26px;background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:18px;position:relative;overflow:hidden}
+.metric-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--gradient-primary);opacity:.5}
+.metric-num{font-size:44px;font-weight:900;line-height:1;letter-spacing:-.02em;margin-bottom:8px}
+.metric-num.grad{background:var(--gradient-aurora);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.metric-num.green{color:var(--sync-green)}
+.metric-num.gold{color:var(--fragment-gold)}
+.metric-num.pink{color:var(--awakening-pink)}
+.metric-label{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-secondary);font-weight:700;margin-bottom:4px}
+.metric-desc{font-size:13px;color:var(--text-tertiary);line-height:1.55}
+
+/* ==================== SLIDE 4: Test Metrics (CEO Thesis) ==================== */
+#s4 .thesis-block{background:linear-gradient(135deg,rgba(6,182,212,.08),rgba(139,92,246,.06));border:1px solid rgba(6,182,212,.25);border-radius:22px;padding:32px 36px;margin-top:32px;position:relative}
+#s4 .thesis-block::before{content:'❝';position:absolute;top:14px;left:20px;font-size:48px;color:var(--lucid-cyan);opacity:.3;font-family:var(--serif)}
+#s4 .thesis{font-family:var(--serif);font-size:clamp(22px,2.8vw,32px);font-style:italic;line-height:1.35;color:var(--text-primary);padding-left:40px}
+#s4 .thesis b{color:var(--lucid-cyan);font-style:normal;font-weight:700}
+#s4 .alignment{margin-top:36px;background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:16px;overflow:hidden}
+#s4 .alignment-row{display:grid;grid-template-columns:1.5fr 2fr 60px;align-items:center;padding:14px 24px;border-bottom:1px solid var(--border-subtle);font-size:14px}
+#s4 .alignment-row:last-child{border-bottom:none}
+#s4 .alignment-row:hover{background:rgba(255,255,255,.02)}
+#s4 .alignment-row.head{background:rgba(6,182,212,.05);font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-secondary);font-weight:700}
+#s4 .align-ceo b{color:var(--lucid-cyan);font-family:var(--mono);font-size:13px}
+#s4 .align-desc{color:var(--text-secondary);font-size:13.5px}
+#s4 .align-check{text-align:center;font-size:20px}
+.check-yes{color:var(--sync-green)}
+.check-partial{color:var(--fragment-gold)}
+
+/* ==================== SLIDE 5: Market Approach ==================== */
+#s5 .approach-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:40px}
+@media(max-width:900px){#s5 .approach-grid{grid-template-columns:1fr}}
+.approach-card{background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:20px;padding:32px;position:relative;overflow:hidden}
+.approach-card.a{border-top:3px solid var(--lucid-cyan)}
+.approach-card.b{border-top:3px solid var(--awakening-pink)}
+.approach-tag{display:inline-flex;padding:4px 10px;border-radius:100px;font-family:var(--mono);font-size:10px;letter-spacing:.1em;font-weight:700;margin-bottom:14px}
+.approach-card.a .approach-tag{background:rgba(6,182,212,.15);color:var(--lucid-cyan)}
+.approach-card.b .approach-tag{background:rgba(236,72,153,.15);color:var(--awakening-pink)}
+.approach-title{font-size:22px;font-weight:800;margin-bottom:8px}
+.approach-budget{font-family:var(--mono);font-size:13px;color:var(--text-secondary);margin-bottom:20px}
+.approach-budget b{color:var(--fragment-gold);font-weight:700}
+.approach-channels{display:flex;flex-direction:column;gap:8px}
+.channel{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--bg-surface);border:1px solid var(--border-subtle);border-radius:10px;font-size:13px}
+.channel-icon{font-size:15px;flex-shrink:0}
+.channel-name{flex:1;font-weight:600;color:var(--text-primary)}
+.channel-budget{font-family:var(--mono);font-size:11px;color:var(--text-tertiary);font-weight:600}
+.channel.star{border-color:rgba(245,158,11,.25);background:linear-gradient(90deg,rgba(245,158,11,.05),transparent 60%)}
+.channel.star .channel-name::after{content:' ⭐';color:var(--fragment-gold)}
+
+/* ==================== SLIDE 6: Timeline ==================== */
+#s6 .timeline{margin-top:40px}
+.week-row{display:grid;grid-template-columns:140px 1fr;gap:24px;padding:24px 0;border-bottom:1px solid var(--border-subtle);align-items:start}
+.week-row:last-child{border-bottom:none}
+.week-label{font-family:var(--serif);font-style:italic;font-size:32px;color:var(--text-secondary);line-height:1}
+.week-label b{display:block;color:var(--lucid-cyan);font-style:normal;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;margin-top:4px}
+.week-actions{font-size:14px;line-height:1.75;color:var(--text-secondary)}
+.week-actions h4{font-size:16px;color:var(--text-primary);margin-bottom:8px;font-weight:700}
+.week-actions ul{list-style:none;padding:0}
+.week-actions li{padding:4px 0;padding-left:22px;position:relative}
+.week-actions li::before{content:'▸';position:absolute;left:0;color:var(--lucid-cyan);font-weight:700}
+.week-actions li.done::before{content:'✓';color:var(--sync-green)}
+
+/* ==================== SLIDE 7: Landing Page Mockup ==================== */
+#s7 .mockup-wrap{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:40px;align-items:center}
+@media(max-width:900px){#s7 .mockup-wrap{grid-template-columns:1fr}}
+.mockup-phone{width:100%;max-width:380px;aspect-ratio:9/19;border-radius:30px;background:linear-gradient(135deg,#1a0f2e 0%,#4c1d95 35%,#be185d 70%,#f97316 100%);border:2px solid var(--border-strong);box-shadow:0 40px 80px rgba(0,0,0,.5),0 0 80px rgba(139,92,246,.2);position:relative;overflow:hidden;margin:0 auto}
+.mockup-phone::before{content:'';position:absolute;inset:-30%;background:repeating-linear-gradient(45deg,transparent 0,transparent 20px,rgba(255,255,255,.03) 20px,rgba(255,255,255,.03) 21px)}
+.mockup-urgency{position:absolute;top:0;left:0;right:0;padding:10px 14px;background:rgba(239,68,68,.2);border-bottom:1px solid rgba(239,68,68,.4);backdrop-filter:blur(10px);font-size:9px;color:#fff;text-align:center;font-weight:600;z-index:2}
+.mockup-urgency b{color:#EF4444}
+.mockup-content{position:absolute;top:40px;left:0;right:0;bottom:0;padding:20px 18px;z-index:2;color:#fff;display:flex;flex-direction:column}
+.mockup-badge{display:inline-flex;padding:3px 9px;border-radius:100px;background:rgba(6,182,212,.2);border:1px solid rgba(6,182,212,.4);color:#06B6D4;font-family:var(--mono);font-size:8px;font-weight:700;margin-bottom:12px;align-self:flex-start;letter-spacing:.08em}
+.mockup-h1{font-size:24px;font-weight:900;line-height:1.05;letter-spacing:-.02em;margin-bottom:10px}
+.mockup-h1 span{background:var(--gradient-aurora);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.mockup-sub{font-size:11px;color:rgba(255,255,255,.7);margin-bottom:16px;line-height:1.5}
+.mockup-btn{padding:10px 18px;border-radius:100px;background:var(--gradient-primary);color:#fff;font-size:11px;font-weight:700;text-align:center;margin-bottom:8px}
+.mockup-btn.warm{background:var(--gradient-warm)}
+.mockup-btn.ghost{background:transparent;border:1px solid rgba(255,255,255,.2)}
+.mockup-info{flex:1;display:flex;flex-direction:column;gap:6px;margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,255,255,.1)}
+.mockup-info-item{font-size:10px;color:rgba(255,255,255,.7);padding:6px 10px;background:rgba(0,0,0,.3);border-radius:8px}
+.mockup-float{position:absolute;bottom:18px;right:14px;display:flex;flex-direction:column;gap:6px;z-index:3}
+.mockup-float-btn{padding:6px 10px;border-radius:100px;font-size:9px;font-weight:600;box-shadow:0 4px 12px rgba(0,0,0,.5)}
+.mockup-float-btn.p{background:var(--gradient-primary);color:#fff}
+.mockup-float-btn.w{background:var(--gradient-warm);color:#fff}
+.mockup-float-btn.g{background:rgba(22,24,34,.9);color:#fff;border:1px solid var(--border-medium)}
+
+.features-list{display:flex;flex-direction:column;gap:14px}
+.feature-item{padding:18px;background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:14px;display:flex;gap:14px;align-items:flex-start}
+.feature-icon{font-size:22px;flex-shrink:0}
+.feature-content h5{font-size:15px;font-weight:700;margin-bottom:4px}
+.feature-content p{font-size:13px;color:var(--text-secondary);line-height:1.55}
+
+/* ==================== SLIDE 8: Ad Creatives ==================== */
+#s8 .ads-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:40px}
+@media(max-width:1100px){#s8 .ads-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){#s8 .ads-grid{grid-template-columns:1fr}}
+.ad-card{aspect-ratio:4/5;border-radius:14px;overflow:hidden;position:relative;background:var(--bg-card);border:1px solid var(--border-medium);display:flex;flex-direction:column;padding:16px;color:#fff}
+.ad-card.a1{background:linear-gradient(180deg,#08090C 0%,#0F1117 40%,rgba(6,182,212,.2))}
+.ad-card.a2{background:linear-gradient(180deg,#08090C,#4c1d95 80%)}
+.ad-card.b1{background:linear-gradient(180deg,#fbbf24 0%,#f97316 50%,#dc2626 100%)}
+.ad-card.b2{background:linear-gradient(180deg,#1a0f2e 0%,#4c1d95 40%,#be185d 100%)}
+.ad-tag{padding:3px 8px;border-radius:100px;background:rgba(0,0,0,.5);color:#fff;font-family:var(--mono);font-size:9px;letter-spacing:.08em;font-weight:700;align-self:flex-start;margin-bottom:10px;backdrop-filter:blur(4px)}
+.ad-headline{font-size:18px;font-weight:900;line-height:1.1;letter-spacing:-.02em;margin-bottom:8px}
+.ad-sub{font-size:11px;color:rgba(255,255,255,.85);line-height:1.4;margin-bottom:auto}
+.ad-cta{padding:8px 14px;border-radius:100px;background:#fff;color:#000;font-size:11px;font-weight:700;align-self:flex-start;margin-top:12px}
+.ad-meta{margin-top:12px;display:flex;gap:6px;font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.7)}
+.ad-meta span{padding:2px 6px;background:rgba(0,0,0,.4);border-radius:4px}
+
+/* ==================== SLIDE 9: Required Items ==================== */
+#s9 .req-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:32px}
+@media(max-width:900px){#s9 .req-grid{grid-template-columns:1fr}}
+.req-col{background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:18px;padding:28px}
+.req-col h4{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--lucid-cyan);font-weight:700;margin-bottom:18px}
+.req-item{display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px dashed var(--border-subtle);font-size:14px}
+.req-item:last-child{border-bottom:none}
+.req-status{flex-shrink:0;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}
+.req-status.ok{background:rgba(16,185,129,.15);color:var(--sync-green)}
+.req-status.todo{background:rgba(245,158,11,.15);color:var(--fragment-gold)}
+.req-status.critical{background:rgba(239,68,68,.15);color:var(--alert-red)}
+.req-name{flex:1;color:var(--text-primary);font-weight:500}
+.req-note{font-size:12px;color:var(--text-tertiary);margin-top:2px}
+.req-budget-total{margin-top:32px;padding:24px;background:linear-gradient(135deg,rgba(245,158,11,.08),rgba(236,72,153,.05));border:1px solid rgba(245,158,11,.3);border-radius:18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+.req-budget-label{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-secondary);font-weight:700}
+.req-budget-num{font-size:44px;font-weight:900;background:var(--gradient-aurora);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-.02em;line-height:1}
+
+/* Keyboard hint */
+.kb-hint{position:fixed;bottom:24px;left:24px;z-index:99;padding:8px 14px;background:rgba(22,24,34,.75);border:1px solid var(--border-subtle);border-radius:100px;font-family:var(--mono);font-size:11px;color:var(--text-tertiary);letter-spacing:.04em;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);opacity:.7;transition:opacity .3s}
+.kb-hint:hover{opacity:1}
+.kb-hint kbd{padding:2px 5px;background:rgba(255,255,255,.1);border-radius:4px;margin:0 2px;color:var(--text-secondary);font-family:inherit}
+@media(max-width:700px){.kb-hint{display:none}}
+</style>
+</head>
+<body>
+
+<!-- Top nav -->
+<nav class="nav">
+  <div class="nav-brand">Lucive</div>
+  <div class="nav-title" id="navTitle">Cover</div>
+  <div class="nav-progress" id="navProgress"></div>
+</nav>
+
+<!-- Bottom nav -->
+<div class="nav-bottom">
+  <div class="nav-counter"><b id="currentSlide">1</b>&nbsp;/&nbsp;<span id="totalSlides">10</span></div>
+  <button class="nav-btn" onclick="prevSlide()" aria-label="이전">↑</button>
+  <button class="nav-btn" onclick="nextSlide()" aria-label="다음">↓</button>
+</div>
+
+<!-- Keyboard hint -->
+<div class="kb-hint"><kbd>↑</kbd><kbd>↓</kbd> 또는 <kbd>Space</kbd> 네비게이션</div>
+
+<div class="deck" id="deck">
+
+<!-- ==================== SLIDE 0: Cover ==================== -->
+<section class="slide" id="s0" data-title="Cover">
+  <div class="cover-logo">Lucive</div>
+  <div class="cover-mark">⎯⎯ Alpha Recruitment Strategy ⎯⎯</div>
+  <h1 class="cover-title">알파 유저 모집<br><span class="grad">전략 보고</span></h1>
+  <p class="cover-sub">"100-200명의 실참여자를 어떻게 어느 채널에서 얻을 것인가"</p>
+  <div class="cover-meta">
+    <div><b>발표일</b> · 2026-04-17</div>
+    <div><b>D-day</b> · 런칭 주 직전</div>
+    <div><b>예산</b> · 230만원</div>
+  </div>
+  <div class="footnote">Lucive — Visual Novel AI Companion Platform</div>
+</section>
+
+<!-- ==================== SLIDE 1: Target Market Definition ==================== -->
+<section class="slide" id="s1" data-title="1. 타겟 시장 정의">
+  <div class="kicker">01 · Target Market Definition</div>
+  <h1 class="title">두 개의 <em>독립 시장</em>,<br>하나의 제품.</h1>
+  <p class="lede">교집합이 아닌 <b>독립 캠페인</b> — 각각 다른 메시지·채널·크리에이티브.</p>
+
+  <div class="personas">
+    <div class="persona a">
+      <div class="persona-tag">⎯ PERSONA A</div>
+      <div class="persona-name">챗봇 지친 사람</div>
+      <div class="persona-tagline">"어제 얘기한 걸 왜 AI가 기억 못 해?"</div>
+      <ul class="persona-traits">
+        <li><b>대상:</b> 크랙·제타·Character.AI·Replika 1개월+ 사용 경험자</li>
+        <li><b>Pain:</b> 기억 부재 · 답변 반복 · 과금·광고 · 검열 불투명</li>
+        <li><b>동기:</b> 실제로 '관계'가 축적되는 AI를 찾는 중 (고의도)</li>
+        <li><b>예상 반응:</b> pain 공감 메시지 → 즉시 전환 가능</li>
+      </ul>
+    </div>
+    <div class="persona b">
+      <div class="persona-tag">⎯ PERSONA B</div>
+      <div class="persona-name">웹소설 + 게이미피케이션</div>
+      <div class="persona-tagline">"내가 웹소설 주인공이라면?"</div>
+      <ul class="persona-traits">
+        <li><b>대상:</b> LitRPG · 빙의물 · 헌터물 · 로판 독자</li>
+        <li><b>Pain:</b> 읽기만 하는 수동성 · 세계 진입 욕구 충족 안됨</li>
+        <li><b>동기:</b> 스토리 속 주인공 체험 · 해금·성장의 재미</li>
+        <li><b>예상 반응:</b> 서사 몰입형 훅 → 호기심 전환 (중의도)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footnote">필수 조건 = 외부/내부 네트워크 보유 (레퍼럴 가능)</div>
+</section>
+
+<!-- ==================== SLIDE 2: Market Analysis ==================== -->
+<section class="slide" id="s2" data-title="2. 시장 분석">
+  <div class="kicker">02 · Market Sizing · 리뷰 편향 보정</div>
+  <h1 class="title">TAM → SAM,<br><em>44만명</em>이 남습니다.</h1>
+  <p class="lede">리뷰는 불만 유저가 2배 더 쓰는 J-curve 편향 존재 → <b>45% → 25%</b>로 하향 보정.</p>
+
+  <div class="market-grid">
+    <div class="funnel-viz">
+      <div class="funnel-row">
+        <div class="funnel-label">
+          <div class="funnel-label-title">TAM</div>
+          <div class="funnel-label-desc">AI챗봇 150만 + 웹소설 120만</div>
+        </div>
+        <div class="funnel-bar f1">270만</div>
+      </div>
+      <div class="funnel-row">
+        <div class="funnel-label">
+          <div class="funnel-label-title">Fatigued (보정)</div>
+          <div class="funnel-label-desc">A × 25% · B × 20% 수용 · J-curve ÷1.8</div>
+        </div>
+        <div class="funnel-bar f2">62만</div>
+      </div>
+      <div class="funnel-row">
+        <div class="funnel-label">
+          <div class="funnel-label-title">A-SAM</div>
+          <div class="funnel-label-desc">150만 × 25% × 80% pain match</div>
+        </div>
+        <div class="funnel-bar f3">30만</div>
+      </div>
+      <div class="funnel-row">
+        <div class="funnel-label">
+          <div class="funnel-label-title">B-SAM</div>
+          <div class="funnel-label-desc">120만 × 20% × 60% VN match</div>
+        </div>
+        <div class="funnel-bar f4">14만</div>
+      </div>
+    </div>
+
+    <div class="market-stats">
+      <div class="stat-card">
+        <div class="stat-label">A-SAM</div>
+        <div class="stat-value">30만</div>
+        <div class="stat-desc">챗봇 지친 · pain 매칭</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">B-SAM</div>
+        <div class="stat-value">14만</div>
+        <div class="stat-desc">웹소설러 · VN 수용</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">독립 합산</div>
+        <div class="stat-value">44만</div>
+        <div class="stat-desc">상세: Appendix A (플레이스먼트별)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footnote">Source: 자체 리뷰 스크레이핑(크랙·제타·C.AI) + NN/g Review Bias Studies 2022 · Appendix A 상세</div>
+</section>
+
+<!-- ==================== SLIDE 3: Recruitment Goal Metrics ==================== -->
+<section class="slide" id="s3" data-title="3. 모집 목표 메트릭">
+  <div class="kicker">03 · Recruitment Funnel · 벤치마크 근거</div>
+  <h1 class="title">목표 <em>100명</em>,<br>도전 200명.</h1>
+  <p class="lede">각 단계 전환율은 업계 벤치마크 (Unbounce · SendGrid · X Ads · OpenView) 기반. 상세: Appendix B.</p>
+
+  <div class="metrics-grid">
+    <div class="metric-card">
+      <div class="metric-num grad">337K</div>
+      <div class="metric-label">주간 Impressions</div>
+      <div class="metric-desc">A 245K + B 92K (X 유료 주력)</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-num green">~375</div>
+      <div class="metric-label">이메일 제출</div>
+      <div class="metric-desc">CTR 1.5% · Land CVR 8%</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-num gold">~145</div>
+      <div class="metric-label">스크리닝 완주</div>
+      <div class="metric-desc">8문항 · 2분</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-num pink">75-110명</div>
+      <div class="metric-label">알파 실참여</div>
+      <div class="metric-desc">K=0.4 레퍼럴 배수 포함</div>
+    </div>
+  </div>
+
+  <div style="margin-top:24px;padding:20px 24px;background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:14px;font-size:13px;color:var(--text-secondary);line-height:1.7">
+    <b style="font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--lucid-cyan)">Funnel References:</b>
+    X Ads CTR 1.5% (Statista 2024 · 1-2% 평균) · Naver CTR 4% (공식 3-5%) · Landing CVR 8% (Unbounce 상위 25%) · OTP 65% (SendGrid) · Survey 완주 60% (SurveyMonkey) · K-factor 0.4 (OpenView · Dropbox 0.35)
+  </div>
+
+  <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap">
+    <div style="flex:1;min-width:200px;padding:14px 20px;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.25);border-radius:12px;text-align:center">
+      <div style="font-family:var(--mono);font-size:10px;color:var(--alert-red);font-weight:700;letter-spacing:.1em;text-transform:uppercase">Worst (-40%)</div>
+      <div style="font-size:22px;font-weight:900;color:var(--alert-red);margin-top:4px">45명</div>
+    </div>
+    <div style="flex:1;min-width:200px;padding:14px 20px;background:rgba(6,182,212,.08);border:1px solid rgba(6,182,212,.25);border-radius:12px;text-align:center">
+      <div style="font-family:var(--mono);font-size:10px;color:var(--lucid-cyan);font-weight:700;letter-spacing:.1em;text-transform:uppercase">Base</div>
+      <div style="font-size:22px;font-weight:900;color:var(--lucid-cyan);margin-top:4px">90명</div>
+    </div>
+    <div style="flex:1;min-width:200px;padding:14px 20px;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.25);border-radius:12px;text-align:center">
+      <div style="font-family:var(--mono);font-size:10px;color:var(--sync-green);font-weight:700;letter-spacing:.1em;text-transform:uppercase">Best</div>
+      <div style="font-size:22px;font-weight:900;color:var(--sync-green);margin-top:4px">160명</div>
+    </div>
+  </div>
+
+  <div class="footnote">D+3 실측 데이터로 조정 · 상세 벤치마크 Appendix B 참조</div>
+</section>
+
+<!-- ==================== SLIDE 4: Problems & Hypotheses ==================== -->
+<section class="slide" id="s4" data-title="4. 실험 설계 · 문제 & 가설">
+  <div class="kicker">04 · Test Design · Problems → Hypotheses</div>
+  <h1 class="title">4가지 문제,<br><em>4가지 가설</em>.</h1>
+  <p class="lede">알파 테스트로 검증할 핵심 가설. 각 가설은 측정 가능한 지표와 연결.</p>
+
+  <div style="margin-top:28px;display:flex;flex-direction:column;gap:12px">
+    <div style="display:grid;grid-template-columns:1fr 1fr 0.9fr;gap:14px;padding:18px;background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:14px;border-left:3px solid var(--lucid-cyan)">
+      <div>
+        <div style="font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--alert-red);font-weight:700;margin-bottom:6px">문제 #1 · 기억 부재</div>
+        <div style="font-size:13.5px;line-height:1.5;color:var(--text-secondary)">챗봇이 대화를 기억 못 해 <b style="color:var(--text-primary)">관계가 축적되지 않는다</b>. 매번 새로 시작 → 이탈.</div>
+      </div>
+      <div>
+        <div style="font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--lucid-cyan);font-weight:700;margin-bottom:6px">가설 H1 · 메모리</div>
+        <div style="font-size:13.5px;line-height:1.5;color:var(--text-secondary)">메모리 모듈로 대화 맥락을 유지하면 <b style="color:var(--text-primary)">같은 LP에게 매일 돌아온다</b>.</div>
+      </div>
+      <div style="padding:12px;background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.2);border-radius:10px">
+        <div style="font-family:var(--mono);font-size:9.5px;color:var(--sync-green);font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px">예상 결과</div>
+        <div style="font-size:12.5px;color:var(--text-primary);line-height:1.55">D30 <b>35%+</b><br>같은 AIP 재방문</div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr 0.9fr;gap:14px;padding:18px;background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:14px;border-left:3px solid var(--lucid-purple)">
+      <div>
+        <div style="font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--alert-red);font-weight:700;margin-bottom:6px">문제 #2 · 서사 부재</div>
+        <div style="font-size:13.5px;line-height:1.5;color:var(--text-secondary)">캐릭터에게 <b style="color:var(--text-primary)">고유한 과거·서사가 없다</b>. 일회성 소비로 끝남.</div>
+      </div>
+      <div>
+        <div style="font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--lucid-purple);font-weight:700;margin-bottom:6px">가설 H2 · 오리진</div>
+        <div style="font-size:13.5px;line-height:1.5;color:var(--text-secondary)">LP마다 루시브(과거)가 있으면 <b style="color:var(--text-primary)">더 오래·자주 대화</b>한다.</div>
+      </div>
+      <div style="padding:12px;background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.2);border-radius:10px">
+        <div style="font-family:var(--mono);font-size:9.5px;color:var(--sync-green);font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px">예상 결과</div>
+        <div style="font-size:12.5px;color:var(--text-primary);line-height:1.55">세션 <b>15분+</b><br>DAU/MAU <b>50%+</b></div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr 0.9fr;gap:14px;padding:18px;background:linear-gradient(90deg,rgba(236,72,153,.05),var(--bg-card) 60%);border:1px solid rgba(236,72,153,.25);border-radius:14px;border-left:3px solid var(--awakening-pink);position:relative">
+      <div style="position:absolute;top:10px;right:12px;font-family:var(--mono);font-size:9px;padding:2px 8px;background:rgba(236,72,153,.18);color:var(--awakening-pink);border-radius:100px;font-weight:700;letter-spacing:.08em">🆕 핵심 차별점</div>
+      <div>
+        <div style="font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--alert-red);font-weight:700;margin-bottom:6px">문제 #3 · 시각·청각 부재</div>
+        <div style="font-size:13.5px;line-height:1.5;color:var(--text-secondary)">텍스트 챗만으로는 <b style="color:var(--text-primary)">시각·감정 몰입 한계</b>. 장면·표정·음성이 없어 단조로움.</div>
+      </div>
+      <div>
+        <div style="font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--awakening-pink);font-weight:700;margin-bottom:6px">가설 H3 · 비주얼 노벨 모드</div>
+        <div style="font-size:13.5px;line-height:1.5;color:var(--text-secondary)">VN 모드(장면·표정·음성)를 주면 <b style="color:var(--text-primary)">텍스트 대비 몰입·리텐션 상승</b>.</div>
+      </div>
+      <div style="padding:12px;background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.2);border-radius:10px">
+        <div style="font-family:var(--mono);font-size:9.5px;color:var(--sync-green);font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px">예상 결과</div>
+        <div style="font-size:12.5px;color:var(--text-primary);line-height:1.55">VN 사용률 <b>50%+</b><br>VN 세션 <b>1.3x</b> 길이<br>VN 유저 D7 <b>+15%p</b></div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr 0.9fr;gap:14px;padding:18px;background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:14px;border-left:3px solid var(--fragment-gold)">
+      <div>
+        <div style="font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--alert-red);font-weight:700;margin-bottom:6px">문제 #4 · 수동 소비</div>
+        <div style="font-size:13.5px;line-height:1.5;color:var(--text-secondary)">웹소설 독자는 <b style="color:var(--text-primary)">주인공이 되고 싶은 욕구</b> 있지만 읽기만 가능.</div>
+      </div>
+      <div>
+        <div style="font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--fragment-gold);font-weight:700;margin-bottom:6px">가설 H4 · 선택·해금</div>
+        <div style="font-size:13.5px;line-height:1.5;color:var(--text-secondary)">선택·해금으로 주인공 체험을 주면 <b style="color:var(--text-primary)">온보딩·추천율이 높아진다</b>.</div>
+      </div>
+      <div style="padding:12px;background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.2);border-radius:10px">
+        <div style="font-family:var(--mono);font-size:9.5px;color:var(--sync-green);font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px">예상 결과</div>
+        <div style="font-size:12.5px;color:var(--text-primary);line-height:1.55">온보딩 <b>80%+</b><br>레퍼럴 K <b>0.3+</b></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footnote">각 가설은 독립 측정. 하나가 실패해도 나머지로 부분 검증 가능. H3는 제품 핵심 차별점으로 별도 집중 측정.</div>
+</section>
+
+<!-- ==================== SLIDE 5: Success Metrics & Milestones ==================== -->
+<section class="slide" id="s5" data-title="5. 성공 메트릭 & 마일스톤">
+  <div class="kicker">05 · Success Metrics & Interim Milestones</div>
+  <h1 class="title">성공 지표와<br><em>주간 마일스톤</em>.</h1>
+  <p class="lede">정량 지표 7개 + 4주 체크포인트. 스크리닝이 메트릭 충족 유저를 <b>선발 단계에서 필터링</b>.</p>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:32px">
+    <div style="background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:18px;padding:24px">
+      <div style="font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--lucid-cyan);font-weight:700;margin-bottom:16px">⎯ 성공 기준 (정량)</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:9px 13px;background:rgba(6,182,212,.06);border-radius:10px"><span style="font-size:13.5px;color:var(--text-primary)">D30 재방문 (푸쉬 X)</span><b style="font-family:var(--mono);color:var(--lucid-cyan);font-size:14px">35%+</b></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:9px 13px;background:rgba(139,92,246,.06);border-radius:10px"><span style="font-size:13.5px;color:var(--text-primary)">같은 AIP 재방문율</span><b style="font-family:var(--mono);color:var(--lucid-purple);font-size:14px">측정</b></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:9px 13px;background:rgba(236,72,153,.06);border-radius:10px"><span style="font-size:13.5px;color:var(--text-primary)">DAU/MAU</span><b style="font-family:var(--mono);color:var(--awakening-pink);font-size:14px">50%+</b></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:9px 13px;background:rgba(245,158,11,.06);border-radius:10px"><span style="font-size:13.5px;color:var(--text-primary)">세션 평균 길이</span><b style="font-family:var(--mono);color:var(--fragment-gold);font-size:14px">15분+</b></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:9px 13px;background:rgba(236,72,153,.1);border:1px solid rgba(236,72,153,.2);border-radius:10px"><span style="font-size:13.5px;color:var(--text-primary)">🆕 VN 모드 사용률</span><b style="font-family:var(--mono);color:var(--awakening-pink);font-size:14px">50%+</b></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:9px 13px;background:rgba(236,72,153,.1);border:1px solid rgba(236,72,153,.2);border-radius:10px"><span style="font-size:13.5px;color:var(--text-primary)">🆕 VN vs 텍스트 세션 길이</span><b style="font-family:var(--mono);color:var(--awakening-pink);font-size:14px">1.3x+</b></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:9px 13px;background:rgba(236,72,153,.1);border:1px solid rgba(236,72,153,.2);border-radius:10px"><span style="font-size:13.5px;color:var(--text-primary)">🆕 VN 유저 D7 vs 텍스트</span><b style="font-family:var(--mono);color:var(--awakening-pink);font-size:14px">+15%p</b></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:9px 13px;background:rgba(16,185,129,.06);border-radius:10px"><span style="font-size:13.5px;color:var(--text-primary)">온보딩 완료율</span><b style="font-family:var(--mono);color:var(--sync-green);font-size:14px">80%+</b></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:9px 13px;background:rgba(6,182,212,.06);border-radius:10px"><span style="font-size:13.5px;color:var(--text-primary)">D7 선행 지표</span><b style="font-family:var(--mono);color:var(--lucid-cyan);font-size:14px">50%+</b></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:9px 13px;background:rgba(16,185,129,.06);border-radius:10px"><span style="font-size:13.5px;color:var(--text-primary)">추천 vs 직접 retention</span><b style="font-family:var(--mono);color:var(--sync-green);font-size:14px">비교</b></div>
+      </div>
+      <div style="margin-top:12px;padding-top:12px;border-top:1px dashed var(--border-subtle);font-size:12px;color:var(--text-tertiary)">+ <b style="color:var(--text-secondary)">정성 인용문 3-5개</b> (유저 인터뷰) · VN 모드 감상 별도 수집</div>
+    </div>
+
+    <div style="background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:18px;padding:24px">
+      <div style="font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--fragment-gold);font-weight:700;margin-bottom:16px">⎯ 중간 마일스톤 (4주)</div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div style="padding-left:14px;border-left:2px solid var(--lucid-cyan)">
+          <div style="font-family:var(--mono);font-size:11px;color:var(--lucid-cyan);font-weight:700;letter-spacing:.05em">D+3 · 1차 체크</div>
+          <div style="font-size:13px;color:var(--text-secondary);margin-top:3px;line-height:1.5">채널 CTR·CVR·등록 수 집계 · 저효율 채널 중단</div>
+        </div>
+        <div style="padding-left:14px;border-left:2px solid var(--lucid-purple)">
+          <div style="font-family:var(--mono);font-size:11px;color:var(--lucid-purple);font-weight:700;letter-spacing:.05em">D+7 · 모집 중간</div>
+          <div style="font-size:13px;color:var(--text-secondary);margin-top:3px;line-height:1.5">목표 대비 100명 경로 확인 · 알파 선발 시작</div>
+        </div>
+        <div style="padding-left:14px;border-left:2px solid var(--awakening-pink)">
+          <div style="font-family:var(--mono);font-size:11px;color:var(--awakening-pink);font-weight:700;letter-spacing:.05em">D+14 · 알파 중반</div>
+          <div style="font-size:13px;color:var(--text-secondary);margin-top:3px;line-height:1.5">30-50명 온보딩 · <b>D7 retention 측정</b> · 세션 길이 기록</div>
+        </div>
+        <div style="padding-left:14px;border-left:2px solid var(--fragment-gold)">
+          <div style="font-family:var(--mono);font-size:11px;color:var(--fragment-gold);font-weight:700;letter-spacing:.05em">D+21 · 정성 수집</div>
+          <div style="font-size:13px;color:var(--text-secondary);margin-top:3px;line-height:1.5">유저 인터뷰 5명 완료 · <b>D14 retention</b> · 같은 AIP 재방문율</div>
+        </div>
+        <div style="padding-left:14px;border-left:2px solid var(--sync-green)">
+          <div style="font-family:var(--mono);font-size:11px;color:var(--sync-green);font-weight:700;letter-spacing:.05em">D+28 · 결과 종합</div>
+          <div style="font-size:13px;color:var(--text-secondary);margin-top:3px;line-height:1.5">D21 확정 · 종합 리포트 · <b>베타 확장 여부 결정</b></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footnote">D30은 D+28 시점 아직 확정 불가 (D21까지). 이후 지속 측정.</div>
+</section>
+
+<!-- ==================== SLIDE 6: Stop Conditions & Reinforcement ==================== -->
+<section class="slide" id="s6" data-title="6. 중단 조건 & 보강 로직">
+  <div class="kicker">06 · Stop Conditions & Reinforcement</div>
+  <h1 class="title">언제 <em>멈추고</em>,<br>언제 <em>배팅</em>할지.</h1>
+  <p class="lede">데이터 기반 의사결정 프레임. 감정이 아닌 <b>지표 트리거로 실행</b>.</p>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:32px">
+    <!-- Stop Conditions -->
+    <div style="background:linear-gradient(180deg,rgba(239,68,68,.06),var(--bg-card) 60%);border:1px solid rgba(239,68,68,.25);border-radius:18px;padding:24px">
+      <div style="font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--alert-red);font-weight:700;margin-bottom:16px">🛑 중단 / 재검토 조건</div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="padding:12px 14px;background:rgba(8,9,12,.4);border:1px solid rgba(239,68,68,.15);border-radius:10px">
+          <div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;color:var(--alert-red);font-weight:700;margin-bottom:4px"><span>D+3 · 채널 성과</span><span>📉</span></div>
+          <div style="font-size:13px;color:var(--text-primary);line-height:1.5">채널 CVR <b>< 2%</b> → 해당 채널 <b style="color:var(--alert-red)">즉시 중단</b>, 예산 이동</div>
+        </div>
+        <div style="padding:12px 14px;background:rgba(8,9,12,.4);border:1px solid rgba(239,68,68,.15);border-radius:10px">
+          <div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;color:var(--alert-red);font-weight:700;margin-bottom:4px"><span>D+3 · 등록 수</span><span>📉</span></div>
+          <div style="font-size:13px;color:var(--text-primary);line-height:1.5">일일 등록 <b>< 20명</b> 지속 → <b style="color:var(--alert-red)">예비비 긴급 발동</b></div>
+        </div>
+        <div style="padding:12px 14px;background:rgba(8,9,12,.4);border:1px solid rgba(239,68,68,.15);border-radius:10px">
+          <div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;color:var(--alert-red);font-weight:700;margin-bottom:4px"><span>D+7 · 누적</span><span>📉</span></div>
+          <div style="font-size:13px;color:var(--text-primary);line-height:1.5">누적 등록 <b>< 50명</b> → <b style="color:var(--alert-red)">목표 재설정</b> or 추가 투자</div>
+        </div>
+        <div style="padding:12px 14px;background:rgba(8,9,12,.4);border:1px solid rgba(239,68,68,.15);border-radius:10px">
+          <div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;color:var(--alert-red);font-weight:700;margin-bottom:4px"><span>D+14 · 제품 신호</span><span>📉</span></div>
+          <div style="font-size:13px;color:var(--text-primary);line-height:1.5">D7 retention <b>< 20%</b> → <b style="color:var(--alert-red)">제품 근본 이슈 재검토</b></div>
+        </div>
+        <div style="padding:12px 14px;background:rgba(8,9,12,.4);border:1px solid rgba(239,68,68,.15);border-radius:10px">
+          <div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;color:var(--alert-red);font-weight:700;margin-bottom:4px"><span>D+14 · VN 모드 (H3)</span><span>📉</span></div>
+          <div style="font-size:13px;color:var(--text-primary);line-height:1.5">VN 사용률 <b>< 15%</b> → <b style="color:var(--alert-red)">VN 전략 재검토</b> (진입 UX·발견성 문제 의심)</div>
+        </div>
+        <div style="padding:12px 14px;background:rgba(8,9,12,.4);border:1px solid rgba(239,68,68,.15);border-radius:10px">
+          <div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;color:var(--alert-red);font-weight:700;margin-bottom:4px"><span>D+21 · 핵심 thesis</span><span>📉</span></div>
+          <div style="font-size:13px;color:var(--text-primary);line-height:1.5">같은 AIP 재방문율 <b>< 10%</b> → <b style="color:var(--alert-red)">LP 시스템 근본 개선</b></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Reinforcement -->
+    <div style="background:linear-gradient(180deg,rgba(16,185,129,.06),var(--bg-card) 60%);border:1px solid rgba(16,185,129,.25);border-radius:18px;padding:24px">
+      <div style="font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--sync-green);font-weight:700;margin-bottom:16px">🚀 보강 / Double Down 로직</div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="padding:12px 14px;background:rgba(8,9,12,.4);border:1px solid rgba(16,185,129,.15);border-radius:10px">
+          <div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;color:var(--sync-green);font-weight:700;margin-bottom:4px"><span>D+3 · 고효율 채널</span><span>📈</span></div>
+          <div style="font-size:13px;color:var(--text-primary);line-height:1.5">채널 CVR <b>10%+</b> → <b style="color:var(--sync-green)">해당 채널 예산 2x</b></div>
+        </div>
+        <div style="padding:12px 14px;background:rgba(8,9,12,.4);border:1px solid rgba(16,185,129,.15);border-radius:10px">
+          <div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;color:var(--sync-green);font-weight:700;margin-bottom:4px"><span>D+3 · 히트 크리에이티브</span><span>📈</span></div>
+          <div style="font-size:13px;color:var(--text-primary);line-height:1.5">CTR <b>4%+</b> 크리에이티브 발견 → <b style="color:var(--sync-green)">해당 안에 예산 몰빵</b></div>
+        </div>
+        <div style="padding:12px 14px;background:rgba(8,9,12,.4);border:1px solid rgba(16,185,129,.15);border-radius:10px">
+          <div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;color:var(--sync-green);font-weight:700;margin-bottom:4px"><span>D+7 · 모집 초과 달성</span><span>📈</span></div>
+          <div style="font-size:13px;color:var(--text-primary);line-height:1.5">등록 <b>220+</b> → <b style="color:var(--sync-green)">스크리닝 품질 튜닝·인터뷰 확대</b></div>
+        </div>
+        <div style="padding:12px 14px;background:rgba(8,9,12,.4);border:1px solid rgba(16,185,129,.15);border-radius:10px">
+          <div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;color:var(--sync-green);font-weight:700;margin-bottom:4px"><span>D+14 · 몰입 신호</span><span>📈</span></div>
+          <div style="font-size:13px;color:var(--text-primary);line-height:1.5">세션 <b>20분+</b> → <b style="color:var(--sync-green)">제품 스토리·콘텐츠 확장 투자</b></div>
+        </div>
+        <div style="padding:12px 14px;background:rgba(8,9,12,.4);border:1px solid rgba(16,185,129,.15);border-radius:10px">
+          <div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;color:var(--sync-green);font-weight:700;margin-bottom:4px"><span>D+14 · VN 모드 (H3)</span><span>📈</span></div>
+          <div style="font-size:13px;color:var(--text-primary);line-height:1.5">VN 사용률 <b>60%+</b> + VN 세션 1.5x → <b style="color:var(--sync-green)">VN 콘텐츠·씬 제작 가속</b></div>
+        </div>
+        <div style="padding:12px 14px;background:rgba(8,9,12,.4);border:1px solid rgba(16,185,129,.15);border-radius:10px">
+          <div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;color:var(--sync-green);font-weight:700;margin-bottom:4px"><span>D+21 · thesis 증명</span><span>📈</span></div>
+          <div style="font-size:13px;color:var(--text-primary);line-height:1.5">D7 <b>55%+</b> + 정성 강한 긍정 → <b style="color:var(--sync-green)">베타 확장 가속</b></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footnote">매일 18시 대시보드 리뷰 · 트리거 발동 시 팀 슬랙 자동 알림 · 48시간 내 조치</div>
+</section>
+
+<!-- ==================== SLIDE 6.5: Test Metrics Alignment (기존 Slide 4 ) ==================== -->
+<section class="slide" id="s6b" data-title="6+. 메트릭 정렬 체크">
+  <div class="kicker">06+ · Metrics ↔ Recruitment Alignment</div>
+  <h1 class="title">성공 기준 × <em>모집 전략</em>.</h1>
+  <p class="lede">스크리닝 설문이 <b>선발 단계에서 이미 지표 충족 유저를 필터링</b>한다.</p>
+
+  <div class="thesis-block" style="margin-top:24px">
+    <div class="thesis">알파 유저의 <b>X%</b>가 푸쉬 없이 30일 후에도<br>같은 LP와 매일 대화 → <b>서사+AIP가 감정 연결을 만든다</b>는 thesis 증명.</div>
+  </div>
+
+  <div class="alignment" style="margin-top:24px">
+    <div class="alignment-row head">
+      <div>성공 기준</div>
+      <div>모집·스크리닝 지원</div>
+      <div>Align</div>
+    </div>
+    <div class="alignment-row">
+      <div class="align-ceo"><b>D30 35%+ (푸쉬 X)</b></div>
+      <div class="align-desc">스크리닝 Q2·Q8·Q9로 고빈도·고동기 유저 엄선</div>
+      <div class="align-check check-yes">✓</div>
+    </div>
+    <div class="alignment-row">
+      <div class="align-ceo"><b>같은 AIP 재방문율</b></div>
+      <div class="align-desc">제품 구조: LP 1명 고정 (MVP)</div>
+      <div class="align-check check-yes">✓</div>
+    </div>
+    <div class="alignment-row">
+      <div class="align-ceo"><b>DAU/MAU 50%+</b></div>
+      <div class="align-desc">Q2 "매일·주 3-6회" 유저만 선발</div>
+      <div class="align-check check-yes">✓</div>
+    </div>
+    <div class="alignment-row">
+      <div class="align-ceo"><b>세션 15분+</b></div>
+      <div class="align-desc">서사 다이브 + VN 모드 (제품 지원)</div>
+      <div class="align-check check-partial">▲</div>
+    </div>
+    <div class="alignment-row">
+      <div class="align-ceo"><b>온보딩 80%+</b></div>
+      <div class="align-desc">OTP + 스크리닝 2단계 자기선발</div>
+      <div class="align-check check-yes">✓</div>
+    </div>
+    <div class="alignment-row">
+      <div class="align-ceo"><b>추천/직접 비교</b></div>
+      <div class="align-desc">레퍼럴 UTM + persona·source 태깅</div>
+      <div class="align-check check-yes">✓</div>
+    </div>
+    <div class="alignment-row">
+      <div class="align-ceo"><b>"50명 알파"</b></div>
+      <div class="align-desc">177-242명 모집 → <b style="color:var(--fragment-gold)">상위 50명 엄선</b></div>
+      <div class="align-check check-yes">✓</div>
+    </div>
+  </div>
+
+  <div class="footnote">알파 타겟 = "Character.ai·Replika 쓰다 서사 부재에 아쉬웠던 웹소설/웹툰 독자"</div>
+</section>
+
+<!-- ==================== SLIDE 5: Market Approach ==================== -->
+<section class="slide" id="s5" data-title="5. 시장별 접근 방법">
+  <div class="kicker">05 · Channel Strategy · A:B 70:30 · X Paid 주력</div>
+  <h1 class="title">페르소나별<br><em>독립 캠페인</em>.</h1>
+  <p class="lede">X 유료광고 주력 (67% 예산) · 크리에이티브 4종 A/B 테스트 · D+3 승자 몰빵.</p>
+
+  <div class="approach-grid">
+    <div class="approach-card a">
+      <div class="approach-tag">A · 챗봇 지친 유저 · 고의도 · 전환율↑</div>
+      <div class="approach-title">A 페르소나 전략</div>
+      <div class="approach-budget">예산 <b>161만원</b> · 주간 도달 <b style="color:var(--lucid-cyan)">~245K</b></div>
+      <div class="approach-channels">
+        <div class="channel star"><span class="channel-icon">𝕏</span><span class="channel-name">X 유료광고 (A 크리에이티브 2종)</span><span class="channel-budget">103.5만 · 207K</span></div>
+        <div class="channel"><span class="channel-icon">🔍</span><span class="channel-name">네이버 검색광고 (크랙·제타)</span><span class="channel-budget">30만 · 600</span></div>
+        <div class="channel"><span class="channel-icon">💬</span><span class="channel-name">아카라이브 AI 채널 유료</span><span class="channel-budget">10만 · 6K</span></div>
+        <div class="channel"><span class="channel-icon">🎮</span><span class="channel-name">디시 AI게임갤 (유기)</span><span class="channel-budget">무료 · 10K</span></div>
+        <div class="channel"><span class="channel-icon">📨</span><span class="channel-name">에브리타임 (본인 학교 1교)</span><span class="channel-budget">무료 · 1.5K</span></div>
+        <div class="channel"><span class="channel-icon">💭</span><span class="channel-name">카카오 오픈채팅 10-20방</span><span class="channel-budget">무료 · 500</span></div>
+        <div class="channel"><span class="channel-icon">#</span><span class="channel-name">X 해시태그 (#캐릭터ai 등 유기)</span><span class="channel-budget">무료 · 200</span></div>
+      </div>
+    </div>
+
+    <div class="approach-card b">
+      <div class="approach-tag">B · 웹소설+게이미피케이션 · 중의도</div>
+      <div class="approach-title">B 페르소나 전략</div>
+      <div class="approach-budget">예산 <b>69만원</b> · 주간 도달 <b style="color:var(--awakening-pink)">~114K</b></div>
+      <div class="approach-channels">
+        <div class="channel star"><span class="channel-icon">𝕏</span><span class="channel-name">X 유료광고 (B 크리에이티브 2종)</span><span class="channel-budget">52만 · 104K</span></div>
+        <div class="channel"><span class="channel-icon">🔍</span><span class="channel-name">네이버 검색광고 (빙의물·헌터물)</span><span class="channel-budget">7만 · 400</span></div>
+        <div class="channel"><span class="channel-icon">🐲</span><span class="channel-name">디시 판타지·헌터물·로판갤 (유기)</span><span class="channel-budget">무료 · 6K</span></div>
+        <div class="channel"><span class="channel-icon">#</span><span class="channel-name">X 해시태그 (#빙의물 등 유기)</span><span class="channel-budget">무료 · 200</span></div>
+        <div class="channel" style="opacity:.5"><span class="channel-icon">❌</span><span class="channel-name">네이버 카페 (제외 결정)</span><span class="channel-budget">—</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footnote">X Paid CPM ~5,000-6,000원 · CTR 1-1.5% · 타겟 정확도 Meta 대비 우수</div>
+</section>
+
+<!-- ==================== SLIDE 5+: Channel Reach Breakdown ==================== -->
+<section class="slide" id="s5b" data-title="5+. 채널별 도달 가능 인원">
+  <div class="kicker">05+ · Channel Reach Breakdown</div>
+  <h1 class="title">채널별<br><em>도달 가능 인원</em>.</h1>
+  <p class="lede">SAM 44만 중 주간 <b>약 360K impressions</b> 도달 예정 (중복 포함 · 유니크 ~230K).</p>
+
+  <div style="margin-top:28px;background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:18px;overflow:hidden">
+    <table style="width:100%;border-collapse:collapse;font-size:13.5px">
+      <thead>
+        <tr style="background:rgba(6,182,212,.06);border-bottom:1px solid var(--border-medium)">
+          <th style="text-align:left;padding:12px 16px;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-secondary);font-weight:700">채널</th>
+          <th style="text-align:center;padding:12px 10px;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-secondary);font-weight:700">페르소나</th>
+          <th style="text-align:right;padding:12px 10px;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-secondary);font-weight:700">주간 Imp</th>
+          <th style="text-align:right;padding:12px 10px;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-secondary);font-weight:700">유효 Imp</th>
+          <th style="text-align:right;padding:12px 16px;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-secondary);font-weight:700">예상 등록</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom:1px solid var(--border-subtle);background:rgba(6,182,212,.03)">
+          <td style="padding:11px 16px"><b>X 유료광고 A</b> (매트릭스+메모리)</td>
+          <td style="text-align:center"><span style="padding:2px 8px;background:rgba(6,182,212,.15);color:var(--lucid-cyan);font-family:var(--mono);font-size:10px;border-radius:100px;font-weight:700">A</span></td>
+          <td style="text-align:right;font-family:var(--mono);color:var(--text-primary);font-weight:700">207,000</td>
+          <td style="text-align:right;font-family:var(--mono);color:var(--lucid-cyan);font-weight:700">165,600</td>
+          <td style="text-align:right;padding-right:16px;font-family:var(--mono);color:var(--sync-green);font-weight:700">~150</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border-subtle);background:rgba(236,72,153,.03)">
+          <td style="padding:11px 16px"><b>X 유료광고 B</b> (VN+선택)</td>
+          <td style="text-align:center"><span style="padding:2px 8px;background:rgba(236,72,153,.15);color:var(--awakening-pink);font-family:var(--mono);font-size:10px;border-radius:100px;font-weight:700">B</span></td>
+          <td style="text-align:right;font-family:var(--mono);color:var(--text-primary);font-weight:700">104,000</td>
+          <td style="text-align:right;font-family:var(--mono);color:var(--awakening-pink);font-weight:700">78,000</td>
+          <td style="text-align:right;padding-right:16px;font-family:var(--mono);color:var(--sync-green);font-weight:700">~70</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border-subtle)">
+          <td style="padding:11px 16px">아카라이브 AI 채널 (공식광고)</td>
+          <td style="text-align:center"><span style="padding:2px 8px;background:rgba(6,182,212,.15);color:var(--lucid-cyan);font-family:var(--mono);font-size:10px;border-radius:100px;font-weight:700">A</span></td>
+          <td style="text-align:right;font-family:var(--mono);color:var(--text-primary)">6,000</td>
+          <td style="text-align:right;font-family:var(--mono);color:var(--lucid-cyan)">5,400</td>
+          <td style="text-align:right;padding-right:16px;font-family:var(--mono);color:var(--sync-green)">~15</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border-subtle)">
+          <td style="padding:11px 16px">디시 AI게임갤 (유기 씨딩)</td>
+          <td style="text-align:center"><span style="padding:2px 8px;background:rgba(6,182,212,.15);color:var(--lucid-cyan);font-family:var(--mono);font-size:10px;border-radius:100px;font-weight:700">A</span></td>
+          <td style="text-align:right;font-family:var(--mono);color:var(--text-primary)">10,000</td>
+          <td style="text-align:right;font-family:var(--mono);color:var(--lucid-cyan)">8,500</td>
+          <td style="text-align:right;padding-right:16px;font-family:var(--mono);color:var(--sync-green)">~25</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border-subtle)">
+          <td style="padding:11px 16px">디시 판타지·헌터물·로판갤 (유기)</td>
+          <td style="text-align:center"><span style="padding:2px 8px;background:rgba(236,72,153,.15);color:var(--awakening-pink);font-family:var(--mono);font-size:10px;border-radius:100px;font-weight:700">B</span></td>
+          <td style="text-align:right;font-family:var(--mono);color:var(--text-primary)">6,000</td>
+          <td style="text-align:right;font-family:var(--mono);color:var(--awakening-pink)">4,800</td>
+          <td style="text-align:right;padding-right:16px;font-family:var(--mono);color:var(--sync-green)">~12</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border-subtle)">
+          <td style="padding:11px 16px">네이버 검색광고 (롱테일)</td>
+          <td style="text-align:center"><span style="padding:2px 8px;background:rgba(139,92,246,.15);color:var(--lucid-purple);font-family:var(--mono);font-size:10px;border-radius:100px;font-weight:700">A+B</span></td>
+          <td style="text-align:right;font-family:var(--mono);color:var(--text-primary)">1,200</td>
+          <td style="text-align:right;font-family:var(--mono);color:var(--lucid-cyan)">1,100</td>
+          <td style="text-align:right;padding-right:16px;font-family:var(--mono);color:var(--sync-green)">~20</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border-subtle)">
+          <td style="padding:11px 16px">에브리타임 (본인 학교 1교)</td>
+          <td style="text-align:center"><span style="padding:2px 8px;background:rgba(139,92,246,.15);color:var(--lucid-purple);font-family:var(--mono);font-size:10px;border-radius:100px;font-weight:700">A+B</span></td>
+          <td style="text-align:right;font-family:var(--mono);color:var(--text-primary)">1,500</td>
+          <td style="text-align:right;font-family:var(--mono);color:var(--lucid-cyan)">600</td>
+          <td style="text-align:right;padding-right:16px;font-family:var(--mono);color:var(--sync-green)">~3</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border-subtle)">
+          <td style="padding:11px 16px">카카오 오픈채팅 10-20방</td>
+          <td style="text-align:center"><span style="padding:2px 8px;background:rgba(6,182,212,.15);color:var(--lucid-cyan);font-family:var(--mono);font-size:10px;border-radius:100px;font-weight:700">A</span></td>
+          <td style="text-align:right;font-family:var(--mono);color:var(--text-primary)">500</td>
+          <td style="text-align:right;font-family:var(--mono);color:var(--lucid-cyan)">400</td>
+          <td style="text-align:right;padding-right:16px;font-family:var(--mono);color:var(--sync-green)">~4</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border-subtle)">
+          <td style="padding:11px 16px">X 해시태그 (유기)</td>
+          <td style="text-align:center"><span style="padding:2px 8px;background:rgba(139,92,246,.15);color:var(--lucid-purple);font-family:var(--mono);font-size:10px;border-radius:100px;font-weight:700">A+B</span></td>
+          <td style="text-align:right;font-family:var(--mono);color:var(--text-primary)">400</td>
+          <td style="text-align:right;font-family:var(--mono);color:var(--lucid-cyan)">280</td>
+          <td style="text-align:right;padding-right:16px;font-family:var(--mono);color:var(--sync-green)">~2</td>
+        </tr>
+        <tr style="background:rgba(16,185,129,.04);border-top:1px solid var(--border-medium);font-weight:700">
+          <td style="padding:14px 16px;font-weight:700">합계 (Plan B)</td>
+          <td style="text-align:center">—</td>
+          <td style="text-align:right;font-family:var(--mono);color:var(--text-primary);font-weight:800">336,600</td>
+          <td style="text-align:right;font-family:var(--mono);color:var(--sync-green);font-weight:800">264,680</td>
+          <td style="text-align:right;padding-right:16px;font-family:var(--mono);color:var(--sync-green);font-weight:800">~300</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div style="margin-top:18px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
+    <div style="padding:14px;background:rgba(6,182,212,.06);border:1px solid rgba(6,182,212,.2);border-radius:12px;text-align:center">
+      <div style="font-family:var(--mono);font-size:10px;color:var(--lucid-cyan);font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px">총 도달 가능</div>
+      <div style="font-size:22px;font-weight:900;color:var(--text-primary)">336K <span style="font-size:13px;color:var(--text-tertiary);font-weight:400">imp</span></div>
+      <div style="font-size:11px;color:var(--text-tertiary);margin-top:4px">유효 265K (78%)</div>
+    </div>
+    <div style="padding:14px;background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.2);border-radius:12px;text-align:center">
+      <div style="font-family:var(--mono);font-size:10px;color:var(--fragment-gold);font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px">SAM 대비</div>
+      <div style="font-size:22px;font-weight:900;color:var(--text-primary)">60% <span style="font-size:13px;color:var(--text-tertiary);font-weight:400">reach</span></div>
+      <div style="font-size:11px;color:var(--text-tertiary);margin-top:4px">유효 / SAM 44만</div>
+    </div>
+    <div style="padding:14px;background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.2);border-radius:12px;text-align:center">
+      <div style="font-family:var(--mono);font-size:10px;color:var(--sync-green);font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px">예상 등록</div>
+      <div style="font-size:22px;font-weight:900;color:var(--text-primary)">~300 <span style="font-size:13px;color:var(--text-tertiary);font-weight:400">명</span></div>
+      <div style="font-size:11px;color:var(--text-tertiary);margin-top:4px">→ 실참여 75-110 (K=0.4)</div>
+    </div>
+  </div>
+
+  <div class="footnote">X Paid 67% · 유기 채널 22% · 네이버 검색 11% · SAM 매칭률 채널별 상이 (40-95%)</div>
+</section>
+
+<!-- ==================== SLIDE 6: Timeline / To-do ==================== -->
+<section class="slide" id="s6" data-title="6. Todo · Launch Timeline">
+  <div class="kicker">06 · Timeline & To-do</div>
+  <h1 class="title"><em>4주 타임라인</em>,<br>테스트 런칭.</h1>
+  <p class="lede">D-3 블로커 3종: <b>Supabase 연동 · VN 영상 · X 유료광고 셋업</b>.</p>
+
+  <div class="timeline">
+    <div class="week-row">
+      <div class="week-label">Week<b>D-3 ~ D-1</b></div>
+      <div class="week-actions">
+        <h4>Pre-launch Sprint (3일)</h4>
+        <ul>
+          <li class="done">랜딩 페이지 v4-final 완성 · 스크리닝 · 이메일 · 점수화 스크립트 완료</li>
+          <li>Supabase 연동 (send-otp · verify-otp · complete-signup · alpha_screening)</li>
+          <li>VN 30초 영상 · 매트릭스 이미지 · OG 이미지 제작</li>
+          <li>X Ads Manager 계정·크리에이티브 4종 A/B 셋업</li>
+          <li>네이버 검색광고 키워드 30개 업로드</li>
+          <li>도메인 연결 · QA · E2E 테스트</li>
+        </ul>
+      </div>
+    </div>
+    <div class="week-row">
+      <div class="week-label">Week<b>1 · D0-D+6</b></div>
+      <div class="week-actions">
+        <h4>런칭 + 1차 모집 · 목표 400+ 사전등록</h4>
+        <ul>
+          <li>D0 09:00 — X 유료광고·네이버 검색·아카라이브 동시 ON</li>
+          <li>D0 12:00 — 디시 AI게임갤·본인 에타·X 스레드 런칭</li>
+          <li>D+1 — 아카라이브 포스팅·카톡 오픈채팅 활성화</li>
+          <li>D+3 — 크리에이티브 A/B 결과 → 승자 예산 몰빵</li>
+          <li>D+6 — 주간 데이터 종합 → Phase 조정</li>
+        </ul>
+      </div>
+    </div>
+    <div class="week-row">
+      <div class="week-label">Week<b>2 · D+7-D+13</b></div>
+      <div class="week-actions">
+        <h4>알파 유저 온보딩 · 목표 50-80명</h4>
+        <ul>
+          <li>스크리닝 점수화 → 상위 50-80명 선발</li>
+          <li>선발 축하 이메일 + Dip 2,000 지급</li>
+          <li>대기자 위로 이메일 + Dip 300</li>
+          <li>Discord 커뮤니티 운영 시작</li>
+          <li>알파 초대장 발송 + 앱 접속 모니터링</li>
+        </ul>
+      </div>
+    </div>
+    <div class="week-row">
+      <div class="week-label">Week<b>3 · D+14-D+20</b></div>
+      <div class="week-actions">
+        <h4>정성 데이터 수집 + 관찰</h4>
+        <ul>
+          <li>유저 인터뷰 최소 10명 (1시간씩)</li>
+          <li>정성 인용문 3-5개 확보</li>
+          <li>주간 retention D7 측정</li>
+          <li>세션 길이 · 대화 횟수 추적</li>
+          <li>AIP 재방문율 · 유저별 LP 고정율 기록</li>
+        </ul>
+      </div>
+    </div>
+    <div class="week-row">
+      <div class="week-label">Week<b>4 · D+21-D+28</b></div>
+      <div class="week-actions">
+        <h4>결과 종합 · 베타 확장 결정</h4>
+        <ul>
+          <li>D7 · D14 · D21 retention 곡선 시각화</li>
+          <li>추천/직접 유저 retention 비교 분석</li>
+          <li>정성 인용문 + 정량 지표 종합 리포트</li>
+          <li>D30 지표 중간 기록 (D+28 기준 D21 확정)</li>
+          <li>베타 확장 조건 판단 · 다음 모집 전략 결정</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="footnote">중요: D+28 시점 D30 확정 아님 (D21까지) · 측정 계속 진행</div>
+</section>
+
+<!-- ==================== SLIDE 7: Landing Page Mockup ==================== -->
+<section class="slide" id="s7" data-title="7. 모집 페이지 목업 리뷰">
+  <div class="kicker">07 · Landing Page Review</div>
+  <h1 class="title">랜딩 <em>v4-final</em>,<br>완성.</h1>
+  <p class="lede">OTP · 비디오 · 매트릭스 · Top 5 · 플로팅 내비 · 고정 urgency.</p>
+
+  <div class="mockup-wrap">
+    <div class="mockup-phone">
+      <div class="mockup-urgency">⚠ <b>혜택 사라짐</b> · 74일 14:23:09</div>
+      <div class="mockup-content">
+        <div class="mockup-badge">⎯ PRE-LAUNCH · NEW AI</div>
+        <div class="mockup-h1">장면이 움직이고,<br><span>캐릭터가 말을 겁니다.</span></div>
+        <div class="mockup-sub">Lucive는 비주얼 노벨형 AI 동반자 플랫폼입니다. <b style="color:#10B981">알파 기간 사전 등록 전용 특가</b>로 체험하세요.</div>
+        <div class="mockup-btn">지금 사전 등록 →</div>
+        <div class="mockup-btn warm">타사와 8가지 차이 →</div>
+        <div class="mockup-btn ghost">30초 데모</div>
+        <div class="mockup-info">
+          <div class="mockup-info-item">✓ 이메일 + 6자리 OTP 인증</div>
+          <div class="mockup-info-item">✓ 레퍼럴 Top 5 혜택 · 1위 평생</div>
+          <div class="mockup-info-item">✓ 비디오 데모 타임라인 오버레이</div>
+        </div>
+      </div>
+      <div class="mockup-float">
+        <div class="mockup-float-btn p">⚡ 등록</div>
+        <div class="mockup-float-btn w">⚔ 8가지</div>
+        <div class="mockup-float-btn g">🎬 데모</div>
+        <div class="mockup-float-btn g">🎁 혜택</div>
+      </div>
+    </div>
+
+    <div class="features-list">
+      <div class="feature-item">
+        <div class="feature-icon">⚡</div>
+        <div class="feature-content">
+          <h5>OTP 6자리 인증 플로우</h5>
+          <p>이메일 입력 → 6자리 코드 발송 → 자동 advance + 검증 → 등록 완료 + 공유링크 이메일 자동 발송</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">🎬</div>
+        <div class="feature-content">
+          <h5>비디오 데모 타임라인 오버레이</h5>
+          <p>30초 VN 영상 재생 중 5개 컨셉(MEMORY · VN · CHOICE · ORIGIN · INITIATE) 자동 강조 표시</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">⚔</div>
+        <div class="feature-content">
+          <h5>타사 비교 매트릭스 8×6</h5>
+          <p>C.AI · 크랙 · 제타 · Replika · Talkie 대비 8가지 핵심 항목으로 차별점 직관 전달</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">🎁</div>
+        <div class="feature-content">
+          <h5>혜택 구조 확정</h5>
+          <p>전체 공통: 사전 체험 특가 · 1위: 기본 플랜 평생 · 2-5위: 초대 친구 전원 3개월 무료</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footnote">파일: pre-register/v4-final.html · 스크리닝 pre-register/screening.html</div>
+</section>
+
+<!-- ==================== SLIDE 8: Ad Creatives ==================== -->
+<section class="slide" id="s8" data-title="8. 광고 크리에이티브 샘플">
+  <div class="kicker">08 · X Ads Creatives</div>
+  <h1 class="title">크리에이티브 <em>4종</em>,<br>A/B 테스트.</h1>
+  <p class="lede">X 유료광고 기준. A 2종 (매트릭스·메모리) · B 2종 (VN·선택) · D+3 승자 몰빵.</p>
+
+  <div class="ads-grid">
+    <div class="ad-card a1">
+      <div class="ad-tag">A-MATRIX · 페르소나 A</div>
+      <div class="ad-headline">크랙·제타 쓰다<br>질리셨나요?</div>
+      <div class="ad-sub">기억하는 AI · 반복 없는 AI · 광고 없는 AI. 8가지 차이를 지금 확인하세요.</div>
+      <div class="ad-cta">매트릭스 보기 →</div>
+      <div class="ad-meta">
+        <span>1080×1350</span>
+        <span>→ #vs</span>
+      </div>
+    </div>
+
+    <div class="ad-card a2">
+      <div class="ad-tag">A-MEMORY · 페르소나 A</div>
+      <div class="ad-headline">17일 전 대화를<br>먼저 꺼내는 AI</div>
+      <div class="ad-sub">메모리 모듈이 대화·감정 맥락까지 축적. LP가 당신을 기억합니다.</div>
+      <div class="ad-cta">30초 영상 보기 →</div>
+      <div class="ad-meta">
+        <span>1080×1350</span>
+        <span>→ #demo</span>
+      </div>
+    </div>
+
+    <div class="ad-card b1">
+      <div class="ad-tag">B-VN · 페르소나 B</div>
+      <div class="ad-headline">웹소설 주인공이<br>되는 경험</div>
+      <div class="ad-sub">LP마다 고유한 과거(루시브)가 있고, 그걸 같이 체험합니다. 빙의물·헌터물 팬에게.</div>
+      <div class="ad-cta">비주얼 노벨 보기 →</div>
+      <div class="ad-meta">
+        <span>1080×1350</span>
+        <span>→ #vn</span>
+      </div>
+    </div>
+
+    <div class="ad-card b2">
+      <div class="ad-tag">B-CHOICE · 페르소나 B</div>
+      <div class="ad-headline">내 선택이<br>엔딩을 바꾼다</div>
+      <div class="ad-sub">히든 선택지 · 멀티 엔딩 · 루트 분기. 진짜 주인공의 이야기.</div>
+      <div class="ad-cta">체험하러 가기 →</div>
+      <div class="ad-meta">
+        <span>1080×1350</span>
+        <span>→ #demo</span>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:32px;padding:24px;background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:16px;font-size:14px;color:var(--text-secondary);line-height:1.7">
+    <b style="color:var(--text-primary);font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--lucid-cyan);font-weight:700">A/B Test 프로토콜:</b>
+    D0 동시 집행 → D+3 클릭률 + 등록률 비교 → 승자에 해당 페르소나 예산 70-80% 이관 → D+6 결과 로그화
+  </div>
+
+  <div class="footnote">실제 제작 에셋: assets/ · 영상: CapCut 가이드 참조</div>
+</section>
+
+<!-- ==================== SLIDE 9: Required Items ==================== -->
+<section class="slide" id="s9" data-title="9. 필요한 것들 리스트">
+  <div class="kicker">09 · Required · Budget · Decisions</div>
+  <h1 class="title">남은 것 <em>5가지</em>,<br>3일 스프린트.</h1>
+  <p class="lede">완성 6종 · 미완성 5종 (P0). Supabase · VN 영상이 블로커.</p>
+
+  <div class="req-grid">
+    <div class="req-col">
+      <h4>🚨 완성되지 않은 것 (P0)</h4>
+      <div class="req-item">
+        <div class="req-status critical">!</div>
+        <div class="req-name">Supabase 연동 (Edge Function 4종)<div class="req-note">send-otp · verify-otp · complete-signup · send-alpha-result</div></div>
+      </div>
+      <div class="req-item">
+        <div class="req-status critical">!</div>
+        <div class="req-name">VN 데모 영상 30초 (CapCut)<div class="req-note">assets/vn-demo.mp4 · 랜딩 히어로 핵심 임팩트</div></div>
+      </div>
+      <div class="req-item">
+        <div class="req-status todo">!</div>
+        <div class="req-name">X Ads 계정 · 크리에이티브 4종<div class="req-note">X Ads Manager 셋업 + 이미지/영상 제작</div></div>
+      </div>
+      <div class="req-item">
+        <div class="req-status todo">!</div>
+        <div class="req-name">매트릭스 비교 이미지 3비율<div class="req-note">1:1, 9:16, 16:9 (채널별 최적화)</div></div>
+      </div>
+      <div class="req-item">
+        <div class="req-status todo">!</div>
+        <div class="req-name">OG 이미지 1200×630<div class="req-note">카카오톡 · 페이스북 공유 프리뷰</div></div>
+      </div>
+    </div>
+
+    <div class="req-col">
+      <h4>✅ 이미 완성된 것</h4>
+      <div class="req-item">
+        <div class="req-status ok">✓</div>
+        <div class="req-name">사전등록 페이지 v4-final.html<div class="req-note">OTP · 비디오 · Top 5 · 플로팅 내비 · 고정 urgency</div></div>
+      </div>
+      <div class="req-item">
+        <div class="req-status ok">✓</div>
+        <div class="req-name">알파 스크리닝 설문 (9문항)<div class="req-note">프로그레스 바 · 스텝 도트 · 시간 pill</div></div>
+      </div>
+      <div class="req-item">
+        <div class="req-status ok">✓</div>
+        <div class="req-name">이메일 템플릿 2종 (선발·대기자)<div class="req-note">변수 치환 + Supabase 연동 준비 완료</div></div>
+      </div>
+      <div class="req-item">
+        <div class="req-status ok">✓</div>
+        <div class="req-name">점수화·선발 Node.js 스크립트<div class="req-note">600명 모의 테스트 통과</div></div>
+      </div>
+      <div class="req-item">
+        <div class="req-status ok">✓</div>
+        <div class="req-name">전략·콘텐츠·영상·Figma 가이드 6종<div class="req-note">strategy/ 폴더 · 3,559줄 문서화</div></div>
+      </div>
+      <div class="req-item">
+        <div class="req-status ok">✓</div>
+        <div class="req-name">에브리타임 계정 (본인)<div class="req-note">워밍업 1-2일 필요 · D0 본인 학교 포스팅 가능</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="req-budget-total">
+    <div>
+      <div class="req-budget-label">⎯ 확정 예산 (Plan B · 권장)</div>
+      <div style="font-size:14px;color:var(--text-secondary);margin-top:6px">A 161만 · B 69만 · X 유료 155.5만 (67%)</div>
+    </div>
+    <div style="text-align:right">
+      <div class="req-budget-num">230만원</div>
+      <div style="font-family:var(--mono);font-size:11px;color:var(--text-tertiary);letter-spacing:.05em;margin-top:6px">예상 실참여 200-285명</div>
+    </div>
+  </div>
+
+  <div style="margin-top:24px;padding:20px 24px;background:rgba(239,68,68,.05);border:1px solid rgba(239,68,68,.2);border-radius:14px">
+    <div style="font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--alert-red);font-weight:700;margin-bottom:8px">⚠ 승인 필요 최종 결정 2가지</div>
+    <div style="display:flex;gap:24px;flex-wrap:wrap">
+      <div style="flex:1;min-width:240px"><b style="color:var(--text-primary)">1. 예산 230만 승인</b><div style="color:var(--text-secondary);font-size:13px;margin-top:4px">Plan B 기준 · 광고비 70% · 콘텐츠/인건 30%</div></div>
+      <div style="flex:1;min-width:240px"><b style="color:var(--text-primary)">2. D0 정확한 날짜 확정</b><div style="color:var(--text-secondary);font-size:13px;margin-top:4px">Supabase 연동 완료 이후 3-5일 내</div></div>
+    </div>
+  </div>
+
+  <div class="footnote">발표자료: presentation/executive-deck.html</div>
+</section>
+
+<!-- ==================== APPENDIX A: TAM/SAM Placement Breakdown ==================== -->
+<section class="slide" id="sA" data-title="Appendix A · 플레이스먼트 Breakdown">
+  <div class="kicker">Appendix A · Placement Breakdown</div>
+  <h1 class="title">TAM/SAM을<br><em>앱·플랫폼별</em>로.</h1>
+  <p class="lede">어디서 얼마나 도달할 수 있는지 세분화.</p>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:24px">
+    <!-- A Persona -->
+    <div style="background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:18px;padding:24px">
+      <div style="font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--lucid-cyan);font-weight:700;margin-bottom:14px">⎯ A 페르소나 · 앱별</div>
+      <table style="width:100%;border-collapse:collapse;font-size:13px">
+        <thead><tr style="border-bottom:1px solid var(--border-subtle)">
+          <th style="text-align:left;padding:8px 4px;color:var(--text-tertiary);font-weight:600">앱</th>
+          <th style="text-align:right;padding:8px 4px;color:var(--text-tertiary);font-weight:600">MAU</th>
+          <th style="text-align:right;padding:8px 4px;color:var(--text-tertiary);font-weight:600">Fatigued</th>
+        </tr></thead>
+        <tbody>
+          <tr><td style="padding:7px 4px">크랙 (wrtn)</td><td style="text-align:right;font-family:var(--mono)">30만</td><td style="text-align:right;color:var(--awakening-pink);font-family:var(--mono)">3.9만</td></tr>
+          <tr><td style="padding:7px 4px">제타</td><td style="text-align:right;font-family:var(--mono)">80만</td><td style="text-align:right;color:var(--awakening-pink);font-family:var(--mono)">12.0만</td></tr>
+          <tr><td style="padding:7px 4px">Character.AI 한국</td><td style="text-align:right;font-family:var(--mono)">30만</td><td style="text-align:right;color:var(--awakening-pink);font-family:var(--mono)">9.0만</td></tr>
+          <tr><td style="padding:7px 4px">Replika 한국</td><td style="text-align:right;font-family:var(--mono)">5만</td><td style="text-align:right;color:var(--awakening-pink);font-family:var(--mono)">0.4만</td></tr>
+          <tr><td style="padding:7px 4px">Talkie·PolyBuzz·기타</td><td style="text-align:right;font-family:var(--mono)">10만</td><td style="text-align:right;color:var(--awakening-pink);font-family:var(--mono)">1.2만</td></tr>
+          <tr style="border-top:1px solid var(--border-medium)"><td style="padding:10px 4px;font-weight:700">A-TAM</td><td style="text-align:right;font-family:var(--mono);font-weight:700;color:var(--text-primary)">~155만</td><td style="text-align:right;font-family:var(--mono);font-weight:700;color:var(--fragment-gold)">~26.5만</td></tr>
+          <tr><td style="padding:4px;color:var(--text-tertiary);font-size:11px" colspan="3">→ A-SAM = 26.5만 × 80% pain match = <b style="color:var(--sync-green);font-family:var(--mono)">~21만</b></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- B Persona -->
+    <div style="background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:18px;padding:24px">
+      <div style="font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--awakening-pink);font-weight:700;margin-bottom:14px">⎯ B 페르소나 · 플랫폼별</div>
+      <table style="width:100%;border-collapse:collapse;font-size:13px">
+        <thead><tr style="border-bottom:1px solid var(--border-subtle)">
+          <th style="text-align:left;padding:8px 4px;color:var(--text-tertiary);font-weight:600">플랫폼</th>
+          <th style="text-align:right;padding:8px 4px;color:var(--text-tertiary);font-weight:600">MAU</th>
+          <th style="text-align:right;padding:8px 4px;color:var(--text-tertiary);font-weight:600">Target</th>
+        </tr></thead>
+        <tbody>
+          <tr><td style="padding:7px 4px">카카오페이지 웹소설</td><td style="text-align:right;font-family:var(--mono)">400만</td><td style="text-align:right;color:var(--lucid-purple);font-family:var(--mono)">100만</td></tr>
+          <tr><td style="padding:7px 4px">네이버 시리즈</td><td style="text-align:right;font-family:var(--mono)">250만</td><td style="text-align:right;color:var(--lucid-purple);font-family:var(--mono)">62.5만</td></tr>
+          <tr><td style="padding:7px 4px">문피아</td><td style="text-align:right;font-family:var(--mono)">150만</td><td style="text-align:right;color:var(--lucid-purple);font-family:var(--mono)">60만</td></tr>
+          <tr><td style="padding:7px 4px">리디·노벨피아</td><td style="text-align:right;font-family:var(--mono)">150만</td><td style="text-align:right;color:var(--lucid-purple);font-family:var(--mono)">45만</td></tr>
+          <tr style="border-top:1px solid var(--border-medium)"><td style="padding:10px 4px;font-weight:700">B-TAM (중복 제거)</td><td style="text-align:right;font-family:var(--mono);font-weight:700;color:var(--text-primary)">~500만</td><td style="text-align:right;font-family:var(--mono);font-weight:700;color:var(--fragment-gold)">~120만</td></tr>
+          <tr><td style="padding:4px;color:var(--text-tertiary);font-size:11px" colspan="3">→ B-SAM = 120만 × 20% × 60% = <b style="color:var(--sync-green);font-family:var(--mono)">~14만</b></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Effective Impressions table -->
+  <div style="margin-top:20px;background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:18px;padding:22px 26px">
+    <div style="font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--fragment-gold);font-weight:700;margin-bottom:12px">⎯ 채널별 유효 Impressions (SAM 매칭률 적용)</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;font-size:12.5px">
+      <div><b>X 유료 A</b> · 207K × 80% = <b style="color:var(--lucid-cyan)">166K</b></div>
+      <div><b>X 유료 B</b> · 104K × 75% = <b style="color:var(--awakening-pink)">78K</b></div>
+      <div><b>아카 AI채널</b> · 6K × 90% = <b style="color:var(--lucid-cyan)">5.4K</b></div>
+      <div><b>디시 AI게임</b> · 10K × 85% = <b style="color:var(--lucid-cyan)">8.5K</b></div>
+      <div><b>네이버 검색</b> · 1.2K × 95% = <b style="color:var(--lucid-cyan)">1.1K</b></div>
+      <div><b>카톡 오픈챗</b> · 500 × 80% = <b style="color:var(--lucid-cyan)">400</b></div>
+      <div><b>디시 판타지</b> · 6K × 80% = <b style="color:var(--awakening-pink)">4.8K</b></div>
+      <div style="font-weight:700">총 유효: <b style="color:var(--sync-green)">~265K</b> (78%)</div>
+    </div>
+  </div>
+
+  <div class="footnote">Source: strategy/시장전략_4분면_분석.md Appendix A</div>
+</section>
+
+<!-- ==================== APPENDIX B: Funnel Benchmarks ==================== -->
+<section class="slide" id="sB" data-title="Appendix B · 퍼널 벤치마크">
+  <div class="kicker">Appendix B · Funnel Benchmarks</div>
+  <h1 class="title">각 전환율,<br><em>업계 출처</em>.</h1>
+  <p class="lede">모든 퍼널 가정은 공개 벤치마크 기반.</p>
+
+  <div style="margin-top:24px;background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:18px;overflow:hidden">
+    <table style="width:100%;border-collapse:collapse;font-size:13.5px">
+      <thead>
+        <tr style="background:rgba(6,182,212,.06);border-bottom:1px solid var(--border-medium)">
+          <th style="text-align:left;padding:14px 20px;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-secondary);font-weight:700">Stage</th>
+          <th style="text-align:center;padding:14px 20px;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-secondary);font-weight:700">LUCIVE</th>
+          <th style="text-align:center;padding:14px 20px;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-secondary);font-weight:700">업계</th>
+          <th style="text-align:left;padding:14px 20px;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-secondary);font-weight:700">Source</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom:1px solid var(--border-subtle)">
+          <td style="padding:12px 20px">X Ads CTR (관심사 타겟)</td>
+          <td style="text-align:center;font-family:var(--mono);color:var(--lucid-cyan);font-weight:700">1.5%</td>
+          <td style="text-align:center;font-family:var(--mono);color:var(--text-secondary)">1-2%</td>
+          <td style="padding:12px 20px;color:var(--text-tertiary);font-size:12px">Statista X Ads Korea 2024</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border-subtle)">
+          <td style="padding:12px 20px">Naver 검색 CTR</td>
+          <td style="text-align:center;font-family:var(--mono);color:var(--lucid-cyan);font-weight:700">4%</td>
+          <td style="text-align:center;font-family:var(--mono);color:var(--text-secondary)">3-5%</td>
+          <td style="padding:12px 20px;color:var(--text-tertiary);font-size:12px">네이버 광고 공식 가이드</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border-subtle)">
+          <td style="padding:12px 20px">커뮤니티 유기 CTR</td>
+          <td style="text-align:center;font-family:var(--mono);color:var(--lucid-cyan);font-weight:700">5%</td>
+          <td style="text-align:center;font-family:var(--mono);color:var(--text-secondary)">3-8%</td>
+          <td style="padding:12px 20px;color:var(--text-tertiary);font-size:12px">자체 경험치</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border-subtle)">
+          <td style="padding:12px 20px"><b>Landing CVR</b> (방문→이메일)</td>
+          <td style="text-align:center;font-family:var(--mono);color:var(--lucid-cyan);font-weight:700">8%</td>
+          <td style="text-align:center;font-family:var(--mono);color:var(--text-secondary)">3-10%</td>
+          <td style="padding:12px 20px;color:var(--text-tertiary);font-size:12px">Unbounce Conversion Benchmark 2023 (상위 25%)</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border-subtle)">
+          <td style="padding:12px 20px">OTP 완료율</td>
+          <td style="text-align:center;font-family:var(--mono);color:var(--lucid-cyan);font-weight:700">65%</td>
+          <td style="text-align:center;font-family:var(--mono);color:var(--text-secondary)">55-75%</td>
+          <td style="padding:12px 20px;color:var(--text-tertiary);font-size:12px">SendGrid Email Auth Report 2024</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border-subtle)">
+          <td style="padding:12px 20px">설문 시작율</td>
+          <td style="text-align:center;font-family:var(--mono);color:var(--lucid-cyan);font-weight:700">55%</td>
+          <td style="text-align:center;font-family:var(--mono);color:var(--text-secondary)">30-60%</td>
+          <td style="padding:12px 20px;color:var(--text-tertiary);font-size:12px">MarketingSherpa 2023</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border-subtle)">
+          <td style="padding:12px 20px">설문 완주율</td>
+          <td style="text-align:center;font-family:var(--mono);color:var(--lucid-cyan);font-weight:700">60%</td>
+          <td style="text-align:center;font-family:var(--mono);color:var(--text-secondary)">55-75%</td>
+          <td style="padding:12px 20px;color:var(--text-tertiary);font-size:12px">SurveyMonkey 2024</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border-subtle)">
+          <td style="padding:12px 20px">알파 실참여율</td>
+          <td style="text-align:center;font-family:var(--mono);color:var(--lucid-cyan);font-weight:700">55%</td>
+          <td style="text-align:center;font-family:var(--mono);color:var(--text-secondary)">40-70%</td>
+          <td style="padding:12px 20px;color:var(--text-tertiary);font-size:12px">Centercode Beta Testing 2023</td>
+        </tr>
+        <tr>
+          <td style="padding:12px 20px"><b>Referral K-factor</b></td>
+          <td style="text-align:center;font-family:var(--mono);color:var(--fragment-gold);font-weight:700">0.3-0.4</td>
+          <td style="text-align:center;font-family:var(--mono);color:var(--text-secondary)">0.2-0.7</td>
+          <td style="padding:12px 20px;color:var(--text-tertiary);font-size:12px">OpenView 2024 · Dropbox 0.35</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Sensitivity summary -->
+  <div style="margin-top:20px;padding:18px 22px;background:rgba(239,68,68,.05);border:1px solid rgba(239,68,68,.2);border-radius:14px;display:flex;gap:20px;flex-wrap:wrap;align-items:center">
+    <div style="flex:1;min-width:260px">
+      <div style="font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--alert-red);font-weight:700;margin-bottom:6px">⚠ 민감도</div>
+      <div style="font-size:13.5px;color:var(--text-secondary);line-height:1.6">모든 가정이 하단으로 -40% 떨어지면 실참여 <b style="color:var(--alert-red)">~60-90명</b>. D+3 실측 비교 후 즉시 크리에이티브·예산 조정.</div>
+    </div>
+  </div>
+
+  <div class="footnote">Source: strategy/시장전략_4분면_분석.md Appendix B</div>
+</section>
+
+</div>
+
+<script>
+const slides = document.querySelectorAll('.slide');
+const total = slides.length;
+document.getElementById('totalSlides').textContent = total;
+
+// Build progress dots
+const progressEl = document.getElementById('navProgress');
+slides.forEach((s, i) => {
+  const dot = document.createElement('div');
+  dot.className = 'nav-progress-dot' + (i === 0 ? ' active' : '');
+  dot.setAttribute('aria-label', s.dataset.title);
+  dot.addEventListener('click', () => goSlide(i));
+  progressEl.appendChild(dot);
+});
+
+let currentIdx = 0;
+const deck = document.getElementById('deck');
+
+function goSlide(i) {
+  if (i < 0 || i >= total) return;
+  currentIdx = i;
+  slides[i].scrollIntoView({behavior: 'smooth'});
+  updateNav();
+}
+function nextSlide() { goSlide(currentIdx + 1); }
+function prevSlide() { goSlide(currentIdx - 1); }
+
+function updateNav() {
+  document.getElementById('currentSlide').textContent = currentIdx + 1;
+  document.getElementById('navTitle').textContent = slides[currentIdx].dataset.title;
+  document.querySelectorAll('.nav-progress-dot').forEach((d, i) => {
+    d.classList.toggle('active', i === currentIdx);
+  });
+}
+
+// Scroll observer
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting && e.intersectionRatio > 0.5) {
+      const idx = [...slides].indexOf(e.target);
+      if (idx !== -1 && idx !== currentIdx) {
+        currentIdx = idx;
+        updateNav();
+      }
+    }
+  });
+}, {root: deck, threshold: 0.5});
+slides.forEach(s => observer.observe(s));
+
+// Keyboard navigation
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') {
+    e.preventDefault();
+    nextSlide();
+  } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+    e.preventDefault();
+    prevSlide();
+  } else if (e.key === 'Home') {
+    e.preventDefault();
+    goSlide(0);
+  } else if (e.key === 'End') {
+    e.preventDefault();
+    goSlide(total - 1);
+  } else if (e.key >= '0' && e.key <= '9') {
+    e.preventDefault();
+    goSlide(parseInt(e.key, 10));
+  }
+});
+
+// Hash navigation
+window.addEventListener('load', () => {
+  const hash = location.hash.replace('#s', '');
+  if (hash && !isNaN(hash)) goSlide(parseInt(hash, 10));
+});
+</script>
+</body>
+</html>

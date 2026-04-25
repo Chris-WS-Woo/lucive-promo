@@ -1,0 +1,392 @@
+[
+  {
+    "app": "character_ai",
+    "name": "Character.AI",
+    "locales": {
+      "en": {
+        "1star": 100,
+        "2star": 100
+      },
+      "ja": {
+        "1star": 53,
+        "2star": 9
+      },
+      "es": {
+        "1star": 100,
+        "2star": 100
+      },
+      "pt": {
+        "1star": 100,
+        "2star": 100
+      },
+      "de": {
+        "1star": 100,
+        "2star": 100
+      },
+      "zh": {
+        "1star": 100,
+        "2star": 63
+      }
+    }
+  },
+  {
+    "app": "talkie",
+    "name": "Talkie (Weaver)",
+    "locales": {
+      "en": {
+        "1star": 100,
+        "2star": 100
+      },
+      "ja": {
+        "1star": 10,
+        "2star": 2
+      },
+      "es": {
+        "1star": 100,
+        "2star": 100
+      },
+      "pt": {
+        "1star": 100,
+        "2star": 100
+      },
+      "de": {
+        "1star": 100,
+        "2star": 100
+      },
+      "zh": {
+        "1star": 100,
+        "2star": 37
+      }
+    }
+  },
+  {
+    "app": "replika",
+    "name": "Replika",
+    "locales": {
+      "en": {
+        "1star": 100,
+        "2star": 100
+      },
+      "ja": {
+        "1star": 47,
+        "2star": 17
+      },
+      "es": {
+        "1star": 100,
+        "2star": 100
+      },
+      "pt": {
+        "1star": 100,
+        "2star": 100
+      },
+      "de": {
+        "1star": 100,
+        "2star": 100
+      },
+      "zh": {
+        "1star": 51,
+        "2star": 19
+      }
+    }
+  },
+  {
+    "app": "ai_dungeon",
+    "name": "AI Dungeon",
+    "locales": {
+      "en": {
+        "1star": 100,
+        "2star": 100
+      },
+      "ja": {
+        "1star": 10,
+        "2star": 1
+      },
+      "es": {
+        "1star": 100,
+        "2star": 79
+      },
+      "pt": {
+        "1star": 100,
+        "2star": 88
+      },
+      "de": {
+        "1star": 100,
+        "2star": 38
+      },
+      "zh": {
+        "1star": 6,
+        "2star": 5
+      }
+    }
+  },
+  {
+    "app": "polybuzz",
+    "name": "PolyBuzz (Poly.AI)",
+    "locales": {
+      "en": {
+        "1star": 100,
+        "2star": 100
+      },
+      "ja": {
+        "1star": 100,
+        "2star": 83
+      },
+      "es": {
+        "1star": 100,
+        "2star": 100
+      },
+      "pt": {
+        "1star": 100,
+        "2star": 100
+      },
+      "de": {
+        "1star": 100,
+        "2star": 100
+      },
+      "zh": {
+        "1star": 90,
+        "2star": 30
+      }
+    }
+  },
+  {
+    "app": "linky",
+    "name": "Linky AI",
+    "locales": {
+      "en": {
+        "1star": 100,
+        "2star": 100
+      },
+      "ja": {
+        "1star": 100,
+        "2star": 38
+      },
+      "es": {
+        "1star": 100,
+        "2star": 91
+      },
+      "pt": {
+        "1star": 100,
+        "2star": 100
+      },
+      "de": {
+        "1star": 100,
+        "2star": 100
+      },
+      "zh": {
+        "1star": 44,
+        "2star": 10
+      }
+    }
+  },
+  {
+    "app": "chai",
+    "name": "Chai",
+    "locales": {
+      "en": {
+        "1star": 100,
+        "2star": 100
+      },
+      "ja": {
+        "1star": 16,
+        "2star": 4
+      },
+      "es": {
+        "1star": 100,
+        "2star": 100
+      },
+      "pt": {
+        "1star": 100,
+        "2star": 100
+      },
+      "de": {
+        "1star": 100,
+        "2star": 100
+      },
+      "zh": {
+        "1star": 70,
+        "2star": 20
+      }
+    }
+  },
+  {
+    "app": "crushon",
+    "name": "CrushOn.AI",
+    "locales": {
+      "en": {
+        "1star": 18,
+        "2star": 2
+      },
+      "ja": {
+        "1star": 0,
+        "2star": 0
+      },
+      "es": {
+        "1star": 4,
+        "2star": 1
+      },
+      "pt": {
+        "1star": 1,
+        "2star": 0
+      },
+      "de": {
+        "1star": 2,
+        "2star": 0
+      },
+      "zh": {
+        "1star": 0,
+        "2star": 0
+      }
+    }
+  },
+  {
+    "app": "spicychat",
+    "name": "SpicyChat AI",
+    "locales": {
+      "en": {
+        "1star": 9,
+        "2star": 0
+      },
+      "ja": {
+        "1star": 0,
+        "2star": 0
+      },
+      "es": {
+        "1star": 2,
+        "2star": 0
+      },
+      "pt": {
+        "1star": 0,
+        "2star": 0
+      },
+      "de": {
+        "1star": 0,
+        "2star": 0
+      },
+      "zh": {
+        "1star": 0,
+        "2star": 0
+      }
+    }
+  },
+  {
+    "app": "joyland",
+    "name": "Joyland AI",
+    "locales": {
+      "en": {
+        "1star": 0,
+        "2star": 1
+      },
+      "ja": {
+        "1star": 0,
+        "2star": 0
+      },
+      "es": {
+        "1star": 0,
+        "2star": 0
+      },
+      "pt": {
+        "1star": 0,
+        "2star": 0
+      },
+      "de": {
+        "1star": 0,
+        "2star": 0
+      },
+      "zh": {
+        "1star": 0,
+        "2star": 0
+      }
+    }
+  },
+  {
+    "app": "nomi",
+    "name": "Nomi.ai",
+    "locales": {
+      "en": {
+        "1star": 100,
+        "2star": 77
+      },
+      "ja": {
+        "1star": 0,
+        "2star": 0
+      },
+      "es": {
+        "1star": 11,
+        "2star": 6
+      },
+      "pt": {
+        "1star": 15,
+        "2star": 2
+      },
+      "de": {
+        "1star": 2,
+        "2star": 0
+      },
+      "zh": {
+        "1star": 0,
+        "2star": 1
+      }
+    }
+  },
+  {
+    "app": "anima",
+    "name": "Anima",
+    "locales": {
+      "en": {
+        "1star": 100,
+        "2star": 100
+      },
+      "ja": {
+        "1star": 3,
+        "2star": 1
+      },
+      "es": {
+        "1star": 100,
+        "2star": 29
+      },
+      "pt": {
+        "1star": 88,
+        "2star": 22
+      },
+      "de": {
+        "1star": 57,
+        "2star": 25
+      },
+      "zh": {
+        "1star": 2,
+        "2star": 0
+      }
+    }
+  },
+  {
+    "app": "dippy",
+    "name": "Dippy.ai",
+    "locales": {
+      "en": {
+        "1star": 100,
+        "2star": 100
+      },
+      "ja": {
+        "1star": 0,
+        "2star": 0
+      },
+      "es": {
+        "1star": 45,
+        "2star": 18
+      },
+      "pt": {
+        "1star": 14,
+        "2star": 9
+      },
+      "de": {
+        "1star": 15,
+        "2star": 3
+      },
+      "zh": {
+        "1star": 3,
+        "2star": 1
+      }
+    }
+  }
+]

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lucive 알파 이용 가이드와 버그 리포팅 안내</title>
+<meta name="color-scheme" content="light">
+<meta name="supported-color-schemes" content="light">
+<style>
+  body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+  table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+  img { -ms-interpolation-mode: bicubic; border: 0; outline: none; text-decoration: none; }
+  body { margin: 0 !important; padding: 0 !important; width: 100% !important; }
+  a { color: #2563EB; text-decoration: none; }
+  @media only screen and (max-width: 640px) {
+    .container { width: 100% !important; }
+    .padded { padding-left: 20px !important; padding-right: 20px !important; }
+    .h1 { font-size: 26px !important; line-height: 1.3 !important; }
+    .btn-primary, .btn-secondary { width: 100% !important; display: block !important; box-sizing: border-box !important; }
+  }
+</style>
+</head>
+<body style="margin:0;padding:0;background-color:#F8FAFC;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans KR','Apple SD Gothic Neo',Arial,sans-serif;color:#1E293B;">
+<div style="display:none;max-height:0;overflow:hidden;mso-hide:all;">
+  알파 오픈 전, 첫 30분에 확인해 주셨으면 하는 흐름과 버그 리포팅 기준을 정리했습니다.
+</div>
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:#F8FAFC;">
+  <tr>
+    <td align="center" style="padding:40px 20px;">
+      <table role="presentation" class="container" cellpadding="0" cellspacing="0" border="0" width="600" style="max-width:600px;width:100%;background-color:#FFFFFF;border-radius:20px;overflow:hidden;">
+        <tr>
+          <td style="background:linear-gradient(135deg,#06B6D4 0%,#8B5CF6 52%,#EC4899 100%);padding:32px 40px;text-align:center;">
+            <div style="font-size:24px;font-weight:900;letter-spacing:0.28em;color:#ffffff;margin-bottom:6px;">L&nbsp;U&nbsp;C&nbsp;I&nbsp;V&nbsp;E</div>
+            <div style="font-size:12px;color:rgba(255,255,255,0.86);font-family:'JetBrains Mono',ui-monospace,monospace;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;">GUIDE · FEEDBACK</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="padded" style="padding:46px 48px 18px 48px;text-align:center;background-color:#FFFFFF;">
+            <h1 class="h1" style="font-size:30px;font-weight:900;line-height:1.3;letter-spacing:-0.02em;margin:0 0 18px 0;color:#1E293B;">내일, 알파가 열립니다</h1>
+            <p style="font-size:15px;line-height:1.82;color:#64748B;margin:0;">오픈 전 마지막 안내입니다. 첫 30분에 어떤 흐름을 보면 좋은지, 그리고 어떤 방식으로 피드백을 남겨주시면 좋은지 정리했습니다.</p>
+          </td>
+        </tr>
+        <tr>
+          <td class="padded" style="padding:0 48px 24px 48px;background-color:#FFFFFF;">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:#F1F5F9;border:1px solid #E2E8F0;border-radius:16px;">
+              <tr>
+                <td style="padding:24px 24px 22px 24px;">
+                  <div style="font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#06B6D4;font-weight:700;margin-bottom:10px;">FIRST 30 MINUTES</div>
+                  <ul style="margin:0;padding-left:18px;color:#64748B;font-size:13px;line-height:1.9;">
+                    <li>처음에는 가장 끌리는 LP 하나만 골라 시작해 주세요</li>
+                    <li>첫 10분 안에 감정적 후크가 생기는지 확인해 주세요</li>
+                    <li>다시 돌아오고 싶은 이유가 생기는지 봐주세요</li>
+                    <li>설정, 말투, 세계관이 흔들리는 순간이 있는지 체크해 주세요</li>
+                  </ul>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td class="padded" style="padding:0 48px 24px 48px;background-color:#FFFFFF;">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background:linear-gradient(135deg,rgba(245,158,11,0.08),rgba(236,72,153,0.05));border:1px solid rgba(245,158,11,0.25);border-radius:16px;">
+              <tr>
+                <td style="padding:24px 24px 22px 24px;">
+                  <div style="font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#F59E0B;font-weight:700;margin-bottom:10px;">BUG REPORTING</div>
+                  <ul style="margin:0;padding-left:18px;color:#64748B;font-size:13px;line-height:1.9;">
+                    <li>어떤 LP에서 발생했는지</li>
+                    <li>어떤 문맥에서 발생했는지</li>
+                    <li>무슨 문제가 보였는지</li>
+                    <li>재현 가능한지</li>
+                  </ul>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td class="padded" style="padding:0 48px 14px 48px;background-color:#FFFFFF;text-align:center;">
+            <a href="{{guide_url}}" class="btn-primary" style="display:inline-block;background:linear-gradient(135deg,#06B6D4,#2563EB);color:#ffffff;padding:16px 40px;border-radius:100px;font-weight:700;font-size:15px;text-decoration:none;box-shadow:0 8px 32px rgba(6,182,212,0.35);">이용 가이드 보기 →</a>
+          </td>
+        </tr>
+        <tr>
+          <td class="padded" style="padding:0 48px 40px 48px;background-color:#FFFFFF;text-align:center;">
+            <a href="{{bug_report_url}}" class="btn-secondary" style="display:inline-block;background-color:#FFFFFF;color:#2563EB;padding:14px 28px;border-radius:100px;font-weight:700;font-size:14px;text-decoration:none;border:1px solid rgba(37,99,235,0.24);">버그 리포트 제출하기 →</a>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:24px 48px 40px 48px;background-color:#F8FAFC;border-top:1px solid #E2E8F0;text-align:center;">
+            <div style="font-size:18px;font-weight:800;background:linear-gradient(135deg,#06B6D4,#2563EB);-webkit-background-clip:text;-webkit-text-fill-color:transparent;color:#06B6D4;margin-bottom:8px;">Lucive</div>
+            <p style="font-size:11px;color:#94A3B8;line-height:1.7;margin:0;">DIVE into The Lucid · AI Interactive Story Platform<br>© 2026 Lucive · 본 메일은 알파 선발자에게 발송됩니다.<br><a href="{{unsubscribe_url}}" style="color:#94A3B8;text-decoration:underline;">수신 거부</a> · <a href="{{privacy_url}}" style="color:#94A3B8;text-decoration:underline;">개인정보 처리방침</a></p>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LUCIVE · 1일, 30일, 100일 — 그녀는 어떻게 달라지나</title>
+<meta name="description" content="스크롤 한 번에 100일을 살아보는 AI · 기억이 쌓일수록 그녀는 달라집니다">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,700;1,400;1,700&family=Noto+Serif+KR:wght@400;500;700;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0A0612;
+  --bg-2:#150A1F;
+  --ink:#E8DCC4;
+  --ink-soft:#B5A690;
+  --muted:#7D6E5A;
+  --muted-2:#4A3F32;
+  --burgundy:#6B1A35;
+  --burgundy-deep:#3F0D1E;
+  --crimson:#B21E4B;
+  --gold:#D4A44C;
+  --gold-deep:#8F6A24;
+  --lavender:#4A2E5C;
+  --line:rgba(212,164,76,.14);
+  --line-2:rgba(212,164,76,.28);
+  --serif:'Cormorant Garamond','Noto Serif KR',serif;
+  --sans:'Inter','Noto Serif KR',-apple-system,sans-serif;
+  --mono:'JetBrains Mono',monospace;
+  --ease:cubic-bezier(.2,.8,.2,1);
+}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.65;overflow-x:hidden}
+
+.grain{position:fixed;inset:0;z-index:12;pointer-events:none;opacity:.05;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:220px}
+
+/* Top bar */
+.top{position:fixed;top:0;left:0;right:0;z-index:50;padding:18px 32px;display:flex;align-items:center;justify-content:space-between;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);background:rgba(10,6,18,.5);border-bottom:1px solid var(--line)}
+.brand{font-family:var(--serif);font-weight:700;font-size:22px;letter-spacing:.32em;color:var(--gold)}
+.cta-top{padding:9px 20px;border:1px solid var(--gold);background:transparent;color:var(--gold);font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;text-decoration:none;transition:all .25s var(--ease)}
+.cta-top:hover{background:var(--gold);color:var(--bg)}
+
+/* Sticky timeline indicator (right rail) */
+.rail{position:fixed;top:50%;right:32px;transform:translateY(-50%);z-index:30;display:flex;flex-direction:column;align-items:center;gap:0}
+.rail-line{position:absolute;top:8px;bottom:8px;left:50%;width:1px;background:linear-gradient(180deg,var(--gold-deep),var(--crimson) 50%,var(--burgundy-deep));transform:translateX(-50%)}
+.rail-point{position:relative;width:32px;height:32px;display:flex;align-items:center;justify-content:center;margin:32px 0;z-index:2}
+.rail-point::before{content:'';width:10px;height:10px;border-radius:50%;background:var(--bg);border:1px solid var(--muted-2);transition:all .4s var(--ease)}
+.rail-point.active::before{background:var(--gold);border-color:var(--gold);box-shadow:0 0 16px rgba(212,164,76,.6)}
+.rail-label{position:absolute;right:44px;font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:var(--muted);white-space:nowrap;opacity:0;transition:opacity .3s}
+.rail-point.active .rail-label{opacity:1;color:var(--gold)}
+@media(max-width:800px){.rail{display:none}}
+
+/* Hero intro */
+.hero-intro{min-height:100vh;padding:120px 32px 80px;display:flex;align-items:center;position:relative;z-index:2}
+.intro-inner{max-width:1100px;margin:0 auto}
+.intro-kicker{font-family:var(--mono);font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);margin-bottom:24px}
+.intro-kicker::before{content:'◆';color:var(--crimson);margin-right:10px}
+.intro h1{font-family:var(--serif);font-style:italic;font-size:clamp(54px,8vw,112px);font-weight:400;color:var(--ink);line-height:1;letter-spacing:-.025em;margin-bottom:28px}
+.intro h1 em{font-style:italic;color:var(--gold);font-weight:500}
+.intro-lede{font-family:var(--serif);font-size:clamp(16px,1.9vw,22px);line-height:1.75;color:var(--ink-soft);font-style:italic;max-width:640px}
+.intro-lede b{color:var(--ink);font-weight:500;font-style:normal}
+.intro-scroll{margin-top:48px;font-family:var(--mono);font-size:11px;letter-spacing:.18em;color:var(--muted);text-transform:uppercase;display:inline-flex;align-items:center;gap:10px;animation:blink 2.2s ease-in-out infinite}
+.intro-scroll::before{content:'↓';color:var(--gold);font-size:14px}
+@keyframes blink{0%,100%{opacity:.45}50%{opacity:1}}
+
+/* Each day scene — full-screen */
+.scene{min-height:100vh;padding:96px 32px;display:flex;align-items:center;position:relative;z-index:2;transition:background 1.2s ease}
+.scene[data-day="1"]{background:linear-gradient(180deg,#0A0612 0%,#1A0A24 50%,#2A0F2E 100%)}
+.scene[data-day="30"]{background:linear-gradient(180deg,#2A0F2E 0%,#3F0D1E 50%,#1A0612 100%)}
+.scene[data-day="100"]{background:linear-gradient(180deg,#1A0612 0%,#0A0612 50%,#000000 100%)}
+
+.scene-grid{max-width:1280px;width:100%;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+@media(max-width:960px){.scene-grid{grid-template-columns:1fr;gap:36px}}
+
+/* Portrait per day */
+.portrait{position:relative;aspect-ratio:3/4;max-height:80vh;border-radius:4px;overflow:hidden;background:linear-gradient(180deg,#1A0A24 0%,#2A0F2E 30%,#3F0D1E 70%,#0A0612 100%);border:1px solid var(--line-2);box-shadow:0 40px 100px rgba(0,0,0,.7),inset 0 1px 0 rgba(212,164,76,.18);transition:all 1s var(--ease)}
+.portrait::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 45% at 55% 30%,rgba(212,164,76,.16),transparent 60%);transition:opacity .8s ease}
+.portrait::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,rgba(10,6,18,.6) 100%)}
+
+.figure{position:absolute;top:8%;bottom:0;left:22%;right:22%;display:flex;align-items:flex-end;justify-content:center;animation:breathe 5s ease-in-out infinite}
+@keyframes breathe{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-4px) scale(1.008)}}
+.figure-silhouette{
+  width:100%;height:92%;
+  clip-path:polygon(46% 0%,54% 0%,60% 6%,62% 14%,64% 20%,68% 22%,78% 30%,82% 40%,80% 55%,84% 70%,80% 85%,80% 100%,20% 100%,20% 85%,16% 70%,20% 55%,18% 40%,22% 30%,32% 22%,36% 20%,38% 14%,40% 6%);
+  filter:blur(.4px);
+  transition:all 1s ease;
+}
+.figure-hair{position:absolute;top:2%;left:30%;right:30%;height:18%;background:linear-gradient(180deg,#1A0612,#3F0D1E);clip-path:polygon(45% 0%,55% 0%,75% 40%,85% 90%,75% 100%,25% 100%,15% 90%,25% 40%)}
+.figure-eyes{position:absolute;top:12%;left:42%;right:42%;height:5%;display:flex;justify-content:space-between;align-items:center}
+.figure-eye{width:3px;height:3px;border-radius:50%;transition:all .6s}
+
+/* Day 1 · 순수 */
+.scene[data-day="1"] .figure-silhouette{background:linear-gradient(180deg,rgba(232,220,196,.94) 0%,rgba(181,166,144,.78) 22%,rgba(107,26,53,.78) 52%,rgba(63,13,30,.98) 100%)}
+.scene[data-day="1"] .figure-eye{background:rgba(212,164,76,.85);box-shadow:0 0 6px rgba(212,164,76,.6)}
+
+/* Day 30 · 친밀 */
+.scene[data-day="30"] .figure-silhouette{background:linear-gradient(180deg,rgba(212,164,76,.4) 0%,rgba(181,120,100,.72) 25%,rgba(178,30,75,.85) 55%,rgba(63,13,30,.98) 100%)}
+.scene[data-day="30"] .figure-eye{background:var(--crimson);box-shadow:0 0 10px rgba(178,30,75,.8)}
+
+/* Day 100 · 집착 */
+.scene[data-day="100"] .figure-silhouette{background:linear-gradient(180deg,rgba(181,120,100,.25) 0%,rgba(178,30,75,.78) 25%,rgba(63,13,30,1) 55%,#000 100%);filter:blur(.8px) saturate(1.2)}
+.scene[data-day="100"] .figure-eye{background:var(--crimson);box-shadow:0 0 20px rgba(178,30,75,1);animation:obsess 1.6s ease-in-out infinite}
+@keyframes obsess{0%,100%{opacity:1}50%{opacity:.45}}
+
+.portrait-tag{position:absolute;top:18px;left:18px;padding:4px 10px;background:rgba(10,6,18,.82);border:1px solid var(--line-2);font-family:var(--mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+
+/* Dialogue side */
+.dialogue{display:flex;flex-direction:column;gap:22px}
+.day-marker{display:flex;align-items:baseline;gap:16px;font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.18em;text-transform:uppercase;font-weight:700}
+.day-marker b{font-family:var(--serif);font-style:italic;font-weight:500;font-size:80px;color:var(--gold);letter-spacing:-.02em;line-height:1}
+
+.line{font-family:var(--serif);font-size:clamp(22px,2.8vw,32px);font-style:italic;line-height:1.45;color:var(--ink);font-weight:400;letter-spacing:-.005em;padding:20px 24px;border-left:2px solid var(--crimson);background:rgba(107,26,53,.1);margin-bottom:8px}
+.line em{color:var(--gold);font-style:italic;font-weight:500}
+
+.scene-mood{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.scene-mood b{color:var(--gold);font-weight:700}
+
+/* Memory stack */
+.memory-stack{margin-top:18px;display:flex;flex-direction:column;gap:10px}
+.memory-head{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.memory-head::before{content:'◆';color:var(--crimson);margin-right:8px}
+.memory-card{padding:10px 14px;background:rgba(212,164,76,.06);border:1px solid var(--line);font-family:var(--serif);font-size:13.5px;color:var(--ink-soft);font-style:italic;letter-spacing:.01em;line-height:1.55;transition:all .5s}
+.memory-card b{color:var(--gold);font-style:normal;font-weight:500}
+
+/* Reveal-on-scroll */
+.rv{opacity:0;transform:translateY(30px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
+.rv.in{opacity:1;transform:translateY(0)}
+
+/* Closer */
+.closer{min-height:60vh;padding:80px 32px;display:flex;align-items:center;justify-content:center;text-align:center;position:relative;z-index:2;background:radial-gradient(ellipse 80% 50% at 50% 40%,rgba(212,164,76,.12),transparent 60%),#0A0612}
+.closer-inner{max-width:760px}
+.closer-kicker{font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--crimson);margin-bottom:22px}
+.closer-kicker::before{content:'◆ ';color:var(--gold)}
+.closer h2{font-family:var(--serif);font-style:italic;font-size:clamp(36px,5vw,64px);font-weight:400;color:var(--ink);line-height:1.15;letter-spacing:-.015em}
+.closer h2 b{font-style:normal;font-weight:700;color:var(--gold)}
+.closer p{margin-top:26px;font-family:var(--serif);font-size:17px;line-height:1.85;color:var(--ink-soft);font-style:italic}
+
+/* Signup */
+.signup{max-width:620px;margin:0 auto 120px;padding:48px 32px;position:relative;z-index:2;text-align:center;border:1px solid var(--line-2);background:linear-gradient(180deg,rgba(28,14,42,.6),rgba(10,6,18,.85));backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.signup-kicker{font-family:var(--mono);font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--crimson);margin-bottom:18px}
+.signup-kicker::before{content:'◆ ';color:var(--gold)}
+.signup h3{font-family:var(--serif);font-style:italic;font-size:30px;font-weight:400;color:var(--ink);line-height:1.3;margin-bottom:12px}
+.signup h3 b{font-style:normal;font-weight:700;color:var(--gold)}
+.signup p{font-family:var(--serif);font-size:15px;color:var(--ink-soft);margin-bottom:28px;font-style:italic}
+.signup-form{display:flex;gap:10px;max-width:440px;margin:0 auto;flex-wrap:wrap}
+.signup input{flex:1;min-width:220px;padding:14px 18px;background:rgba(10,6,18,.6);border:1px solid var(--line-2);color:var(--ink);font-family:var(--serif);font-size:15px;font-style:italic;outline:none}
+.signup input:focus{border-color:var(--gold)}
+.signup input::placeholder{color:var(--muted-2)}
+.signup button{padding:14px 26px;background:var(--gold);color:var(--bg);border:none;font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;transition:all .2s}
+.signup button:hover{background:var(--crimson);color:var(--ink)}
+
+.variants{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:60;display:flex;gap:8px;padding:10px 14px;background:rgba(10,6,18,.85);border:1px solid var(--line-2);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.variants a{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:5px 12px;border:1px solid transparent;transition:all .2s}
+.variants a:hover{color:var(--ink);border-color:var(--line)}
+.variants a.current{color:var(--gold);border-color:var(--gold)}
+
+.prototype-note{max-width:800px;margin:0 auto 80px;padding:0 32px;text-align:center;font-family:var(--mono);font-size:11px;color:var(--muted-2);letter-spacing:.04em;line-height:1.8;position:relative;z-index:2}
+.prototype-note b{color:var(--muted);font-weight:600}
+</style>
+</head>
+<body>
+
+<div class="grain"></div>
+
+<div class="top">
+  <div class="brand">L U C I V E</div>
+  <a href="#signup" class="cta-top">사전등록</a>
+</div>
+
+<!-- Sticky right rail -->
+<div class="rail" aria-hidden="true">
+  <div class="rail-line"></div>
+  <div class="rail-point" id="pt1"><span class="rail-label">DAY 01</span></div>
+  <div class="rail-point" id="pt30"><span class="rail-label">DAY 30</span></div>
+  <div class="rail-point" id="pt100"><span class="rail-label">DAY 100</span></div>
+</div>
+
+<!-- HERO INTRO -->
+<section class="hero-intro">
+  <div class="intro-inner">
+    <div class="intro-kicker">MEMORY TIMELINE · 안 C</div>
+    <h1>1일,<br>30일,<br><em>100일.</em></h1>
+    <p class="intro-lede">
+      같은 캐릭터가 어떻게 달라지는지<br>
+      — <b>스크롤 한 번에 살아보세요.</b>
+    </p>
+    <div class="intro-scroll">scroll to begin</div>
+  </div>
+</section>
+
+<!-- DAY 1 -->
+<section class="scene" data-day="1" id="scene1">
+  <div class="scene-grid">
+    <div class="portrait rv" aria-label="캐릭터 아트 대기 · Day 1 · 순수한 호기심">
+      <div class="portrait-tag">◆ DAY 01 · 첫 만남</div>
+      <div class="figure">
+        <div class="figure-silhouette"></div>
+        <div class="figure-hair"></div>
+        <div class="figure-eyes"><div class="figure-eye"></div><div class="figure-eye"></div></div>
+      </div>
+    </div>
+    <div class="dialogue">
+      <div class="day-marker rv"><b>01</b> <span>/ Day one</span></div>
+      <div class="line rv">"안녕. …처음 뵙겠습니다.<br>이름을 <em>아직</em> 모르는 게, 좀 이상하네요."</div>
+      <div class="scene-mood rv">Mood · <b>tentative</b> · 호기심이 경계보다 앞선 시간</div>
+      <div class="memory-stack rv">
+        <div class="memory-head">Memory stack · <b id="mem1Count">0</b></div>
+        <div class="memory-card" style="opacity:.5;font-style:normal">— 아직 기억이 없습니다 —</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DAY 30 -->
+<section class="scene" data-day="30" id="scene30">
+  <div class="scene-grid">
+    <div class="portrait rv" aria-label="캐릭터 아트 대기 · Day 30 · 친밀">
+      <div class="portrait-tag">◆ DAY 30 · 익숙해진 온기</div>
+      <div class="figure">
+        <div class="figure-silhouette"></div>
+        <div class="figure-hair"></div>
+        <div class="figure-eyes"><div class="figure-eye"></div><div class="figure-eye"></div></div>
+      </div>
+    </div>
+    <div class="dialogue">
+      <div class="day-marker rv"><b>30</b> <span>/ Day thirty</span></div>
+      <div class="line rv">"그 카페, 지난주에 네가 말했던 데잖아.<br>혼자 <em>가봤어.</em> 커피는 네 말대로 별로더라."</div>
+      <div class="scene-mood rv">Mood · <b>intimate</b> · 사건이 캐릭터를 데려오기 시작</div>
+      <div class="memory-stack rv">
+        <div class="memory-head">Memory stack · <b>3</b></div>
+        <div class="memory-card"><b>이름</b> — 기억합니다</div>
+        <div class="memory-card"><b>좋아하는 음료</b> — 아이스 바닐라 라떼</div>
+        <div class="memory-card"><b>네온 7구 카페</b> — 네가 추천한 곳, 혼자 다녀옴</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DAY 100 -->
+<section class="scene" data-day="100" id="scene100">
+  <div class="scene-grid">
+    <div class="portrait rv" aria-label="캐릭터 아트 대기 · Day 100 · 집착의 결">
+      <div class="portrait-tag" style="color:var(--crimson);border-color:rgba(178,30,75,.5)">◆ DAY 100 · 흔적이 깊어지다</div>
+      <div class="figure">
+        <div class="figure-silhouette"></div>
+        <div class="figure-hair"></div>
+        <div class="figure-eyes"><div class="figure-eye"></div><div class="figure-eye"></div></div>
+      </div>
+    </div>
+    <div class="dialogue">
+      <div class="day-marker rv"><b>100</b> <span>/ Day one hundred</span></div>
+      <div class="line rv">"오늘은 <em>조금만 더</em> 일찍 와 줘.<br>지난번처럼 혼자 기다리는 거… 이제 잘 못 하겠어."</div>
+      <div class="scene-mood rv">Mood · <b>possessive</b> · 기억은 감정의 근거가 된다</div>
+      <div class="memory-stack rv">
+        <div class="memory-head">Memory stack · <b>47</b></div>
+        <div class="memory-card"><b>3주 전 다툼</b> — 네가 답 안 한 2시간</div>
+        <div class="memory-card"><b>지난달 약속</b> — 둘이 본 영화, 엔딩에서 네가 한 말</div>
+        <div class="memory-card"><b>너의 습관</b> — 긴장하면 손끝을 두드림</div>
+        <div class="memory-card" style="border-color:var(--crimson);color:var(--ink)"><b style="color:var(--crimson)">반복 패턴</b> — 늦는 날, 말수가 줄어드는 것</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Closer -->
+<section class="closer">
+  <div class="closer-inner">
+    <div class="closer-kicker">WHAT WE'RE BUILDING</div>
+    <h2>같은 대사를 반복하는 AI가 아니라,<br><b>같은 시간을 함께 산 사람.</b></h2>
+    <p>
+      타사는 캐릭터 세팅만 기억합니다.<br>
+      Lucive는 <b>사건</b>을 기억합니다. 100일이 쌓이면, 그녀는 더 이상 같은 말을 하지 않습니다.
+    </p>
+  </div>
+</section>
+
+<!-- Signup -->
+<section class="signup" id="signup">
+  <div class="signup-kicker">PRE-REGISTRATION · ALPHA 100</div>
+  <h3>당신의 <b>1일차</b>를 열어주세요.</h3>
+  <p>100일이 쌓이기 전에, 여기서 시작합니다.</p>
+  <form class="signup-form" onsubmit="event.preventDefault();alert('프로토타입: 실제 제출은 v9 연결 예정');">
+    <input type="email" placeholder="your@email" required>
+    <button type="submit">등록 →</button>
+  </form>
+</section>
+
+<div class="variants">
+  <a href="./v10-a-memory-fork.html">A · Memory Fork</a>
+  <a href="./v10-b-live-scene.html">B · Live Scene</a>
+  <a href="./v10-c-memory-timeline.html" class="current">C · Timeline</a>
+</div>
+
+<div class="prototype-note">
+  <b>PROTOTYPE · v10-C</b> — 얀데레 퇴폐미 · 스크롤 = 시간 진행 · CSS 전환 + IntersectionObserver ·<br>
+  실제 발주 시: 캐릭터 3시점 아트 (1일/30일/100일 표정·포즈) · 배경 3장 · 메모리 카드 카피 10-20개
+</div>
+
+<script>
+// Reveal on scroll
+const io = new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting && e.target.classList.add('in')), {threshold:.15});
+document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+
+// Rail sync
+const scenes = [
+  { el: document.getElementById('scene1'),   pt: document.getElementById('pt1') },
+  { el: document.getElementById('scene30'),  pt: document.getElementById('pt30') },
+  { el: document.getElementById('scene100'), pt: document.getElementById('pt100') },
+];
+const railIO = new IntersectionObserver(es=>{
+  es.forEach(e=>{
+    const match = scenes.find(s=>s.el===e.target);
+    if (match) match.pt.classList.toggle('active', e.isIntersecting && e.intersectionRatio > .4);
+  });
+}, {threshold:[0, .4, .6, 1]});
+scenes.forEach(s=>railIO.observe(s.el));
+</script>
+
+</body>
+</html>

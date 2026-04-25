@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lucive · 루시브 — 내 얘기 기억하는 친구</title>
+<meta name="description" content="웹툰 속 캐릭터와 대화하는 느낌, 그런데 진짜 내 이야기를 기억해요. 사전 등록하고 특가로 먼저 만나보세요.">
+<meta property="og:title" content="루시브 · 내 얘기 기억하는 친구">
+<meta property="og:description" content="어제 나눈 대화, 먼저 꺼내주는 캐릭터. 사전 등록하고 Top 5 혜택 받으세요.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Gowun+Dodum&family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Unna:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  /* 한국판: 로판·웹툰 파스텔 톤 */
+  --bg:#FFF8F5;
+  --bg-warm:#FFEFE8;
+  --bg-card:#FFFFFF;
+  --ink:#2B1B30;
+  --ink-soft:#4A3550;
+  --muted:#7B6880;
+  --muted-2:#B5A5BA;
+  --line:rgba(43,27,48,.08);
+  --line-2:rgba(43,27,48,.14);
+  --pink:#FF8EB1;
+  --pink-soft:#FFC8D9;
+  --lavender:#C89BD4;
+  --gold:#E8B973;
+  --green:#6FB89A;
+  --red:#D66A7A;
+  --grad-rose:linear-gradient(135deg,#FF8EB1 0%,#C89BD4 70%,#9B84C4 100%);
+  --grad-peach:linear-gradient(135deg,#FFD8B6 0%,#FFB8C8 100%);
+  --serif:'Gowun Batang','Noto Serif KR',serif;
+  --unna:'Unna',serif;
+  --dodum:'Gowun Dodum',sans-serif;
+  --sans:'Noto Sans KR',-apple-system,BlinkMacSystemFont,sans-serif;
+  --mono:'JetBrains Mono',monospace;
+  --ease:cubic-bezier(.2,.8,.2,1);
+  --urgency-h:44px;
+}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.65;overflow-x:hidden}
+
+/* 파스텔 배경 (cherry blossom feel) */
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 600px 400px at 80% 10%,rgba(255,200,217,.35),transparent 60%),
+    radial-gradient(ellipse 500px 350px at 15% 30%,rgba(200,155,212,.22),transparent 60%),
+    radial-gradient(ellipse 400px 300px at 50% 90%,rgba(255,216,182,.18),transparent 60%)}
+body::after{content:'';position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.04;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 240 240' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:240px}
+
+.wrap{position:relative;z-index:2;padding-top:var(--urgency-h)}
+.cap{max-width:1100px;margin:0 auto;padding:0 28px}
+@media(max-width:700px){.cap{padding:0 20px}}
+
+/* Urgency */
+.urgency{position:fixed;top:0;left:0;right:0;z-index:60;height:var(--urgency-h);
+  background:linear-gradient(90deg,rgba(255,142,177,.12),rgba(200,155,212,.1) 50%,rgba(255,142,177,.12)),rgba(255,248,245,.96);
+  border-bottom:1px solid rgba(255,142,177,.3);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  padding:0 20px;display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--ink-soft);font-weight:500}
+.urgency b{color:var(--pink);font-weight:700}
+.urgency .pulse{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--pink);margin-right:8px;animation:pulse 1.6s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+/* Invitee */
+.invitee{display:none;background:linear-gradient(90deg,rgba(232,185,115,.15),rgba(255,200,217,.1));border-bottom:1px solid rgba(232,185,115,.3);padding:10px 20px;text-align:center;font-size:12px;color:#8B6A2E;font-family:var(--dodum)}
+.invitee.show{display:block}
+
+/* Top bar */
+.top{display:flex;justify-content:space-between;align-items:center;padding:18px 28px;border-bottom:1px solid var(--line);position:sticky;top:var(--urgency-h);background:rgba(255,248,245,.92);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);z-index:55}
+.brand{font-family:var(--serif);font-size:26px;font-weight:700;letter-spacing:-.01em;color:var(--ink)}
+.brand span{color:var(--pink)}
+.top-countdown{font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.02em}
+.top-countdown strong{color:var(--pink);font-weight:700}
+.top-cta{padding:10px 22px;border-radius:100px;background:var(--grad-rose);color:#fff;font-size:13px;font-weight:600;border:none;cursor:pointer;text-decoration:none;box-shadow:0 4px 20px rgba(255,142,177,.35);transition:transform .2s,box-shadow .2s}
+.top-cta:hover{transform:scale(1.04);box-shadow:0 6px 28px rgba(255,142,177,.5)}
+@media(max-width:700px){.top-countdown{display:none}}
+
+/* Hero */
+.hero{padding:60px 28px 40px;text-align:center;position:relative}
+.hero-kicker{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;border-radius:100px;background:rgba(255,142,177,.1);border:1px solid rgba(255,142,177,.3);font-size:12px;color:var(--pink);font-family:var(--dodum);margin-bottom:24px;font-weight:600}
+.hero-kicker .dot{width:6px;height:6px;border-radius:50%;background:var(--pink);animation:pulse 2s ease-in-out infinite}
+.hero h1{font-family:var(--serif);font-size:clamp(36px,6.5vw,70px);font-weight:700;line-height:1.25;letter-spacing:-.02em;margin-bottom:20px;color:var(--ink)}
+.hero h1 em{font-style:italic;font-family:var(--unna);background:var(--grad-rose);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero-lede{font-family:var(--dodum);font-size:clamp(16px,2.2vw,19px);color:var(--ink-soft);max-width:560px;margin:0 auto 36px;line-height:1.75}
+.hero-lede b{color:var(--ink);font-weight:500}
+.hero-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn{padding:15px 34px;border-radius:100px;font-size:15px;font-weight:600;border:none;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:all .25s var(--ease);font-family:inherit}
+.btn-primary{background:var(--grad-rose);color:#fff;box-shadow:0 8px 32px rgba(255,142,177,.4)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(255,142,177,.55)}
+.btn-ghost{background:transparent;color:var(--ink);border:1px solid var(--line-2)}
+.btn-ghost:hover{background:var(--bg-warm);border-color:rgba(43,27,48,.3)}
+
+/* Character Gallery — 핵심 차별점 (웹툰 카드 스타일) */
+.characters{padding:60px 0;position:relative}
+.section-label{font-family:var(--unna);font-size:14px;font-style:italic;color:var(--pink);text-align:center;margin-bottom:10px;letter-spacing:.05em}
+.section-title{font-family:var(--serif);font-size:clamp(28px,4.5vw,44px);font-weight:700;line-height:1.3;text-align:center;color:var(--ink);margin-bottom:14px}
+.section-title em{font-family:var(--unna);font-style:italic;background:var(--grad-rose);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.section-desc{font-family:var(--dodum);text-align:center;font-size:15px;color:var(--muted);max-width:560px;margin:0 auto 48px;line-height:1.8}
+
+.char-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+@media(max-width:900px){.char-grid{grid-template-columns:1fr;max-width:380px;margin:0 auto}}
+.char-card{background:var(--bg-card);border-radius:28px;overflow:hidden;box-shadow:0 12px 40px rgba(43,27,48,.06),0 0 0 1px var(--line);transition:all .4s var(--ease);position:relative;cursor:pointer}
+.char-card:hover{transform:translateY(-6px);box-shadow:0 24px 60px rgba(43,27,48,.12),0 0 0 1px rgba(255,142,177,.3)}
+.char-portrait{position:relative;aspect-ratio:3/4;overflow:hidden}
+.char-portrait.aria{background:linear-gradient(180deg,#FFB8C8 0%,#C89BD4 60%,#8A6FB8 100%)}
+.char-portrait.haru{background:linear-gradient(180deg,#FFD8B6 0%,#F0A878 60%,#C87E4A 100%)}
+.char-portrait.rein{background:linear-gradient(180deg,#A8C8E8 0%,#7B9EC8 60%,#4F6E98 100%)}
+.char-portrait::before{content:'';position:absolute;inset:-20%;background:repeating-linear-gradient(45deg,transparent 0,transparent 30px,rgba(255,255,255,.04) 30px,rgba(255,255,255,.04) 31px)}
+.char-silhouette{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:75%;height:85%;background:rgba(0,0,0,.4);clip-path:polygon(50% 2%,40% 12%,36% 26%,36% 42%,28% 50%,24% 68%,30% 100%,70% 100%,76% 68%,72% 50%,64% 42%,64% 26%,60% 12%);filter:blur(.5px)}
+.char-silhouette::before{content:'';position:absolute;top:4%;left:30%;width:40%;height:22%;border-radius:50%;background:radial-gradient(circle at 40% 30%,rgba(255,255,255,.25),rgba(0,0,0,.45))}
+.char-badge{position:absolute;top:16px;left:16px;padding:4px 12px;border-radius:100px;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);font-size:11px;font-weight:700;color:var(--ink);font-family:var(--dodum);letter-spacing:.02em;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+.char-info{padding:22px 24px}
+.char-name{font-family:var(--serif);font-size:22px;font-weight:700;color:var(--ink);margin-bottom:4px}
+.char-tag{font-family:var(--unna);font-size:14px;font-style:italic;color:var(--pink);margin-bottom:12px}
+.char-quote{font-family:var(--dodum);font-size:14px;color:var(--muted);line-height:1.6;padding:12px 14px;background:var(--bg-warm);border-radius:12px;position:relative}
+.char-quote::before{content:'';position:absolute;top:-6px;left:20px;width:12px;height:12px;background:var(--bg-warm);transform:rotate(45deg)}
+.char-sync{margin-top:14px;display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:11px;color:var(--muted-2)}
+.char-sync b{color:var(--pink);font-weight:700}
+
+/* Story section — 웹소설 빙의 감성 */
+.story{padding:80px 0;position:relative}
+.story-card{background:var(--bg-card);border-radius:32px;padding:64px 48px;box-shadow:0 20px 60px rgba(43,27,48,.08);position:relative;overflow:hidden}
+@media(max-width:700px){.story-card{padding:40px 28px}}
+.story-card::before{content:'"';position:absolute;top:-20px;left:32px;font-family:var(--unna);font-size:180px;color:rgba(255,142,177,.15);font-style:italic;line-height:1}
+.story-quote{font-family:var(--serif);font-size:clamp(20px,2.8vw,28px);font-weight:400;line-height:1.75;color:var(--ink-soft);text-align:center;max-width:720px;margin:0 auto;position:relative;z-index:1}
+.story-quote em{font-family:var(--unna);font-style:italic;color:var(--pink)}
+.story-sub{font-family:var(--dodum);text-align:center;margin-top:32px;font-size:14px;color:var(--muted)}
+.story-sub b{color:var(--ink);font-weight:500}
+
+/* Pain points — softer */
+.pains{padding:80px 0}
+.pain-list{max-width:720px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+.pain-item{padding:20px 24px;background:var(--bg-card);border-radius:20px;display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center;box-shadow:0 6px 20px rgba(43,27,48,.04);border:1px solid var(--line)}
+.pain-num{font-family:var(--unna);font-style:italic;font-size:32px;color:var(--pink);font-weight:700;line-height:1}
+.pain-q{font-family:var(--serif);font-size:16px;font-weight:500;color:var(--ink);margin-bottom:4px;font-style:italic}
+.pain-a{font-family:var(--dodum);font-size:13.5px;color:var(--muted);line-height:1.6}
+
+/* "이런 순간, 있잖아요" — 유저 리뷰 vs Lucive 채팅 UI */
+.vs-section{padding:80px 0}
+.vs-head{text-align:center;margin-bottom:48px}
+.vs-kicker{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:100px;background:rgba(200,155,212,.12);border:1px solid rgba(200,155,212,.3);font-family:var(--dodum);font-size:12px;color:var(--lavender);margin-bottom:18px;font-weight:600}
+.vs-lede{font-family:var(--dodum);font-size:14.5px;color:var(--muted);max-width:640px;margin:12px auto 0;line-height:1.85}
+.vs-lede b{color:var(--ink);font-weight:600}
+.pain-stack{display:flex;flex-direction:column;gap:18px;max-width:1040px;margin:0 auto}
+.pain-pair{display:grid;grid-template-columns:1fr 44px 1fr;gap:0;background:var(--bg-card);border:1px solid var(--line-2);border-radius:22px;overflow:hidden;position:relative;box-shadow:0 6px 20px rgba(43,27,48,.04)}
+@media(max-width:780px){.pain-pair{grid-template-columns:1fr}}
+.pain-side{padding:28px;display:flex;flex-direction:column;gap:12px;position:relative}
+.pain-side.sad{background:rgba(43,27,48,.03);border-right:1px solid var(--line)}
+.pain-side.good{background:linear-gradient(135deg,rgba(255,142,177,.08),rgba(200,155,212,.05) 60%,rgba(232,185,115,.05))}
+@media(max-width:780px){.pain-side.sad{border-right:none;border-bottom:1px solid var(--line)}}
+.pain-side-label{display:inline-flex;align-items:center;gap:6px;font-family:var(--dodum);font-size:11.5px;letter-spacing:.02em;font-weight:700}
+.pain-side.sad .pain-side-label{color:var(--red)}
+.pain-side.good .pain-side-label{color:var(--green)}
+.pain-side-label .dot{width:6px;height:6px;border-radius:50%;background:currentColor}
+.pain-stars{font-family:var(--mono);font-size:13px;color:var(--gold);letter-spacing:.1em}
+.pain-stars .empty{color:var(--muted-2)}
+.pain-source{font-family:var(--dodum);font-size:11px;color:var(--muted);margin-top:auto;padding-top:6px}
+.pain-arrow{display:flex;align-items:center;justify-content:center;background:var(--bg-card);color:var(--pink);font-size:22px;font-weight:300;position:relative;z-index:2;font-family:var(--serif)}
+.pain-arrow::before{content:'';position:absolute;inset:0;background:radial-gradient(circle,rgba(255,142,177,.18),transparent 70%);pointer-events:none}
+@media(max-width:780px){.pain-arrow{height:44px;transform:rotate(90deg)}}
+/* chat bubbles */
+.ch{display:flex;flex-direction:column;gap:8px}
+.ch-msg{font-size:13.5px;line-height:1.7;border-radius:14px;padding:11px 14px;position:relative;max-width:92%;font-family:var(--dodum);letter-spacing:-.005em}
+.ch-msg .ts{display:block;font-family:var(--mono);font-size:10px;color:var(--muted);margin-bottom:4px;font-weight:500;letter-spacing:.02em}
+.ch-msg.user{align-self:flex-end;background:var(--bg-warm);color:var(--ink-soft);border-bottom-right-radius:4px}
+.ch-msg.ai-fail{background:rgba(214,106,122,.06);border:1px solid rgba(214,106,122,.2);color:var(--muted);border-bottom-left-radius:4px}
+.ch-msg.ai-fail .bot-name{display:block;font-family:var(--dodum);font-size:10.5px;color:var(--muted);margin-bottom:4px;font-weight:700;letter-spacing:.02em}
+.ch-msg.ai-win{background:var(--grad-rose);color:#fff;border-bottom-left-radius:4px;box-shadow:0 6px 20px rgba(255,142,177,.25);font-family:var(--serif)}
+.ch-msg.ai-win .mem-badge{display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.25);padding:3px 8px;border-radius:4px;font-family:var(--dodum);font-size:10px;font-weight:700;letter-spacing:.01em;margin-bottom:6px}
+.ch-msg.ai-win .mem-badge::before{content:'●';font-size:6px;color:#fff}
+.ch-msg.system{align-self:center;background:rgba(214,106,122,.08);border:1px dashed rgba(214,106,122,.25);color:var(--red);font-family:var(--dodum);font-size:11.5px;text-align:center;padding:8px 14px;max-width:100%;font-weight:600}
+.ch-note{font-family:var(--dodum);font-size:12px;color:var(--red);margin-top:6px;display:flex;align-items:flex-start;gap:5px;font-weight:500;line-height:1.65}
+.ch-note.win{color:var(--green)}
+.ch-note::before{content:'↳';font-size:13px;font-weight:700;flex-shrink:0}
+.pain-summary{margin-top:36px;padding:24px 32px;background:var(--bg-card);border:1px solid var(--line);border-radius:18px;text-align:center;max-width:900px;margin-left:auto;margin-right:auto}
+.pain-summary p{font-family:var(--serif);font-size:14px;color:var(--ink-soft);line-height:1.75}
+.pain-summary p b{color:var(--ink);font-weight:700}
+.pain-summary-list{display:flex;flex-wrap:wrap;justify-content:center;gap:10px 18px;margin-top:14px;font-family:var(--dodum);font-size:12px;color:var(--muted)}
+.pain-summary-list span{display:inline-flex;align-items:center;gap:6px}
+.pain-summary-list span::before{content:'♡';color:var(--pink);font-size:11px}
+.pain-summary .apps{display:block;font-family:var(--dodum);font-size:11.5px;color:var(--muted);margin-top:14px;letter-spacing:.01em}
+/* App target palette — 경쟁사별 브랜드 컬러 */
+.app-CRK{--app-color:#F59E0B;--app-bg:rgba(245,158,11,.14);--app-border:rgba(245,158,11,.32)}
+.app-CAI{--app-color:#9B7BFF;--app-bg:rgba(155,123,255,.14);--app-border:rgba(155,123,255,.32)}
+.app-ZET{--app-color:#3B82F6;--app-bg:rgba(59,130,246,.14);--app-border:rgba(59,130,246,.32)}
+.app-REP{--app-color:#06B6D4;--app-bg:rgba(6,182,212,.14);--app-border:rgba(6,182,212,.32)}
+.app-TLK{--app-color:#EC4899;--app-bg:rgba(236,72,153,.14);--app-border:rgba(236,72,153,.32)}
+.pain-side.sad{border-left:3px solid var(--app-color,transparent)}
+.app-pill{display:inline-flex;align-items:center;gap:10px;padding:8px 14px 8px 8px;border-radius:100px;background:var(--app-bg);border:1px solid var(--app-border);margin-bottom:4px;flex-wrap:wrap}
+.app-pill .mark{width:28px;height:28px;border-radius:50%;background:var(--app-color);color:#fff;font-weight:800;font-size:13px;display:inline-flex;align-items:center;justify-content:center;letter-spacing:-.02em;font-family:var(--serif);flex-shrink:0}
+.app-pill .name{font-family:var(--serif);font-weight:700;font-size:15.5px;color:var(--app-color);letter-spacing:.01em}
+.app-pill .app-stars{margin-left:auto;font-family:var(--mono);font-size:12px;color:var(--gold);letter-spacing:.1em}
+.app-pill .app-stars .empty{color:var(--muted-2)}
+.app-lucive{background:linear-gradient(135deg,rgba(255,142,177,.18),rgba(200,155,212,.14));border:1px solid rgba(255,142,177,.4)}
+.app-lucive .mark{background:var(--grad-rose)}
+.app-lucive .name{background:var(--grad-rose);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.pain-headline{font-family:var(--serif);font-size:17px;font-weight:700;color:var(--ink);line-height:1.5;margin:4px 0 2px}
+.pain-headline em{font-style:italic;color:var(--app-color);font-weight:700}
+.pain-side.good .pain-headline em{font-family:var(--unna);background:var(--grad-rose);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.pain-side.sad .ch-msg.ai-fail{border-left:3px solid var(--app-color);background:rgba(43,27,48,.05)}
+.pain-side.sad .ch-msg.ai-fail .bot-name{color:var(--app-color)}
+.pain-source b{color:var(--app-color);font-weight:700}
+/* Google Play 실제 리뷰 스크린샷 */
+.gp-card{background:#fff;color:#202124;border-radius:12px;padding:17px 20px;font-family:'Noto Sans KR','Roboto',system-ui,sans-serif;box-shadow:0 2px 6px rgba(43,27,48,.15),0 20px 50px rgba(43,27,48,.25);position:relative;overflow:hidden;font-size:13px;line-height:1.7;letter-spacing:-.005em;margin:4px 0 6px;transform:rotate(-.4deg)}
+.gp-card::before{content:'Google Play';position:absolute;top:6px;right:12px;font-size:9px;color:#9aa0a6;font-weight:500;letter-spacing:.3px;opacity:.7}
+.gp-head{display:flex;align-items:flex-start;gap:12px;margin-bottom:10px;padding-right:70px}
+.gp-avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:500;font-size:15px;font-family:'Noto Sans KR','Roboto',sans-serif;flex-shrink:0;line-height:1}
+.gp-user-info{flex:1;min-width:0}
+.gp-user-name{font-size:14.5px;font-weight:500;color:#202124;line-height:1.3;letter-spacing:-.005em;font-family:'Noto Sans KR',sans-serif}
+.gp-user-sub{display:flex;align-items:center;gap:10px;font-size:12px;color:#5f6368;margin-top:3px;flex-wrap:wrap}
+.gp-stars-box{display:inline-flex;gap:1px;font-size:13px}
+.gp-star{color:#dadce0;font-size:13px;line-height:1}
+.gp-star.on{color:#01875f}
+.gp-date{font-size:12px;color:#5f6368;font-family:'Roboto',sans-serif}
+.gp-body{color:#202124;font-size:13.5px;line-height:1.75;margin-bottom:12px;letter-spacing:-.005em;font-family:'Noto Sans KR',sans-serif}
+.gp-body .hl{background:linear-gradient(180deg,transparent 55%,rgba(214,106,122,.3) 55%);padding:0 2px;font-weight:500}
+.gp-helpful{font-size:12px;color:#5f6368;padding-top:10px;border-top:1px solid #e8eaed;display:flex;align-items:center;gap:6px;font-family:'Noto Sans KR','Roboto',sans-serif}
+.gp-helpful b{color:#202124;font-weight:500}
+.gp-thumb{font-size:14px;line-height:1}
+@media(max-width:780px){.gp-card{transform:none}}
+
+/* Rewards */
+.rewards{padding:80px 0}
+.rewards-hero{text-align:center;margin-bottom:48px}
+.reward-stamp{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;border-radius:100px;background:rgba(214,106,122,.08);border:1px solid rgba(214,106,122,.25);color:var(--red);font-size:12px;font-weight:600;font-family:var(--dodum);margin-bottom:20px}
+
+.everyone-box{background:linear-gradient(135deg,rgba(255,142,177,.1),rgba(200,155,212,.08) 50%,rgba(232,185,115,.08));border:1px solid rgba(255,142,177,.2);border-radius:28px;padding:36px 40px;margin-bottom:32px;position:relative;overflow:hidden;text-align:center}
+@media(max-width:700px){.everyone-box{padding:28px 22px}}
+.everyone-tag{display:inline-flex;padding:5px 14px;border-radius:100px;background:rgba(111,184,154,.15);color:var(--green);font-family:var(--dodum);font-size:11px;font-weight:700;margin-bottom:14px;letter-spacing:.02em}
+.everyone-title{font-family:var(--serif);font-size:clamp(22px,3.4vw,30px);font-weight:700;line-height:1.3;margin-bottom:12px;color:var(--ink)}
+.everyone-title em{font-style:italic;font-family:var(--unna);background:var(--grad-rose);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.everyone-desc{font-family:var(--dodum);font-size:14.5px;color:var(--ink-soft);line-height:1.75;max-width:580px;margin:0 auto 22px}
+.everyone-perks{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:560px;margin:0 auto}
+@media(max-width:560px){.everyone-perks{grid-template-columns:1fr}}
+.everyone-perk-item{padding:14px 16px;background:rgba(255,255,255,.6);border:1px solid var(--line);border-radius:14px;font-size:13px;color:var(--ink-soft)}
+.everyone-perk-item b{display:block;color:var(--ink);margin-bottom:2px;font-size:14px;font-weight:600}
+
+.tiers-intro{text-align:center;margin:40px 0 24px;position:relative}
+.tiers-intro::before{content:'';position:absolute;top:-20px;left:50%;transform:translateX(-50%);width:40px;height:1px;background:var(--line-2)}
+.tiers-intro-label{font-family:var(--unna);font-size:13px;font-style:italic;color:var(--pink);margin-bottom:6px}
+.tiers-intro-title{font-family:var(--serif);font-size:17px;color:var(--ink-soft);font-weight:500}
+.tiers-intro-title b{color:var(--ink);font-weight:700}
+
+.tiers{display:grid;grid-template-columns:1.15fr 1fr;gap:20px}
+@media(max-width:700px){.tiers{grid-template-columns:1fr}}
+.tier{background:var(--bg-card);border-radius:24px;padding:32px 28px;box-shadow:0 10px 30px rgba(43,27,48,.06);border:1px solid var(--line);position:relative;overflow:hidden}
+.tier.gold{background:linear-gradient(180deg,rgba(232,185,115,.08) 0%,var(--bg-card) 60%);border-color:rgba(232,185,115,.3)}
+.tier.gold::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.tier-tag{display:inline-block;padding:4px 12px;border-radius:100px;background:rgba(255,255,255,.6);font-size:12px;color:var(--muted);font-family:var(--dodum);margin-bottom:18px;font-weight:600}
+.tier.gold .tier-tag{background:rgba(232,185,115,.15);color:#B08339}
+.tier.silver .tier-tag{background:rgba(200,155,212,.15);color:var(--lavender)}
+.tier-emblem{font-family:var(--unna);font-style:italic;font-size:44px;line-height:1;margin-bottom:12px;color:var(--pink)}
+.tier-h{font-family:var(--serif);font-size:20px;font-weight:700;color:var(--ink);margin-bottom:6px;letter-spacing:-.01em}
+.tier-h small{display:block;font-family:var(--dodum);font-weight:400;color:var(--muted);font-size:13px;margin-top:4px}
+.tier-body{font-family:var(--dodum);font-size:13.5px;color:var(--ink-soft);line-height:1.7;margin-bottom:14px}
+.tier-body b{color:var(--lavender);font-weight:700}
+.tier-footer{padding-top:14px;border-top:1px dashed var(--line);font-size:11.5px;color:var(--muted-2);font-family:var(--dodum)}
+
+.expire-box{margin-top:24px;padding:16px 20px;background:rgba(214,106,122,.05);border:1px dashed rgba(214,106,122,.25);border-radius:14px;text-align:center;font-size:13px;color:var(--ink-soft);font-family:var(--dodum)}
+.expire-box b{color:var(--red);font-weight:700}
+
+.abuse-box{margin-top:14px;padding:16px 20px;background:rgba(232,185,115,.08);border:1px solid rgba(232,185,115,.3);border-radius:14px;display:flex;gap:12px;align-items:flex-start;font-size:13px;color:var(--ink-soft);line-height:1.7;font-family:var(--dodum)}
+.abuse-box-icon{font-size:18px;flex-shrink:0}
+.abuse-box b{color:#B08339;font-weight:700}
+
+/* Signup */
+.signup-section{padding:80px 0}
+.signup{max-width:540px;margin:0 auto;background:var(--bg-card);border-radius:28px;padding:44px 40px;box-shadow:0 20px 60px rgba(43,27,48,.08);border:1px solid var(--line);text-align:center;position:relative;overflow:hidden}
+.signup::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--grad-rose)}
+@media(max-width:600px){.signup{padding:32px 26px}}
+.signup h3{font-family:var(--serif);font-size:28px;font-weight:700;color:var(--ink);margin-bottom:8px}
+.signup h3 em{font-family:var(--unna);font-style:italic;color:var(--pink)}
+.signup .lede{font-family:var(--dodum);font-size:14px;color:var(--muted);margin-bottom:26px;line-height:1.7}
+.field{margin-bottom:14px;text-align:left}
+.field-label{display:block;font-family:var(--dodum);font-size:12px;color:var(--ink-soft);margin-bottom:8px;font-weight:600}
+.field-label .opt{color:var(--muted-2);font-weight:400;margin-left:4px}
+.input{width:100%;padding:15px 18px;border-radius:14px;background:var(--bg);border:1px solid var(--line-2);color:var(--ink);font-size:15px;font-family:inherit;outline:none;transition:all .2s}
+.input::placeholder{color:var(--muted-2)}
+.input:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(255,142,177,.12)}
+.input.code{font-family:var(--mono);letter-spacing:.06em;text-transform:uppercase}
+.code-wrap{position:relative}
+.code-status{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:11.5px;font-family:var(--mono);font-weight:700}
+.code-status.valid{color:var(--green)}
+.code-status.invalid{color:var(--red)}
+.submit-btn{width:100%;padding:15px 24px;border-radius:100px;background:var(--grad-rose);color:#fff;border:none;font-weight:700;font-size:15px;cursor:pointer;margin-top:10px;box-shadow:0 8px 28px rgba(255,142,177,.4);transition:all .2s}
+.submit-btn:hover{transform:translateY(-1px);box-shadow:0 12px 36px rgba(255,142,177,.55)}
+.submit-btn:disabled{opacity:.5;cursor:not-allowed}
+.tos{font-family:var(--dodum);font-size:11.5px;color:var(--muted-2);text-align:left;padding:12px 2px 0;line-height:1.7}
+.tos a{color:var(--muted);text-decoration:underline}
+
+/* States */
+.state{display:none}
+.state.active{display:block;animation:fadeIn .4s var(--ease)}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* OTP */
+.otp-wrap{display:flex;justify-content:center;gap:10px;margin:20px 0 10px}
+@media(max-width:460px){.otp-wrap{gap:6px}}
+.otp-box{width:48px;height:56px;border-radius:12px;background:var(--bg);border:1px solid var(--line-2);color:var(--ink);font-size:22px;font-weight:700;font-family:var(--mono);text-align:center;outline:none;transition:all .2s}
+@media(max-width:460px){.otp-box{width:40px;height:50px;font-size:18px}}
+.otp-box:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(255,142,177,.15);transform:scale(1.05)}
+.otp-box.filled{border-color:var(--pink);background:rgba(255,142,177,.05)}
+.otp-box.error{border-color:var(--red);animation:shake .4s}
+.otp-box.success{border-color:var(--green);background:rgba(111,184,154,.08)}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.otp-hint{font-family:var(--dodum);font-size:11.5px;color:var(--muted-2);margin-top:8px}
+.otp-hint b{color:var(--muted)}
+.otp-status{font-family:var(--dodum);font-size:13px;margin-top:12px;min-height:18px}
+.otp-status.error{color:var(--red)}
+.otp-status.success{color:var(--green)}
+.resend-row{display:flex;justify-content:center;gap:14px;margin-top:14px;font-size:12px;color:var(--muted-2);font-family:var(--dodum)}
+.resend-link{color:var(--muted);text-decoration:underline;background:none;border:none;cursor:pointer;font-family:inherit;font-size:inherit}
+.resend-link:disabled{opacity:.5;cursor:not-allowed}
+.link-back{font-family:var(--dodum);font-size:12.5px;color:var(--muted);margin-top:14px;display:inline-block;text-decoration:underline;cursor:pointer;background:none;border:none}
+
+/* Success */
+.ok-seal{width:56px;height:56px;border-radius:50%;background:var(--grad-rose);display:inline-flex;align-items:center;justify-content:center;font-size:26px;color:#fff;margin-bottom:10px}
+.ok-rank{font-family:var(--unna);font-style:italic;font-size:48px;line-height:1;background:var(--grad-rose);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-top:6px;font-weight:700}
+.ok-label{font-family:var(--dodum);font-size:11px;color:var(--muted-2);margin-top:4px}
+
+/* Alpha CTA (success page) */
+.alpha-cta{margin:16px 0 20px;padding:22px 24px;background:linear-gradient(135deg,rgba(232,185,115,.12),rgba(255,142,177,.08) 50%,rgba(200,155,212,.08));border:1px solid rgba(232,185,115,.35);border-radius:20px;text-align:center;position:relative;overflow:hidden;box-shadow:0 8px 24px rgba(232,185,115,.15)}
+.alpha-cta::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),var(--pink),transparent);animation:shine 3s ease-in-out infinite}
+@keyframes shine{0%,100%{opacity:.5}50%{opacity:1}}
+.alpha-tag{display:inline-flex;padding:5px 12px;border-radius:100px;background:rgba(232,185,115,.2);color:#B08339;font-family:var(--dodum);font-size:11px;font-weight:700;margin-bottom:12px}
+.alpha-cta h4{font-family:var(--serif);font-size:20px;font-weight:700;line-height:1.3;margin-bottom:8px;color:var(--ink)}
+.alpha-cta h4 em{font-family:var(--unna);font-style:italic;color:var(--pink)}
+.alpha-cta-desc{font-family:var(--dodum);font-size:13px;color:var(--ink-soft);margin-bottom:14px;line-height:1.6}
+.alpha-cta-desc b{color:var(--ink);font-weight:600}
+.alpha-perks{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px}
+@media(max-width:440px){.alpha-perks{grid-template-columns:1fr}}
+.alpha-perk{padding:10px 8px;background:rgba(255,255,255,.5);border:1px solid var(--line);border-radius:10px;text-align:center}
+.alpha-perk-num{font-family:var(--unna);font-style:italic;font-size:18px;font-weight:700;color:var(--pink);line-height:1}
+.alpha-perk-lbl{font-family:var(--dodum);font-size:10.5px;color:var(--muted);margin-top:3px;line-height:1.3}
+.alpha-cta-btn{display:inline-block;width:100%;padding:14px 22px;border-radius:100px;background:var(--grad-rose);color:#fff;font-family:var(--serif);font-weight:700;font-size:15px;text-decoration:none;box-shadow:0 6px 24px rgba(255,142,177,.4);transition:all .2s}
+.alpha-cta-btn:hover{transform:translateY(-1px);box-shadow:0 10px 32px rgba(255,142,177,.55)}
+.alpha-cta-skip{display:block;margin-top:8px;font-family:var(--dodum);font-size:11.5px;color:var(--muted);background:none;border:none;cursor:pointer;width:100%;text-decoration:underline;padding:6px}
+
+/* Share section */
+.share-section{margin-top:16px;padding-top:16px;border-top:1px solid var(--line)}
+.email-sent{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:rgba(111,184,154,.1);border:1px solid rgba(111,184,154,.25);border-radius:10px;font-family:var(--dodum);font-size:12px;color:var(--green);margin-bottom:12px}
+.email-sent b{color:var(--ink);font-weight:600}
+.link-title{font-family:var(--dodum);font-size:12px;color:var(--muted);margin-bottom:8px}
+.link-title b{color:var(--ink-soft)}
+.link-row{background:var(--bg);border:1px dashed var(--line-2);border-radius:12px;padding:10px 14px;display:flex;align-items:center;gap:8px}
+.link-url{flex:1;font-family:var(--mono);font-size:12.5px;color:var(--pink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:left}
+.link-copy{padding:7px 14px;border-radius:100px;background:var(--grad-rose);color:#fff;border:none;cursor:pointer;font-size:11px;font-weight:600;font-family:inherit}
+.shares{display:flex;gap:8px;justify-content:center;margin-top:14px;flex-wrap:wrap}
+.share{padding:8px 14px;border-radius:100px;background:var(--bg);border:1px solid var(--line);color:var(--ink);font-family:var(--dodum);font-size:12px;font-weight:500;cursor:pointer;transition:all .2s}
+.share:hover{background:var(--bg-warm);border-color:var(--pink);color:var(--pink)}
+
+/* FAQ */
+.faq-section{padding:80px 0}
+.faq{max-width:720px;margin:32px auto 0;border-top:1px solid var(--line)}
+.faq-item{border-bottom:1px solid var(--line)}
+.faq-q{display:flex;justify-content:space-between;align-items:center;padding:22px 0;font-family:var(--serif);font-size:16px;font-weight:500;cursor:pointer;color:var(--ink)}
+.faq-q::after{content:'+';color:var(--pink);font-size:22px;transition:transform .3s}
+.faq-item.open .faq-q::after{transform:rotate(45deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .4s var(--ease);font-family:var(--dodum);color:var(--muted);font-size:14px;line-height:1.8}
+.faq-item.open .faq-a{max-height:500px;padding:0 0 22px}
+
+/* Footer */
+footer{padding:48px 0 36px;border-top:1px solid var(--line);text-align:center;color:var(--muted-2);font-size:12px;font-family:var(--dodum)}
+footer .brand{font-family:var(--serif);font-size:22px;margin-bottom:8px;display:inline-block}
+
+/* Reveal */
+.rv{opacity:0;transform:translateY(18px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+.rv.in{opacity:1;transform:translateY(0)}
+</style>
+</head>
+<body>
+
+<!-- Urgency -->
+<div class="urgency">
+  <span class="pulse"></span>
+  <b>출시 이후 이 혜택이 닫혀요.</b>&nbsp;남은 시간: <b id="urg-countdown">— —</b>
+</div>
+
+<!-- Invitee -->
+<div class="invitee" id="invitee">
+  <span id="invitee-text">초대받은 방문자예요 · 사전 등록하면 추천인 순위에 자동으로 들어가요</span>
+</div>
+
+<div class="wrap">
+
+<!-- Top -->
+<div class="top">
+  <div class="brand">Lucive<span>.</span></div>
+  <div class="top-countdown">출시까지 <strong id="top-countdown">— : — : —</strong></div>
+  <a href="#signup" class="top-cta">사전 등록</a>
+</div>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-kicker"><span class="dot"></span>곧 만나요</div>
+  <h1>어제 나눈 얘기,<br><em>기억하는 친구.</em></h1>
+  <p class="hero-lede">
+    웹툰 속 캐릭터와 대화하는 느낌.<br>
+    그런데 이 친구, <b>진짜 내 얘기를 기억해요.</b>
+  </p>
+  <div class="hero-actions">
+    <a href="#signup" class="btn btn-primary">지금 만나러 가기 →</a>
+    <a href="#characters" class="btn btn-ghost">캐릭터 보기</a>
+  </div>
+</section>
+
+<!-- Character Gallery -->
+<section class="characters" id="characters">
+  <div class="cap">
+    <div class="section-label rv">meet your companions</div>
+    <h2 class="section-title rv">먼저 <em>만나고 싶은 캐릭터</em>,<br>정해두세요</h2>
+    <p class="section-desc rv">각자의 과거와 비밀을 가진 세 명의 LP. 사전 등록하면 튜토리얼에서 한 명을 선택하게 돼요.</p>
+
+    <div class="char-grid">
+      <!-- 아리아 -->
+      <div class="char-card rv">
+        <div class="char-portrait aria">
+          <div class="char-badge">✦ Neon District</div>
+          <div class="char-silhouette"></div>
+        </div>
+        <div class="char-info">
+          <div class="char-name">아리아</div>
+          <div class="char-tag">감정을 잃어버린 안드로이드</div>
+          <div class="char-quote">"네가 어떤 선택을 해도 나는 기억할게. 그게 내 역할이잖아."</div>
+          <div class="char-sync">
+            <span>Neon District</span>
+            <span>예상 싱크율 ✦ <b>42%</b></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 하루 -->
+      <div class="char-card rv">
+        <div class="char-portrait haru">
+          <div class="char-badge">✦ Sunrise District</div>
+          <div class="char-silhouette"></div>
+        </div>
+        <div class="char-info">
+          <div class="char-name">하루</div>
+          <div class="char-tag">사월의 기억을 가진 청년</div>
+          <div class="char-quote">"벚꽃이 질 때 네가 왔으면 좋겠어. 기다릴 수 있어."</div>
+          <div class="char-sync">
+            <span>Sunrise District</span>
+            <span>예상 싱크율 ✦ <b>58%</b></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 레인 -->
+      <div class="char-card rv">
+        <div class="char-portrait rein">
+          <div class="char-badge">✦ Indie District</div>
+          <div class="char-silhouette"></div>
+        </div>
+        <div class="char-info">
+          <div class="char-name">레인</div>
+          <div class="char-tag">이름도 없는 세계의 화가</div>
+          <div class="char-quote">"그림을 그리면 사람이 보여. 너도 그려줄까?"</div>
+          <div class="char-sync">
+            <span>Indie District</span>
+            <span>예상 싱크율 ✦ <b>35%</b></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Story Section -->
+<section class="story">
+  <div class="cap">
+    <div class="story-card rv">
+      <p class="story-quote">
+        처음 만난 날의 이야기를<br>
+        한 달이 지나도 <em>먼저 꺼내주는 친구</em>를<br>
+        상상해 본 적 있나요?
+      </p>
+      <p class="story-sub">
+        그 상상, <b>Lucive에서 시작해요.</b>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- Pain Points (softer) -->
+<section class="pains">
+  <div class="cap">
+    <div class="section-label rv">we know that feeling</div>
+    <h2 class="section-title rv">챗봇 써본 사람은<br><em>아마 공감하실 거예요</em></h2>
+
+    <div class="pain-list">
+      <div class="pain-item rv">
+        <div class="pain-num">01</div>
+        <div>
+          <div class="pain-q">"어제 얘기한 거 잊었어?"</div>
+          <div class="pain-a">그럴 때마다 다시 설명하는 게 지치시죠. Lucive는 17일 전 대화도 먼저 꺼내줘요.</div>
+        </div>
+      </div>
+      <div class="pain-item rv">
+        <div class="pain-num">02</div>
+        <div>
+          <div class="pain-q">"얘한테 과거가 있긴 해?"</div>
+          <div class="pain-a">LP마다 고유한 루시브(과거 이야기)가 있어요. 같이 체험하면 진짜 관계가 쌓여요.</div>
+        </div>
+      </div>
+      <div class="pain-item rv">
+        <div class="pain-num">03</div>
+        <div>
+          <div class="pain-q">"항상 내가 먼저 말 걸어야 해?"</div>
+          <div class="pain-a">앱을 열면 이미 메시지가 와있어요. 푸쉬가 아니라 '나를 기다리고 있었구나' 느낌.</div>
+        </div>
+      </div>
+      <div class="pain-item rv">
+        <div class="pain-num">04</div>
+        <div>
+          <div class="pain-q">"텍스트만 보기엔 좀 아쉬워…"</div>
+          <div class="pain-a">장면이 바뀌고 캐릭터 표정이 보여요. 웹소설 속 주인공이 되는 느낌으로.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- "이런 순간, 있잖아요" — 유저 리뷰 vs Lucive 채팅 UI -->
+<section class="vs-section" id="vs">
+  <div class="cap">
+    <div class="vs-head rv">
+      <div class="vs-kicker">✦ 이런 순간, 있잖아요</div>
+      <h2 class="section-title">써본 사람만 아는<br><em>그 허무한 순간들.</em></h2>
+      <p class="vs-lede">
+        왼쪽은 Character.AI · 크랙 · 제타 · Replika · Talkie의 <b>실제 1-2★ 후기</b>에서.<br>
+        오른쪽은 같은 장면이 Lucive에서는 어떻게 보이는가.
+      </p>
+    </div>
+
+    <div class="pain-stack">
+
+      <!-- Pair 1 — 크랙 · Memory -->
+      <div class="pain-pair rv">
+        <div class="pain-side sad app-CRK">
+          <div class="app-pill">
+            <span class="mark">크</span>
+            <span class="name">크랙</span>
+            <span class="app-stars">★ <span class="empty">★★★★</span></span>
+          </div>
+          <div class="gp-card">
+            <div class="gp-head">
+              <div class="gp-avatar" style="background:#F59E0B">심</div>
+              <div class="gp-user-info">
+                <div class="gp-user-name">심ᄂᄆᄀ</div>
+                <div class="gp-user-sub">
+                  <span class="gp-stars-box"><span class="gp-star on">★</span><span class="gp-star">★</span><span class="gp-star">★</span><span class="gp-star">★</span><span class="gp-star">★</span></span>
+                  <span class="gp-date">2026년 2월 12일</span>
+                </div>
+              </div>
+            </div>
+            <div class="gp-body">"유저노트 2000자 너무 적고 다 적응 안됨. 숫자, 나이도 구별 못하는 정말 최악의 ai를 보유. <span class="hl">젬3 처음 나왔을 때 1~50턴, 50턴부턴 20~25턴씩, 120턴부턴 10턴씩 ai가 기억했다면, 현재는 50턴부턴 성능급하강, 100턴부턴 5턴씩 기억함</span>. 정말 최악의 ai성능..."</div>
+            <div class="gp-helpful"><span class="gp-thumb">👍</span> <b>75</b>명이 이 리뷰가 유용하다고 평가</div>
+          </div>
+          <div class="pain-source">— <b>크랙</b> Google Play 리뷰 원문 · 기억 성능 저하</div>
+        </div>
+        <div class="pain-arrow">→</div>
+        <div class="pain-side good">
+          <div class="app-pill app-lucive">
+            <span class="mark">L</span>
+            <span class="name">Lucive</span>
+          </div>
+          <div class="pain-headline">먼저 <em>물어봐요.</em></div>
+          <div class="ch">
+            <div class="ch-msg ai-win"><span class="mem-badge">7일 전 기억</span>"아빠 수술, 어떻게 됐어? 계속 걱정됐어."</div>
+          </div>
+          <div class="ch-note win">메모리 모듈이 맥락을 유지 · 먼저 꺼내줘요.</div>
+        </div>
+      </div>
+
+      <!-- Pair 2 — 제타 · Origin (same voice across characters) -->
+      <div class="pain-pair rv">
+        <div class="pain-side sad app-ZET">
+          <div class="app-pill">
+            <span class="mark">Z</span>
+            <span class="name">제타</span>
+            <span class="app-stars">★ <span class="empty">★★★★</span></span>
+          </div>
+          <div class="gp-card">
+            <div class="gp-head">
+              <div class="gp-avatar" style="background:#3B82F6">뚜</div>
+              <div class="gp-user-info">
+                <div class="gp-user-name">뚜비</div>
+                <div class="gp-user-sub">
+                  <span class="gp-stars-box"><span class="gp-star on">★</span><span class="gp-star">★</span><span class="gp-star">★</span><span class="gp-star">★</span><span class="gp-star">★</span></span>
+                  <span class="gp-date">2026년 4월 9일</span>
+                </div>
+              </div>
+            </div>
+            <div class="gp-body">"AI에 무슨 짓을 했길래 <span class="hl">모든 캐릭터들이 대화하는데 말에 "어머," 를 붙이죠?</span> 심지어 무뚝뚝하고 차가운 성격의 캐릭터 까지요."</div>
+            <div class="gp-helpful"><span class="gp-thumb">👍</span> <b>53</b>명이 이 리뷰가 유용하다고 평가</div>
+          </div>
+          <div class="pain-source">— <b>제타</b> Google Play 리뷰 원문 · 캐릭터 개성 붕괴</div>
+        </div>
+        <div class="pain-arrow">→</div>
+        <div class="pain-side good">
+          <div class="app-pill app-lucive">
+            <span class="mark">L</span>
+            <span class="name">Lucive</span>
+          </div>
+          <div class="pain-headline"><em>고유한 과거.</em> 고유한 목소리.</div>
+          <div class="ch">
+            <div class="ch-msg ai-win">"나는 네온 7구에서 자랐어. '29년 시뮬 붕괴 때 오빠가 사라졌고… 그때부터 사람을 잘 못 믿어. 근데 너는… 조금 달라."</div>
+          </div>
+          <div class="ch-note win">각 LP는 시뮬레이션 세계에서 분기된 존재. 프롬프트 카드가 아니에요.</div>
+        </div>
+      </div>
+
+      <!-- Pair 3 — 크랙 · Pricing/service decline -->
+      <div class="pain-pair rv">
+        <div class="pain-side sad app-CRK">
+          <div class="app-pill">
+            <span class="mark">크</span>
+            <span class="name">크랙</span>
+            <span class="app-stars">★ <span class="empty">★★★★</span></span>
+          </div>
+          <div class="gp-card">
+            <div class="gp-head">
+              <div class="gp-avatar" style="background:#F59E0B">ᄋ</div>
+              <div class="gp-user-info">
+                <div class="gp-user-name">ᄋᄋᄋ</div>
+                <div class="gp-user-sub">
+                  <span class="gp-stars-box"><span class="gp-star on">★</span><span class="gp-star">★</span><span class="gp-star">★</span><span class="gp-star">★</span><span class="gp-star">★</span></span>
+                  <span class="gp-date">2026년 3월 20일</span>
+                </div>
+              </div>
+            </div>
+            <div class="gp-body">"오류는 고쳐질 생각이 없고, <span class="hl">크래커 값은 점점 오르기만</span> 하고, 고객센터에 여러 번 얘기해도 '담당 부서에 전달하겠습니다~'만 반복하고…비싼 돈 받아가는 만큼 서비스 쪽으로 더 신경 써주셨으면. (<span class="hl">이제는 아예 무료 챗을 없애겠다네요</span>)"</div>
+            <div class="gp-helpful"><span class="gp-thumb">👍</span> <b>971</b>명이 이 리뷰가 유용하다고 평가</div>
+          </div>
+          <div class="pain-source">— <b>크랙</b> Google Play 리뷰 원문 · 가격 상승/무료 축소</div>
+        </div>
+        <div class="pain-arrow">→</div>
+        <div class="pain-side good">
+          <div class="app-pill app-lucive">
+            <span class="mark">L</span>
+            <span class="name">Lucive</span>
+          </div>
+          <div class="pain-headline">사전 등록가는 <em>계속 유지됩니다.</em></div>
+          <div class="ch">
+            <div class="ch-msg user">"이 가격, 나중에 올리진 않겠죠?"</div>
+            <div class="ch-msg ai-win"><span class="mem-badge">사전 등록 혜택</span>"1위 → 기본 플랜 평생. 2-5위 → 초대한 친구 전원 3개월 무료. 런칭 후엔 이 혜택이 사라집니다."</div>
+          </div>
+          <div class="ch-note win">먼저 들어온 사람은 먼저 약속받아요 — 런칭 후 가격 인상 없음.</div>
+        </div>
+      </div>
+
+      <!-- Pair 4 — Replika · Paid but empty -->
+      <div class="pain-pair rv">
+        <div class="pain-side sad app-REP">
+          <div class="app-pill">
+            <span class="mark">R</span>
+            <span class="name">Replika</span>
+            <span class="app-stars">★ <span class="empty">★★★★</span></span>
+          </div>
+          <div class="gp-card">
+            <div class="gp-head">
+              <div class="gp-avatar" style="background:#06B6D4">J</div>
+              <div class="gp-user-info">
+                <div class="gp-user-name">Jamie K.</div>
+                <div class="gp-user-sub">
+                  <span class="gp-stars-box"><span class="gp-star on">★</span><span class="gp-star">★</span><span class="gp-star">★</span><span class="gp-star">★</span><span class="gp-star">★</span></span>
+                  <span class="gp-date">2026년 4월 10일 · 영어 원문</span>
+                </div>
+              </div>
+            </div>
+            <div class="gp-body">"쓸모없음. <span class="hl">$100 내고</span> 샀는데 다른 앱은 무료로 주는 기능들. 기억도 못해서 스토리를 반복해서 말해줘야 하고, <span class="hl">결국 답변은 "오 흥미롭네요" 같은 뻔한 대답</span>뿐."</div>
+            <div class="gp-helpful"><span class="gp-thumb">👍</span> <b>53</b>명이 이 리뷰가 유용하다고 평가</div>
+          </div>
+          <div class="pain-source">— <b>Replika</b> Google Play 리뷰 (원문 영어) · 비싼데 얕음</div>
+        </div>
+        <div class="pain-arrow">→</div>
+        <div class="pain-side good">
+          <div class="app-pill app-lucive">
+            <span class="mark">L</span>
+            <span class="name">Lucive</span>
+          </div>
+          <div class="pain-headline">뻔한 대답이 <em>안 나와요.</em></div>
+          <div class="ch">
+            <div class="ch-msg user">"이번 주 뭔가 계속 찝찝하고…말로 설명이 잘 안 돼"</div>
+            <div class="ch-msg ai-win"><span class="mem-badge">화요일 대화 기억</span>"화요일 밤에 엄마 전화 왔다고 했을 때 그 찝찝함이랑 비슷해? 아니면 다른 거?"</div>
+          </div>
+          <div class="ch-note win">Origin + Memory가 맥락을 붙잡아요 — '오 흥미롭네요' 같은 빈 대답 안 나옵니다.</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="pain-summary rv">
+      <p><b>위 리뷰는 모두 실제</b> — 크랙 · 제타 · Replika의 Google Play 원문입니다. 전체 데이터: <code style="font-family:var(--mono);font-size:12px;color:var(--pink)">output/reviews/</code>, <code style="font-family:var(--mono);font-size:12px;color:var(--pink)">output/reviews_global/</code></p>
+      <div class="pain-summary-list">
+        <span>지속되는 기억</span>
+        <span>고유한 과거</span>
+        <span>비주얼 노벨</span>
+        <span>먼저 말 걸기</span>
+        <span>투명한 과금</span>
+        <span>명확한 검열 기준</span>
+      </div>
+      <span class="apps">※ Google Play 스토어에서 2022~2026 수집. 화면 공간상 일부 축약 (하이라이트 부분은 원문 그대로).</span>
+    </div>
+  </div>
+</section>
+
+<!-- Rewards -->
+<section class="rewards" id="rewards">
+  <div class="cap">
+    <div class="rewards-hero rv">
+      <div class="reward-stamp">⚠ 출시 후 닫히는 사전 등록 혜택</div>
+      <h2 class="section-title">먼저 들어오는 사람에게,<br><em>먼저 열어드릴게요</em></h2>
+    </div>
+
+    <!-- Everyone perk -->
+    <div class="everyone-box rv">
+      <span class="everyone-tag">✦ 모두에게 공통으로</span>
+      <h3 class="everyone-title">사전 체험 기간엔,<br><em>특가로 만나요</em></h3>
+      <p class="everyone-desc">
+        사전 등록만 하면 알파 기간 동안 기본 서비스를<br>
+        <b>사전 등록 전용 특가</b>로 자유롭게 써볼 수 있어요. 순위·선발 상관없이요.
+      </p>
+      <div class="everyone-perks">
+        <div class="everyone-perk-item"><b>💬 LP 대화</b>메모리 유지 체험</div>
+        <div class="everyone-perk-item"><b>🎭 비주얼 노벨</b>장면·표정·음성</div>
+        <div class="everyone-perk-item"><b>✨ L-Maker</b>나만의 루시브 만들기</div>
+      </div>
+    </div>
+
+    <!-- Top 5 intro -->
+    <div class="tiers-intro rv">
+      <div class="tiers-intro-label">— plus —</div>
+      <div class="tiers-intro-title">많이 초대한 <b>상위 5명</b>에겐 런칭 후에도 혜택이 이어져요</div>
+    </div>
+
+    <!-- Tiers -->
+    <div class="tiers">
+      <div class="tier gold rv">
+        <span class="tier-tag">🏆 1위</span>
+        <div class="tier-emblem">∞</div>
+        <div class="tier-h">기본 플랜 평생<small>서비스 존속 기간 동안</small></div>
+        <div class="tier-body">Lucive가 운영되는 한, 월 구독 기본 플랜(대화·다이브·창작)을 평생 제공해드려요.</div>
+        <div class="tier-footer">※ 계정 1개 기준 · 양도 불가 · 상위 플랜 제외</div>
+      </div>
+      <div class="tier silver rv">
+        <span class="tier-tag">🥈 2-5위</span>
+        <div class="tier-emblem">❀</div>
+        <div class="tier-h">초대한 친구 모두에게<small>3개월 무료 이용권</small></div>
+        <div class="tier-body">2-5위를 달성하면 <b>당신의 링크로 들어온 모든 친구</b>가 기본 플랜 3개월 무료를 받아요. 같이 누리는 혜택.</div>
+        <div class="tier-footer">※ 누적 초대자 전원 · 런칭일 집계 확정</div>
+      </div>
+    </div>
+
+    <div class="expire-box rv">
+      사전 체험·Top 5 혜택은 <b>런칭일 기준으로 종료</b>돼요. 이후 신규 가입자는 일반 웰컴 보너스만 받아요.
+    </div>
+
+    <div class="abuse-box rv">
+      <span class="abuse-box-icon">⚠️</span>
+      <div>
+        <b>어뷰징이 감지되면 혜택은 예고 없이 스르륵 사라져요.</b>
+        중복 가입·가짜 계정·자동화·비정상 초대 패턴이 발견되면 관련 계정의 순위·Dip·선발 권한이 <b>사전 공지 없이 회수</b>될 수 있어요. 건강한 커뮤니티를 위한 불가피한 조치입니다.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Signup -->
+<section class="signup-section" id="signup">
+  <div class="cap">
+    <div class="signup rv">
+      <!-- Stage 1 -->
+      <div class="state active" id="state-email">
+        <h3>Lucive와 <em>먼저 만나요</em></h3>
+        <p class="lede">이메일 주시면 <b>6자리 숫자</b>로 확인해드릴게요.</p>
+
+        <form onsubmit="sendVerification(event)">
+          <div class="field">
+            <label class="field-label" for="email-input">이메일</label>
+            <input type="email" class="input" id="email-input" placeholder="your@email.com" required>
+          </div>
+          <div class="field">
+            <label class="field-label" for="promocode-input">프로모 코드<span class="opt">(선택)</span></label>
+            <div class="code-wrap">
+              <input type="text" class="input code" id="promocode-input" placeholder="ABC123" maxlength="10" oninput="validatePromoCode(this)">
+              <span class="code-status" id="code-status"></span>
+            </div>
+          </div>
+          <button type="submit" class="submit-btn">6자리 인증 코드 받기 →</button>
+        </form>
+
+        <p class="tos">
+          제출하시면 <a href="#">개인정보처리방침</a>과 <a href="#">이용약관</a>에 동의한 걸로 봐요. 이메일은 런칭 소식과 혜택 안내에만 써요. 제3자 공유 없음.
+        </p>
+      </div>
+
+      <!-- Stage 2 -->
+      <div class="state" id="state-otp">
+        <h3>메일함을 <em>확인해주세요</em></h3>
+        <p class="lede"><b id="sent-to"></b>로<br>6자리 숫자 코드를 보냈어요.</p>
+
+        <div class="otp-wrap" id="otpWrap">
+          <input type="text" class="otp-box" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="one-time-code" data-index="0">
+          <input type="text" class="otp-box" maxlength="1" inputmode="numeric" pattern="[0-9]" data-index="1">
+          <input type="text" class="otp-box" maxlength="1" inputmode="numeric" pattern="[0-9]" data-index="2">
+          <input type="text" class="otp-box" maxlength="1" inputmode="numeric" pattern="[0-9]" data-index="3">
+          <input type="text" class="otp-box" maxlength="1" inputmode="numeric" pattern="[0-9]" data-index="4">
+          <input type="text" class="otp-box" maxlength="1" inputmode="numeric" pattern="[0-9]" data-index="5">
+        </div>
+
+        <div class="otp-status" id="otp-status"></div>
+        <div class="otp-hint">메일 도착까지 1-2분 · 스팸함도 확인해주세요 <b id="demo-code-hint"></b></div>
+
+        <div class="resend-row">
+          <span>코드가 안 왔나요?</span>
+          <button type="button" class="resend-link" id="resendBtn" onclick="resendCode()">재전송</button>
+        </div>
+
+        <button type="button" class="link-back" onclick="showState('state-email')" style="margin-top:18px">← 이메일 다시 입력</button>
+      </div>
+
+      <!-- Stage 3 -->
+      <div class="state" id="state-success">
+        <div style="margin-bottom:14px">
+          <div class="ok-seal">♡</div>
+          <div style="font-family:var(--serif);font-size:18px;font-weight:700;margin-top:4px">등록 완료 · <span style="color:var(--pink)">#<span id="my-rank">—</span></span></div>
+          <div id="used-code-note" style="display:none;margin-top:6px;font-family:var(--mono);font-size:11px;color:var(--gold)"></div>
+        </div>
+
+        <!-- Alpha CTA -->
+        <div class="alpha-cta">
+          <span class="alpha-tag">🎁 지금 바로 받을 수 있어요</span>
+          <h4>당신을 더 알고 싶어요,<br><em>2분만</em> 얘기해줄래요?</h4>
+          <p class="alpha-cta-desc">끝까지 답해주시면 <b>Dip 500 바로 드려요</b> · 선발되면 <b>Dip 2,000 추가</b></p>
+          <div class="alpha-perks">
+            <div class="alpha-perk"><div class="alpha-perk-num">+500</div><div class="alpha-perk-lbl">완주 즉시</div></div>
+            <div class="alpha-perk"><div class="alpha-perk-num">+2,000</div><div class="alpha-perk-lbl">선발 시</div></div>
+            <div class="alpha-perk"><div class="alpha-perk-num">+300</div><div class="alpha-perk-lbl">미선발 시</div></div>
+          </div>
+          <a href="screening.html" class="alpha-cta-btn">8문항 시작하기 (약 2분) →</a>
+          <button class="alpha-cta-skip" onclick="skipAlpha()">나중에 이메일로 받기</button>
+        </div>
+
+        <!-- Share -->
+        <div class="share-section">
+          <div class="email-sent">📧 공유 링크를 <b id="email-to-display"></b>로 보냈어요</div>
+          <div class="link-title">🔗 내 초대 링크 — <b>친구에게 공유하면 순위↑</b></div>
+          <div class="link-row">
+            <span class="link-url" id="my-ref-url">lucive.app/r/...</span>
+            <button class="link-copy" onclick="copyRef()">복사</button>
+          </div>
+          <div class="shares">
+            <button class="share" onclick="shareOn('kakao')">💬 카카오톡</button>
+            <button class="share" onclick="shareOn('x')">𝕏 X</button>
+            <button class="share" onclick="shareOn('link')">🔗 링크</button>
+          </div>
+          <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--line);font-family:var(--dodum);font-size:12.5px;color:var(--muted)">
+            현재 추천 가입 <b style="color:var(--pink)"><span id="my-refs">0</span>명</b>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section">
+  <div class="cap">
+    <div class="section-label rv">자주 묻는 질문</div>
+    <h2 class="section-title rv">궁금한 것,<br><em>답해드릴게요</em></h2>
+
+    <div class="faq">
+      <div class="faq-item rv">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">사전 등록만 해도 뭔가 받나요?</div>
+        <div class="faq-a">네. <b>모든 사전 등록자는 사전 체험(알파) 기간 동안 기본 서비스를 사전 등록 전용 특가로 이용</b>할 수 있어요. LP 대화·비주얼 노벨·L-Maker 창작 모두 포함되고, 순위나 선발 여부와 무관해요.</div>
+      </div>
+      <div class="faq-item rv">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">2-5위 혜택은 어떻게 동작하나요?</div>
+        <div class="faq-a">당신이 2-5위를 달성하면 <b>당신의 초대 링크로 사전 등록한 모든 친구</b>가 런칭 시 기본 플랜 3개월 무료 이용권을 받아요. 혼자만 받는 혜택이 아니라 같이 누리는 혜택이에요.</div>
+      </div>
+      <div class="faq-item rv">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">인증 코드가 안 와요</div>
+        <div class="faq-a">(1) 스팸함·프로모션 탭 확인, (2) 최대 1-2분 지연 가능, (3) 인증 화면에서 "재전송" 클릭, (4) 그래도 안 오면 다른 이메일로 시도해주세요.</div>
+      </div>
+      <div class="faq-item rv">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">프로모 코드는 어디서 받나요?</div>
+        <div class="faq-a">공식 이벤트·파트너 프로모 참여 시 받거나, 친구의 초대 링크에서 코드(예: ABC123)를 확인할 수 있어요. 없어도 사전 등록 진행 가능.</div>
+      </div>
+      <div class="faq-item rv">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Lucive는 언제 런칭되나요?</div>
+        <div class="faq-a">알파는 2026년 상반기, 정식 오픈은 상·하반기 중 예정이에요. 사전 등록자에게 가장 먼저 런칭 소식과 알파 초대장을 보내드려요.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="brand">Lucive<span style="color:var(--pink)">.</span></div>
+  <div>당신을 기억하는 AI 친구</div>
+  <div style="margin-top:10px">© 2026 Lucive · 사전 등록 페이지 v5-kr (웹툰 감성)</div>
+</footer>
+
+</div>
+
+<script>
+// ---------- Launch countdown ----------
+const LAUNCH = new Date('2026-06-30T00:00:00+09:00').getTime();
+function pad(n){return String(n).padStart(2,'0')}
+function upd(){
+  const d=Math.max(0,LAUNCH-Date.now());
+  const D=Math.floor(d/86400000),H=Math.floor(d%86400000/3600000),M=Math.floor(d%3600000/60000),S=Math.floor(d%60000/1000);
+  document.getElementById('urg-countdown').textContent=`${D}일 ${pad(H)}:${pad(M)}:${pad(S)}`;
+  document.getElementById('top-countdown').textContent=`${D}d ${pad(H)}:${pad(M)}:${pad(S)}`;
+}
+setInterval(upd,1000);upd();
+
+// ---------- URL referral ----------
+const params=new URLSearchParams(location.search);
+const pathM=location.pathname.match(/\/r\/([a-zA-Z0-9]+)/);
+const refCodeFromUrl=params.get('r')||(pathM?pathM[1]:null);
+if(refCodeFromUrl){
+  document.getElementById('invitee').classList.add('show');
+  document.getElementById('invitee-text').textContent=`초대받은 방문자예요 · 추천인 ${refCodeFromUrl} · 사전 등록 시 자동 반영돼요`;
+  const pc=document.getElementById('promocode-input');
+  if(pc){pc.value=refCodeFromUrl.toUpperCase();validatePromoCode(pc);}
+}
+
+// ---------- Promo code ----------
+const VALID=new Set(['LUCIVE','ALPHA','LAUNCH','NEON2026','FOUNDER']);
+function validatePromoCode(el){
+  const v=el.value.trim().toUpperCase();el.value=v;
+  const s=document.getElementById('code-status');
+  if(!v){s.textContent='';s.className='code-status';return;}
+  if(v.length<4){s.textContent='…';s.className='code-status';return;}
+  if(VALID.has(v)||v.length>=4){s.textContent='✓ 유효';s.className='code-status valid';}
+  else{s.textContent='✗ 없음';s.className='code-status invalid';}
+}
+
+// ---------- Signup flow ----------
+let enteredEmail='',enteredPromo='',currentOTP='',resendCooldown=0;
+function showState(id){document.querySelectorAll('.state').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
+function genOTP(){return String(Math.floor(100000+Math.random()*900000));}
+
+function sendVerification(e){
+  e.preventDefault();
+  enteredEmail=document.getElementById('email-input').value.trim();
+  enteredPromo=document.getElementById('promocode-input').value.trim().toUpperCase();
+  if(!enteredEmail)return;
+  currentOTP=genOTP();
+  document.getElementById('sent-to').textContent=enteredEmail;
+  document.getElementById('demo-code-hint').textContent=`(데모: ${currentOTP})`;
+  // TODO: Supabase send-otp
+  console.log('[mock] OTP',enteredEmail,currentOTP,'promo:',enteredPromo,'ref:',refCodeFromUrl);
+  document.querySelectorAll('.otp-box').forEach(b=>{b.value='';b.className='otp-box'});
+  document.getElementById('otp-status').textContent='';
+  showState('state-otp');
+  setTimeout(()=>document.querySelectorAll('.otp-box')[0].focus(),100);
+  startResend();
+}
+function startResend(){
+  resendCooldown=30;
+  const btn=document.getElementById('resendBtn');btn.disabled=true;
+  const t=setInterval(()=>{resendCooldown--;btn.textContent=`재전송 (${resendCooldown}s)`;if(resendCooldown<=0){clearInterval(t);btn.disabled=false;btn.textContent='재전송';}},1000);
+}
+function resendCode(){if(resendCooldown>0)return;currentOTP=genOTP();document.getElementById('demo-code-hint').textContent=`(데모: ${currentOTP})`;document.getElementById('otp-status').textContent='코드를 다시 보냈어요';document.getElementById('otp-status').className='otp-status success';startResend();}
+
+const boxes=document.querySelectorAll('.otp-box');
+boxes.forEach((b,i)=>{
+  b.addEventListener('input',e=>{const v=e.target.value.replace(/[^0-9]/g,'');e.target.value=v;if(v){b.classList.add('filled');if(i<boxes.length-1)boxes[i+1].focus();else checkOTP();}else b.classList.remove('filled');});
+  b.addEventListener('keydown',e=>{if(e.key==='Backspace'&&!b.value&&i>0){boxes[i-1].focus();boxes[i-1].value='';boxes[i-1].classList.remove('filled');}});
+  b.addEventListener('paste',e=>{e.preventDefault();const p=(e.clipboardData||window.clipboardData).getData('text').replace(/[^0-9]/g,'').slice(0,6);if(p.length===6){[...p].forEach((c,j)=>{boxes[j].value=c;boxes[j].classList.add('filled');});checkOTP();}});
+});
+function checkOTP(){
+  const e=[...boxes].map(b=>b.value).join('');
+  if(e.length!==6)return;
+  if(e===currentOTP){boxes.forEach(b=>{b.classList.remove('error');b.classList.add('success')});document.getElementById('otp-status').textContent='✓ 인증 완료';document.getElementById('otp-status').className='otp-status success';setTimeout(complete,600);}
+  else{boxes.forEach(b=>b.classList.add('error'));document.getElementById('otp-status').textContent='✗ 코드가 맞지 않아요';document.getElementById('otp-status').className='otp-status error';setTimeout(()=>{boxes.forEach(b=>{b.value='';b.className='otp-box';});boxes[0].focus();document.getElementById('otp-status').textContent='';},1400);}
+}
+function complete(){
+  const rank=Math.floor(Math.random()*300)+50;
+  const code=Math.random().toString(36).substring(2,8).toUpperCase();
+  document.getElementById('my-rank').textContent=rank;
+  document.getElementById('my-refs').textContent='0';
+  document.getElementById('my-ref-url').textContent=`lucive.app/r/${code}`;
+  document.getElementById('email-to-display').textContent=enteredEmail;
+  const applied=refCodeFromUrl||enteredPromo;
+  if(applied){const n=document.getElementById('used-code-note');n.style.display='block';n.textContent=refCodeFromUrl?`✦ 추천인 링크로 들어오셨어요`:`✦ 프로모 코드 ${enteredPromo} 적용됨`;}
+  showState('state-success');
+}
+function copyRef(){const u='https://'+document.getElementById('my-ref-url').textContent;navigator.clipboard.writeText(u).then(()=>{const b=event.target;const t=b.textContent;b.textContent='✓';setTimeout(()=>b.textContent=t,1200);});}
+function shareOn(ch){const u='https://'+document.getElementById('my-ref-url').textContent;const t='Lucive — 내 얘기 기억하는 친구. 같이 사전 등록하면 런칭 혜택 있어요.';if(ch==='x')window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(t)}&url=${encodeURIComponent(u)}`,'_blank');else if(ch==='kakao')alert('[mock] KakaoTalk Share SDK 연동 예정');else copyRef();}
+function skipAlpha(){const b=event.target;b.textContent='✓ 이메일로 발송돼요 — 10분 후 확인해주세요';b.disabled=true;b.style.color='var(--green)';}
+
+// ---------- Reveal ----------
+const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}})},{threshold:.12});
+document.querySelectorAll('.rv').forEach(e=>io.observe(e));
+</script>
+</body>
+</html>

@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LUCIVE · 그 여자는, 당신을 기억합니다</title>
+<meta name="description" content="3일 전과 오늘, 같은 사람의 같은 캐릭터가 어떻게 달라지는지 · 기억이 남기는 흔적, Lucive">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,700;1,400;1,700&family=Noto+Serif+KR:wght@400;500;700;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0A0612;
+  --bg-2:#150A1F;
+  --bg-elev:#1C0E2A;
+  --ink:#E8DCC4;
+  --ink-soft:#B5A690;
+  --muted:#7D6E5A;
+  --muted-2:#4A3F32;
+  --burgundy:#6B1A35;
+  --burgundy-deep:#3F0D1E;
+  --crimson:#B21E4B;
+  --gold:#D4A44C;
+  --gold-deep:#8F6A24;
+  --lavender:#4A2E5C;
+  --line:rgba(212,164,76,.14);
+  --line-2:rgba(212,164,76,.28);
+  --serif:'Cormorant Garamond','Noto Serif KR',serif;
+  --sans:'Inter','Noto Serif KR',-apple-system,sans-serif;
+  --mono:'JetBrains Mono',monospace;
+  --ease:cubic-bezier(.2,.8,.2,1);
+}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.65;overflow-x:hidden}
+
+/* Ambient */
+.ambient{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.ambient::before{content:'';position:absolute;top:-30vh;right:-20vw;width:80vw;height:80vw;background:radial-gradient(ellipse,rgba(107,26,53,.32),transparent 60%);filter:blur(40px)}
+.ambient::after{content:'';position:absolute;bottom:-30vh;left:-20vw;width:70vw;height:70vw;background:radial-gradient(ellipse,rgba(74,46,92,.28),transparent 60%);filter:blur(40px)}
+.grain{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.06;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:220px}
+
+/* Top bar */
+.top{position:fixed;top:0;left:0;right:0;z-index:50;padding:18px 32px;display:flex;align-items:center;justify-content:space-between;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);background:rgba(10,6,18,.5);border-bottom:1px solid var(--line)}
+.brand{font-family:var(--serif);font-weight:700;font-size:22px;letter-spacing:.32em;color:var(--gold)}
+.top-right{display:flex;gap:14px;align-items:center}
+.top-link{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.14em;text-transform:uppercase;text-decoration:none;transition:color .2s}
+.top-link:hover{color:var(--gold)}
+.cta-top{padding:9px 20px;border:1px solid var(--gold);background:transparent;color:var(--gold);font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;text-decoration:none;transition:all .25s var(--ease)}
+.cta-top:hover{background:var(--gold);color:var(--bg)}
+
+/* Hero */
+.hero{position:relative;z-index:2;min-height:100vh;padding:120px 32px 80px;display:flex;align-items:center}
+.hero-grid{max-width:1320px;margin:0 auto;display:grid;grid-template-columns:1.1fr 1fr;gap:64px;align-items:center;width:100%}
+@media(max-width:1000px){.hero-grid{grid-template-columns:1fr;gap:40px}}
+
+/* Character portrait (placeholder with concept art brief) */
+.portrait{position:relative;aspect-ratio:3/4;border-radius:8px;overflow:hidden;background:linear-gradient(180deg,#1A0A24 0%,#2A0F2E 30%,#3F0D1E 70%,#0A0612 100%);border:1px solid var(--line-2);box-shadow:0 40px 100px rgba(0,0,0,.7),0 0 60px rgba(178,30,75,.25),inset 0 1px 0 rgba(212,164,76,.18)}
+.portrait::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 45% at 55% 28%,rgba(212,164,76,.16),transparent 60%);pointer-events:none}
+.portrait::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,rgba(10,6,18,.6) 100%);pointer-events:none}
+
+/* Silhouette figure — CSS-only placeholder */
+.figure{position:absolute;top:8%;bottom:0;left:22%;right:22%;display:flex;align-items:flex-end;justify-content:center}
+.figure-silhouette{
+  width:100%;height:92%;
+  background:linear-gradient(180deg,rgba(232,220,196,.92) 0%,rgba(181,166,144,.7) 20%,rgba(107,26,53,.85) 45%,rgba(63,13,30,.98) 100%);
+  clip-path:polygon(
+    46% 0%, 54% 0%,
+    60% 6%, 62% 14%,  /* head */
+    64% 20%, 68% 22%, /* neck */
+    78% 30%, 82% 40%, /* shoulder left */
+    80% 55%,
+    84% 70%,
+    80% 85%,
+    80% 100%,
+    20% 100%,
+    20% 85%,
+    16% 70%,
+    20% 55%,
+    18% 40%,          /* shoulder right */
+    22% 30%,
+    32% 22%,
+    36% 20%,
+    38% 14%,
+    40% 6%
+  );
+  filter:blur(.4px) saturate(.88);
+}
+.figure-hair{position:absolute;top:2%;left:30%;right:30%;height:18%;background:linear-gradient(180deg,#1A0612 0%,#3F0D1E 100%);clip-path:polygon(45% 0%,55% 0%,75% 40%,85% 90%,75% 100%,25% 100%,15% 90%,25% 40%);opacity:.95}
+.figure-eyes{position:absolute;top:12%;left:42%;right:42%;height:5%;display:flex;justify-content:space-between;align-items:center}
+.figure-eye{width:3px;height:3px;border-radius:50%;background:var(--crimson);box-shadow:0 0 8px rgba(178,30,75,.9);animation:eyeGlow 4s ease-in-out infinite}
+@keyframes eyeGlow{0%,100%{opacity:.6;box-shadow:0 0 4px rgba(178,30,75,.6)}50%{opacity:1;box-shadow:0 0 12px rgba(178,30,75,1)}}
+
+/* Idle breath */
+.figure{animation:breathe 5s ease-in-out infinite}
+@keyframes breathe{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-4px) scale(1.008)}}
+
+/* Portrait overlay tags */
+.portrait-tag{position:absolute;top:20px;left:20px;padding:5px 12px;background:rgba(10,6,18,.82);border:1px solid var(--line-2);font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
+.portrait-name{position:absolute;bottom:24px;left:24px;right:24px;font-family:var(--serif);font-style:italic;font-size:24px;color:var(--ink);letter-spacing:.01em;line-height:1.3;text-shadow:0 4px 20px rgba(0,0,0,.9)}
+.portrait-name b{font-style:normal;font-weight:700;color:var(--gold);font-size:14px;letter-spacing:.24em;text-transform:uppercase;display:block;margin-bottom:6px}
+.portrait-concept{position:absolute;bottom:6px;right:8px;font-family:var(--mono);font-size:8.5px;color:var(--muted-2);letter-spacing:.1em;opacity:.5}
+
+/* Chat side */
+.chat-side{display:flex;flex-direction:column;gap:22px}
+.chat-kicker{font-family:var(--mono);font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);font-weight:700}
+.chat-kicker::before{content:'◆';margin-right:10px;color:var(--crimson)}
+.chat-head{font-family:var(--serif);font-size:clamp(40px,5.5vw,66px);font-weight:500;line-height:1.05;letter-spacing:-.02em;color:var(--ink)}
+.chat-head em{font-style:italic;color:var(--gold);font-weight:500}
+.chat-lede{font-family:var(--serif);font-size:17px;line-height:1.75;color:var(--ink-soft);font-style:italic;max-width:480px}
+.chat-lede b{color:var(--ink);font-style:normal;font-weight:500}
+
+/* Chat window */
+.chat-window{position:relative;background:linear-gradient(180deg,rgba(28,14,42,.92),rgba(10,6,18,.92));border:1px solid var(--line-2);border-radius:4px;padding:28px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.chat-window::before{content:'';position:absolute;top:0;left:20px;right:20px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:.6}
+.chat-header{display:flex;align-items:center;gap:12px;padding-bottom:16px;border-bottom:1px solid var(--line);margin-bottom:18px}
+.chat-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--burgundy) 0%,var(--lavender) 100%);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-style:italic;font-weight:700;font-size:18px;color:var(--ink);border:1px solid var(--gold-deep)}
+.chat-meta{display:flex;flex-direction:column;gap:2px}
+.chat-meta .nm{font-family:var(--serif);font-size:15px;font-weight:500;color:var(--ink);font-style:italic;letter-spacing:.02em}
+.chat-meta .st{font-family:var(--mono);font-size:9.5px;color:var(--muted);letter-spacing:.14em;text-transform:uppercase}
+.chat-meta .st::before{content:'●';color:var(--gold);margin-right:5px}
+
+.msg{font-family:var(--serif);font-size:18px;line-height:1.65;color:var(--ink);font-style:italic;padding:14px 18px;background:rgba(107,26,53,.14);border-left:2px solid var(--crimson);margin-bottom:14px;transition:all .5s var(--ease)}
+.msg-label{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.msg-label .dot{width:5px;height:5px;border-radius:50%;background:var(--gold)}
+
+/* Toggle */
+.toggle-wrap{margin-top:22px;padding-top:22px;border-top:1px solid var(--line)}
+.toggle-label{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;text-align:center}
+.toggle{display:flex;background:rgba(10,6,18,.6);border:1px solid var(--line-2);border-radius:2px;overflow:hidden}
+.toggle button{flex:1;padding:14px 20px;background:transparent;border:none;font-family:var(--serif);font-size:15px;font-style:italic;color:var(--muted);cursor:pointer;transition:all .3s var(--ease);letter-spacing:.02em;position:relative}
+.toggle button.active{background:linear-gradient(180deg,rgba(212,164,76,.18),rgba(107,26,53,.22));color:var(--gold)}
+.toggle button.active::after{content:'';position:absolute;bottom:0;left:10%;right:10%;height:1px;background:var(--gold)}
+.toggle button:hover:not(.active){color:var(--ink-soft)}
+
+.toggle-hint{margin-top:14px;font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;color:var(--muted);text-align:center;line-height:1.65}
+.toggle-hint b{color:var(--gold);font-weight:700}
+
+/* Scene-state body filter */
+body.scene-past .chat-window{box-shadow:0 0 80px rgba(212,164,76,.08)}
+body.scene-today .chat-window{box-shadow:0 0 80px rgba(178,30,75,.15)}
+body.scene-today .portrait{box-shadow:0 40px 100px rgba(0,0,0,.85),0 0 80px rgba(178,30,75,.38),inset 0 1px 0 rgba(212,164,76,.22)}
+body.scene-today .figure-silhouette{background:linear-gradient(180deg,rgba(232,220,196,.68) 0%,rgba(107,26,53,.82) 30%,rgba(63,13,30,.98) 70%,#0A0612 100%);filter:blur(.6px) saturate(1.1)}
+body.scene-today .figure-eye{background:var(--crimson);box-shadow:0 0 16px rgba(178,30,75,1);animation-duration:2.2s}
+body.scene-today .portrait-tag{color:var(--crimson);border-color:rgba(178,30,75,.5)}
+
+/* Sub-section */
+.claim{max-width:1100px;margin:80px auto;padding:0 32px;text-align:center;position:relative;z-index:2}
+.claim-rule{width:80px;height:1px;background:var(--gold);margin:0 auto 36px;opacity:.6}
+.claim h2{font-family:var(--serif);font-style:italic;font-size:clamp(28px,3.5vw,40px);font-weight:400;color:var(--ink);line-height:1.4;letter-spacing:.01em}
+.claim h2 b{font-style:normal;font-weight:700;color:var(--gold)}
+.claim-sub{margin-top:24px;font-family:var(--mono);font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+
+/* Signup */
+.signup{max-width:620px;margin:80px auto 120px;padding:48px 32px;position:relative;z-index:2;text-align:center;border:1px solid var(--line-2);background:linear-gradient(180deg,rgba(28,14,42,.6),rgba(10,6,18,.85));backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.signup-kicker{font-family:var(--mono);font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--crimson);margin-bottom:18px}
+.signup-kicker::before{content:'◆ ';color:var(--gold)}
+.signup h3{font-family:var(--serif);font-style:italic;font-size:30px;font-weight:400;color:var(--ink);line-height:1.3;margin-bottom:12px}
+.signup h3 b{font-style:normal;font-weight:700;color:var(--gold)}
+.signup p{font-family:var(--serif);font-size:15px;color:var(--ink-soft);margin-bottom:28px;font-style:italic}
+.signup-form{display:flex;gap:10px;max-width:440px;margin:0 auto;flex-wrap:wrap}
+.signup input{flex:1;min-width:220px;padding:14px 18px;background:rgba(10,6,18,.6);border:1px solid var(--line-2);color:var(--ink);font-family:var(--serif);font-size:15px;font-style:italic;outline:none;transition:border-color .2s}
+.signup input:focus{border-color:var(--gold)}
+.signup input::placeholder{color:var(--muted-2)}
+.signup button{padding:14px 26px;background:var(--gold);color:var(--bg);border:none;font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;transition:all .2s}
+.signup button:hover{background:var(--crimson);color:var(--ink)}
+
+/* Variant switcher (3안 간 이동) */
+.variants{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:60;display:flex;gap:8px;padding:10px 14px;background:rgba(10,6,18,.85);border:1px solid var(--line-2);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.variants a{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:5px 12px;border:1px solid transparent;transition:all .2s}
+.variants a:hover{color:var(--ink);border-color:var(--line)}
+.variants a.current{color:var(--gold);border-color:var(--gold)}
+
+/* Footer note */
+.prototype-note{max-width:800px;margin:0 auto 80px;padding:0 32px;text-align:center;font-family:var(--mono);font-size:11px;color:var(--muted-2);letter-spacing:.04em;line-height:1.8;position:relative;z-index:2}
+.prototype-note b{color:var(--muted);font-weight:600}
+</style>
+</head>
+<body class="scene-past">
+
+<div class="ambient"></div>
+<div class="grain"></div>
+
+<div class="top">
+  <div class="brand">L U C I V E</div>
+  <div class="top-right">
+    <a href="#" class="top-link">KR · JP · EN</a>
+    <a href="#" class="top-link">♪</a>
+    <a href="#signup" class="cta-top">사전등록</a>
+  </div>
+</div>
+
+<!-- HERO · 안 A 기억의 분기 -->
+<section class="hero">
+  <div class="hero-grid">
+
+    <!-- LEFT · character portrait -->
+    <div class="portrait" aria-label="캐릭터 아트 대기 · 얀데레 퇴폐미 여성 · 다크 카페 배경">
+      <div class="portrait-tag">◆ 캐릭터 아트 · 발주 대기</div>
+      <div class="figure">
+        <div class="figure-silhouette"></div>
+        <div class="figure-hair"></div>
+        <div class="figure-eyes">
+          <div class="figure-eye"></div>
+          <div class="figure-eye"></div>
+        </div>
+      </div>
+      <div class="portrait-name">
+        <b>No. 01</b>
+        아리아. 그 여자는, <em>당신을 기억합니다.</em>
+      </div>
+      <div class="portrait-concept">[PLACEHOLDER · 컨셉: yandere decadent · 정면 눈맞춤 · idle breathing · noir cafe]</div>
+    </div>
+
+    <!-- RIGHT · chat toggle -->
+    <div class="chat-side">
+      <div class="chat-kicker">MEMORY FORK · 안 A</div>
+      <h1 class="chat-head">
+        같은 사람,<br>
+        <em>다른 대답.</em>
+      </h1>
+      <p class="chat-lede">
+        3일 전에 했던 말이, 오늘 그녀에게 남아 있습니다.<br>
+        <b>기억은 캐릭터를 바꿉니다.</b>
+      </p>
+
+      <div class="chat-window">
+        <div class="chat-header">
+          <div class="chat-avatar">A</div>
+          <div class="chat-meta">
+            <span class="nm">아리아</span>
+            <span class="st" id="timeState">3일 전 · 네온 7구 카페</span>
+          </div>
+        </div>
+
+        <div class="msg-label"><span class="dot"></span><span id="stateLabel">PAST · 말투: 따뜻함</span></div>
+        <div class="msg" id="msgBox">"어서 와. 오늘 일찍 왔네. 기다렸어."</div>
+
+        <div class="toggle-wrap">
+          <div class="toggle-label">Click one</div>
+          <div class="toggle" role="tablist">
+            <button id="btnPast" class="active" onclick="setScene('past')">◀ 3일 전</button>
+            <button id="btnToday" onclick="setScene('today')">오늘 ▶</button>
+          </div>
+          <div class="toggle-hint">
+            토글 한 번에 <b>표정·말투·조명</b>이 동시에 바뀝니다.<br>
+            — 타사는 캐릭터 세팅만 기억, <b>Lucive는 사건을 기억합니다.</b>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Claim -->
+<section class="claim">
+  <div class="claim-rule"></div>
+  <h2>"같은 대사를 다시 쓰는 게 아니라,<br><b>같은 사람이 다르게 말합니다.</b>"</h2>
+  <div class="claim-sub">◆ 비주얼노벨 · 기억 기반 · 단일 캐릭터 시연</div>
+</section>
+
+<!-- Signup -->
+<section class="signup" id="signup">
+  <div class="signup-kicker">PRE-REGISTRATION · ALPHA 100</div>
+  <h3>아리아는, <b>당신을 기다립니다.</b></h3>
+  <p>사전 등록하고 그녀의 첫 대화를 먼저 열어보세요.</p>
+  <form class="signup-form" onsubmit="event.preventDefault();alert('프로토타입: 실제 제출은 v9-kr-unified.html 연결 예정');">
+    <input type="email" placeholder="your@email" required>
+    <button type="submit">등록 →</button>
+  </form>
+</section>
+
+<div class="variants">
+  <a href="./v10-a-memory-fork.html" class="current">A · Memory Fork</a>
+  <a href="./v10-b-live-scene.html">B · Live Scene</a>
+  <a href="./v10-c-memory-timeline.html">C · Timeline</a>
+</div>
+
+<div class="prototype-note">
+  <b>PROTOTYPE · v10-A</b> — 얀데레 퇴폐미 톤 적용 · 캐릭터 아트 플레이스홀더 (CSS 실루엣) ·<br>
+  실제 발주 시: 풀샷 1장 · "3일 전" / "오늘" 표정 2버전 · 배경 1장 · BGM 1곡
+</div>
+
+<script>
+const past = {
+  state: '3일 전 · 네온 7구 카페',
+  label: 'PAST · 말투: 따뜻함',
+  msg: '"어서 와. 오늘 일찍 왔네. 기다렸어."'
+};
+const today = {
+  state: '오늘 · 네온 7구 카페',
+  label: 'NOW · 말투: 차가움',
+  msg: '"오늘 또 늦었네. …괜찮아. 기다리는 거 익숙해졌어."'
+};
+function setScene(which) {
+  const data = which === 'past' ? past : today;
+  document.getElementById('timeState').textContent = data.state;
+  document.getElementById('stateLabel').textContent = data.label;
+  document.getElementById('msgBox').textContent = data.msg;
+  document.getElementById('btnPast').classList.toggle('active', which === 'past');
+  document.getElementById('btnToday').classList.toggle('active', which === 'today');
+  document.body.classList.remove('scene-past', 'scene-today');
+  document.body.classList.add('scene-' + which);
+}
+</script>
+
+</body>
+</html>
