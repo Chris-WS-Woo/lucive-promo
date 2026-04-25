@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>LUCIVE · 풀스크린 (v25 · WIDE)</title>
+<title>LUCIVE · 인트로 → 풀스크린 체험 (v25 · WIDE)</title>
 <meta name="description" content="고정 설정된 캐릭터 챗은 잊어요. 그가 당신의 결말을 만듭니다.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -387,6 +387,28 @@ body{background:var(--bg-deep);color:var(--ink);font-family:var(--sans);min-heig
 .tease-secondary{background:transparent;color:var(--ink-soft);border:1px solid var(--border-medium);padding:12px 20px;border-radius:14px;font-family:var(--sans);font-size:13px;cursor:pointer;text-align:center;transition:all .2s}
 .tease-secondary:hover{border-color:var(--lucid-cyan);color:var(--lucid-cyan)}
 
+/* ============ LANDING HERO (v25 wide · intro page · stays full-screen after enter) ============ */
+.landing{position:absolute;inset:0;z-index:5;display:flex;flex-direction:column;background:radial-gradient(ellipse at 30% 20%,rgba(139,92,246,.18),transparent 55%),radial-gradient(ellipse at 75% 85%,rgba(236,72,153,.16),transparent 55%),var(--bg-deep);overflow-y:auto;overflow-x:hidden}
+.landing-hero{position:relative;min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 24px 80px;gap:24px;text-align:center}
+.landing-hero::before{content:'';position:absolute;inset:0;background-image:url('./assets/v17/story1/thumbnail/hero-16x9.png');background-size:cover;background-position:center;opacity:.22;filter:saturate(1.1) blur(2px);pointer-events:none}
+.landing-hero::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,9,12,.4) 0%,rgba(8,9,12,.7) 100%);pointer-events:none}
+.landing-eye{position:relative;font-family:var(--mono);font-size:11px;letter-spacing:.36em;text-transform:uppercase;font-weight:800;background:var(--gradient-aurora);-webkit-background-clip:text;-webkit-text-fill-color:transparent;z-index:1}
+.landing-h{position:relative;font-family:var(--display);font-size:clamp(28px,6.4vw,52px);font-weight:900;letter-spacing:-.035em;line-height:1.12;color:var(--ink);max-width:880px;z-index:1}
+.landing-h em{font-style:normal;background:var(--gradient-aurora);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.landing-h s{text-decoration:line-through;text-decoration-color:rgba(255,255,255,.32);text-decoration-thickness:1.5px;color:var(--muted);font-weight:700}
+.landing-sub{position:relative;font-family:var(--sans);font-size:clamp(14px,2vw,17px);color:var(--ink-soft);line-height:1.6;max-width:620px;z-index:1}
+.landing-sub b{color:var(--ink);font-weight:700}
+.landing-cta{position:relative;display:inline-flex;align-items:center;gap:12px;padding:18px 36px;background:var(--gradient-primary);color:#fff;border:none;border-radius:100px;font-family:var(--sans);font-size:clamp(15px,2.2vw,18px);font-weight:900;letter-spacing:-.005em;cursor:pointer;box-shadow:0 18px 56px rgba(6,182,212,.45);transition:transform .25s var(--ease),box-shadow .25s;z-index:1;text-decoration:none}
+.landing-cta:hover{transform:translateY(-3px);box-shadow:0 26px 72px rgba(6,182,212,.6)}
+.landing-cta::after{content:'→';font-family:var(--mono);font-weight:800}
+.landing-features{position:relative;display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:8px;z-index:1}
+.lf{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:rgba(8,9,12,.65);border:1px solid var(--border-medium);border-radius:100px;font-family:var(--sans);font-size:12.5px;font-weight:700;color:var(--ink);backdrop-filter:blur(4px)}
+.lf .ico{font-size:15px;line-height:1}
+.landing-meta{position:relative;display:flex;gap:18px;margin-top:18px;font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.16em;text-transform:uppercase;font-weight:700;z-index:1}
+.landing-meta b{color:var(--lucid-cyan);font-weight:800}
+/* topbar/tabbar/stats hidden during landing */
+.app.view-landing .topbar,.app.view-landing .tabbar,.app.view-landing .stats-hud{display:none!important}
+
 /* TABBAR */
 .tabbar{height:var(--tab-h);min-height:var(--tab-h);background:rgba(8,9,12,.96);border-top:1px solid var(--border-subtle);display:flex;align-items:stretch;position:relative;z-index:40;padding-bottom:env(safe-area-inset-bottom)}
 .app:not(.view-cast) .tabbar{display:none}
@@ -559,7 +581,7 @@ audio{display:none}
 
 <audio id="voiceAudio" preload="auto"></audio>
 
-<div class="app view-cast mode-text" id="app">
+<div class="app view-landing mode-text" id="app">
   <div class="app-frame">
 
     <div class="topbar">
@@ -600,8 +622,27 @@ audio{display:none}
 
     <div class="screens">
 
+      <!-- v25 wide · INTRO LANDING (active first · 체험하기 → cast in full-screen) -->
+      <div class="screen active" id="screen-landing">
+        <div class="landing">
+          <div class="landing-hero">
+            <div class="landing-eye">LUCIVE · NEXT-GEN CHARACTER CHAT</div>
+            <h1 class="landing-h"><s>고정 설정된 캐릭터 챗</s>은 잊어요.<br><em>그가 · 당신의 결말을 만듭니다.</em></h1>
+            <p class="landing-sub">비주얼 노벨 + 음성 연기 + 분기 엔딩 + 회귀 서사 — <b>캐릭터 챗의 다음 세대</b>.</p>
+            <button class="landing-cta" onclick="enterFromLanding()">▶ 체험하기 · 90초</button>
+            <div class="landing-features">
+              <span class="lf"><span class="ico">🎭</span> 표정 12종</span>
+              <span class="lf"><span class="ico">🔊</span> 음성 연기</span>
+              <span class="lf"><span class="ico">⚡</span> 분기 엔딩</span>
+              <span class="lf"><span class="ico">🔁</span> 회귀 서사</span>
+            </div>
+            <div class="landing-meta"><span><b>26명</b> 캐릭터</span><span><b>10</b> 세계관</span><span>알파 <b>D-<span id="landingDday">17</span></b></span></div>
+          </div>
+        </div>
+      </div>
+
       <!-- CAST LINEUP (v19 entry) -->
-      <div class="screen active" id="screen-cast">
+      <div class="screen" id="screen-cast">
         <div class="cast">
           <div class="cast-prop">
             <div class="cast-prop-eye">LUCIVE · NEXT-GEN CHARACTER CHAT</div>
@@ -1257,7 +1298,7 @@ function switchScreen(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById('screen-'+id).classList.add('active');
   const app = document.getElementById('app');
-  app.classList.remove('view-cast','view-splash','view-chat','view-signup');
+  app.classList.remove('view-landing','view-cast','view-splash','view-chat','view-signup');
   app.classList.add('view-'+id);
 }
 function openSplash(){ switchScreen('splash'); }
@@ -1266,6 +1307,11 @@ function enterChatDirect(){
   startChat();
 }
 window.enterChatDirect = enterChatDirect;
+/* v25 wide · landing 체험하기 → switch to cast (stays full-screen · no frame transition) */
+function enterFromLanding(){
+  switchScreen('cast');
+}
+window.enterFromLanding = enterFromLanding;
 function goBack(){
   const app = document.getElementById('app');
   // v21 · stop audio when leaving chat
@@ -1913,6 +1959,7 @@ function tickDday(){
   set('castDday', d);
   set('ddayTab', d);
   set('teaseDday', d);
+  set('landingDday', d);
 }
 tickDday();
 setInterval(tickDday, 60000);
