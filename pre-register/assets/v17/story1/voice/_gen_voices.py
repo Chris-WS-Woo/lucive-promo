@@ -1,20 +1,27 @@
-"""v21 · TTS for Story 1 PROLOGUE · ElevenLabs v3 + STRONG emotion tags.
+"""v22 · TTS for Story 1 PROLOGUE · ElevenLabs v3 · MAX intensity.
 
-v21 prologue lean cliffhanger uses only 3 voice lines:
-  - raon_05_run        "뛰어요. 지금."         (urgent shout under breath)
-  - dex_01_surrender   "...라온. 투항해."      (cold antagonist)
-  - raon_c2_yeonwoo    "...연우."              (broken whisper · breaking point)
+User feedback in v21: "TTS too calm, no urgency". The Dogjoy voice itself is
+trained as "calm Korean male". To force dramatic delivery on a calm-trained
+voice, we combine THREE pressure mechanisms in v22:
 
-v20 lines kept for backward-compat with older versions (v17–v20):
-  raon_01_check, raon_02_intro, raon_03_warn, raon_04_cmd,
-  raon_a1_ok, raon_a2_behind, raon_b1_name, raon_b2_alive
+  (1) settings · stability LOW (0.18) + style MAX (1.0) + similarity_boost HIGH
+      · low stability lets the model swing emotionally on every sample
+      · max style aggressively honors emotion tags
+  (2) text-side punctuation/emphasis pressure ·
+      · ALL CAPS for shouts, repeated punctuation, ellipsis for breath
+      · multiple short bursts ("뛰어! 뛰어요!! 지금!!") give the model
+        explicit acceleration cues that calm-voice training cannot ignore
+  (3) tag stacking · 3-5 emotion tags per line, escalating
+      · [BREATHLESS][lungs burning][adrenaline][hissed shouting]…
 
-NOTE on v3 emotion tags · v21 escalates intensity because previous outputs felt
-too calm. v3 weights tag emphasis by stability + style settings AND tag count;
-we drop stability and stack 2-3 strong emotion tags per line to force dramatic
-delivery. Korean text + English emotion tags is supported by v3.
+Lines actually used in v21+ prologue (only 3 dramatic):
+  raon_05_run        → urgent run command (peak escape)
+  dex_01_surrender   → cold antagonist demand
+  raon_c2_yeonwoo    → broken whisper (player name · before cut)
 
-Regenerate with:
+Other lines retained for legacy v17–v20 backward compat.
+
+Usage:
   ELEVENLABS_API_KEY="..." python _gen_voices.py
 """
 import os, json, urllib.request, urllib.error, sys, re
@@ -23,47 +30,56 @@ sys.stdout.reconfigure(encoding='utf-8')
 KEY = os.environ['ELEVENLABS_API_KEY']
 MODEL = "eleven_v3"
 
-# v21 · stability LOW · style HIGH · v3 honors tags much harder
-SETTINGS_DRAMATIC = {
-  "stability": 0.30, "similarity_boost": 0.85, "style": 0.85, "use_speaker_boost": True,
+# v22 · settings tuned per character
+# RAON_PEAK · max emotional swing (low stab · max style)
+SETTINGS_RAON_PEAK = {
+  "stability": 0.18, "similarity_boost": 0.92, "style": 1.0, "use_speaker_boost": True,
 }
-SETTINGS_RAON = {
-  "stability": 0.45, "similarity_boost": 0.85, "style": 0.65, "use_speaker_boost": True,
-}
+# DEX · cold restraint, slightly higher stability so the menace stays controlled
 SETTINGS_DEX = {
-  "stability": 0.32, "similarity_boost": 0.82, "style": 0.85, "use_speaker_boost": True,
+  "stability": 0.28, "similarity_boost": 0.85, "style": 0.95, "use_speaker_boost": True,
+}
+# RAON_REGULAR · used for legacy non-peak lines · still moderately emotional
+SETTINGS_RAON = {
+  "stability": 0.40, "similarity_boost": 0.88, "style": 0.78, "use_speaker_boost": True,
 }
 
-VOICE_RAON = "qSSLFjgzC2qvkt4Uba0s"
+VOICE_RAON = "qSSLFjgzC2qvkt4Uba0s"  # Dogjoy (calm-trained · we force emotion)
 VOICE_DEX  = "qSSLFjgzC2qvkt4Uba0s"
 
 # Lines · (name, voice_id, settings, text)
-# v21 · core 3 dramatic lines used by current prologue
 LINES = [
-  # === v21 PROLOGUE CORE (only 3 lines used in cliffhanger) ===
-  ("raon_05_run",   VOICE_RAON, SETTINGS_DRAMATIC,
-    "[urgent][shouting under breath][panicked][harsh whisper] 뛰어요. [shouted whisper] 지금."),
+  # === v22 PROLOGUE CORE · max dramatic ===
+  # raon_05_run · urgent shout under breath · "RUN. NOW."
+  # repeated punctuation + ALL CAPS forces acceleration the calm voice can't ignore
+  ("raon_05_run", VOICE_RAON, SETTINGS_RAON_PEAK,
+    "[BREATHLESS][LUNGS BURNING][adrenaline][hissed shouting through teeth]"
+    "뛰어요!! [PANICKED HARSH WHISPER]지금!! [GASPING]지금!!"),
+  # dex_01_surrender · ice cold antagonist · slow venom
   ("dex_01_surrender", VOICE_DEX, SETTINGS_DEX,
-    "[ice cold][slow][menacing][slight smirk]…라온. [chillingly polite][taunting] 투항해."),
-  ("raon_c2_yeonwoo", VOICE_RAON, SETTINGS_DRAMATIC,
-    "[breaking voice][whispered][almost crying][trembling][devastated]…연우."),
+    "[ICE COLD][SLOW][menacing low voice][slight smirk in voice]"
+    "…라온. [CHILLINGLY POLITE PAUSE][taunting whisper]투항해."),
+  # raon_c2_yeonwoo · breaking voice · whispered name · the moment before the cut
+  ("raon_c2_yeonwoo", VOICE_RAON, SETTINGS_RAON_PEAK,
+    "[BROKEN VOICE][shaking gasping sob][devastated whisper][trembling]"
+    "…연우……… [BARELY AUDIBLE BREATH]연우……"),
 
-  # === LEGACY · kept for v17–v20 compatibility (re-tagged stronger) ===
+  # === LEGACY · v17–v20 backward compat (re-tagged stronger) ===
   ("raon_01_check", VOICE_RAON, SETTINGS_RAON,
     "[low voice][controlled tension][quiet] 연우 씨, [softer] 자리 확인 부탁드려요."),
   ("raon_02_intro", VOICE_RAON, SETTINGS_RAON,
     "[low voice][quiet][professional but tense] 호위 맡은 라온입니다. [firmer][quietly urgent] 지금 일어나지 마세요."),
-  ("raon_03_warn",  VOICE_RAON, SETTINGS_RAON,
+  ("raon_03_warn", VOICE_RAON, SETTINGS_RAON,
     "[low voice][tense whisper][cautious] 우측 출구 근처에. [pause][harder whisper] 모르는 얼굴 셋."),
-  ("raon_04_cmd",   VOICE_RAON, SETTINGS_RAON,
-    "[low voice][urgent][hissed][controlled panic] 3초 뒤. [short][harder] 왼쪽 화장실 방향으로."),
-  ("raon_a1_ok",    VOICE_RAON, SETTINGS_RAON,
+  ("raon_04_cmd", VOICE_RAON, SETTINGS_RAON,
+    "[low voice][URGENT][hissed][controlled panic] 3초 뒤. [harder] 왼쪽 화장실 방향으로!"),
+  ("raon_a1_ok", VOICE_RAON, SETTINGS_RAON,
     "[breathless][concerned][quiet][voice rough] 괜찮아?"),
   ("raon_a2_behind", VOICE_RAON, SETTINGS_RAON,
     "[low voice][resigned][weary][soft] 그럼 말고. [gentle][protective] 내 등 뒤에 있어."),
-  ("raon_b1_name",  VOICE_RAON, SETTINGS_DRAMATIC,
-    "[low voice][relieved][quietly broken][choked] 연우."),
-  ("raon_b2_alive", VOICE_RAON, SETTINGS_DRAMATIC,
+  ("raon_b1_name", VOICE_RAON, SETTINGS_RAON_PEAK,
+    "[low voice][relieved][quietly broken][choked] 연우…"),
+  ("raon_b2_alive", VOICE_RAON, SETTINGS_RAON_PEAK,
     "[low voice][soft][broken][almost a sigh][relieved] 죽지 않았네. [quietly][trembling] 그거면 됐어."),
 ]
 
