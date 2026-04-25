@@ -1,25 +1,21 @@
-"""v22 · TTS for Story 1 PROLOGUE · ElevenLabs v3 · MAX intensity.
+"""v23 · TTS for Story 1 PROLOGUE · ElevenLabs v3 · NEW VOICE IDs.
 
-User feedback in v21: "TTS too calm, no urgency". The Dogjoy voice itself is
-trained as "calm Korean male". To force dramatic delivery on a calm-trained
-voice, we combine THREE pressure mechanisms in v22:
+User feedback in v22:
+  - Raon's voice sounded like "a young middle-school girl" → switch voice ID
+  - Need DEEP MASCULINE Korean voices for Raon (호위 14년차) and Dex (히트맨)
 
-  (1) settings · stability LOW (0.18) + style MAX (1.0) + similarity_boost HIGH
-      · low stability lets the model swing emotionally on every sample
-      · max style aggressively honors emotion tags
-  (2) text-side punctuation/emphasis pressure ·
-      · ALL CAPS for shouts, repeated punctuation, ellipsis for breath
-      · multiple short bursts ("뛰어! 뛰어요!! 지금!!") give the model
-        explicit acceleration cues that calm-voice training cannot ignore
-  (3) tag stacking · 3-5 emotion tags per line, escalating
-      · [BREATHLESS][lungs burning][adrenaline][hissed shouting]…
+NEW voices selected from ElevenLabs shared library:
+  - Raon: CW8sR0DtVIQaeLyAjGAf · "Premium Korean Baritone"
+          young Seoul male · deep, resonant, calm · pro 3-hour clone
+  - Dex:  V6IXmZ3a4ixL7ixYPupu · "Steve - Mysterious Horror"
+          middle-aged Seoul male · deep, calm, mysterious narrator
 
-Lines actually used in v21+ prologue (only 3 dramatic):
-  raon_05_run        → urgent run command (peak escape)
-  dex_01_surrender   → cold antagonist demand
-  raon_c2_yeonwoo    → broken whisper (player name · before cut)
-
-Other lines retained for legacy v17–v20 backward compat.
+Test files written by `_test_voices.py` (raon_test_*.mp3) for A/B compare.
+Alternative Raon candidates if Baritone doesn't fit:
+  - 7ZVPKvVmVZZERLd1Q6BS  Min-jun (young · deep resonant)
+  - mK6Q1HRYYwUJwQGwMPYw  Luca (young · calm serious)
+  - ibCGc01503OQd2R6i1n1  Marcus - Baritone Stoic (middle-aged · husky)
+  - aQzFKIjVemqRAhfd9est  Midnight Cave (middle-aged · resonant)
 
 Usage:
   ELEVENLABS_API_KEY="..." python _gen_voices.py
@@ -30,41 +26,43 @@ sys.stdout.reconfigure(encoding='utf-8')
 KEY = os.environ['ELEVENLABS_API_KEY']
 MODEL = "eleven_v3"
 
-# v22 · settings tuned per character
-# RAON_PEAK · max emotional swing (low stab · max style)
-SETTINGS_RAON_PEAK = {
+# Voice IDs · v23
+VOICE_RAON = "CW8sR0DtVIQaeLyAjGAf"  # Premium Korean Baritone (young · deep · Seoul)
+VOICE_DEX  = "V6IXmZ3a4ixL7ixYPupu"  # Steve · Mysterious Horror (deep · calm · narrator)
+
+# Settings · low stability + max style forces v3 to honor emotion tags hard
+SETTINGS_PEAK = {
   "stability": 0.18, "similarity_boost": 0.92, "style": 1.0, "use_speaker_boost": True,
 }
-# DEX · cold restraint, slightly higher stability so the menace stays controlled
 SETTINGS_DEX = {
   "stability": 0.28, "similarity_boost": 0.85, "style": 0.95, "use_speaker_boost": True,
 }
-# RAON_REGULAR · used for legacy non-peak lines · still moderately emotional
 SETTINGS_RAON = {
   "stability": 0.40, "similarity_boost": 0.88, "style": 0.78, "use_speaker_boost": True,
 }
 
-VOICE_RAON = "qSSLFjgzC2qvkt4Uba0s"  # Dogjoy (calm-trained · we force emotion)
-VOICE_DEX  = "qSSLFjgzC2qvkt4Uba0s"
-
 # Lines · (name, voice_id, settings, text)
 LINES = [
-  # === v22 PROLOGUE CORE · max dramatic ===
-  # raon_05_run · urgent shout under breath · "RUN. NOW."
-  # repeated punctuation + ALL CAPS forces acceleration the calm voice can't ignore
-  ("raon_05_run", VOICE_RAON, SETTINGS_RAON_PEAK,
+  # === v23 PROLOGUE CORE · max dramatic ===
+  ("raon_05_run", VOICE_RAON, SETTINGS_PEAK,
     "[BREATHLESS][LUNGS BURNING][adrenaline][hissed shouting through teeth]"
     "뛰어요!! [PANICKED HARSH WHISPER]지금!! [GASPING]지금!!"),
-  # dex_01_surrender · ice cold antagonist · slow venom
   ("dex_01_surrender", VOICE_DEX, SETTINGS_DEX,
     "[ICE COLD][SLOW][menacing low voice][slight smirk in voice]"
     "…라온. [CHILLINGLY POLITE PAUSE][taunting whisper]투항해."),
-  # raon_c2_yeonwoo · breaking voice · whispered name · the moment before the cut
-  ("raon_c2_yeonwoo", VOICE_RAON, SETTINGS_RAON_PEAK,
+  ("raon_c2_yeonwoo", VOICE_RAON, SETTINGS_PEAK,
     "[BROKEN VOICE][shaking gasping sob][devastated whisper][trembling]"
     "…연우……… [BARELY AUDIBLE BREATH]연우……"),
 
-  # === LEGACY · v17–v20 backward compat (re-tagged stronger) ===
+  # === v23 REGRESSION FRAME · new lines for the "again" structure ===
+  ("raon_00_regret", VOICE_RAON, SETTINGS_PEAK,
+    "[BARELY BREATHING][dying whisper][choked][devastated]"
+    "…만약 그 때, [GASPING]그 한 마디를 했더라면."),
+  ("raon_99_again", VOICE_RAON, SETTINGS_PEAK,
+    "[broken whisper][trembling][raw determination]"
+    "…또. [HARSH BREATH]또 다시."),
+
+  # === LEGACY · v17–v22 backward compat ===
   ("raon_01_check", VOICE_RAON, SETTINGS_RAON,
     "[low voice][controlled tension][quiet] 연우 씨, [softer] 자리 확인 부탁드려요."),
   ("raon_02_intro", VOICE_RAON, SETTINGS_RAON,
@@ -77,9 +75,9 @@ LINES = [
     "[breathless][concerned][quiet][voice rough] 괜찮아?"),
   ("raon_a2_behind", VOICE_RAON, SETTINGS_RAON,
     "[low voice][resigned][weary][soft] 그럼 말고. [gentle][protective] 내 등 뒤에 있어."),
-  ("raon_b1_name", VOICE_RAON, SETTINGS_RAON_PEAK,
+  ("raon_b1_name", VOICE_RAON, SETTINGS_PEAK,
     "[low voice][relieved][quietly broken][choked] 연우…"),
-  ("raon_b2_alive", VOICE_RAON, SETTINGS_RAON_PEAK,
+  ("raon_b2_alive", VOICE_RAON, SETTINGS_PEAK,
     "[low voice][soft][broken][almost a sigh][relieved] 죽지 않았네. [quietly][trembling] 그거면 됐어."),
 ]
 
@@ -111,7 +109,7 @@ def gen(name, voice_id, settings, text):
   except Exception as e:
     print(f"[err] {name}: {e}")
 
-print(f"[info] model={MODEL}")
+print(f"[info] model={MODEL} · raon={VOICE_RAON} · dex={VOICE_DEX}")
 for name, voice_id, settings, text in LINES:
   gen(name, voice_id, settings, text)
 print("[done]")
