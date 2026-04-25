@@ -44,8 +44,39 @@ body{background:var(--bg-deep);color:var(--ink);font-family:var(--sans);min-heig
 .app{position:fixed;inset:0;z-index:2;display:flex;justify-content:center;align-items:center}
 /* v25 WIDE · full-screen always · no mobile frame · inner content centered */
 .app-frame{position:relative;width:100%;max-width:none;height:100vh;height:100dvh;background:var(--bg-deep);overflow:hidden;display:flex;flex-direction:column;box-shadow:none;border-radius:0}
-/* WIDE · center inner content with reasonable max-widths */
-.cast{padding:24px clamp(16px,4vw,40px) 80px;max-width:880px;margin:0 auto;width:100%}
+
+/* WIDE CAST · hide repeat catchphrase (already on landing) · larger fonts · 6-col grid */
+.cast{padding:36px clamp(20px,4vw,60px) 80px;max-width:1200px;margin:0 auto;width:100%}
+.cast-prop{display:none}  /* don't repeat catchphrase from landing */
+.cast-section-h{font-size:13px;letter-spacing:.32em;padding:8px 4px 18px}
+.cast-featured{min-height:280px;border-radius:24px;margin-bottom:36px}
+.cast-featured-portrait{width:38%}
+.cast-featured-body{padding:28px 32px}
+.cf-tag{font-size:11px;padding:5px 12px;margin-bottom:14px}
+.cf-name{font-size:34px;margin-bottom:6px}
+.cf-world{font-size:11.5px;letter-spacing:.18em;margin-bottom:14px}
+.cf-syn{font-size:15.5px;line-height:1.6;margin-bottom:16px}
+.cf-meta{margin-bottom:18px;gap:8px}
+.cf-meta .chip{font-size:10.5px;padding:3px 9px}
+.cf-play{padding:14px 26px;font-size:15px}
+.cast-divider{font-size:11.5px;letter-spacing:.34em;padding:14px 4px 20px}
+.cast-grid{grid-template-columns:repeat(6,1fr)!important;gap:14px}
+.cast-card{aspect-ratio:3/4;border-radius:14px}
+.cast-card-q{font-size:48px}
+.cast-card-genre{font-size:11px;letter-spacing:.14em}
+.cast-card-dday{font-size:10.5px;letter-spacing:.08em}
+.cast-card-meta{padding:10px 12px;gap:2px}
+.cast-foot{font-size:11.5px;letter-spacing:.22em;padding:18px 4px 4px;margin-top:24px}
+@media(min-width:1100px){
+  .cast-grid{grid-template-columns:repeat(7,1fr)!important}
+}
+@media(max-width:720px){
+  .cast-grid{grid-template-columns:repeat(4,1fr)!important;gap:10px}
+  .cast-featured-body{padding:20px 22px}
+  .cf-name{font-size:28px}
+}
+
+/* WIDE TEASE · centered with larger max widths */
 .tease{padding:48px clamp(20px,5vw,60px) 60px}
 .tease-h{max-width:780px;font-size:clamp(24px,4vw,38px)}
 .tease-ends{max-width:1100px;width:100%}
@@ -54,12 +85,13 @@ body{background:var(--bg-deep);color:var(--ink);font-family:var(--sans);min-heig
 .tease-divider{max-width:880px;width:100%}
 .more-stories{max-width:1100px;width:100%}
 .signup-chat{max-width:560px;margin:0 auto;width:100%}
-/* Chat inside · keep readable line lengths */
+
+/* WIDE CHAT · readable line widths · choice panel padded for centering */
 .text-stage,.chat-scroll{padding-left:clamp(16px,4vw,24px);padding-right:clamp(16px,4vw,24px)}
 .chat-scroll-inner{max-width:720px;margin:0 auto;width:100%}
-.choice-panel{left:50%;transform:translateX(-50%) translateY(8px)!important;max-width:680px;width:calc(100% - 32px)!important;right:auto!important}
-.choice-panel.show{transform:translateX(-50%) translateY(0)!important}
-.vn-line-wrap,.vn-dialogue{max-width:920px;left:50%!important;right:auto!important;transform:translateX(-50%);width:100%}
+/* Choice panel · padding-based centering · keep default left:0 right:0 bottom:0 */
+.choice-panel{padding-left:max(14px, calc((100% - 680px) / 2))!important;padding-right:max(14px, calc((100% - 680px) / 2))!important}
+.vn-dialogue{padding-left:max(20px, calc((100% - 920px) / 2))!important;padding-right:max(20px, calc((100% - 920px) / 2))!important}
 .vn-portrait-big{max-width:520px;margin:0 auto}
 .portrait-bay{max-width:480px;margin:0 auto;width:100%}
 .topbar{padding-left:clamp(14px,4vw,32px);padding-right:clamp(14px,4vw,32px)}
@@ -99,8 +131,9 @@ body{background:var(--bg-deep);color:var(--ink);font-family:var(--sans);min-heig
 
 /* SCREENS */
 .screens{flex:1;position:relative;overflow:hidden}
-.screen{position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .4s var(--ease);overflow-y:auto;overflow-x:hidden}
-.screen.active{opacity:1;pointer-events:auto}
+/* v25 wide · slower cinematic fade · slight scale-in for landing→cast */
+.screen{position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .65s var(--ease),transform .65s var(--ease);overflow-y:auto;overflow-x:hidden;transform:scale(.985)}
+.screen.active{opacity:1;pointer-events:auto;transform:scale(1)}
 .screen::-webkit-scrollbar{width:4px}
 .screen::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:100px}
 
@@ -626,17 +659,9 @@ audio{display:none}
       <div class="screen active" id="screen-landing">
         <div class="landing">
           <div class="landing-hero">
-            <div class="landing-eye">LUCIVE · NEXT-GEN CHARACTER CHAT</div>
+            <div class="landing-eye">LUCIVE</div>
             <h1 class="landing-h"><s>고정 설정된 캐릭터 챗</s>은 잊어요.<br><em>그가 · 당신의 결말을 만듭니다.</em></h1>
-            <p class="landing-sub">비주얼 노벨 + 음성 연기 + 분기 엔딩 + 회귀 서사 — <b>캐릭터 챗의 다음 세대</b>.</p>
-            <button class="landing-cta" onclick="enterFromLanding()">▶ 체험하기 · 90초</button>
-            <div class="landing-features">
-              <span class="lf"><span class="ico">🎭</span> 표정 12종</span>
-              <span class="lf"><span class="ico">🔊</span> 음성 연기</span>
-              <span class="lf"><span class="ico">⚡</span> 분기 엔딩</span>
-              <span class="lf"><span class="ico">🔁</span> 회귀 서사</span>
-            </div>
-            <div class="landing-meta"><span><b>26명</b> 캐릭터</span><span><b>10</b> 세계관</span><span>알파 <b>D-<span id="landingDday">17</span></b></span></div>
+            <button class="landing-cta" onclick="enterFromLanding()">▶ 체험하기</button>
           </div>
         </div>
       </div>
