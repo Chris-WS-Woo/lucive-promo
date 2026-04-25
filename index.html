@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LUCIVE · Promo Workspace</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+KR:wght@400;500;600;700;900&family=Space+Grotesk:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg-deep:#08090C; --bg-card:#161822; --bg-elevated:#1C1F2E;
+  --border-subtle:rgba(255,255,255,.06); --border-medium:rgba(255,255,255,.1);
+  --ink:#F1F3F8; --ink-soft:#8B92A8; --muted:#5A6178;
+  --lucid-cyan:#06B6D4; --lucid-blue:#2563EB; --lucid-purple:#8B5CF6;
+  --awakening-pink:#EC4899; --fragment-gold:#F59E0B; --sync-green:#10B981;
+  --gradient-primary:linear-gradient(135deg,#06B6D4,#2563EB);
+  --gradient-aurora:linear-gradient(135deg,#06B6D4,#8B5CF6,#EC4899);
+  --sans:"Inter","Noto Sans KR",system-ui,-apple-system,sans-serif;
+  --display:"Space Grotesk","Inter","Noto Sans KR",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,monospace;
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+html{-webkit-font-smoothing:antialiased}
+body{background:var(--bg-deep);color:var(--ink);font-family:var(--sans);min-height:100vh;line-height:1.55;letter-spacing:-.01em;position:relative;overflow-x:hidden}
+.ambient-bg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.orb{position:absolute;border-radius:50%;filter:blur(120px);opacity:.14;animation:orb 20s ease-in-out infinite}
+.orb.cyan{width:min(600px,80vw);height:min(600px,80vw);background:var(--lucid-cyan);top:-10vw;right:0}
+.orb.purple{width:min(500px,70vw);height:min(500px,70vw);background:var(--lucid-purple);bottom:-10vw;left:0;animation-delay:-7s}
+.orb.pink{width:min(400px,60vw);height:min(400px,60vw);background:var(--awakening-pink);top:50%;left:50%;transform:translate(-50%,-50%);animation-delay:-14s;opacity:.08}
+@keyframes orb{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(30px,-40px) scale(1.05)}66%{transform:translate(-20px,30px) scale(.95)}}
+.noise{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.03;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:256px}
+
+main{position:relative;z-index:2;max-width:980px;margin:0 auto;padding:60px 24px 80px}
+
+.hero{text-align:center;margin-bottom:48px}
+.brand{font-family:var(--display);font-weight:800;font-size:18px;letter-spacing:.32em;background:var(--gradient-primary);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:14px}
+.h1{font-family:var(--display);font-size:clamp(28px,5vw,40px);font-weight:900;letter-spacing:-.03em;line-height:1.1;margin-bottom:10px}
+.h1 em{font-style:normal;background:var(--gradient-aurora);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.lede{font-family:var(--sans);font-size:14.5px;color:var(--ink-soft);max-width:640px;margin:0 auto;line-height:1.7}
+.lede b{color:var(--ink);font-weight:700}
+
+.section{margin-bottom:40px}
+.sec-h{font-family:var(--mono);font-size:11px;letter-spacing:.32em;color:var(--lucid-cyan);text-transform:uppercase;font-weight:800;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.sec-h::before{content:'◆'}
+.sec-h .meta{flex:1;height:1px;background:linear-gradient(90deg,rgba(6,182,212,.3),transparent);margin-left:8px}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.card{display:block;padding:18px 18px 16px;background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:14px;text-decoration:none;color:var(--ink);transition:all .25s var(--ease);position:relative;overflow:hidden}
+.card:hover{transform:translateY(-3px);border-color:var(--lucid-cyan);box-shadow:0 14px 36px rgba(6,182,212,.18)}
+.card.featured{border-color:rgba(236,72,153,.4);background:linear-gradient(180deg,rgba(236,72,153,.08),var(--bg-card) 50%)}
+.card.featured:hover{border-color:var(--awakening-pink);box-shadow:0 14px 36px rgba(236,72,153,.22)}
+.card-tag{font-family:var(--mono);font-size:9.5px;letter-spacing:.22em;color:var(--lucid-cyan);text-transform:uppercase;font-weight:800;margin-bottom:8px}
+.card.featured .card-tag{color:var(--awakening-pink)}
+.card-title{font-family:var(--display);font-size:17px;font-weight:800;letter-spacing:-.01em;color:var(--ink);margin-bottom:5px;line-height:1.2}
+.card-desc{font-family:var(--sans);font-size:12.5px;color:var(--ink-soft);line-height:1.55;margin-bottom:10px;min-height:2.4em}
+.card-meta{display:flex;gap:6px;flex-wrap:wrap}
+.chip{font-family:var(--mono);font-size:9px;letter-spacing:.08em;color:var(--muted);padding:2px 7px;border:1px solid var(--border-medium);border-radius:100px;text-transform:uppercase;font-weight:700}
+.chip.live{color:#10B981;border-color:rgba(16,185,129,.4)}
+.chip.cyan{color:var(--lucid-cyan);border-color:rgba(6,182,212,.4)}
+.chip.purple{color:var(--lucid-purple);border-color:rgba(139,92,246,.4)}
+.chip.pink{color:var(--awakening-pink);border-color:rgba(236,72,153,.4)}
+.card-arr{position:absolute;top:14px;right:14px;font-family:var(--mono);color:var(--lucid-cyan);font-size:14px;opacity:.5;transition:opacity .2s,transform .2s}
+.card:hover .card-arr{opacity:1;transform:translateX(2px)}
+
+.legacy-section{margin-top:40px;padding-top:32px;border-top:1px dashed var(--border-medium)}
+.legacy-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px;font-family:var(--mono);font-size:11px}
+.legacy-list a{padding:6px 10px;background:rgba(22,24,34,.6);border:1px solid var(--border-subtle);border-radius:6px;color:var(--ink-soft);text-decoration:none;transition:all .2s;letter-spacing:.04em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.legacy-list a:hover{border-color:var(--lucid-purple);color:var(--lucid-purple)}
+
+.foot{margin-top:48px;padding-top:24px;border-top:1px solid var(--border-subtle);font-family:var(--mono);font-size:10.5px;color:var(--muted);letter-spacing:.08em;text-align:center}
+.foot b{color:var(--lucid-cyan);font-weight:700}
+.dday{display:inline-block;padding:3px 10px;background:rgba(6,182,212,.1);border:1px solid rgba(6,182,212,.32);border-radius:100px;color:var(--lucid-cyan);font-weight:800;margin:0 4px}
+</style>
+</head>
+<body>
+
+<div class="ambient-bg">
+  <div class="orb cyan"></div>
+  <div class="orb purple"></div>
+  <div class="orb pink"></div>
+</div>
+<div class="noise"></div>
+
+<main>
+  <header class="hero">
+    <div class="brand">LUCIVE</div>
+    <h1 class="h1">사전 등록 · <em>프로토타입</em></h1>
+    <p class="lede">팀 공유용 베리언트 인덱스 · <b>v18</b>이 현재 정식 버전 · 좌측부터 추천 순서.</p>
+  </header>
+
+  <section class="section">
+    <h2 class="sec-h">v18 · Moonlight Cartel 프롤로그<span class="meta"></span></h2>
+    <div class="grid">
+      <a href="./pre-register/v18-kr-chat.html" class="card featured">
+        <span class="card-arr">↗</span>
+        <div class="card-tag">v18 · MAIN</div>
+        <div class="card-title">캐릭터 챗 · Story 1</div>
+        <div class="card-desc">텍스트/비주얼 모드 토글 · TTS · 극적 컷 · 챗 스타일 사전등록</div>
+        <div class="card-meta">
+          <span class="chip live">LIVE</span>
+          <span class="chip pink">V3·O3</span>
+          <span class="chip">stat 노출</span>
+        </div>
+      </a>
+      <a href="./pre-register/v18-kr-chat-fast.html" class="card">
+        <span class="card-arr">↗</span>
+        <div class="card-tag">v18 · FAST</div>
+        <div class="card-title">빠른 진행 베리언트</div>
+        <div class="card-desc">대사 즉시 표시 (typing 스킵) · 씬 전환은 정상 페이스 유지</div>
+        <div class="card-meta">
+          <span class="chip cyan">FAST</span>
+          <span class="chip">동일 콘텐츠</span>
+        </div>
+      </a>
+      <a href="./pre-register/v18-kr-chat-blind.html" class="card">
+        <span class="card-arr">↗</span>
+        <div class="card-tag">v18 · BLIND</div>
+        <div class="card-title">스탯 숨김 베리언트</div>
+        <div class="card-desc">선택지 숫자 보상 미노출 · HUD 숫자 hidden · 자연 몰입형</div>
+        <div class="card-meta">
+          <span class="chip purple">BLIND</span>
+          <span class="chip">동일 콘텐츠</span>
+        </div>
+      </a>
+      <a href="./pre-register/v18-kr-signup.html" class="card">
+        <span class="card-arr">↗</span>
+        <div class="card-tag">v18 · SIGNUP</div>
+        <div class="card-title">사전등록 · 풀페이지</div>
+        <div class="card-desc">v18 톤 적용 · 풀페이지 형식 (챗 인내장 signup 외 별도 옵션)</div>
+        <div class="card-meta">
+          <span class="chip cyan">FORM</span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="sec-h">v17 · Story1 첫 빌드<span class="meta"></span></h2>
+    <div class="grid">
+      <a href="./pre-register/v17-kr-chat.html" class="card">
+        <span class="card-arr">↗</span>
+        <div class="card-tag">v17</div>
+        <div class="card-title">초기 노드 분기 · 스탯 도입</div>
+        <div class="card-desc">Splash + 4 캐릭터 카드 + 스탯 HUD + 노드 전환 첫 버전</div>
+        <div class="card-meta">
+          <span class="chip">아카이브</span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="sec-h">v15 · 회귀 프롤로그 (이전 메인)<span class="meta"></span></h2>
+    <div class="grid">
+      <a href="./pre-register/v15-kr-prologue.html" class="card">
+        <span class="card-arr">↗</span>
+        <div class="card-tag">v15</div>
+        <div class="card-title">석현의 프롤로그 · 시네마틱</div>
+        <div class="card-desc">21 Beat VN · 분기 3종 · 흰 국화 엔딩 · ElevenLabs 보이스</div>
+        <div class="card-meta">
+          <span class="chip purple">CINEMATIC</span>
+        </div>
+      </a>
+      <a href="./pre-register/v15-kr-signup.html" class="card">
+        <span class="card-arr">↗</span>
+        <div class="card-tag">v15</div>
+        <div class="card-title">사전등록 페이지 (legacy)</div>
+        <div class="card-desc">amber 톤 · 베네핏/공유/커뮤니티 · 챗 스타일 이전 버전</div>
+        <div class="card-meta">
+          <span class="chip">아카이브</span>
+        </div>
+      </a>
+      <a href="./pre-register/v15-kr-live.html" class="card">
+        <span class="card-arr">↗</span>
+        <div class="card-tag">v15</div>
+        <div class="card-title">라이브 채팅 데모</div>
+        <div class="card-desc">아리아 · 실시간 챗 데모</div>
+        <div class="card-meta">
+          <span class="chip">아카이브</span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <section class="legacy-section">
+    <h2 class="sec-h">아카이브 · 이전 버전 (v9 → v14)<span class="meta"></span></h2>
+    <div class="legacy-list">
+      <a href="./pre-register/v14-kr-prologue.html">v14 · prologue</a>
+      <a href="./pre-register/v14-kr-live.html">v14 · live</a>
+      <a href="./pre-register/v13-kr-prologue.html">v13 · prologue</a>
+      <a href="./pre-register/v13-kr-live.html">v13 · live</a>
+      <a href="./pre-register/v12-kr-prologue.html">v12 · prologue</a>
+      <a href="./pre-register/v11-kr-unified.html">v11 · unified</a>
+      <a href="./pre-register/v9-kr-unified.html">v9 · KR</a>
+      <a href="./pre-register/v9-en-unified.html">v9 · EN</a>
+      <a href="./pre-register/v9-jp-unified.html">v9 · JP</a>
+      <a href="./pre-register/screening.html">알파 선발 설문</a>
+      <a href="./pre-register/privacy.html">개인정보 처리방침</a>
+      <a href="./pre-register/terms.html">이용약관</a>
+    </div>
+  </section>
+
+  <div class="foot">
+    Alpha Launch · <span class="dday">D-<span id="dday">17</span></span> · 2026.05.17
+    <br><br>
+    <b>LUCIVE</b> · Dive into The Lucid · © 2026
+  </div>
+</main>
+
+<script>
+const LAUNCH = new Date('2026-05-17T00:00:00+09:00').getTime();
+function tick(){
+  const d = Math.max(0, Math.floor((LAUNCH - Date.now())/86400000));
+  document.getElementById('dday').textContent = d;
+}
+tick();
+setInterval(tick, 60000);
+</script>
+</body>
+</html>
