@@ -114,33 +114,48 @@ body{background:var(--bg-deep);color:var(--ink);font-family:var(--sans);min-heig
 .cast-section-h::before{content:'';width:6px;height:6px;border-radius:50%;background:#10B981;box-shadow:0 0 8px rgba(16,185,129,.7);animation:liveBlink 1.6s ease-in-out infinite}
 .cast-section-h .sh-line{flex:1;height:1px;background:linear-gradient(90deg,rgba(236,72,153,.4),transparent)}
 
-/* v33 · DRAMATIC card shuffle · cards fly in from random sides + heavy rotation + bounce */
-/* Featured (Raon) · "drawn from deck" with strong arc · happens AFTER deck shuffles */
-.cast-featured{position:relative;border-radius:18px;overflow:hidden;cursor:pointer;background:linear-gradient(160deg,rgba(236,72,153,.18),rgba(8,9,12,.85) 60%);border:1.5px solid rgba(236,72,153,.4);box-shadow:0 18px 48px rgba(236,72,153,.22),0 0 0 1px rgba(236,72,153,.18);margin-bottom:24px;display:flex;align-items:stretch;min-height:200px;transition:transform .25s var(--ease),box-shadow .25s;opacity:0;animation:cardDrawArc 1.1s 1.6s var(--ease) forwards}
-@keyframes cardDrawArc{
-  0%   { opacity:0; transform: translate(60vw, -120px) rotate(-220deg) scale(.6); filter:blur(3px) }
-  35%  { opacity:1; transform: translate(0, 30px) rotate(-10deg) scale(.95); filter:blur(0) }
-  60%  { transform: translate(0, -8px) rotate(2deg) scale(1.03) }
-  82%  { transform: translate(0, 4px) rotate(-1deg) scale(.99) }
-  100% { opacity:1; transform: translate(0, 0) rotate(0) scale(1); filter:blur(0) }
-}
-.cast-featured:hover{transform:translateY(-3px);box-shadow:0 24px 56px rgba(236,72,153,.32),0 0 0 1px rgba(236,72,153,.3)}
+/* v33b · REAL DECK SHUFFLE
+   1) all locked cards stack at deck center · spin together (synchronized) · 1.4s
+   2) Raon featured card emerges UP out of the deck stack · 1.4-2.5s
+   3) remaining cards deal out of deck to grid positions · staggered · 2.4s onward
+   uses transform longhand (translate/rotate/scale) so spin & deal animate independently
+   --deck-dx/--deck-dy are per-card offsets from grid cell to deck center, set by JS post-layout */
 
-/* v33 · DECK SHUFFLE · cards fly in from off-screen random direction + rotation · bounces · settle tilted */
-@keyframes cardFlyIn{
-  0%   { opacity:0; transform: translate(var(--fly-x, -120vw), var(--fly-y, -100vh)) rotate(var(--fly-rot, -180deg)) scale(.55); filter:blur(3px) }
-  40%  { opacity:1; filter:blur(0) }
-  70%  { transform: translate(0, -10px) rotate(calc(var(--init-rot, 0deg) * 1.6)) scale(1.05) }
-  88%  { transform: translate(0, 3px) rotate(calc(var(--init-rot, 0deg) * 0.7)) scale(.99) }
-  100% { opacity:1; transform: translate(0, 0) rotate(var(--init-rot, 0deg)) scale(1); filter:blur(0) }
+/* Featured Raon · drawn UP out of the deck stack (deck center is below in the grid) */
+.cast-featured{position:relative;border-radius:18px;overflow:hidden;cursor:pointer;background:linear-gradient(160deg,rgba(236,72,153,.18),rgba(8,9,12,.85) 60%);border:1.5px solid rgba(236,72,153,.4);box-shadow:0 18px 48px rgba(236,72,153,.22),0 0 0 1px rgba(236,72,153,.18);margin-bottom:24px;display:flex;align-items:stretch;min-height:200px;opacity:0;animation:featuredDrawFromDeck 1.1s 1.5s var(--ease) both;transition:translate .25s var(--ease), scale .25s var(--ease), box-shadow .25s}
+@keyframes featuredDrawFromDeck{
+  0%   { opacity:0; translate: var(--deck-dx, 0) var(--deck-dy, 240px); scale:.6; rotate: -8deg; filter:brightness(.55) blur(2px) }
+  35%  { opacity:1; filter:brightness(.95) blur(0) }
+  72%  { translate: 0 -10px; scale:1.05; rotate: 2deg }
+  100% { opacity:1; translate: 0 0; scale:1; rotate: 0deg; filter:brightness(1) }
 }
-#castGrid .cast-card{opacity:0;animation:cardFlyIn .85s var(--ease) forwards;transform-origin:center;will-change:transform,opacity}
-/* Slight wobble/float after settle so cards feel "alive" — preserves init tilt */
-@keyframes cardIdleFloat{
-  0%,100% { transform: translateY(0) rotate(var(--init-rot, 0deg)) }
-  50%     { transform: translateY(-2px) rotate(calc(var(--init-rot, 0deg) + .3deg)) }
+/* Once draw animation ends · drop animation so hover transitions can fire (animations otherwise override CSS) */
+.cast-featured.settled{animation:none}
+.cast-featured.settled:hover{translate: 0 -4px; scale:1.01; box-shadow:0 26px 62px rgba(236,72,153,.36),0 0 0 1px rgba(236,72,153,.34)}
+
+/* Deck spin · all cards rotate together · synchronous (same animation, same delay, same duration) */
+@keyframes deckSpin{
+  0%   { opacity:0; rotate: 0deg }
+  10%  { opacity:1 }
+  100% { opacity:1; rotate: 720deg }
 }
-#castGrid .cast-card.settled{animation: cardIdleFloat 4s ease-in-out infinite}
+/* Deck deal · each card flies from deck position to its grid slot · staggered via --deal-delay */
+@keyframes deckDeal{
+  0%   { translate: var(--deck-dx, 0) var(--deck-dy, 0); scale:.58; filter:brightness(.7) }
+  55%  { translate: 0 -10px; scale:1.05; filter:brightness(1) }
+  82%  { translate: 0 3px; scale:.99 }
+  100% { translate: 0 0; scale:1; filter:brightness(1) }
+}
+/* deal-rotate runs alongside deal · matches deckSpin's end (720) so no visual snap, then settles to init-rot */
+@keyframes deckDealRotate{
+  0%   { rotate: 720deg }
+  100% { rotate: var(--init-rot, 0deg) }
+}
+/* Idle float after settle · longhand props so hover-pause works */
+@keyframes cardIdleFloatLong{
+  0%,100% { translate: 0 0; rotate: var(--init-rot, 0deg) }
+  50%     { translate: 0 -2px; rotate: calc(var(--init-rot, 0deg) + .3deg) }
+}
 .cast-featured-portrait{width:42%;flex-shrink:0;position:relative;background:rgba(8,9,12,.5);overflow:hidden}
 .cast-featured-portrait img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;filter:saturate(1.05)}
 .cast-featured-portrait::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent 50%,rgba(8,9,12,.4) 100%)}
@@ -167,8 +182,21 @@ body{background:var(--bg-deep);color:var(--ink);font-family:var(--sans);min-heig
 #castGrid{display:grid;grid-template-columns:1fr;gap:14px}
 @media(min-width:760px){#castGrid{grid-template-columns:repeat(2,1fr);gap:14px}}
 @media(min-width:1200px){#castGrid{grid-template-columns:repeat(3,1fr)}}
-#castGrid .cast-card{position:relative;display:flex;align-items:stretch;min-height:180px;border-radius:18px;overflow:hidden;background:linear-gradient(160deg,rgba(8,9,12,.75),rgba(8,9,12,.95));border:1px solid var(--border-subtle);cursor:not-allowed;transition:transform .25s var(--ease),border-color .25s;aspect-ratio:auto;padding:0}
-#castGrid .cast-card:hover{transform:translateY(-3px);border-color:rgba(139,92,246,.5)}
+#castGrid .cast-card{position:relative;display:flex;align-items:stretch;min-height:180px;border-radius:18px;overflow:hidden;background:linear-gradient(160deg,rgba(8,9,12,.75),rgba(8,9,12,.95));border:1px solid var(--border-subtle);cursor:pointer;aspect-ratio:auto;padding:0;opacity:0;transform-origin:center;will-change:translate,rotate,scale;transition:translate .28s var(--ease), scale .28s var(--ease), box-shadow .28s var(--ease), filter .28s var(--ease), border-color .25s}
+/* During shuffling phase: cards run deckSpin (synchronous) + deckDeal/deckDealRotate (staggered)
+   spin lasts 1.4s · cards begin dealing while featured is still emerging — feels like the deck is splitting */
+#castGrid.shuffling .cast-card{animation: deckSpin 1.4s linear 0s forwards, deckDeal .85s var(--ease) calc(1.6s + var(--deal-delay, 0ms)) forwards, deckDealRotate .85s var(--ease) calc(1.6s + var(--deal-delay, 0ms)) forwards}
+/* After settling · idle float + hover supports rotate transition for smooth flatten · opacity restored explicitly so CSS default 0 doesn't reapply when animation list changes */
+#castGrid .cast-card.settled{opacity:1;animation: cardIdleFloatLong 4s ease-in-out infinite; transition:translate .28s var(--ease), rotate .28s var(--ease), scale .28s var(--ease), box-shadow .28s var(--ease), filter .28s var(--ease), border-color .25s}
+/* Hover · "drawn out of stack" feel · lift + flatten + scale up + glow + raise z-index */
+#castGrid .cast-card.settled:hover{animation-play-state:paused; translate: 0 -14px; rotate: 0deg; scale: 1.05; filter:brightness(1.12); z-index:5; box-shadow: 0 22px 52px rgba(0,0,0,.55), 0 0 0 1px rgba(236,72,153,.55), 0 0 36px rgba(236,72,153,.3); border-color:rgba(236,72,153,.6)}
+
+/* Reduced motion · skip the deck shuffle, just fade in cards and featured */
+@media (prefers-reduced-motion: reduce){
+  .cast-featured{animation:none;opacity:1}
+  #castGrid .cast-card{opacity:1;animation:none}
+  #castGrid.shuffling .cast-card{animation:none}
+}
 #castGrid .cast-card-art{width:38%;flex-shrink:0;position:relative;overflow:hidden}
 #castGrid .cast-card.c-pink   .cast-card-art{background:radial-gradient(ellipse at center,rgba(236,72,153,.42),rgba(8,9,12,.5) 80%)}
 #castGrid .cast-card.c-purple .cast-card-art{background:radial-gradient(ellipse at center,rgba(139,92,246,.42),rgba(8,9,12,.5) 80%)}
@@ -1508,8 +1536,11 @@ const CAST_TEASERS = [
   { hint:'???',               district:'purple',      dday:82 },
   { hint:'∞',                 district:'cyan',        dday:'∞' },
 ];
-/* v33 · cards fly in from random off-screen sides · "deck shuffle" feel
-   each card gets unique --fly-x/--fly-y/--fly-rot · settles into idle float */
+/* v33b · REAL DECK SHUFFLE
+   step 1) render cards with per-card --deal-delay and --init-rot
+   step 2) on next frame, measure each card's grid cell + featured card vs deck center,
+           write --deck-dx/--deck-dy, then add .shuffling so animations begin
+   step 3) on each card's deckDeal animationend, add .settled (idle float + hover ready) */
 function renderCastGrid(){
   const grid = document.getElementById('castGrid');
   if(!grid) return;
@@ -1519,7 +1550,7 @@ function renderCastGrid(){
     const j = Math.floor(Math.random() * (i + 1));
     [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
   }
-  // pin ∞ card to last position so 끝 metaphor lands at the end
+  // pin ∞ card to last position so "끝없이" metaphor lands at the end
   const infIdx = shuffled.findIndex(c => c.dday === '∞');
   if(infIdx > -1){
     const inf = shuffled.splice(infIdx, 1)[0];
@@ -1529,20 +1560,11 @@ function renderCastGrid(){
     const ddayLabel = (c.dday === '∞') ? '계속' : `D-${c.dday}`;
     const popMsg = (c.dday === '∞') ? '계속 합류 중' : `${ddayLabel}일 후 오픈`;
     const isInfinite = c.dday === '∞';
-    // v33 · pick random off-screen origin for shuffle vibe
-    const sides = [
-      { x:'-130vw', y:`${((Math.random()-.5)*120).toFixed(0)}vh` }, // left
-      { x:'130vw',  y:`${((Math.random()-.5)*120).toFixed(0)}vh` }, // right
-      { x:`${((Math.random()-.5)*80).toFixed(0)}vw`,  y:'-130vh' }, // top
-      { x:`${((Math.random()-.5)*80).toFixed(0)}vw`,  y:'130vh'  }, // bottom
-    ];
-    const dir = sides[Math.floor(Math.random() * sides.length)];
-    const flyRot = ((Math.random()-.5) * 720).toFixed(0); // ±360deg spin
-    const initRot = ((Math.random()-.5) * 8).toFixed(2);  // ±4deg final tilt
-    // v33 · tighter stagger so 60+ cards finish within a reasonable window
-    const delay = 1000 + i * 28 + Math.floor(Math.random() * 60);
+    // stagger: each card deals out ~32ms after the previous · with light jitter
+    const dealDelay = i * 32 + Math.floor(Math.random() * 24);
+    const initRot = ((Math.random() - .5) * 7).toFixed(2); // ±3.5deg natural deck tilt
     return `
-      <div class="cast-card c-${c.district}" onclick="toast('${popMsg}')" style="animation-delay:${delay}ms;--fly-x:${dir.x};--fly-y:${dir.y};--fly-rot:${flyRot}deg;--init-rot:${initRot}deg">
+      <div class="cast-card c-${c.district}" onclick="toast('${popMsg}')" style="--deal-delay:${dealDelay}ms;--init-rot:${initRot}deg">
         <div class="cast-card-art">
           <div class="cast-card-q">${isInfinite ? '∞' : '?'}</div>
         </div>
@@ -1557,15 +1579,49 @@ function renderCastGrid(){
         </div>
       </div>`;
   }).join('');
-  // settle each card into idle float after its fly-in completes
-  grid.querySelectorAll('.cast-card').forEach(card => {
-    card.addEventListener('animationend', function settle(e){
-      if(e.animationName === 'cardFlyIn'){
-        card.classList.add('settled');
-        card.removeEventListener('animationend', settle);
-      }
+
+  // step 2: measure layout, compute deck-relative offsets, kick off the shuffle
+  // requestAnimationFrame waits for layout · double-rAF guards against pre-paint measurement
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    const featured = document.querySelector('.cast-featured');
+    const gr = grid.getBoundingClientRect();
+    // deck center sits at the upper portion of the grid · cards converge here · Raon emerges UPWARD from here
+    const deckX = gr.left + gr.width / 2;
+    const deckY = gr.top + Math.min(gr.height / 2, 200);
+
+    if(featured){
+      const fr = featured.getBoundingClientRect();
+      const fdx = (deckX - (fr.left + fr.width / 2)).toFixed(0);
+      const fdy = (deckY - (fr.top + fr.height / 2)).toFixed(0);
+      featured.style.setProperty('--deck-dx', fdx + 'px');
+      featured.style.setProperty('--deck-dy', fdy + 'px');
+      // when the draw animation ends · drop the animation so hover transitions can take effect
+      featured.addEventListener('animationend', function settleF(e){
+        if(e.animationName === 'featuredDrawFromDeck'){
+          featured.classList.add('settled');
+          featured.removeEventListener('animationend', settleF);
+        }
+      });
+    }
+
+    grid.querySelectorAll('.cast-card').forEach((card) => {
+      const cr = card.getBoundingClientRect();
+      const dx = (deckX - (cr.left + cr.width / 2)).toFixed(0);
+      const dy = (deckY - (cr.top + cr.height / 2)).toFixed(0);
+      card.style.setProperty('--deck-dx', dx + 'px');
+      card.style.setProperty('--deck-dy', dy + 'px');
+
+      // step 3: as each card finishes its deal, mark it settled (enables idle float + hover)
+      card.addEventListener('animationend', function settle(e){
+        if(e.animationName === 'deckDeal'){
+          card.classList.add('settled');
+          card.removeEventListener('animationend', settle);
+        }
+      });
     });
-  });
+
+    grid.classList.add('shuffling');
+  }));
 }
 renderCastGrid();
 
