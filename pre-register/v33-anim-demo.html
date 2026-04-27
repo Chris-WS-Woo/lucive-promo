@@ -117,6 +117,41 @@ main{max-width:1280px;margin:0 auto}
 .mode-featured-last.active .card .card-inner{transform:rotateY(0deg)}
 
 /* ========================================================================
+   MODE F · MULTI-DECK RIFFLE → 3-DRAW
+   3개 덱이 가로로 겹쳐 있음 → 각 덱 안에서 카드들이 한 장씩 스르륵 들춰짐
+   → 모든 덱 리플 끝나면 3장(각 덱에서 한 장씩)이 아래 row로 뽑혀나와 안착
+   ======================================================================== */
+.mode-decks-draw .stage-inner{display:flex;flex-direction:column;align-items:center;gap:38px;padding:8px 0 24px;min-height:580px}
+.mode-decks-draw .decks{position:relative;display:flex;justify-content:center;align-items:flex-start;height:300px;transition:opacity .9s var(--ease) 200ms,filter .9s var(--ease) 200ms}
+.mode-decks-draw.dimmed .decks{opacity:.42;filter:saturate(.65)}
+.mode-decks-draw .deck{position:relative;width:200px;height:280px;margin:0 -50px}
+.mode-decks-draw .deck .card{position:absolute;top:0;left:50%;margin-left:-90px;transform:rotate(calc((var(--i) - 2) * 2.6deg));transform-origin:50% 90%;will-change:transform}
+.mode-decks-draw.active .deck .card{animation:deck-riffle .68s var(--ease-spring) var(--peek-delay,0ms)}
+@keyframes deck-riffle{
+  0%   { transform: translateX(0)    translateY(0)    rotate(calc((var(--i) - 2) * 2.6deg))                  scale(1) }
+  35%  { transform: translateX(58px) translateY(-22px) rotate(calc((var(--i) - 2) * 2.6deg + 9deg))           scale(1.05) }
+  70%  { transform: translateX(20px) translateY(-2px)  rotate(calc((var(--i) - 2) * 2.6deg + 2deg))           scale(1.01) }
+  100% { transform: translateX(0)    translateY(0)    rotate(calc((var(--i) - 2) * 2.6deg))                  scale(1) }
+}
+
+/* deck label · subtle eyebrow under each */
+.mode-decks-draw .deck::after{content:attr(data-label);position:absolute;left:50%;bottom:-26px;transform:translateX(-50%);font-family:var(--mono);font-size:9.5px;letter-spacing:.28em;font-weight:800;text-transform:uppercase;color:rgba(255,255,255,.32);white-space:nowrap}
+
+/* drawn row · 3 cards land here · animate in after riffles */
+.mode-decks-draw .drawn-label{font-family:var(--mono);font-size:10px;letter-spacing:.36em;font-weight:800;color:rgba(236,72,153,.7);text-transform:uppercase;opacity:0;transition:opacity .6s var(--ease) 1750ms}
+.mode-decks-draw.active .drawn-label{opacity:1}
+.mode-decks-draw .drawn-row{display:flex;gap:16px;flex-wrap:wrap;justify-content:center}
+.mode-decks-draw .drawn-row .card{width:170px;height:230px;opacity:0;will-change:transform,opacity}
+.mode-decks-draw.active .drawn-row .card{animation:drawn-fly-in .95s var(--ease-spring) var(--draw-delay,0ms) forwards}
+@keyframes drawn-fly-in{
+  0%   { opacity:0; transform: translate(var(--from-x, 0), -260px) rotate(var(--from-rot, -10deg)) scale(.55) }
+  55%  { opacity:1; transform: translate(0, 12px) rotate(2deg) scale(1.05) }
+  100% { opacity:1; transform: translate(0, 0) rotate(0) scale(1) }
+}
+.mode-decks-draw .drawn-row .card .card-inner{transition:transform .85s var(--ease-spring) var(--flip-delay,0ms)}
+.mode-decks-draw.active .drawn-row .card .card-inner{transform:rotateY(0deg)}
+
+/* ========================================================================
    MODE E · TAROT 3-REVEAL  ·  3장만 일직선 배치, 1초 간격 묵직한 플립
    ======================================================================== */
 .mode-tarot .stage-inner{display:flex;justify-content:center;align-items:center;gap:32px;padding:50px 0;flex-wrap:wrap;min-height:380px}
@@ -138,6 +173,7 @@ main{max-width:1280px;margin:0 auto}
     <div class="tabs">
       <button class="tab active" data-mode="riffle">A · Riffle Fan</button>
       <button class="tab" data-mode="strip">B · Linear Strip</button>
+      <button class="tab" data-mode="decks-draw">F · 다중 덱 → 3장 뽑기</button>
       <button class="tab" data-mode="cascade">C · Cascade Wave</button>
       <button class="tab" data-mode="featured-last">D · Cascade + 라온 등장</button>
       <button class="tab" data-mode="tarot">E · Tarot 3-Reveal</button>
@@ -182,6 +218,7 @@ const TEASERS = [
 const NOTES = {
   riffle:'<b>A · Riffle Fan</b> — 카드 8장이 더미에서 부채꼴(arc)로 펼쳐진 뒤 좌→우 순서로 한 장씩 뒤집힘. <span class="pro">PRO</span>가장 임팩트 있고 "덱" 메타포 살아있음. <span class="con">CON</span>카드 수 제한 (8~12장 정도) · 60+ 그리드를 별도로 깔아야 함.',
   strip:'<b>B · Linear Strip</b> — 카드 6장이 한 줄(직선) 정렬되고 좌→우 순서로 플립. <span class="pro">PRO</span>가장 명확하고 깔끔, "한 장씩 공개" 메시지가 분명. <span class="con">CON</span>fan보다 시각적 임팩트는 약함, 모바일에서 wrap됨.',
+  'decks-draw':'<b>F · 다중 덱 → 3장 뽑기</b> — 3개 덱이 가로로 겹쳐 있고 각 덱 안에서 카드들이 한 장씩 스르륵 들춰지고(translateX+Y peek) 들어감 → 모든 덱이 다 넘어가면 위에서 3장이 차례로 떨어져 row에 안착하면서 플립. <span class="pro">PRO</span>"수많은 카드 중에 3장 뽑힘" 메타포가 가장 직관적, 매주 합류 + 큐레이션 느낌. <span class="con">CON</span>전체 ~3.5s, 데스크탑에서 가장 잘 보임.',
   cascade:'<b>C · Cascade Wave</b> — 6×4(=24) 그리드 전체가 좌상→우하 대각선 wave로 플립. <span class="pro">PRO</span>60+ 카드를 한 화면에 다 담을 수 있는 유일한 옵션. <span class="con">CON</span>전체 시간이 길어짐 (~3.5s) · "라온이 특별하다" 강조가 약함.',
   'featured-last':'<b>D · Cascade + 라온 등장</b> — C 그리드가 다 뒤집힌 직후, 라온 카드가 그리드 아래에서 위로 솟아올라 featured 슬롯에 안착. <span class="pro">PRO</span>"수많은 캐릭터 중 한 명이 라온"이라는 서사 살아있음 + 60+ 다 보임. <span class="con">CON</span>전체 ~4.5s, 가장 김.',
   tarot:'<b>E · Tarot 3-Reveal</b> — 3장만 일직선 큰 사이즈로 배치, 1초 간격 묵직한 플립. <span class="pro">PRO</span>가장 분위기 있음 (오컬트/노블 톤), 주목도 최강. <span class="con">CON</span>3장만 보여줌 · 나머지는 평범한 그리드 별도 필요 · "수많은 카드" 메시지 약함.',
@@ -304,6 +341,65 @@ function render(mode){
 
     const lastFlipEnd = base + ((COLS - 1) + (ROWS - 1)) * stagger + 800;
     setTimeout(() => stage.classList.add('featured-revealed'), lastFlipEnd + 250);
+    return;
+  }
+
+  if(mode === 'decks-draw'){
+    const inner = document.createElement('div');
+    inner.className = 'stage-inner';
+
+    const decks = document.createElement('div');
+    decks.className = 'decks';
+
+    const N_DECKS = 3, CARDS_PER_DECK = 5;
+    const DECK_LABELS = ['DECK · I', 'DECK · II', 'DECK · III'];
+    const FROM_X = [-280, 0, 280]; // each drawn card flies in from above its source deck
+    const FROM_ROT = [-12, 4, 11];
+    let cardIdx = 0;
+    for(let d = 0; d < N_DECKS; d++){
+      const deck = document.createElement('div');
+      deck.className = 'deck';
+      deck.dataset.label = DECK_LABELS[d];
+      for(let i = 0; i < CARDS_PER_DECK; i++){
+        const t = TEASERS[cardIdx++];
+        const card = makeCard(t);
+        card.style.setProperty('--i', i);
+        // riffle propagates left deck → right deck, top card → bottom card
+        const peekDelay = d * 320 + i * 75;
+        card.style.setProperty('--peek-delay', peekDelay + 'ms');
+        deck.appendChild(card);
+      }
+      decks.appendChild(deck);
+    }
+    inner.appendChild(decks);
+
+    const drawnLabel = document.createElement('div');
+    drawnLabel.className = 'drawn-label';
+    drawnLabel.textContent = '★ 이번 주에 합류할 캐릭터 ★';
+    inner.appendChild(drawnLabel);
+
+    const drawnRow = document.createElement('div');
+    drawnRow.className = 'drawn-row';
+    // pick a representative card from each deck
+    const pickIdx = [2, 7, 12]; // one from each deck
+    pickIdx.forEach((src, i) => {
+      const t = TEASERS[src];
+      const card = makeCard(t);
+      // each drawn card flies in from above its source deck position
+      card.style.setProperty('--from-x', FROM_X[i] + 'px');
+      card.style.setProperty('--from-rot', FROM_ROT[i] + 'deg');
+      const drawDelay = 1850 + i * 220;
+      card.style.setProperty('--draw-delay', drawDelay + 'ms');
+      // flip mid-way through the fly-in
+      card.style.setProperty('--flip-delay', (drawDelay + 380) + 'ms');
+      drawnRow.appendChild(card);
+    });
+    inner.appendChild(drawnRow);
+
+    stage.appendChild(inner);
+    requestAnimationFrame(() => requestAnimationFrame(() => stage.classList.add('active')));
+    // dim the deck after riffles end so the 3 drawn cards stand out
+    setTimeout(() => stage.classList.add('dimmed'), 1750);
     return;
   }
 
