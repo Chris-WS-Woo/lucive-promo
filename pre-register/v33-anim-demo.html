@@ -50,24 +50,25 @@ h1 em{font-style:normal;background:linear-gradient(90deg,var(--cyan),var(--purpl
 main{max-width:1280px;margin:0 auto}
 .stage{position:relative;min-height:520px;background:linear-gradient(180deg,rgba(255,255,255,.015),transparent);border:1px dashed rgba(255,255,255,.06);border-radius:16px;padding:32px 24px;overflow:hidden}
 
-/* === CARD BASE · 3D flip === */
-.card{position:relative;width:180px;height:240px;perspective:1400px}
+/* === CARD BASE · 3D flip · 표준 포커 카드 비율 (2.5"×3.5" → 0.714) === */
+.card{position:relative;width:180px;height:252px;perspective:1400px}
 .card-inner{position:absolute;inset:0;transform-style:preserve-3d;transform:rotateY(180deg);will-change:transform}
 .card-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.08)}
 /* card-back · 밝은 cream-pink + 강한 boxshadow로 어두운 배경에 확실히 떠오르게
    transform:rotateY(180deg) 필수 — card-inner의 기본 rotateY(180deg)를 상쇄해서
    "rest 상태에선 BACK이 보이고 flip 상태에선 FRONT가 보이는" 표준 3D 플립 동작 */
-.card-back{transform:rotateY(180deg);background:linear-gradient(160deg,#FCE7F3 0%,#F5C2D9 50%,#E89BB8 100%);display:flex;align-items:center;justify-content:center;position:relative;border:2px solid #1F1330!important;box-shadow:0 8px 22px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.06),inset 0 1px 0 rgba(255,255,255,.5)}
-.card-back::before{content:'';position:absolute;inset:7px;border:1.5px solid rgba(139,92,246,.6);border-radius:9px;background:linear-gradient(135deg,rgba(236,72,153,.06),rgba(139,92,246,.08));box-shadow:inset 0 0 18px rgba(139,92,246,.18)}
-.card-back-q{position:absolute;font-family:var(--display);font-size:108px;font-weight:900;color:rgba(139,92,246,.32);line-height:1;top:50%;left:50%;transform:translate(-50%,-50%) translateY(-6px);letter-spacing:-.05em;text-shadow:0 2px 8px rgba(139,92,246,.18)}
-.card-back-mark{position:relative;font-family:var(--mono);font-size:10px;letter-spacing:.4em;color:#1F1330;font-weight:900;text-transform:uppercase;margin-top:auto;margin-bottom:14px;opacity:.78}
-/* card-front · 어두운 본문(#08090C)에 떠오르도록 톤 업 + 보더 명확화 */
-.card-front{display:flex;flex-direction:column;padding:16px 14px;background:linear-gradient(160deg,#2A2240,#1A1530);border:2px solid rgba(255,255,255,.18);box-shadow:0 6px 18px rgba(0,0,0,.5)}
-.card-front.t-pink  {background:linear-gradient(160deg,#5A1E40,#2C1530);border-color:rgba(236,72,153,.85)}
-.card-front.t-purple{background:linear-gradient(160deg,#3E1F66,#221442);border-color:rgba(139,92,246,.85)}
-.card-front.t-cyan  {background:linear-gradient(160deg,#0A4256,#0F1B30);border-color:rgba(6,182,212,.85)}
-.card-front.t-gold  {background:linear-gradient(160deg,#5A3A0E,#2A1F18);border-color:rgba(245,158,11,.85)}
-.card-front.t-blue  {background:linear-gradient(160deg,#163A6E,#0F1B30);border-color:rgba(37,99,235,.85)}
+/* card-back · 다크 LUCIVE 무드 (보라/네이비) · transform:rotateY(180deg)는 3D flip 표준 패턴(부모 inner 회전 상쇄) */
+.card-back{transform:rotateY(180deg);background:linear-gradient(160deg,#2D2046 0%,#1F1538 55%,#15102B 100%);display:flex;align-items:center;justify-content:center;position:relative;border:1.5px solid rgba(139,92,246,.55);box-shadow:0 10px 26px rgba(0,0,0,.55),0 0 0 1px rgba(139,92,246,.18),inset 0 0 24px rgba(139,92,246,.06)}
+.card-back::before{content:'';position:absolute;inset:9px;border:1px dashed rgba(236,72,153,.45);border-radius:7px}
+.card-back-q{position:absolute;font-family:var(--display);font-size:108px;font-weight:900;color:rgba(255,255,255,.13);line-height:1;top:50%;left:50%;transform:translate(-50%,-50%) translateY(-6px);letter-spacing:-.05em}
+.card-back-mark{position:relative;font-family:var(--mono);font-size:10px;letter-spacing:.4em;color:rgba(236,72,153,.78);font-weight:800;text-transform:uppercase;margin-top:auto;margin-bottom:14px;text-shadow:0 0 14px rgba(236,72,153,.45)}
+/* card-front · 다크 LUCIVE · 톤별 톤다운 색감 + 강한 컬러 보더로 식별 */
+.card-front{display:flex;flex-direction:column;padding:16px 14px;background:linear-gradient(160deg,rgba(15,17,25,.96),rgba(8,9,12,.98));border:1.5px solid rgba(255,255,255,.14);box-shadow:0 8px 22px rgba(0,0,0,.5)}
+.card-front.t-pink  {background:linear-gradient(160deg,rgba(236,72,153,.22),rgba(8,9,12,.95));border-color:rgba(236,72,153,.65)}
+.card-front.t-purple{background:linear-gradient(160deg,rgba(139,92,246,.22),rgba(8,9,12,.95));border-color:rgba(139,92,246,.65)}
+.card-front.t-cyan  {background:linear-gradient(160deg,rgba(6,182,212,.22),rgba(8,9,12,.95));border-color:rgba(6,182,212,.65)}
+.card-front.t-gold  {background:linear-gradient(160deg,rgba(245,158,11,.22),rgba(8,9,12,.95));border-color:rgba(245,158,11,.65)}
+.card-front.t-blue  {background:linear-gradient(160deg,rgba(37,99,235,.22),rgba(8,9,12,.95));border-color:rgba(37,99,235,.65)}
 .cf-tag{font-family:var(--mono);font-size:9px;letter-spacing:.24em;font-weight:800;text-transform:uppercase;color:var(--pink);margin-bottom:6px}
 .cf-name{font-size:21px;font-weight:900;letter-spacing:-.02em;color:var(--ink);line-height:1;margin-bottom:3px}
 .cf-hint{font-size:12px;color:var(--ink-soft);flex:1;line-height:1.45;opacity:.85}
@@ -79,7 +80,7 @@ main{max-width:1280px;margin:0 auto}
    MODE A · RIFFLE FAN  ·  8장 카드가 한 더미에서 호로 펼쳐지고 한 장씩 플립
    ======================================================================== */
 .mode-riffle .stage-inner{position:relative;width:100%;height:520px}
-.mode-riffle .card{position:absolute;left:50%;top:60%;margin-left:-90px;margin-top:-120px;transform:translate(0,0) rotate(0);transition:transform 1s var(--ease) var(--spread-delay,0ms)}
+.mode-riffle .card{position:absolute;left:50%;top:60%;margin-left:-90px;margin-top:-126px;transform:translate(0,0) rotate(0);transition:transform 1s var(--ease) var(--spread-delay,0ms)}
 .mode-riffle.active .card{transform:translate(var(--fx,0),var(--fy,0)) rotate(var(--frot,0deg))}
 .mode-riffle .card .card-inner{transition:transform .85s var(--ease-spring) var(--flip-delay,0ms)}
 .mode-riffle.active .card .card-inner{transform:rotateY(0deg)}
@@ -125,7 +126,7 @@ main{max-width:1280px;margin:0 auto}
    --dx, --rot, --td (transition-delay)는 JS에서 px/deg/ms 단위로 사전 계산
    ======================================================================== */
 .mode-ribbon .stage-inner{position:relative;width:100%;min-height:340px;display:flex;justify-content:center;align-items:center}
-.mode-ribbon .card{position:absolute;top:50%;left:50%;margin:-110px 0 0 -55px;width:110px;height:160px;transition:transform 1.4s var(--ease) var(--td,0ms);z-index:var(--zi,1)}
+.mode-ribbon .card{position:absolute;top:50%;left:50%;margin:-77px 0 0 -55px;width:110px;height:154px;transition:transform 1.4s var(--ease) var(--td,0ms);z-index:var(--zi,1)}
 .mode-ribbon.active .card{transform:translateX(var(--dx,0px)) rotate(var(--rot,0deg))}
 
 /* ========================================================================
@@ -133,7 +134,7 @@ main{max-width:1280px;margin:0 auto}
    --ad (animation-delay)는 JS에서 ms로 사전 계산
    ======================================================================== */
 .mode-spring .stage-inner{position:relative;width:100%;min-height:380px}
-.mode-spring .card{position:absolute;top:50%;left:50%;margin:-110px 0 0 -55px;width:110px;height:160px;opacity:0}
+.mode-spring .card{position:absolute;top:50%;left:50%;margin:-77px 0 0 -55px;width:110px;height:154px;opacity:0}
 .mode-spring.active .card{animation:dribble-arc 1.5s var(--ease) var(--ad,0ms) forwards}
 @keyframes dribble-arc{
   0%   { transform: translate(-300px, -10px) rotate(-28deg) scale(.85); opacity:0 }
@@ -148,7 +149,7 @@ main{max-width:1280px;margin:0 auto}
    --dx (final translateX), --rot (final rotation), --ad (animation-delay) JS 사전 계산
    ======================================================================== */
 .mode-lepaul .stage-inner{position:relative;width:100%;min-height:340px;display:flex;align-items:center;padding:0 40px}
-.mode-lepaul .card{position:absolute;top:50%;left:60px;margin-top:-110px;width:110px;height:160px;opacity:0;transform:translate(-60px,-280px) rotate(-25deg) scale(.85);transform-origin:50% 100%;z-index:var(--zi,1)}
+.mode-lepaul .card{position:absolute;top:50%;left:60px;margin-top:-77px;width:110px;height:154px;opacity:0;transform:translate(-60px,-280px) rotate(-25deg) scale(.85);transform-origin:50% 100%;z-index:var(--zi,1)}
 .mode-lepaul.active .card{animation:lay-right .68s var(--ease-spring) var(--ad,0ms) forwards}
 @keyframes lay-right{
   0%   { transform: translate(-60px, -280px) rotate(-25deg) scale(.85); opacity:0 }
@@ -161,7 +162,7 @@ main{max-width:1280px;margin:0 auto}
    --ad (negative animation-delay = phase offset) JS 사전 계산
    ======================================================================== */
 .mode-pressure .stage-inner{position:relative;width:100%;min-height:380px}
-.mode-pressure .card{position:absolute;top:50%;left:50%;margin:-110px 0 0 -55px;width:110px;height:160px;opacity:0;animation:pressure-cycle 4s linear var(--ad,0ms) infinite}
+.mode-pressure .card{position:absolute;top:50%;left:50%;margin:-77px 0 0 -55px;width:110px;height:154px;opacity:0;animation:pressure-cycle 4s linear var(--ad,0ms) infinite}
 @keyframes pressure-cycle{
   0%   { transform: translate(-320px, 20px) rotate(-30deg) scale(.85); opacity:0 }
   8%   { opacity:1 }
@@ -181,7 +182,7 @@ main{max-width:1280px;margin:0 auto}
 .mode-megariffle.active .rise-label{opacity:1}
 .mode-megariffle .deck-strip{position:relative;width:100%;height:280px;display:flex;justify-content:center;align-items:flex-end}
 /* 15장 · 38px stagger so each card has visible body + clear wave · --dx/--rot 사전 계산 */
-.mode-megariffle .deck-strip .card{position:absolute;width:120px;height:170px;left:50%;bottom:48px;margin-left:-60px;perspective:900px;translate:var(--dx,0px) 0;rotate:var(--rot,0deg);transform-origin:50% 100%;will-change:translate,rotate,scale}
+.mode-megariffle .deck-strip .card{position:absolute;width:120px;height:168px;left:50%;bottom:48px;margin-left:-60px;perspective:900px;translate:var(--dx,0px) 0;rotate:var(--rot,0deg);transform-origin:50% 100%;will-change:translate,rotate,scale}
 /* card styling for the 15-card strip · larger so text is readable */
 .mode-megariffle .card-back::before{inset:7px;border-radius:8px}
 .mode-megariffle .card-back-q{font-size:62px;line-height:1;transform:translate(-50%,-50%)}
