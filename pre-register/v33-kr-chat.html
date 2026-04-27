@@ -137,8 +137,9 @@ body{background:var(--bg-deep);color:var(--ink);font-family:var(--sans);min-heig
 .cast-featured.cf-jinhyuk .chip.live::before{color:var(--lucid-cyan)}
 .cast-featured.cf-jinhyuk .chip.r3-cyan{color:var(--lucid-cyan);border-color:rgba(6,182,212,.55);font-weight:800}
 .cast-featured.cf-jinhyuk .cf-play{background:linear-gradient(135deg,var(--lucid-cyan),var(--lucid-blue));box-shadow:0 8px 24px rgba(6,182,212,.46)}
-/* Once draw animation ends · drop animation so hover transitions can fire (animations otherwise override CSS) */
-.cast-featured.settled{animation:none}
+/* Once draw animation ends · drop animation so hover transitions can fire.
+   opacity:1 명시 필수 — animation 제거 시 base의 opacity:0이 다시 살아나서 카드가 사라지기 때문 */
+.cast-featured.settled{animation:none;opacity:1}
 .cast-featured.cf-raon.settled:hover{translate: 0 -4px; scale:1.01; box-shadow:0 26px 62px rgba(236,72,153,.36),0 0 0 1px rgba(236,72,153,.34)}
 .cast-featured.cf-jinhyuk.settled:hover{translate: 0 -4px; scale:1.01; box-shadow:0 26px 62px rgba(6,182,212,.36),0 0 0 1px rgba(6,182,212,.45)}
 
