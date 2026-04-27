@@ -122,8 +122,8 @@ main{max-width:1280px;margin:0 auto}
    각 카드는 stagger transition으로 자기 위치로 슬라이드.
    ======================================================================== */
 .mode-ribbon .stage-inner{position:relative;width:100%;min-height:340px;display:flex;justify-content:center;align-items:center}
-.mode-ribbon .card{position:absolute;top:50%;left:50%;margin:-110px 0 0 -55px;width:110px;height:160px;transition:transform 1.5s var(--ease) calc(var(--i) * 14ms);z-index:var(--i)}
-.mode-ribbon.active .card{transform:translateX(calc((var(--i) - var(--mid)) * 12px)) rotate(calc((var(--i) - var(--mid)) * 0.5deg))}
+.mode-ribbon .card{position:absolute;top:50%;left:50%;margin:-110px 0 0 -55px;width:110px;height:160px;transition:transform 1.5s var(--ease) calc(var(--i) * 28ms);z-index:var(--i)}
+.mode-ribbon.active .card{transform:translateX(calc((var(--i) - var(--mid)) * 22px)) rotate(calc((var(--i) - var(--mid)) * 0.7deg))}
 
 /* ========================================================================
    MODE H · SPRING / DRIBBLE
@@ -132,7 +132,7 @@ main{max-width:1280px;margin:0 auto}
    ======================================================================== */
 .mode-spring .stage-inner{position:relative;width:100%;min-height:380px}
 .mode-spring .card{position:absolute;top:50%;left:50%;margin:-110px 0 0 -55px;width:110px;height:160px;opacity:0}
-.mode-spring.active .card{animation:dribble-arc 1.5s var(--ease) calc(var(--i) * 32ms) forwards}
+.mode-spring.active .card{animation:dribble-arc 1.5s var(--ease) calc(var(--i) * 28ms) forwards}
 @keyframes dribble-arc{
   0%   { transform: translate(-300px, -10px) rotate(-28deg) scale(.85); opacity:0 }
   12%  { opacity:1 }
@@ -160,7 +160,7 @@ main{max-width:1280px;margin:0 auto}
    루프 끝나지 않음 · 카드가 한쪽에서 사라지면 다른 카드가 다시 들어옴.
    ======================================================================== */
 .mode-pressure .stage-inner{position:relative;width:100%;min-height:380px}
-.mode-pressure .card{position:absolute;top:50%;left:50%;margin:-110px 0 0 -55px;width:110px;height:160px;opacity:0;animation:pressure-cycle 4s linear calc(var(--i) * -250ms) infinite}
+.mode-pressure .card{position:absolute;top:50%;left:50%;margin:-110px 0 0 -55px;width:110px;height:160px;opacity:0;animation:pressure-cycle 4s linear calc(var(--i) * -133ms) infinite}
 @keyframes pressure-cycle{
   0%   { transform: translate(-320px, 20px) rotate(-30deg) scale(.85); opacity:0 }
   8%   { opacity:1 }
@@ -175,61 +175,62 @@ main{max-width:1280px;margin:0 auto}
    파도처럼 한 장씩 들춰지며 통과 (12ms stagger, 380ms peek). 그 와중에
    3장이 자기 차례에 위로 살짝 솟아 안 내려가고 그대로 남음 (face-up flip).
    ======================================================================== */
-.mode-megariffle .stage-inner{display:flex;flex-direction:column;align-items:center;padding:90px 0 30px;min-height:380px;position:relative}
-.mode-megariffle .rise-label{position:absolute;top:30px;font-family:var(--mono);font-size:10px;letter-spacing:.34em;font-weight:800;color:rgba(236,72,153,.65);text-transform:uppercase;opacity:0;transition:opacity .6s var(--ease) 1500ms}
+.mode-megariffle .stage-inner{display:flex;flex-direction:column;align-items:center;padding:90px 0 30px;min-height:420px;position:relative}
+.mode-megariffle .rise-label{position:absolute;top:30px;font-family:var(--mono);font-size:10px;letter-spacing:.34em;font-weight:800;color:rgba(236,72,153,.65);text-transform:uppercase;opacity:0;transition:opacity .6s var(--ease) 1200ms}
 .mode-megariffle.active .rise-label{opacity:1}
-.mode-megariffle .deck-strip{position:relative;width:100%;height:240px;display:flex;justify-content:center;align-items:flex-end}
-.mode-megariffle .deck-strip .card{position:absolute;width:72px;height:104px;left:50%;bottom:36px;margin-left:-36px;perspective:700px;translate:calc((var(--i) - var(--mid)) * 8px) 0;rotate:calc((var(--i) - var(--mid)) * 0.35deg);transform-origin:50% 100%;will-change:translate,rotate,scale}
-/* compact card styling for 90-card strip */
-.mode-megariffle .card-back::before{inset:5px;border-radius:6px;border-style:solid;border-color:rgba(236,72,153,.18)}
-.mode-megariffle .card-back-q{font-size:42px;line-height:1;transform:translate(-50%,-50%)}
-.mode-megariffle .card-back-mark{font-size:7px;letter-spacing:.24em;margin-bottom:7px}
-.mode-megariffle .card-front{padding:8px 7px}
-.mode-megariffle .cf-tag{font-size:7px;letter-spacing:.12em;margin-bottom:2px}
-.mode-megariffle .cf-name{font-size:12px;margin-bottom:0;line-height:1}
-.mode-megariffle .cf-hint{font-size:7.5px;line-height:1.3;margin-top:3px}
+.mode-megariffle .deck-strip{position:relative;width:100%;height:280px;display:flex;justify-content:center;align-items:flex-end}
+/* 30장 · 18px stagger so each card has a visible sliver + room for the wave to be readable */
+.mode-megariffle .deck-strip .card{position:absolute;width:100px;height:144px;left:50%;bottom:48px;margin-left:-50px;perspective:900px;translate:calc((var(--i) - var(--mid)) * 18px) 0;rotate:calc((var(--i) - var(--mid)) * 0.6deg);transform-origin:50% 100%;will-change:translate,rotate,scale}
+/* compact card styling for the 30-card strip */
+.mode-megariffle .card-back::before{inset:6px;border-radius:7px;border-style:solid;border-color:rgba(236,72,153,.22)}
+.mode-megariffle .card-back-q{font-size:54px;line-height:1;transform:translate(-50%,-50%)}
+.mode-megariffle .card-back-mark{font-size:8px;letter-spacing:.26em;margin-bottom:9px}
+.mode-megariffle .card-front{padding:9px 8px}
+.mode-megariffle .cf-tag{font-size:8px;letter-spacing:.14em;margin-bottom:3px}
+.mode-megariffle .cf-name{font-size:14px;margin-bottom:1px;line-height:1}
+.mode-megariffle .cf-hint{font-size:9px;line-height:1.35;margin-top:4px}
 .mode-megariffle .cf-foot{margin-top:auto}
-.mode-megariffle .cf-dday{font-size:7px;padding:2px 5px;letter-spacing:.04em}
-.mode-megariffle .cf-lock{font-size:8px}
+.mode-megariffle .cf-dday{font-size:8px;padding:2px 6px;letter-spacing:.06em}
+.mode-megariffle .cf-lock{font-size:9px}
 
 /* RIFFLE WAVE · 좌→우, 한 장씩 빠르게 위로 살짝 들렸다가 내려감 */
-.mode-megariffle.active .deck-strip .card{animation:mega-peek .38s var(--ease-spring) var(--peek-delay,0ms)}
+.mode-megariffle.active .deck-strip .card{animation:mega-peek .42s var(--ease-spring) var(--peek-delay,0ms)}
 @keyframes mega-peek{
   0%, 100%{
-    translate: calc((var(--i) - var(--mid)) * 8px) 0;
-    rotate: calc((var(--i) - var(--mid)) * 0.35deg);
+    translate: calc((var(--i) - var(--mid)) * 18px) 0;
+    rotate: calc((var(--i) - var(--mid)) * 0.6deg);
     scale: 1;
     z-index: auto;
   }
   50%{
-    translate: calc((var(--i) - var(--mid)) * 8px) -26px;
-    rotate: calc((var(--i) - var(--mid)) * 0.35deg - 4deg);
-    scale: 1.08;
+    translate: calc((var(--i) - var(--mid)) * 18px) -32px;
+    rotate: calc((var(--i) - var(--mid)) * 0.6deg - 5deg);
+    scale: 1.1;
     z-index: 50;
   }
 }
 
 /* SELECTED · 자기 차례에 위로 솟아 그대로 머무름 + face-up flip */
-.mode-megariffle.active .deck-strip .card.selected{animation:mega-rise 1.05s var(--ease-spring) var(--peek-delay,0ms) forwards}
+.mode-megariffle.active .deck-strip .card.selected{animation:mega-rise 1.1s var(--ease-spring) var(--peek-delay,0ms) forwards}
 @keyframes mega-rise{
   0%{
-    translate: calc((var(--i) - var(--mid)) * 8px) 0;
-    rotate: calc((var(--i) - var(--mid)) * 0.35deg);
+    translate: calc((var(--i) - var(--mid)) * 18px) 0;
+    rotate: calc((var(--i) - var(--mid)) * 0.6deg);
     scale: 1;
     z-index: 100;
     filter: brightness(1);
   }
   38%{
-    translate: calc((var(--i) - var(--mid)) * 8px) -82px;
+    translate: calc((var(--i) - var(--mid)) * 18px) -100px;
     rotate: 0deg;
-    scale: 1.55;
+    scale: 1.45;
     z-index: 100;
     filter: brightness(1.22) drop-shadow(0 10px 26px rgba(236,72,153,.55));
   }
   100%{
-    translate: calc((var(--i) - var(--mid)) * 8px) -72px;
+    translate: calc((var(--i) - var(--mid)) * 18px) -88px;
     rotate: 0deg;
-    scale: 1.5;
+    scale: 1.4;
     z-index: 100;
     filter: brightness(1.16) drop-shadow(0 8px 22px rgba(236,72,153,.42));
   }
@@ -267,7 +268,7 @@ main{max-width:1280px;margin:0 auto}
       <button class="tab" data-mode="spring">H · Spring / Dribble</button>
       <button class="tab" data-mode="lepaul">I · Le Paul Sweep</button>
       <button class="tab" data-mode="pressure">J · Pressure (∞ loop)</button>
-      <button class="tab" data-mode="megariffle">F · 90장 좌라라락 → 3장 부각</button>
+      <button class="tab" data-mode="megariffle">F · 30장 좌라라락 → 3장 부각</button>
       <button class="tab" data-mode="cascade">C · Cascade Wave</button>
       <button class="tab" data-mode="featured-last">D · Cascade + 라온 등장</button>
       <button class="tab" data-mode="tarot">E · Tarot 3-Reveal</button>
@@ -312,11 +313,11 @@ const TEASERS = [
 const NOTES = {
   riffle:'<b>A · Riffle Fan</b> — 카드 8장이 더미에서 부채꼴(arc)로 펼쳐진 뒤 좌→우 순서로 한 장씩 뒤집힘. <span class="pro">PRO</span>가장 임팩트 있고 "덱" 메타포 살아있음. <span class="con">CON</span>카드 수 제한 (8~12장 정도) · 60+ 그리드를 별도로 깔아야 함.',
   strip:'<b>B · Linear Strip</b> — 카드 6장이 한 줄(직선) 정렬되고 좌→우 순서로 플립. <span class="pro">PRO</span>가장 명확하고 깔끔, "한 장씩 공개" 메시지가 분명. <span class="con">CON</span>fan보다 시각적 임팩트는 약함, 모바일에서 wrap됨.',
-  ribbon:'<b>G · Ribbon Spread</b> — 60장이 한 더미에서 좌→우 가로 ribbon으로 펼쳐짐 (table spread, 14ms stagger transition). <span class="pro">PRO</span>"카드 한 벌이 펼쳐진다" 메타포가 명확, 카지노 dealer 느낌. <span class="con">CON</span>최종 상태 정적임 · 추가로 "3장 뽑힘" 같은 후속 모션 필요.',
-  spring:'<b>H · Spring / Dribble</b> — 25장이 좌측에서 우측으로 호(arc)를 그리며 차례로 흘러감 (한 손→다른 손 spring 카디스트리 동작). <span class="pro">PRO</span>가장 다이내믹, 중력 + 스프링 느낌 살아있음. <span class="con">CON</span>최종 카드가 우측에 stack됨 (펼쳐지지 않음) · "선택" 모션 추가 필요.',
-  lepaul:'<b>I · Le Paul Sweep</b> — 30장이 좌측 한 점에서 위에서 떨어지며 우측으로 차근차근 깔림 (Le Paul style table spread, 점점 오른쪽으로). <span class="pro">PRO</span>"한 장씩 깔리며 라인을 만든다" 시퀀셜리티 명확. <span class="con">CON</span>30장 이상은 화면 폭 초과 · 끝점 위치 픽스됨.',
-  pressure:'<b>J · Pressure (∞ loop)</b> — 16장이 끊임없이 좌→우 호를 그리며 흘러감 · 끝나지 않는 무한 루프 (negative delay로 phase offset). <span class="pro">PRO</span>"매주 새 캐릭터 합류 · 끝없이" 메시지에 가장 어울림. <span class="con">CON</span>"3장 뽑힘" 같은 큐레이션 메시지는 별도 처리 필요.',
-  megariffle:'<b>F · 90장 좌라라락 → 3장 부각</b> — 90장 카드가 빽빽한 한 줄로 펼쳐져 있고 좌→우 방향으로 12ms 간격 빠른 파도(좌라라락)가 통과 · 그 와중에 3장이 자기 차례에 위로 살짝 솟아 안 내려가고 face-up으로 머물고, 나머지 87장은 끝나면 디밍됨. <span class="pro">PRO</span>"수많은 캐릭터 중 3명 부각" 메시지가 가장 직접적. <span class="con">CON</span>카드가 작아져서 텍스트 가독성 낮음 · 90장이 빽빽이 겹쳐서 "1줄"처럼 보일 수 있음.',
+  ribbon:'<b>G · Ribbon Spread</b> — 30장이 한 더미에서 좌→우 가로 ribbon으로 펼쳐짐 (table spread, 28ms stagger transition · 22px 간격). <span class="pro">PRO</span>"카드 한 벌이 펼쳐진다" 메타포가 명확, 카지노 dealer 느낌. <span class="con">CON</span>최종 상태 정적임 · 추가로 "3장 뽑힘" 같은 후속 모션 필요.',
+  spring:'<b>H · Spring / Dribble</b> — 30장이 좌측에서 우측으로 호(arc)를 그리며 28ms 간격 차례로 흘러감 (한 손→다른 손 spring 카디스트리 동작). <span class="pro">PRO</span>가장 다이내믹, 중력 + 스프링 느낌 살아있음. <span class="con">CON</span>최종 카드가 우측에 stack됨 · "선택" 모션 추가 필요.',
+  lepaul:'<b>I · Le Paul Sweep</b> — 30장이 좌측 한 점에서 위에서 떨어지며 우측으로 차근차근 깔림 (Le Paul style table spread). <span class="pro">PRO</span>"한 장씩 깔리며 라인을 만든다" 시퀀셜리티 명확. <span class="con">CON</span>끝점 위치 고정.',
+  pressure:'<b>J · Pressure (∞ loop)</b> — 30장이 끊임없이 좌→우 호를 그리며 흘러감 · 끝나지 않는 무한 루프 (4s cycle, 133ms phase offset). <span class="pro">PRO</span>"매주 새 캐릭터 합류 · 끝없이" 메시지에 가장 어울림. <span class="con">CON</span>"3장 뽑힘" 같은 큐레이션 메시지는 별도 처리 필요.',
+  megariffle:'<b>F · 30장 좌라라락 → 3장 부각</b> — 30장 카드가 한 줄로 펼쳐져 있고 좌→우 38ms 간격 wave가 통과 · 그 와중에 3장이 자기 차례에 위로 솟아 face-up으로 머물고, 나머지 27장은 끝나면 디밍됨. <span class="pro">PRO</span>"수많은 카드 중 3장 부각" 메시지가 가장 직접적, 약 1.5s. <span class="con">CON</span>카드가 작아 텍스트 가독성은 보통.',
   cascade:'<b>C · Cascade Wave</b> — 6×4(=24) 그리드 전체가 좌상→우하 대각선 wave로 플립. <span class="pro">PRO</span>60+ 카드를 한 화면에 다 담을 수 있는 유일한 옵션. <span class="con">CON</span>전체 시간이 길어짐 (~3.5s) · "라온이 특별하다" 강조가 약함.',
   'featured-last':'<b>D · Cascade + 라온 등장</b> — C 그리드가 다 뒤집힌 직후, 라온 카드가 그리드 아래에서 위로 솟아올라 featured 슬롯에 안착. <span class="pro">PRO</span>"수많은 캐릭터 중 한 명이 라온"이라는 서사 살아있음 + 60+ 다 보임. <span class="con">CON</span>전체 ~4.5s, 가장 김.',
   tarot:'<b>E · Tarot 3-Reveal</b> — 3장만 일직선 큰 사이즈로 배치, 1초 간격 묵직한 플립. <span class="pro">PRO</span>가장 분위기 있음 (오컬트/노블 톤), 주목도 최강. <span class="con">CON</span>3장만 보여줌 · 나머지는 평범한 그리드 별도 필요 · "수많은 카드" 메시지 약함.',
@@ -445,7 +446,7 @@ function render(mode){
   if(mode === 'ribbon'){
     const inner = document.createElement('div');
     inner.className = 'stage-inner';
-    const N = 60, mid = (N - 1) / 2;
+    const N = 30, mid = (N - 1) / 2;
     for(let i = 0; i < N; i++){
       const t = TEASERS[i % TEASERS.length];
       const card = makeCard(t);
@@ -461,7 +462,7 @@ function render(mode){
   if(mode === 'spring'){
     const inner = document.createElement('div');
     inner.className = 'stage-inner';
-    const N = 25;
+    const N = 30;
     for(let i = 0; i < N; i++){
       const t = TEASERS[i % TEASERS.length];
       const card = makeCard(t);
@@ -491,7 +492,7 @@ function render(mode){
   if(mode === 'pressure'){
     const inner = document.createElement('div');
     inner.className = 'stage-inner';
-    const N = 16;
+    const N = 30;
     for(let i = 0; i < N; i++){
       const t = TEASERS[i % TEASERS.length];
       const card = makeCard(t);
@@ -515,10 +516,10 @@ function render(mode){
     const strip = document.createElement('div');
     strip.className = 'deck-strip';
 
-    const N = 90;
-    const STAGGER = 12;
+    const N = 30;
+    const STAGGER = 38;
     // 3 selected cards spaced through the riffle so each rises while the wave is still passing
-    const SELECTED = new Set([22, 45, 67]);
+    const SELECTED = new Set([7, 15, 22]);
     const mid = (N - 1) / 2;
     for(let i = 0; i < N; i++){
       const t = TEASERS[i % TEASERS.length];
