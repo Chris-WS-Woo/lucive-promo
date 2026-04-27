@@ -238,7 +238,18 @@ body{background:var(--bg-deep);color:var(--ink);font-family:var(--sans);min-heig
   100% { opacity:1; translate: 0 0; scale:1; rotate: 0deg; filter:brightness(1) }
 }
 /* Once draw animation ends · drop animation so hover transitions can fire (animations otherwise override CSS) */
-.cast-featured.settled{animation:none}
+/* story 2 · 진혁 featured · 시안+블루 톤 (라온 핑크와 차별 · 살짝 늦게 등장) */
+.cast-featured.cf-jinhyuk{background:linear-gradient(160deg,rgba(6,182,212,.18),rgba(8,9,12,.85) 60%);border-color:rgba(6,182,212,.45);box-shadow:0 18px 48px rgba(6,182,212,.22),0 0 0 1px rgba(6,182,212,.18);animation-delay:2.1s}
+.cast-featured.cf-jinhyuk .cf-tag{color:var(--lucid-cyan)}
+.cast-featured.cf-jinhyuk .cf-world{color:var(--lucid-cyan)}
+.cast-featured.cf-jinhyuk .chip.live{color:var(--lucid-cyan);border-color:rgba(6,182,212,.55);background:rgba(6,182,212,.12)}
+.cast-featured.cf-jinhyuk .chip.r3-cyan{color:var(--lucid-cyan);border-color:rgba(6,182,212,.55);font-weight:800}
+.cast-featured.cf-jinhyuk .cf-play{background:linear-gradient(135deg,var(--lucid-cyan),var(--lucid-blue));box-shadow:0 8px 24px rgba(6,182,212,.46)}
+/* settled 시 animation 제거 → base의 opacity:0 reassert 막기 위해 opacity:1 명시 필수 */
+.cast-featured.settled{animation:none;opacity:1}
+.cast-featured.cf-raon.settled:hover{translate: 0 -4px; scale:1.01; box-shadow:0 26px 62px rgba(236,72,153,.36),0 0 0 1px rgba(236,72,153,.34)}
+.cast-featured.cf-jinhyuk.settled:hover{translate: 0 -4px; scale:1.01; box-shadow:0 26px 62px rgba(6,182,212,.36),0 0 0 1px rgba(6,182,212,.45)}
+/* legacy fallback for stray .cast-featured (no cf-* class) */
 .cast-featured.settled:hover{translate: 0 -4px; scale:1.01; box-shadow:0 26px 62px rgba(236,72,153,.36),0 0 0 1px rgba(236,72,153,.34)}
 
 /* Deck spin · all cards rotate together · synchronous (same animation, same delay, same duration) */
@@ -432,6 +443,13 @@ body{background:var(--bg-deep);color:var(--ink);font-family:var(--sans);min-heig
 .msg-bubble.raon{background:rgba(236,72,153,.08);border-color:rgba(236,72,153,.32)}
 .msg-bubble.dex{background:rgba(22,24,34,.92);border-color:rgba(255,255,255,.22)}
 .msg-bubble.karlo{background:rgba(139,92,246,.1);border-color:rgba(139,92,246,.32)}
+.msg-bubble.jinhyuk {background:rgba(6,182,212,.08); border-color:rgba(6,182,212,.32)}
+.msg-bubble.seoyul  {background:rgba(139,92,246,.1); border-color:rgba(139,92,246,.32)}
+.msg-bubble.listener{background:rgba(245,158,11,.08); border-color:rgba(245,158,11,.32)}
+.msg-bubble.radio{background:linear-gradient(135deg,rgba(16,185,129,.1),rgba(8,9,12,.92));border-color:rgba(16,185,129,.4);font-style:italic;letter-spacing:.005em}
+.msg-row.radio{display:flex;gap:8px;align-items:flex-end;opacity:0;transform:translateY(8px);transition:opacity .45s var(--ease),transform .45s var(--ease)}
+.msg-row.radio.in{opacity:1;transform:translateY(0)}
+.msg-radio-icon{width:24px;height:24px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:rgba(16,185,129,.16);border:1px solid rgba(16,185,129,.45);font-size:13px;align-self:flex-end;animation:liveBlink 1.6s ease-in-out infinite}
 .msg-row.me .msg-bubble{order:2}
 .msg-mini{width:24px;height:24px;border-radius:50%;flex-shrink:0;background-size:cover;background-position:top center;margin-top:2px;align-self:flex-end;background-color:var(--bg-card);border:1px solid var(--border-medium)}
 .msg-row.me .msg-mini{display:none}
@@ -439,6 +457,10 @@ body{background:var(--bg-deep);color:var(--ink);font-family:var(--sans);min-heig
 .msg-speaker.raon{color:var(--awakening-pink)}
 .msg-speaker.dex{color:#E2E8F0}
 .msg-speaker.karlo{color:var(--lucid-purple)}
+.msg-speaker.jinhyuk {color:var(--lucid-cyan)}
+.msg-speaker.seoyul  {color:var(--lucid-purple)}
+.msg-speaker.listener{color:#F59E0B}
+.msg-speaker.dj      {color:#10B981}
 
 /* v25 · narration boosted · larger size + slower entrance · readable */
 .narration{align-self:center;max-width:94%;padding:16px 20px;margin:8px 0;background:rgba(8,9,12,.82);border:1px solid rgba(139,92,246,.5);border-left:3px solid var(--lucid-purple);border-radius:8px;font-family:var(--sans);font-size:15px;font-style:italic;color:var(--ink);text-align:center;line-height:1.7;opacity:0;transform:translateY(12px) scale(.97);transition:opacity .55s var(--ease),transform .55s var(--ease);box-shadow:0 6px 22px rgba(139,92,246,.2)}
@@ -608,6 +630,10 @@ audio{display:none}
 .vn-speaker-tag.dex{border-color:rgba(255,255,255,.45)}
 .vn-speaker-tag.karlo{border-color:rgba(139,92,246,.6)}
 .vn-speaker-tag.yeonwoo{border-color:rgba(6,182,212,.6)}
+.vn-speaker-tag.jinhyuk {border-color:rgba(6,182,212,.6)}
+.vn-speaker-tag.seoyul  {border-color:rgba(139,92,246,.6)}
+.vn-speaker-tag.listener{border-color:rgba(245,158,11,.6)}
+.vn-speaker-tag.dj      {border-color:rgba(16,185,129,.6)}
 .vn-speaker-tag .dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--awakening-pink);margin-right:6px;vertical-align:middle;animation:liveBlink 1.6s ease-in-out infinite}
 
 .vn-dialogue{position:absolute;left:0;right:0;bottom:0;z-index:5;padding:18px 20px 30px;background:linear-gradient(180deg,transparent,rgba(8,9,12,.92) 30%,rgba(8,9,12,.98));pointer-events:auto}
@@ -848,7 +874,7 @@ audio{display:none}
 
           <div class="cast-section-h">LIVE NOW<span class="sh-line"></span></div>
 
-          <div class="cast-featured" onclick="enterChatDirect()">
+          <div class="cast-featured cf-raon" onclick="enterChatDirect()">
             <div class="cast-featured-portrait">
               <img src="./assets/v17/story1/characters/raon/neutral_arms_crossed.png" alt="라온">
             </div>
@@ -866,6 +892,29 @@ audio{display:none}
               </div>
               <button class="cf-play">
                 <span>💬 라온과 채팅 시작</span>
+                <span class="arr">→</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="cast-featured cf-jinhyuk" onclick="enterChatStory2()">
+            <div class="cast-featured-portrait">
+              <img src="./assets/v17/story2/characters/%EA%B0%95%EC%A7%84%ED%98%81/neutral_default.png" alt="강진혁">
+            </div>
+            <div class="cast-featured-body">
+              <span class="cf-tag">▶ EP.1 · 프롤로그</span>
+              <div>
+                <div class="cf-name">진혁 · <em>JINHYUK</em></div>
+                <div class="cf-world">번역가 · 7년치 라디오 · 다시 듣는다</div>
+              </div>
+              <p class="cf-syn"><b>오늘 밤, 그녀의 비밀이 라디오 사연으로 흘러나왔습니다.</b></p>
+              <div class="cf-meta">
+                <span class="chip live">LIVE</span>
+                <span class="chip r3-cyan">T·I·M</span>
+                <span class="chip">60초</span>
+              </div>
+              <button class="cf-play">
+                <span>💬 진혁과 채팅 시작</span>
                 <span class="arr">→</span>
               </button>
             </div>
@@ -1260,12 +1309,36 @@ function setChatMode(m){
 }
 window.setChatMode = setChatMode;
 const CHARS = {
-  yeonwoo: { name:'연우' },
-  raon:    { name:'라온' },
-  karlo:   { name:'칼로' },
-  dex:     { name:'덱스' },
+  // story 1
+  yeonwoo:  { name:'연우' },
+  raon:     { name:'라온' },
+  karlo:    { name:'칼로' },
+  dex:      { name:'덱스' },
+  // story 2
+  jinhyuk:  { name:'진혁' },
+  seoyul:   { name:'서율' },
+  listener: { name:'보랏빛 청취자' },
+  dj:       { name:'DJ 윤소희' }, // radio voice only · no portrait
 };
-function portraitSrc(id, mood){ return `./assets/v17/story1/characters/${id}/${mood}.png`; }
+let currentStory = 'story1';
+const STORY_CONFIG = {
+  story1: {
+    dir: 'story1',
+    charFolder: id => id,
+    statKeys: ['humanity','obsession','trust'],
+  },
+  story2: {
+    dir: 'story2',
+    charFolder: id => ({ jinhyuk:'강진혁', seoyul:'한서율', listener:'보랏빛 청취자' })[id] || id,
+    statKeys: ['trust','investigation','mental_stability'],
+  },
+};
+function portraitSrc(id, mood){
+  if(id === 'dj') return '';
+  const cfg = STORY_CONFIG[currentStory];
+  const folder = cfg.charFolder(id);
+  return `./assets/v17/${cfg.dir}/characters/${encodeURIComponent(folder)}/${mood}.png`;
+}
 
 /* v21 PROLOGUE · lean · ~18 beats · max-drama cliffhanger
    • Open in action (no exposition dump)
@@ -1286,7 +1359,7 @@ function portraitSrc(id, mood){ return `./assets/v17/story1/characters/${id}/${m
    Yeonwoo (player) doesn't know she's in a loop · Raon does and fails again.
    Effects (flash) ride on narration · scene transitions auto-chain.
    Each msg/me/narration mood matches the line's emotional content. */
-const FLOW = [
+const FLOW1 = [
   /* === ACT 0 · RAON's DEATH · cold open · raon's POV === */
   { type:'node', id:'F0_Regret', title:'…한 번만 다시', bg:'neon_alley_rain_noir.png' },
   { type:'narration', peak:true, text:'라온의 손에 · 빛이 흐려진다.' },
@@ -1351,6 +1424,44 @@ const FLOW = [
   { type:'cut_to_tease' },
 ];
 
+/* STORY 2 · 비 내리는 밤의 타투 스튜디오 — Start_OnAir prologue (1 turn) */
+const FLOW2 = [
+  { type:'node', id:'S2_OnAir', title:'비 내리는 밤의 주파수 · 새벽 4시', bg:'rainy_car_interior_radio.png' },
+  { type:'narration', text:'와이퍼가 · 비를 한 박자 늦게 닦아낸다.' },
+  { type:'narration', text:'<em>새벽 4시.</em> 매주 같은 시간.' },
+  { type:'narration', text:'야근을 마친 차가 신호 대기 중이다. 라디오가 켜져 있다.' },
+  { type:'me', mood:'neutral_default', text:'(7년 동안 · 한 번도 빠뜨린 적 없는 한 시간이다.)' },
+  { type:'me', mood:'neutral_default', text:'(이 시간에 · 그녀의 흔적이 흘러나오기를 기다리는 일.)' },
+  { type:'narration', text:'주파수가 잠시 잡음으로 흩어진다 — 그리고 깨끗해진다.' },
+  { type:'radio', text:'…〈비 오는 밤의 주파수〉. 오늘 첫 사연 읽어 드립니다.', voice:'dj_01_intro' },
+  { type:'radio', text:'매주 같은 시간에 보내 주시는 분의 사연이에요.', voice:'dj_02_pattern' },
+  { type:'radio', text:'<em>"이 타투가 지워지면 · 우리의 기억도 사라질까요?"</em>', voice:'dj_03_hook' },
+  { type:'narration', peak:true, text:'핸들 위 · 그의 손이 · 멈춘다.', flash:'peak' },
+  { type:'portrait', who:'jinhyuk', mood:'surprised_default' },
+  { type:'me', mood:'surprised_default', text:'(...그 한 줄.)' },
+  { type:'me', mood:'surprised_default', text:'(7년 전 · 그녀가 · <em>나에게 마지막으로 한 말</em>이다.)' },
+  { type:'portrait', who:'jinhyuk', mood:'fear_defensive' },
+  { type:'me', mood:'fear_defensive', text:'(우리 둘만 알았던 한 줄이 · 어떻게 · 다른 사람 입에서 나왔지.)' },
+  { type:'choice', intent:'무의식 · 한 손', label:'그의 손은 무엇을 먼저 만지는가?',
+    options:[
+      { letter:'A', text:'<b>라디오 볼륨</b>을 천천히 키운다 · 한 마디라도 더 듣는다', hint:'성격 표출 · 좌표 변동 없음', stats:{}, next:'__OUT' },
+      { letter:'B', text:'<b>와이퍼 속도</b>를 한 단계 늦춘다 · 호흡을 가다듬는다', hint:'성격 표출 · 좌표 변동 없음', stats:{}, next:'__OUT' },
+    ]
+  },
+  { type:'__OUT' },
+  { type:'narration', text:'잠시 후, 라디오 너머 사연자의 마지막 한 줄이 들린다.' },
+  { type:'radio', text:'…매주 들어 주셔서 · <em>감사합니다.</em>', voice:'dj_04_thanks' },
+  { type:'portrait', who:'jinhyuk', mood:'fear_defensive' },
+  { type:'me', mood:'fear_defensive', text:'(...매주 같은 시간 · 같은 양식 · 같은 한 줄.)' },
+  { type:'me', mood:'fear_defensive', text:'(7년 동안 라디오를 켜 둔 사람은 · 나만이 아니었다.)' },
+  { type:'narration', peak:true, text:'손목의 작은 글자 위로 · 신호등 빛이 한 번 깜빡인다.' },
+  { type:'narration', peak:true, text:'7년 동안 평범한 야근 귀가였던 새벽 4시가 —', flash:'peak' },
+  { type:'narration', peak:true, text:'<em>오늘부터 · 다른 시간이 시작됐다.</em>', flash:'peak' },
+  { type:'cut_to_tease' },
+];
+
+let FLOW = FLOW1;
+
 let beatIdx = 0;
 let typingNode = null;
 const chatScroll = document.getElementById('chatScroll');
@@ -1382,9 +1493,9 @@ function playVoice(file){
   if(!ttsEnabled || !file) return;
   if(_voiceFadeRaf){ cancelAnimationFrame(_voiceFadeRaf); _voiceFadeRaf = null; }
   voiceAudio.pause();
-  voiceAudio.src = `./assets/v17/story1/voice/${file}.mp3`;
+  voiceAudio.src = `./assets/v17/${STORY_CONFIG[currentStory].dir}/voice/${file}.mp3`;
   voiceAudio.volume = 0.95;
-  voiceAudio.play().catch(()=>{ /* works after first gesture */ });
+  voiceAudio.play().catch(()=>{ /* works after first gesture · also OK if file 404s */ });
 }
 // v21 · fade out current TTS line (called on every beat advance)
 function fadeOutVoice(ms = 320){
@@ -1562,6 +1673,13 @@ function sfxGunshot(){
 let lastSpeaker = null;
 function setVNPortrait(who, mood){
   if(!who) return;
+  // dj는 라디오 보이스 · 포트레이트/스피커태그 없음
+  if(who === 'dj'){
+    vnPortrait.classList.remove('show');
+    vnSpeakerTag.classList.remove('show');
+    lastSpeaker = who;
+    return;
+  }
   vnPortraitImg.src = portraitSrc(who, mood);
   vnPortraitImg.alt = CHARS[who].name;
   vnSpeakerName.textContent = CHARS[who].name;
@@ -1594,18 +1712,28 @@ function enterFromLanding(){ switchScreen('cast'); }
 window.enterFromLanding = enterFromLanding;
 function enterFromLandingToSignup(){ openSignupChat(); }
 window.enterFromLandingToSignup = enterFromLandingToSignup;
-function enterChatDirect(){ openModeChooser(); }
+/* mode chooser는 양쪽 스토리 모두에서 사용 — 카드 클릭 시 story를 _pendingStory에
+   저장해 두고, pickMode가 closeModeChooser 직후에 그 story로 startChat을 트리거 */
+let _pendingStory = 'story1';
+function enterChatDirect(){ _pendingStory = 'story1'; openModeChooser(); }
+function enterChatStory2(){ _pendingStory = 'story2'; openModeChooser(); }
 function openModeChooser(){ document.getElementById('modeChooser')?.classList.add('show'); }
 function closeModeChooser(){ document.getElementById('modeChooser')?.classList.remove('show'); }
 function pickMode(m){
   setChatMode(m);
   closeModeChooser();
-  setTimeout(()=>startChat(), 220);
+  setTimeout(()=>{
+    currentStory = _pendingStory;
+    FLOW = (_pendingStory === 'story2') ? FLOW2 : FLOW1;
+    document.getElementById('statsHud').style.display = (_pendingStory === 'story2') ? 'none' : '';
+    startChat();
+  }, 220);
 }
 window.openModeChooser = openModeChooser;
 window.closeModeChooser = closeModeChooser;
 window.pickMode = pickMode;
 window.enterChatDirect = enterChatDirect;
+window.enterChatStory2 = enterChatStory2;
 /* v30 · track previous screen so signup-back returns to chat (preserve state) */
 let _prevScreen = null;
 function openSignupModal(){
@@ -1748,26 +1876,25 @@ function renderCastGrid(){
   // step 2: measure layout, compute deck-relative offsets, kick off the shuffle
   // requestAnimationFrame waits for layout · double-rAF guards against pre-paint measurement
   requestAnimationFrame(() => requestAnimationFrame(() => {
-    const featured = document.querySelector('.cast-featured');
+    const featuredEls = document.querySelectorAll('.cast-featured');
     const gr = grid.getBoundingClientRect();
-    // deck center sits at the upper portion of the grid · cards converge here · Raon emerges UPWARD from here
+    // deck center sits at the upper portion of the grid · cards converge here · featured cards emerge UPWARD from here
     const deckX = gr.left + gr.width / 2;
     const deckY = gr.top + Math.min(gr.height / 2, 200);
 
-    if(featured){
+    featuredEls.forEach(featured => {
       const fr = featured.getBoundingClientRect();
       const fdx = (deckX - (fr.left + fr.width / 2)).toFixed(0);
       const fdy = (deckY - (fr.top + fr.height / 2)).toFixed(0);
       featured.style.setProperty('--deck-dx', fdx + 'px');
       featured.style.setProperty('--deck-dy', fdy + 'px');
-      // when the draw animation ends · drop the animation so hover transitions can take effect
       featured.addEventListener('animationend', function settleF(e){
         if(e.animationName === 'featuredDrawFromDeck'){
           featured.classList.add('settled');
           featured.removeEventListener('animationend', settleF);
         }
       });
-    }
+    });
 
     grid.querySelectorAll('.cast-card').forEach((card) => {
       const cr = card.getBoundingClientRect();
@@ -1793,14 +1920,25 @@ renderCastGrid();
 /* v29 · preload all character expressions + backgrounds for sync · cached
    when chat starts so portrait/bg changes are instant (no loading delay) */
 (function preloadAssets(){
-  const chars = ['yeonwoo','raon','karlo','dex'];
+  // story 1
+  const s1Chars = ['yeonwoo','raon','karlo','dex'];
   const moods = ['neutral_default','neutral_arms_crossed','surprised_default','fear_defensive','sad_default','crying_default','smile_default','angry_arms_crossed'];
-  chars.forEach(who => moods.forEach(mood => {
+  s1Chars.forEach(who => moods.forEach(mood => {
     const img = new Image(); img.src = `./assets/v17/story1/characters/${who}/${mood}.png`;
   }));
-  const bgs = ['mortuary_hallway_creepy','neon_alley_rain_noir','funeral_back_alley_rain'];
-  bgs.forEach(bg => {
+  const s1Bgs = ['mortuary_hallway_creepy','neon_alley_rain_noir','funeral_back_alley_rain'];
+  s1Bgs.forEach(bg => {
     const img = new Image(); img.src = `./assets/v17/story1/backgrounds/${bg}.png`;
+  });
+  // story 2 · 진혁 prologue assets
+  const s2Folders = { jinhyuk:'강진혁' };
+  const s2Moods = ['neutral_default','surprised_default','fear_defensive'];
+  Object.values(s2Folders).forEach(folder => s2Moods.forEach(mood => {
+    const img = new Image();
+    img.src = `./assets/v17/story2/characters/${encodeURIComponent(folder)}/${mood}.png`;
+  }));
+  ['rainy_car_interior_radio'].forEach(bg => {
+    const img = new Image(); img.src = `./assets/v17/story2/backgrounds/${bg}.png`;
   });
 })();
 window.openSplash = openSplash;
@@ -1956,7 +2094,7 @@ function setNode(id, title, bg){
   tbNode.textContent = title;
   chatBg.style.opacity = '0';
   setTimeout(()=>{
-    chatBg.style.backgroundImage = `url('./assets/v17/story1/backgrounds/${bg}')`;
+    chatBg.style.backgroundImage = `url('./assets/v17/${STORY_CONFIG[currentStory].dir}/backgrounds/${bg}')`;
     chatBg.style.opacity = '.85';
   }, 220);
 }
@@ -2001,8 +2139,10 @@ async function pickChoice(idx){
     flashStatToast(opt.stats);
   }
   await wait(700);
-  if(opt.next === '__CUT' || opt.next === '__DRAMA'){
-    const target = opt.next === '__DRAMA' ? '__DRAMA' : 'cut_to_tease';
+  if(opt.next === '__CUT' || opt.next === '__DRAMA' || opt.next === '__OUT'){
+    const target = opt.next === '__DRAMA' ? '__DRAMA'
+                 : opt.next === '__OUT'   ? '__OUT'
+                 : 'cut_to_tease';
     const idx = FLOW.findIndex(b => b.type === target);
     if(idx >= 0) beatIdx = idx + 1;
   } else if(opt.next){
@@ -2085,10 +2225,24 @@ async function processBeat(b){
     }
     case 'me':
       // v29 · INSTANT · player visual + line · no hold
-      setVNPortrait('yeonwoo', b.mood || 'neutral_default');
+      setVNPortrait(currentStory === 'story2' ? 'jinhyuk' : 'yeonwoo', b.mood || 'neutral_default');
       await fadeOutVNLine();
       appendNode(`<div class="msg-row me"><div><div class="msg-bubble me">${b.text}</div></div></div>`);
       setVNLine(b.text, 'me');
+      return;
+    case 'radio':
+      // 라디오 보이스 (DJ · 사연 낭독) · 포트레이트 없음 · 📻 아이콘 토큰
+      await fadeOutVNLine();
+      appendNode(`
+        <div class="msg-row radio">
+          <div class="msg-radio-icon">📻</div>
+          <div>
+            <div class="msg-speaker dj">RADIO · 비 오는 밤의 주파수 ${b.voice ? '<span class="voice-ind" onclick="event.stopPropagation();playVoice(\''+b.voice+'\')" title="다시 듣기">🔊</span>' : ''}</div>
+            <div class="msg-bubble radio">${b.text}</div>
+          </div>
+        </div>`);
+      setVNLine(b.text, 'radio');
+      if(b.voice) playVoice(b.voice);
       return;
     case 'choice':
       showChoices(b.intent, b.label, b.options);
@@ -2100,6 +2254,7 @@ async function processBeat(b){
     }
     case '__CONVERGE_DEX':
     case '__DRAMA':
+    case '__OUT':
       return 'chain';
     case 'flash':
       // v27 · standalone flash auto-chains · doesn't consume a space press
