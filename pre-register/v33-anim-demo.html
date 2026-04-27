@@ -121,17 +121,20 @@ main{max-width:1280px;margin:0 auto}
    3개 덱이 가로로 겹쳐 있음 → 각 덱 안에서 카드들이 한 장씩 스르륵 들춰짐
    → 모든 덱 리플 끝나면 3장(각 덱에서 한 장씩)이 아래 row로 뽑혀나와 안착
    ======================================================================== */
-.mode-decks-draw .stage-inner{display:flex;flex-direction:column;align-items:center;gap:38px;padding:8px 0 24px;min-height:580px}
-.mode-decks-draw .decks{position:relative;display:flex;justify-content:center;align-items:flex-start;height:300px;transition:opacity .9s var(--ease) 200ms,filter .9s var(--ease) 200ms}
+.mode-decks-draw .stage-inner{display:flex;flex-direction:column;align-items:center;gap:48px;padding:8px 0 24px;min-height:600px}
+.mode-decks-draw .decks{position:relative;display:flex;justify-content:center;align-items:flex-start;height:320px;gap:0;transition:opacity .9s var(--ease) 200ms,filter .9s var(--ease) 200ms}
 .mode-decks-draw.dimmed .decks{opacity:.42;filter:saturate(.65)}
-.mode-decks-draw .deck{position:relative;width:200px;height:280px;margin:0 -50px}
-.mode-decks-draw .deck .card{position:absolute;top:0;left:50%;margin-left:-90px;transform:rotate(calc((var(--i) - 2) * 2.6deg));transform-origin:50% 90%;will-change:transform}
-.mode-decks-draw.active .deck .card{animation:deck-riffle .68s var(--ease-spring) var(--peek-delay,0ms)}
+/* deck container · wide enough to hold the fanned cards within · negative margin makes adjacent decks overlap visually */
+.mode-decks-draw .deck{position:relative;width:280px;height:300px;margin:0 -55px}
+/* cards within deck · spread as a fan (translateX + rotate) so all 5 are simultaneously visible · transform-origin bottom so rotation is anchored like a hand of cards */
+.mode-decks-draw .deck .card{position:absolute;left:50%;bottom:8px;margin-left:-90px;transform:translateX(calc((var(--i) - 2) * 22px)) translateY(calc((var(--i) - 2) * (var(--i) - 2) * 2px - 6px)) rotate(calc((var(--i) - 2) * 7deg));transform-origin:50% 100%;will-change:transform}
+.mode-decks-draw.active .deck .card{animation:deck-riffle .72s var(--ease-spring) var(--peek-delay,0ms)}
 @keyframes deck-riffle{
-  0%   { transform: translateX(0)    translateY(0)    rotate(calc((var(--i) - 2) * 2.6deg))                  scale(1) }
-  35%  { transform: translateX(58px) translateY(-22px) rotate(calc((var(--i) - 2) * 2.6deg + 9deg))           scale(1.05) }
-  70%  { transform: translateX(20px) translateY(-2px)  rotate(calc((var(--i) - 2) * 2.6deg + 2deg))           scale(1.01) }
-  100% { transform: translateX(0)    translateY(0)    rotate(calc((var(--i) - 2) * 2.6deg))                  scale(1) }
+  /* cards stay fanned · briefly lift up and tilt forward (like 한 장씩 스르륵 들춰지는) · then return */
+  0%   { transform: translateX(calc((var(--i) - 2) * 22px))           translateY(calc((var(--i) - 2) * (var(--i) - 2) * 2px - 6px)) rotate(calc((var(--i) - 2) * 7deg))           scale(1) }
+  40%  { transform: translateX(calc((var(--i) - 2) * 22px + 12px))    translateY(-44px)                                              rotate(calc((var(--i) - 2) * 7deg - 3deg))    scale(1.07);     z-index: 20 }
+  70%  { transform: translateX(calc((var(--i) - 2) * 22px + 4px))     translateY(-12px)                                              rotate(calc((var(--i) - 2) * 7deg - 1deg))    scale(1.02) }
+  100% { transform: translateX(calc((var(--i) - 2) * 22px))           translateY(calc((var(--i) - 2) * (var(--i) - 2) * 2px - 6px)) rotate(calc((var(--i) - 2) * 7deg))           scale(1) }
 }
 
 /* deck label · subtle eyebrow under each */
@@ -364,8 +367,8 @@ function render(mode){
         const t = TEASERS[cardIdx++];
         const card = makeCard(t);
         card.style.setProperty('--i', i);
-        // riffle propagates left deck → right deck, top card → bottom card
-        const peekDelay = d * 320 + i * 75;
+        // riffle propagates left deck → right deck, top card → bottom card · tighter stagger for continuous "스르륵" feel
+        const peekDelay = d * 280 + i * 65;
         card.style.setProperty('--peek-delay', peekDelay + 'ms');
         deck.appendChild(card);
       }
