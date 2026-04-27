@@ -54,16 +54,18 @@ main{max-width:1280px;margin:0 auto}
 .card{position:relative;width:180px;height:240px;perspective:1400px}
 .card-inner{position:absolute;inset:0;transform-style:preserve-3d;transform:rotateY(180deg);will-change:transform}
 .card-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.08)}
-.card-back{background:linear-gradient(160deg,#2a1f44 0%,#1a1532 60%,#15102b 100%);display:flex;align-items:center;justify-content:center;position:relative;border-color:rgba(255,255,255,.18)!important}
-.card-back::before{content:'';position:absolute;inset:8px;border:1.5px solid rgba(236,72,153,.55);border-radius:9px;background:linear-gradient(135deg,rgba(236,72,153,.04),rgba(139,92,246,.04));box-shadow:inset 0 0 22px rgba(139,92,246,.1)}
-.card-back-q{position:absolute;font-family:var(--display);font-size:108px;font-weight:900;color:rgba(255,255,255,.13);line-height:1;top:50%;left:50%;transform:translate(-50%,-50%) translateY(-6px);letter-spacing:-.05em}
-.card-back-mark{position:relative;font-family:var(--mono);font-size:10px;letter-spacing:.4em;color:rgba(236,72,153,.88);font-weight:800;text-transform:uppercase;margin-top:auto;margin-bottom:14px;text-shadow:0 0 12px rgba(236,72,153,.6)}
-.card-front{display:flex;flex-direction:column;padding:16px 14px;background:linear-gradient(160deg,rgba(8,9,12,.85),rgba(8,9,12,.95))}
-.card-front.t-pink{background:linear-gradient(160deg,rgba(236,72,153,.2),rgba(8,9,12,.95));border-color:rgba(236,72,153,.4)}
-.card-front.t-purple{background:linear-gradient(160deg,rgba(139,92,246,.2),rgba(8,9,12,.95));border-color:rgba(139,92,246,.4)}
-.card-front.t-cyan{background:linear-gradient(160deg,rgba(6,182,212,.2),rgba(8,9,12,.95));border-color:rgba(6,182,212,.4)}
-.card-front.t-gold{background:linear-gradient(160deg,rgba(245,158,11,.2),rgba(8,9,12,.95));border-color:rgba(245,158,11,.4)}
-.card-front.t-blue{background:linear-gradient(160deg,rgba(37,99,235,.2),rgba(8,9,12,.95));border-color:rgba(37,99,235,.4)}
+/* card-back · 밝은 cream-pink + 강한 boxshadow로 어두운 배경에 확실히 떠오르게 */
+.card-back{background:linear-gradient(160deg,#FCE7F3 0%,#F5C2D9 50%,#E89BB8 100%);display:flex;align-items:center;justify-content:center;position:relative;border:2px solid #1F1330!important;box-shadow:0 8px 22px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.06),inset 0 1px 0 rgba(255,255,255,.5)}
+.card-back::before{content:'';position:absolute;inset:7px;border:1.5px solid rgba(139,92,246,.6);border-radius:9px;background:linear-gradient(135deg,rgba(236,72,153,.06),rgba(139,92,246,.08));box-shadow:inset 0 0 18px rgba(139,92,246,.18)}
+.card-back-q{position:absolute;font-family:var(--display);font-size:108px;font-weight:900;color:rgba(139,92,246,.32);line-height:1;top:50%;left:50%;transform:translate(-50%,-50%) translateY(-6px);letter-spacing:-.05em;text-shadow:0 2px 8px rgba(139,92,246,.18)}
+.card-back-mark{position:relative;font-family:var(--mono);font-size:10px;letter-spacing:.4em;color:#1F1330;font-weight:900;text-transform:uppercase;margin-top:auto;margin-bottom:14px;opacity:.78}
+/* card-front · 어두운 본문(#08090C)에 떠오르도록 톤 업 + 보더 명확화 */
+.card-front{display:flex;flex-direction:column;padding:16px 14px;background:linear-gradient(160deg,#2A2240,#1A1530);border:2px solid rgba(255,255,255,.18);box-shadow:0 6px 18px rgba(0,0,0,.5)}
+.card-front.t-pink  {background:linear-gradient(160deg,#5A1E40,#2C1530);border-color:rgba(236,72,153,.85)}
+.card-front.t-purple{background:linear-gradient(160deg,#3E1F66,#221442);border-color:rgba(139,92,246,.85)}
+.card-front.t-cyan  {background:linear-gradient(160deg,#0A4256,#0F1B30);border-color:rgba(6,182,212,.85)}
+.card-front.t-gold  {background:linear-gradient(160deg,#5A3A0E,#2A1F18);border-color:rgba(245,158,11,.85)}
+.card-front.t-blue  {background:linear-gradient(160deg,#163A6E,#0F1B30);border-color:rgba(37,99,235,.85)}
 .cf-tag{font-family:var(--mono);font-size:9px;letter-spacing:.24em;font-weight:800;text-transform:uppercase;color:var(--pink);margin-bottom:6px}
 .cf-name{font-size:21px;font-weight:900;letter-spacing:-.02em;color:var(--ink);line-height:1;margin-bottom:3px}
 .cf-hint{font-size:12px;color:var(--ink-soft);flex:1;line-height:1.45;opacity:.85}
