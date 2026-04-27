@@ -125,16 +125,16 @@ main{max-width:1280px;margin:0 auto}
    MODE G · RIBBON SPREAD · 15장 좌→우 가로 ribbon
    --dx, --rot, --td (transition-delay)는 JS에서 px/deg/ms 단위로 사전 계산
    ======================================================================== */
-.mode-ribbon .stage-inner{position:relative;width:100%;min-height:340px;display:flex;justify-content:center;align-items:center}
-.mode-ribbon .card{position:absolute;top:50%;left:50%;margin:-77px 0 0 -55px;width:110px;height:154px;transition:transform 1.4s var(--ease) var(--td,0ms);z-index:var(--zi,1)}
+.mode-ribbon .stage-inner{position:relative;width:100%;min-height:420px;display:flex;justify-content:center;align-items:center}
+.mode-ribbon .card{position:absolute;top:50%;left:50%;margin:-126px 0 0 -90px;width:180px;height:252px;transition:transform 1.4s var(--ease) var(--td,0ms);z-index:var(--zi,1)}
 .mode-ribbon.active .card{transform:translateX(var(--dx,0px)) rotate(var(--rot,0deg))}
 
 /* ========================================================================
    MODE H · SPRING / DRIBBLE · 15장 호로 차례로 흘러감
    --ad (animation-delay)는 JS에서 ms로 사전 계산
    ======================================================================== */
-.mode-spring .stage-inner{position:relative;width:100%;min-height:380px}
-.mode-spring .card{position:absolute;top:50%;left:50%;margin:-77px 0 0 -55px;width:110px;height:154px;opacity:0}
+.mode-spring .stage-inner{position:relative;width:100%;min-height:520px}
+.mode-spring .card{position:absolute;top:50%;left:50%;margin:-126px 0 0 -90px;width:180px;height:252px;opacity:0}
 .mode-spring.active .card{animation:dribble-arc 1.5s var(--ease) var(--ad,0ms) forwards}
 @keyframes dribble-arc{
   0%   { transform: translate(-300px, -10px) rotate(-28deg) scale(.85); opacity:0 }
@@ -148,8 +148,8 @@ main{max-width:1280px;margin:0 auto}
    MODE I · LE PAUL SWEEP · 15장 좌측에서 떨어지며 우측으로 깔림
    --dx (final translateX), --rot (final rotation), --ad (animation-delay) JS 사전 계산
    ======================================================================== */
-.mode-lepaul .stage-inner{position:relative;width:100%;min-height:340px;display:flex;align-items:center;padding:0 40px}
-.mode-lepaul .card{position:absolute;top:50%;left:60px;margin-top:-77px;width:110px;height:154px;opacity:0;transform:translate(-60px,-280px) rotate(-25deg) scale(.85);transform-origin:50% 100%;z-index:var(--zi,1)}
+.mode-lepaul .stage-inner{position:relative;width:100%;min-height:420px;display:flex;align-items:center;padding:0 40px}
+.mode-lepaul .card{position:absolute;top:50%;left:60px;margin-top:-126px;width:180px;height:252px;opacity:0;transform:translate(-60px,-280px) rotate(-25deg) scale(.85);transform-origin:50% 100%;z-index:var(--zi,1)}
 .mode-lepaul.active .card{animation:lay-right .68s var(--ease-spring) var(--ad,0ms) forwards}
 @keyframes lay-right{
   0%   { transform: translate(-60px, -280px) rotate(-25deg) scale(.85); opacity:0 }
@@ -161,8 +161,8 @@ main{max-width:1280px;margin:0 auto}
    MODE J · PRESSURE LOOP · 15장 무한 좌→우 호 cycle
    --ad (negative animation-delay = phase offset) JS 사전 계산
    ======================================================================== */
-.mode-pressure .stage-inner{position:relative;width:100%;min-height:380px}
-.mode-pressure .card{position:absolute;top:50%;left:50%;margin:-77px 0 0 -55px;width:110px;height:154px;opacity:0;animation:pressure-cycle 4s linear var(--ad,0ms) infinite}
+.mode-pressure .stage-inner{position:relative;width:100%;min-height:520px}
+.mode-pressure .card{position:absolute;top:50%;left:50%;margin:-126px 0 0 -90px;width:180px;height:252px;opacity:0;animation:pressure-cycle 4s linear var(--ad,0ms) infinite}
 @keyframes pressure-cycle{
   0%   { transform: translate(-320px, 20px) rotate(-30deg) scale(.85); opacity:0 }
   8%   { opacity:1 }
@@ -177,12 +177,12 @@ main{max-width:1280px;margin:0 auto}
    파도처럼 한 장씩 들춰지며 통과 (12ms stagger, 380ms peek). 그 와중에
    3장이 자기 차례에 위로 살짝 솟아 안 내려가고 그대로 남음 (face-up flip).
    ======================================================================== */
-.mode-megariffle .stage-inner{display:flex;flex-direction:column;align-items:center;padding:90px 0 30px;min-height:430px;position:relative}
+.mode-megariffle .stage-inner{display:flex;flex-direction:column;align-items:center;padding:90px 0 30px;min-height:540px;position:relative}
 .mode-megariffle .rise-label{position:absolute;top:30px;font-family:var(--mono);font-size:10px;letter-spacing:.34em;font-weight:800;color:rgba(236,72,153,.65);text-transform:uppercase;opacity:0;transition:opacity .6s var(--ease) 1200ms}
 .mode-megariffle.active .rise-label{opacity:1}
-.mode-megariffle .deck-strip{position:relative;width:100%;height:280px;display:flex;justify-content:center;align-items:flex-end}
+.mode-megariffle .deck-strip{position:relative;width:100%;height:380px;display:flex;justify-content:center;align-items:flex-end}
 /* 15장 · 38px stagger so each card has visible body + clear wave · --dx/--rot 사전 계산 */
-.mode-megariffle .deck-strip .card{position:absolute;width:120px;height:168px;left:50%;bottom:48px;margin-left:-60px;perspective:900px;translate:var(--dx,0px) 0;rotate:var(--rot,0deg);transform-origin:50% 100%;will-change:translate,rotate,scale}
+.mode-megariffle .deck-strip .card{position:absolute;width:180px;height:252px;left:50%;bottom:48px;margin-left:-90px;perspective:900px;translate:var(--dx,0px) 0;rotate:var(--rot,0deg);transform-origin:50% 100%;will-change:translate,rotate,scale}
 /* card styling for the 15-card strip · larger so text is readable */
 .mode-megariffle .card-back::before{inset:7px;border-radius:8px}
 .mode-megariffle .card-back-q{font-size:62px;line-height:1;transform:translate(-50%,-50%)}
@@ -452,7 +452,7 @@ function render(mode){
     for(let i = 0; i < N; i++){
       const t = TEASERS[i % TEASERS.length];
       const card = makeCard(t);
-      card.style.setProperty('--dx', ((i - mid) * 56).toFixed(0) + 'px');
+      card.style.setProperty('--dx', ((i - mid) * 70).toFixed(0) + 'px');
       card.style.setProperty('--rot', ((i - mid) * 1.4).toFixed(2) + 'deg');
       card.style.setProperty('--td', (i * 55) + 'ms');
       card.style.setProperty('--zi', i);
@@ -485,7 +485,7 @@ function render(mode){
     for(let i = 0; i < N; i++){
       const t = TEASERS[i % TEASERS.length];
       const card = makeCard(t);
-      card.style.setProperty('--dx', (i * 36) + 'px');
+      card.style.setProperty('--dx', (i * 50) + 'px');
       card.style.setProperty('--rot', (i * 0.6 - 6).toFixed(2) + 'deg');
       card.style.setProperty('--ad', (i * 65) + 'ms');
       card.style.setProperty('--zi', i);
@@ -531,7 +531,7 @@ function render(mode){
     for(let i = 0; i < N; i++){
       const t = TEASERS[i % TEASERS.length];
       const card = makeCard(t);
-      card.style.setProperty('--dx', ((i - mid) * 38).toFixed(1) + 'px');
+      card.style.setProperty('--dx', ((i - mid) * 60).toFixed(1) + 'px');
       card.style.setProperty('--rot', ((i - mid) * 1.2).toFixed(2) + 'deg');
       card.style.setProperty('--peek-delay', (i * STAGGER) + 'ms');
       if(SELECTED.has(i)){
