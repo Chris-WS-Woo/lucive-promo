@@ -3,208 +3,171 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LUCIVE · 그가 당신의 결말을 만듭니다 (v35)</title>
-<meta name="description" content="36명의 루시안 · 5 디스트릭트 · 당신의 선택이 결말을 만든다.">
+<title>LUCIVE · 매주 다른 세계관, 당신만의 스토리</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&family=JetBrains+Mono:wght@500;700;800&family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500;1,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#08090C; --bg-soft:#0F0B16; --bg-elev:#161121;
-  --ink:#F5F0EE; --ink-soft:#C9C3CD; --muted:#7A7080;
-  --gold:#D6B07C; --gold-soft:rgba(214,176,124,.7);
-  --pink:#EC4899; --purple:#8B5CF6; --cyan:#06B6D4;
+  /* === DEMO 톤앤매너 그대로 === */
+  --bg: #FFF9F7;
+  --card: #ffffff;
+  --elevated: #FAEFE8;
+  --divider: rgba(63, 38, 52, 0.08);
+  --text-1: #2A1A22;
+  --text-2: #6B5560;
+  --text-3: #9C8893;
+  --accent: #C97B89;
+  --accent-light: #FFE8EC;
+  --gold: #D6B07C;
+  --gold-deep: #b8945e;
   --d-sunrise:#FFB56B; --d-neon:#5EC8FF; --d-underground:#D45877; --d-velvet:#C084FC; --d-indie:#7EE5B8;
+  --shadow-soft: 0 2px 8px rgba(63, 38, 52, 0.06);
+  --shadow-card: 0 8px 28px rgba(63, 38, 52, 0.08);
+  --shadow-cta: 0 14px 32px rgba(214,176,124,0.32);
+
   --display:'Cormorant Garamond',serif;
-  --sans:'Inter',-apple-system,sans-serif;
+  --sans:'Inter',-apple-system,'Pretendard','Apple SD Gothic Neo',sans-serif;
   --mono:'JetBrains Mono',monospace;
   --ease:cubic-bezier(.22,1,.36,1);
 }
-*{box-sizing:border-box;margin:0;padding:0}
-html,body{background:var(--bg);color:var(--ink);font-family:var(--sans);scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
-body{overflow-x:hidden}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{background:var(--bg);color:var(--text-1);font-family:var(--sans);scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
 img{max-width:100%;display:block}
-em{font-style:italic;background:linear-gradient(90deg,var(--gold),#fce7c8);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+em{font-style:italic;color:var(--accent)}
 
-/* ===== HERO (50-60vh, compact) ===== */
-.hero{position:relative;min-height:62vh;min-height:62dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 32px 60px;text-align:center;overflow:hidden}
-.hero-bg{position:absolute;inset:0;background-size:cover;background-position:center;z-index:0;filter:saturate(1.05)}
-.hero-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,9,12,.55) 0%,rgba(8,9,12,.5) 30%,rgba(8,9,12,.92) 90%,rgba(8,9,12,1) 100%)}
-.hero-content{position:relative;z-index:2;max-width:1080px}
-.hero-brand{font-family:var(--mono);font-size:11.5px;letter-spacing:.5em;font-weight:800;color:var(--gold);text-transform:uppercase;margin-bottom:24px}
-.hero-h{font-family:var(--display);font-size:clamp(34px,5.6vw,64px);font-weight:700;letter-spacing:-.01em;line-height:1.14;color:var(--ink)}
-.hero-h em{font-style:italic}
-.hero-h-sub{display:block;font-size:.78em;color:rgba(245,240,238,.92);margin-top:14px;font-weight:500}
-.hero-meta{display:flex;gap:28px;justify-content:center;flex-wrap:wrap;margin-top:28px;font-family:var(--mono);font-size:11.5px;letter-spacing:.22em;color:var(--gold-soft);text-transform:uppercase;font-weight:700}
-.hero-meta .dot{display:inline-block;width:4px;height:4px;border-radius:50%;background:var(--gold);margin-right:8px;vertical-align:middle}
+.wrap{max-width:1200px;margin:0 auto;padding:0 32px}
 
-/* ===== UNIFIED SHOWCASE (Phase 2+3+4 in single horizontal row) ===== */
-.showcase{padding:80px 32px;background:linear-gradient(180deg,var(--bg) 0%,var(--bg-soft) 100%);position:relative}
-.showcase-head{text-align:center;max-width:920px;margin:0 auto 48px}
-.kicker{font-family:var(--mono);font-size:11px;letter-spacing:.4em;font-weight:800;color:var(--gold);text-transform:uppercase;margin-bottom:14px}
-.showcase-h{font-family:var(--display);font-size:clamp(28px,3.8vw,42px);font-weight:700;letter-spacing:-.005em;line-height:1.18}
-.showcase-h em{font-style:italic}
-.showcase-cards{display:grid;grid-template-columns:1fr;gap:18px;max-width:1320px;margin:0 auto}
-@media(min-width:900px){.showcase-cards{grid-template-columns:1fr 1fr 1fr}}
+/* ===== TOP BRAND ===== */
+.top{padding:28px 0 0;text-align:center}
+.brand{display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.5em;font-weight:800;color:var(--accent);text-transform:uppercase}
+.brand .dot{display:inline-block;width:4px;height:4px;border-radius:50%;background:var(--accent);margin:0 12px;vertical-align:middle}
 
-/* showcase card */
-.sc-card{position:relative;border-radius:18px;overflow:hidden;background:var(--bg-elev);border:1px solid rgba(255,255,255,.06);min-height:460px;display:flex;flex-direction:column;transition:transform .35s var(--ease),border-color .35s}
-.sc-card:hover{transform:translateY(-3px);border-color:rgba(214,176,124,.35)}
-.sc-frame{position:relative;height:240px;overflow:hidden;background:#0a070e}
-.sc-frame img{width:100%;height:100%;object-fit:cover;opacity:.94;transition:transform .8s var(--ease),opacity .35s}
-.sc-card:hover .sc-frame img{transform:scale(1.04);opacity:1}
-.sc-frame::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.05) 0%,rgba(8,5,12,.45) 70%,rgba(22,17,33,.95) 100%)}
-.sc-real-tag{position:absolute;top:12px;left:12px;z-index:3;font-family:var(--mono);font-size:9.5px;letter-spacing:.28em;font-weight:800;color:#fff;text-transform:uppercase;padding:5px 10px;background:rgba(8,9,12,.78);backdrop-filter:blur(8px);border:1px solid rgba(214,176,124,.5);border-radius:100px}
-.sc-real-tag::before{content:'●';color:#10B981;margin-right:6px;animation:liveBlink 1.6s ease-in-out infinite}
-@keyframes liveBlink{0%,100%{opacity:.6}50%{opacity:1}}
-.sc-phase{position:absolute;top:12px;right:12px;z-index:3;font-family:var(--mono);font-size:10px;letter-spacing:.32em;font-weight:800;color:var(--gold);padding:5px 10px;background:rgba(8,9,12,.7);backdrop-filter:blur(8px);border-radius:100px}
-.sc-body{padding:20px 22px 22px;flex:1;display:flex;flex-direction:column;gap:10px}
-.sc-h{font-family:var(--display);font-size:24px;font-weight:700;letter-spacing:-.005em;line-height:1.2;color:var(--ink)}
-.sc-h em{font-style:italic}
-.sc-sub{font-family:var(--sans);font-size:13px;color:var(--ink-soft);line-height:1.55;opacity:.92}
-.sc-mini{display:flex;flex-direction:column;gap:6px;margin-top:6px;padding-top:12px;border-top:1px dashed rgba(255,255,255,.08)}
-.sc-mini-row{font-family:var(--sans);font-size:12px;color:rgba(245,240,238,.78);line-height:1.5}
-.sc-mini-row b{color:var(--gold);font-weight:700;font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;display:block;margin-bottom:2px}
-.sc-cast{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
-.sc-cast-mini{width:32px;height:32px;border-radius:50%;overflow:hidden;background:#2a1f2c;border:1.5px solid rgba(214,176,124,.3);flex-shrink:0}
-.sc-cast-mini img{width:100%;height:100%;object-fit:cover;object-position:top center}
-.sc-options-mini{display:flex;flex-direction:column;gap:5px;margin-top:6px}
-.sc-opt-mini{font-family:var(--sans);font-size:12px;padding:8px 12px;background:rgba(214,176,124,.08);border:1px solid rgba(214,176,124,.2);border-radius:10px;color:rgba(245,240,238,.92);line-height:1.4;display:flex;gap:8px;align-items:center}
-.sc-opt-mini-num{width:18px;height:18px;border-radius:50%;background:rgba(214,176,124,.18);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:9px;font-weight:800;color:var(--gold);flex-shrink:0}
+/* ===== HERO ===== */
+.hero{padding:54px 0 36px;text-align:center}
+.hero-h{font-family:var(--display);font-weight:700;font-size:clamp(34px,5.6vw,58px);line-height:1.18;letter-spacing:-.005em;color:var(--text-1);max-width:900px;margin:0 auto}
+.hero-h em{font-style:italic;color:var(--accent)}
+.hero-sub{font-family:var(--display);font-style:italic;font-weight:500;font-size:clamp(20px,2.8vw,28px);line-height:1.5;color:var(--text-2);max-width:780px;margin:18px auto 0}
+.hero-sub em{color:var(--gold-deep);font-style:italic}
+
+/* ===== SHOWCASE — 실제 플레이 스크린샷 3컷 ===== */
+.showcase{padding:30px 0 16px}
+.showcase-grid{display:grid;grid-template-columns:1fr;gap:14px}
+@media(min-width:760px){.showcase-grid{grid-template-columns:1fr 1fr 1fr}}
+.show-card{background:var(--card);border-radius:16px;overflow:hidden;border:1px solid rgba(111,77,103,.08);box-shadow:var(--shadow-card);transition:transform .25s var(--ease),box-shadow .25s}
+.show-card:hover{transform:translateY(-3px);box-shadow:0 16px 42px rgba(63,38,52,.14)}
+.sc-frame{position:relative;aspect-ratio:5/3;overflow:hidden;background:#1a0e22}
+.sc-frame img{width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease)}
+.show-card:hover .sc-frame img{transform:scale(1.05)}
+.sc-frame::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.05) 0%,rgba(0,0,0,.35) 100%)}
+.sc-tag{position:absolute;top:12px;left:12px;z-index:2;font-family:var(--mono);font-size:9.5px;letter-spacing:.22em;font-weight:800;color:#fff;text-transform:uppercase;padding:5px 10px;background:rgba(201,123,137,.92);border-radius:999px;backdrop-filter:blur(6px)}
+.sc-tag::before{content:'●';color:#fff;margin-right:5px;animation:dot 1.6s ease-in-out infinite}
+@keyframes dot{0%,100%{opacity:.55}50%{opacity:1}}
+.sc-body{padding:14px 16px 16px}
+.sc-step{font-family:var(--mono);font-size:9.5px;letter-spacing:.32em;font-weight:800;color:var(--gold-deep);text-transform:uppercase}
+.sc-h{font-family:var(--display);font-size:18px;font-weight:700;color:var(--text-1);margin-top:4px;line-height:1.3}
+.sc-h em{font-style:italic;color:var(--accent)}
+.sc-desc{font-size:12px;color:var(--text-2);line-height:1.55;margin-top:5px}
+
+/* ===== LINEUP (small cream thumbnails row) ===== */
+.lineup{padding:36px 0 18px}
+.lineup-h{text-align:center;font-family:var(--mono);font-size:10px;letter-spacing:.4em;font-weight:800;color:var(--text-3);text-transform:uppercase;margin-bottom:18px}
+.lineup-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+@media(min-width:680px){.lineup-grid{grid-template-columns:repeat(12,1fr)}}
+@media(min-width:1100px){.lineup-grid{grid-template-columns:repeat(18,1fr)}}
+.lp{position:relative;aspect-ratio:3/4;border-radius:6px;overflow:hidden;background:#d9c6cd;transition:transform .25s var(--ease)}
+.lp:hover{transform:scale(1.08);z-index:3}
+.lp img{width:100%;height:100%;object-fit:cover;object-position:top center}
+.lp::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 60%,rgba(26,16,21,.55) 100%)}
+.lp-name{position:absolute;left:0;right:0;bottom:3px;text-align:center;font-family:var(--mono);font-size:8px;font-weight:800;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.6);z-index:2}
 
 /* ===== PRE-CTA dual buttons ===== */
-.pre-cta{padding:60px 32px 44px;background:radial-gradient(ellipse at 50% 0%,rgba(214,176,124,.1),transparent 70%),var(--bg-soft);text-align:center}
-.pre-cta-head{font-family:var(--display);font-size:clamp(24px,3vw,34px);font-weight:700;letter-spacing:-.005em;line-height:1.2;max-width:680px;margin:0 auto 8px}
-.pre-cta-head em{font-style:italic}
-.pre-cta-sub{font-size:13.5px;color:var(--ink-soft);line-height:1.55;max-width:560px;margin:0 auto 32px}
-.pre-cta-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;max-width:760px;margin:0 auto}
-.pre-cta-btn{display:inline-flex;align-items:center;justify-content:center;gap:14px;padding:18px 32px;border-radius:100px;font-family:var(--sans);font-size:15.5px;font-weight:800;letter-spacing:-.005em;cursor:pointer;text-decoration:none;transition:all .25s var(--ease);min-width:280px}
-.pre-cta-btn .arr{font-family:var(--mono);font-weight:800}
-.pre-cta-btn.primary{background:linear-gradient(180deg,var(--gold),#b8945e);color:#2c1f00;box-shadow:0 18px 44px rgba(214,176,124,.32),0 0 0 1px rgba(214,176,124,.5)}
-.pre-cta-btn.primary:hover{transform:translateY(-2px);box-shadow:0 24px 56px rgba(214,176,124,.42)}
-.pre-cta-btn.secondary{background:rgba(8,9,12,.5);color:var(--ink);border:1.5px solid rgba(245,240,238,.22)}
-.pre-cta-btn.secondary:hover{border-color:var(--gold);color:var(--gold)}
-.pre-cta-meta{margin-top:22px;font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;color:var(--muted);text-transform:uppercase;font-weight:700}
-
-/* ===== LINEUP (compact 36 thumbs) ===== */
-.lineup{padding:30px 32px 70px;background:var(--bg);text-align:center}
-.lineup-h{font-family:var(--mono);font-size:11px;letter-spacing:.36em;font-weight:800;color:var(--gold-soft);text-transform:uppercase;margin-bottom:18px}
-.lineup-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:6px;max-width:1100px;margin:0 auto}
-@media(min-width:780px){.lineup-grid{grid-template-columns:repeat(12,1fr)}}
-@media(min-width:1100px){.lineup-grid{grid-template-columns:repeat(18,1fr)}}
-.lp-thumb{position:relative;aspect-ratio:3/4;border-radius:6px;overflow:hidden;background:#1a1118;transition:transform .3s var(--ease),opacity .3s}
-.lp-thumb:hover{transform:scale(1.08);z-index:3}
-.lp-thumb img{width:100%;height:100%;object-fit:cover;object-position:top center}
-.lp-thumb::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 60%,rgba(8,9,12,.85))}
-.lp-thumb-name{position:absolute;left:0;right:0;bottom:3px;font-family:var(--mono);font-size:8px;font-weight:800;letter-spacing:.04em;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.7);text-align:center;z-index:2}
+.pre-cta{padding:28px 0 56px;text-align:center}
+.pre-cta-h{font-family:var(--display);font-style:italic;font-size:clamp(22px,2.8vw,30px);font-weight:700;color:var(--text-1);margin-bottom:6px}
+.pre-cta-sub{font-size:13px;color:var(--text-2);margin-bottom:24px}
+.pre-cta-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:12px;padding:16px 30px;border-radius:999px;font-family:var(--sans);font-size:14.5px;font-weight:800;letter-spacing:-.005em;cursor:pointer;text-decoration:none;transition:all .2s var(--ease);min-width:240px;border:none}
+.btn .arr{font-family:var(--mono);font-weight:800}
+.btn-primary{background:linear-gradient(180deg,var(--gold),var(--gold-deep));color:#2c1f00;box-shadow:var(--shadow-cta)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 18px 40px rgba(214,176,124,.42)}
+.btn-secondary{background:var(--card);color:var(--text-1);border:1.5px solid rgba(63,38,52,.16)}
+.btn-secondary:hover{border-color:var(--accent);color:var(--accent)}
+.pre-cta-meta{margin-top:18px;font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;color:var(--text-3);text-transform:uppercase;font-weight:700}
 
 /* ===== footer ===== */
-.footer{padding:30px 32px 50px;text-align:center;border-top:1px solid rgba(255,255,255,.05);background:var(--bg)}
-.footer-brand{font-family:var(--mono);font-size:11px;letter-spacing:.45em;font-weight:800;color:var(--gold);margin-bottom:6px}
-.footer-meta{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;color:var(--muted)}
-
+.footer{padding:24px 0 36px;text-align:center;border-top:1px solid var(--divider);margin:0 32px}
+.footer-brand{font-family:var(--mono);font-size:10.5px;letter-spacing:.45em;font-weight:800;color:var(--accent)}
+.footer-meta{font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;color:var(--text-3);margin-top:5px}
 </style>
 </head>
 <body>
 
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-bg" style="background-image:url('https://cdn.deepintothe.xyz/lucive/img/lp/kael_entry/profile_bg.png')"></div>
-  <div class="hero-content">
-    <div class="hero-brand">LUCIVE · NEXT-GEN CHARACTER CHAT</div>
-    <h1 class="hero-h">매주 다른 세계관 · <em>새 캐릭터들이 합류합니다.</em><br><span class="hero-h-sub">첫 만남, 에피소드, 결말 — <em>당신만의 스토리</em>가 만들어집니다.</span></h1>
-    <div class="hero-meta">
-      <span><span class="dot"></span>36명의 루시안</span>
-      <span><span class="dot"></span>5 디스트릭트</span>
-      <span><span class="dot"></span>분기 · 회귀 · 관계 기억</span>
+<div class="top">
+  <div class="brand">LUCIVE<span class="dot"></span>NEXT-GEN CHARACTER CHAT</div>
+</div>
+
+<section class="hero wrap">
+  <h1 class="hero-h">매주 다른 세계관 · <em>새 캐릭터들이 합류</em>합니다.</h1>
+  <p class="hero-sub">첫 만남, 에피소드, 결말 — <em>당신만의 스토리</em>가 만들어집니다.</p>
+</section>
+
+<section class="showcase wrap">
+  <div class="showcase-grid">
+    <div class="show-card">
+      <div class="sc-frame">
+        <img src="https://cdn.deepintothe.xyz/lucive/img/lp/kael_entry/header.png" alt="첫 만남" loading="lazy">
+        <span class="sc-tag">실제 플레이</span>
+      </div>
+      <div class="sc-body">
+        <div class="sc-step">PHASE 02 · 첫 만남</div>
+        <div class="sc-h">5 디스트릭트, <em>35명의 루시안</em></div>
+        <div class="sc-desc">한 사람 · 한 회차 · 90초의 첫 만남.</div>
+      </div>
+    </div>
+    <div class="show-card">
+      <div class="sc-frame">
+        <img src="https://cdn.deepintothe.xyz/lucive/img/lp/kael_entry/scene1.png" alt="분기" loading="lazy">
+        <span class="sc-tag">실제 플레이</span>
+      </div>
+      <div class="sc-body">
+        <div class="sc-step">PHASE 03 · 분기</div>
+        <div class="sc-h">당신의 선택이 <em>결말을 만듭니다</em></div>
+        <div class="sc-desc">한 컷마다 두세 갈래. 두 번 같은 결말은 없습니다.</div>
+      </div>
+    </div>
+    <div class="show-card">
+      <div class="sc-frame">
+        <img src="https://cdn.deepintothe.xyz/lucive/img/lp/kael_entry/scene3.png" alt="회귀" loading="lazy">
+        <span class="sc-tag">실제 플레이</span>
+      </div>
+      <div class="sc-body">
+        <div class="sc-step">PHASE 04 · 회귀</div>
+        <div class="sc-h">다시 돌아오면 <em>그가 기억합니다</em></div>
+        <div class="sc-desc">떠난 자리의 그의 시간은 멈추지 않습니다.</div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- 3-COLUMN SHOWCASE (Phase 2 + 3 + 4) -->
-<section class="showcase">
-  <div class="showcase-head">
-    <div class="kicker">실제 플레이 화면</div>
-    <h2 class="showcase-h">한 번의 만남이 · <em>당신의 회차</em>를 결정합니다</h2>
-  </div>
-
-  <div class="showcase-cards">
-
-    <!-- Card 1 · 첫 만남 (Phase 2) -->
-    <div class="sc-card">
-      <div class="sc-frame">
-        <img src="https://cdn.deepintothe.xyz/lucive/img/lp/kael_entry/header.png" alt="첫 만남">
-        <span class="sc-real-tag">ACTUAL · 첫 만남</span>
-        <span class="sc-phase">PHASE 02</span>
-      </div>
-      <div class="sc-body">
-        <div class="sc-h">5 디스트릭트 · <em>36명의 루시안</em></div>
-        <div class="sc-sub">각 디스트릭트는 다른 톤과 다른 결말을 품습니다. 90초만에 한 사람의 첫 만남.</div>
-        <div class="sc-mini">
-          <div class="sc-mini-row"><b>SUNRISE / NEON / UNDERGROUND / VELVET / INDIE</b>잊힌 정원 · 에코 랭크 · 적월 법정 · 가면무도회 · 3AM 주파수</div>
-        </div>
-        <div class="sc-cast" id="scCast"></div>
-      </div>
-    </div>
-
-    <!-- Card 2 · 선택과 결말 (Phase 3) -->
-    <div class="sc-card">
-      <div class="sc-frame">
-        <img src="https://cdn.deepintothe.xyz/lucive/img/lp/kael_entry/scene1.png" alt="선택">
-        <span class="sc-real-tag">ACTUAL · 분기 선택</span>
-        <span class="sc-phase">PHASE 03</span>
-      </div>
-      <div class="sc-body">
-        <div class="sc-h">당신의 선택이 · <em>결말을 만듭니다</em></div>
-        <div class="sc-sub">VN 한 컷마다 두세 갈래. 한 사람의 회차에서도 분기되고, 다른 회차로 가면 다른 결말이 열립니다.</div>
-        <div class="sc-options-mini">
-          <div class="sc-opt-mini"><span class="sc-opt-mini-num">1</span><span>"그래서 서명을 못 하시는 거예요?"</span></div>
-          <div class="sc-opt-mini"><span class="sc-opt-mini-num">2</span><span>"한 잔 더 하고 정해도 돼요"</span></div>
-          <div class="sc-opt-mini"><span class="sc-opt-mini-num">3</span><span>서류를 손으로 한 번 덮는다</span></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Card 3 · 회귀 (Phase 4) -->
-    <div class="sc-card">
-      <div class="sc-frame">
-        <img src="https://cdn.deepintothe.xyz/lucive/img/lp/kael_entry/scene3.png" alt="회귀">
-        <span class="sc-real-tag">ACTUAL · 회귀 · Linked</span>
-        <span class="sc-phase">PHASE 04</span>
-      </div>
-      <div class="sc-body">
-        <div class="sc-h">다시 돌아오면 · <em>그가 당신을 기억합니다</em></div>
-        <div class="sc-sub">통신 채널을 한 번 열면 그의 시간이 멈추지 않습니다. 다음 새벽에 그가 먼저 메시지를 보냅니다.</div>
-        <div class="sc-mini">
-          <div class="sc-mini-row"><b>LINKED CHAT · 카엘</b>"...어젯밤 일을 두고두고 이상하게 기억하게 될 것 같아요. 잠은 좀 잤어요? 저는 거의 못 잤습니다. 25년 동안 잘 자던 사람인데."</div>
-        </div>
-      </div>
-    </div>
-
-  </div>
+<section class="lineup wrap">
+  <div class="lineup-h">35명의 루시안</div>
+  <div class="lineup-grid" id="lineupGrid"></div>
 </section>
 
-<!-- PRE-CTA dual buttons -->
-<section class="pre-cta">
-  <div class="pre-cta-head">먼저 한 번 · <em>90초만 만나보세요</em></div>
-  <div class="pre-cta-sub">알파테스터 신청 전, 36명 중 한 명의 첫 만남을 직접 체험할 수 있습니다.</div>
+<section class="pre-cta wrap">
+  <div class="pre-cta-h">먼저 한 번 만나보세요</div>
+  <div class="pre-cta-sub">35명 중 한 명, 90초의 첫 만남.</div>
   <div class="pre-cta-row">
-    <a href="./v34-kr-lucive.html" class="pre-cta-btn secondary">
+    <a href="./v34-kr-lucive.html" class="btn btn-secondary">
       <span>간단하게 경험해보기</span>
       <span class="arr">▶</span>
     </a>
-    <a href="./screening.html" class="pre-cta-btn primary">
+    <a href="./screening.html" class="btn btn-primary">
       <span>바로 사전등록하러 가기</span>
       <span class="arr">→</span>
     </a>
   </div>
   <div class="pre-cta-meta">D-<span id="dday">17</span> 알파 오픈 · 매주 새 디스트릭트</div>
-</section>
-
-<!-- LINEUP -->
-<section class="lineup">
-  <div class="lineup-h">36명의 루시안</div>
-  <div class="lineup-grid" id="lineupGrid"></div>
 </section>
 
 <footer class="footer">
@@ -214,7 +177,6 @@ em{font-style:italic;background:linear-gradient(90deg,var(--gold),#fce7c8);-webk
 
 <script>
 const CDN = 'https://cdn.deepintothe.xyz/lucive';
-
 const NAMES = {
   taeo:'태오', ihana:'이하나', minjun_sr:'민준', maria:'마리아', seha:'세하', ryo:'료',
   haejun:'이해준', kai:'카이', jian:'지안', damya:'담야', lise:'리제', nia:'니아', levi:'레비', lana:'라나',
@@ -222,23 +184,11 @@ const NAMES = {
   yun_ara:'윤아라', stella:'스텔라', adel:'아델', leon:'레온', sia:'시아', inis:'이니스', seraphine:'세라핀', myur:'뮤르', kael:'카엘',
   ruon:'루온', piera:'피라', nova:'노바', haru:'하루', juhyuk:'주혁', seoyul:'한서율'
 };
-
-// 5 districts에서 1명씩 대표 picks (showcase Card 1 mini cast)
-const PICKS = ['taeo','haejun','raon','kael','haru'];
-
-document.getElementById('scCast').innerHTML = PICKS.map(k => `
-  <div class="sc-cast-mini" title="${NAMES[k]}">
-    <img src="${CDN}/img/lp/${k}.png" alt="${NAMES[k]}" loading="lazy" onerror="this.style.opacity=.2">
-  </div>`).join('');
-
-// lineup 36 thumbnails (라인업 = NAMES 키 35 + jinhyuk 36 → 그러나 reference엔 jinhyuk 없음, 35만 사용)
-const ALL = Object.keys(NAMES);
-document.getElementById('lineupGrid').innerHTML = ALL.map(k => `
-  <div class="lp-thumb" title="${NAMES[k]}">
+document.getElementById('lineupGrid').innerHTML = Object.keys(NAMES).map(k => `
+  <div class="lp" title="${NAMES[k]}">
     <img src="${CDN}/img/lp/${k}.png" alt="${NAMES[k]}" loading="lazy" onerror="this.style.opacity=.18">
-    <div class="lp-thumb-name">${NAMES[k]}</div>
+    <div class="lp-name">${NAMES[k]}</div>
   </div>`).join('');
-
 document.getElementById('dday').textContent = '17';
 </script>
 
