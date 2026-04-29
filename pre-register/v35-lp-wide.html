@@ -9,22 +9,14 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,700&display=swap" rel="stylesheet">
 <style>
 :root{
-  /* === DEMO 톤앤매너 그대로 === */
-  --bg: #FFF9F7;
-  --card: #ffffff;
-  --elevated: #FAEFE8;
-  --divider: rgba(63, 38, 52, 0.08);
-  --text-1: #2A1A22;
-  --text-2: #6B5560;
-  --text-3: #9C8893;
-  --accent: #C97B89;
-  --accent-light: #FFE8EC;
-  --gold: #D6B07C;
-  --gold-deep: #b8945e;
+  /* === DEMO 톤앤매너 === */
+  --bg:#FFF9F7; --card:#fff; --elevated:#FAEFE8; --divider:rgba(63,38,52,.08);
+  --text-1:#2A1A22; --text-2:#6B5560; --text-3:#9C8893;
+  --accent:#C97B89; --accent-light:#FFE8EC;
+  --gold:#D6B07C; --gold-deep:#b8945e;
   --d-sunrise:#FFB56B; --d-neon:#5EC8FF; --d-underground:#D45877; --d-velvet:#C084FC; --d-indie:#7EE5B8;
-  --shadow-soft: 0 2px 8px rgba(63, 38, 52, 0.06);
-  --shadow-card: 0 8px 28px rgba(63, 38, 52, 0.08);
-  --shadow-cta: 0 14px 32px rgba(214,176,124,0.32);
+  --shadow-card:0 8px 28px rgba(63,38,52,.08);
+  --shadow-cta:0 14px 32px rgba(214,176,124,.32);
 
   --display:'Cormorant Garamond',serif;
   --sans:'Inter',-apple-system,'Pretendard','Apple SD Gothic Neo',sans-serif;
@@ -36,49 +28,50 @@ html,body{background:var(--bg);color:var(--text-1);font-family:var(--sans);scrol
 img{max-width:100%;display:block}
 em{font-style:italic;color:var(--accent)}
 
-.wrap{max-width:1200px;margin:0 auto;padding:0 32px}
-
-/* === 통일된 섹션 수직 리듬 === */
-:root{ --sec-pad-y: 56px; }
-@media(min-width:1100px){ :root{ --sec-pad-y: 72px; } }
-section{padding:var(--sec-pad-y) 0}
+.wrap{max-width:1280px;margin:0 auto;padding:0 32px}
 
 /* ===== TOP BRAND ===== */
-.top{padding:36px 0 0;text-align:center}
+.top{padding:30px 0 0;text-align:center}
 .brand{display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.5em;font-weight:800;color:var(--accent);text-transform:uppercase}
 .brand .dot{display:inline-block;width:4px;height:4px;border-radius:50%;background:var(--accent);margin:0 12px;vertical-align:middle}
 
 /* ===== HERO ===== */
-.hero{padding:var(--sec-pad-y) 0 calc(var(--sec-pad-y) - 16px);text-align:center}
-.hero-pre{font-family:var(--display);font-style:italic;font-size:clamp(16px,1.7vw,20px);color:var(--text-3);margin-bottom:14px;letter-spacing:.005em}
-.hero-pre s{text-decoration:line-through;text-decoration-thickness:1.5px;text-decoration-color:rgba(156,136,147,.6);color:var(--text-3)}
-.hero-h{font-family:var(--display);font-weight:700;font-size:clamp(34px,5.6vw,58px);line-height:1.18;letter-spacing:-.005em;color:var(--text-1);max-width:900px;margin:0 auto}
-.hero-h em{font-style:italic;color:var(--accent)}
-.hero-sub{font-family:var(--display);font-style:italic;font-weight:500;font-size:clamp(20px,2.8vw,28px);line-height:1.5;color:var(--text-2);max-width:780px;margin:18px auto 0}
-.hero-sub em{color:var(--gold-deep);font-style:italic}
+.hero{padding:64px 0 56px;text-align:center}
+.hero-pre{font-family:var(--display);font-style:italic;font-size:clamp(16px,1.7vw,20px);color:var(--text-3);margin-bottom:14px}
+.hero-pre s{text-decoration:line-through;text-decoration-thickness:1.5px;text-decoration-color:rgba(156,136,147,.6)}
+.hero-h{font-family:var(--display);font-weight:700;font-size:clamp(34px,5.6vw,58px);line-height:1.18;letter-spacing:-.005em;color:var(--text-1);max-width:920px;margin:0 auto}
+.hero-h em{color:var(--accent);font-style:italic}
+.hero-sub{font-family:var(--display);font-style:italic;font-weight:500;font-size:clamp(20px,2.6vw,28px);line-height:1.5;color:var(--text-2);max-width:780px;margin:18px auto 0}
+.hero-sub em{color:var(--gold-deep)}
 
-/* ===== SHOWCASE — 실제 플레이 스크린샷 3컷 ===== */
-.showcase{padding:calc(var(--sec-pad-y) - 16px) 0 calc(var(--sec-pad-y) - 16px)}
-.showcase-grid{display:grid;grid-template-columns:1fr;gap:14px}
-@media(min-width:760px){.showcase-grid{grid-template-columns:1fr 1fr 1fr}}
-.show-card{background:var(--card);border-radius:16px;overflow:hidden;border:1px solid rgba(111,77,103,.08);box-shadow:var(--shadow-card);transition:transform .25s var(--ease),box-shadow .25s}
-.show-card:hover{transform:translateY(-3px);box-shadow:0 16px 42px rgba(63,38,52,.14)}
-.sc-frame{position:relative;aspect-ratio:5/3;overflow:hidden;background:#1a0e22}
-.sc-frame img{width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease)}
-.show-card:hover .sc-frame img{transform:scale(1.05)}
-.sc-frame::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.05) 0%,rgba(0,0,0,.35) 100%)}
-.sc-tag{position:absolute;top:12px;left:12px;z-index:2;font-family:var(--mono);font-size:9.5px;letter-spacing:.22em;font-weight:800;color:#fff;text-transform:uppercase;padding:5px 10px;background:rgba(201,123,137,.92);border-radius:999px;backdrop-filter:blur(6px)}
-.sc-tag::before{content:'●';color:#fff;margin-right:5px;animation:dot 1.6s ease-in-out infinite}
-@keyframes dot{0%,100%{opacity:.55}50%{opacity:1}}
-.sc-body{padding:14px 16px 16px}
-.sc-step{font-family:var(--mono);font-size:9.5px;letter-spacing:.32em;font-weight:800;color:var(--gold-deep);text-transform:uppercase}
-.sc-h{font-family:var(--display);font-size:18px;font-weight:700;color:var(--text-1);margin-top:4px;line-height:1.3}
-.sc-h em{font-style:italic;color:var(--accent)}
-.sc-desc{font-size:12px;color:var(--text-2);line-height:1.55;margin-top:5px}
+/* ============================================================
+   PHASE SLIDES · 각 페이즈 = 한 메시지 + 풀블리드 플레이 장면
+   좌하단에 게임 UI 스타일 "실제 플레이 장면" 태그
+   ============================================================ */
+.phases{padding:24px 0 32px}
+.phase{position:relative;border-radius:24px;overflow:hidden;margin:24px 0;aspect-ratio:21/9;background:#1a0e22;box-shadow:0 18px 60px rgba(63,38,52,.18)}
+@media(max-width:760px){.phase{aspect-ratio:4/5}}
+.phase-bg{position:absolute;inset:0;background-size:cover;background-position:center;z-index:0;transition:transform 1.2s var(--ease)}
+.phase:hover .phase-bg{transform:scale(1.03)}
+.phase-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.05) 0%,rgba(0,0,0,.32) 50%,rgba(0,0,0,.78) 100%)}
+.phase-content{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 40px;text-align:center;color:#fff}
+@media(max-width:760px){.phase-content{padding:40px 24px;justify-content:flex-start;padding-top:60px}}
+.phase-step{font-family:var(--mono);font-size:11px;letter-spacing:.42em;font-weight:800;color:rgba(255,255,255,.78);text-transform:uppercase;margin-bottom:14px;text-shadow:0 2px 12px rgba(0,0,0,.55)}
+.phase-step b{color:var(--gold);font-weight:800}
+.phase-h{font-family:var(--display);font-weight:700;font-size:clamp(32px,5.4vw,68px);line-height:1.12;letter-spacing:-.005em;color:#fff;text-shadow:0 4px 24px rgba(0,0,0,.55);max-width:900px}
+.phase-h em{font-style:italic;background:linear-gradient(90deg,#fce7c8,var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 
-/* ===== LINEUP (small cream thumbnails row) ===== */
-.lineup{padding:calc(var(--sec-pad-y) - 16px) 0 calc(var(--sec-pad-y) - 16px)}
-.lineup-h{text-align:center;font-family:var(--mono);font-size:10px;letter-spacing:.4em;font-weight:800;color:var(--text-3);text-transform:uppercase;margin-bottom:18px}
+/* === game-UI style "실제 플레이 장면" tag (bottom-left, like REC indicator) === */
+.play-tag{position:absolute;left:18px;bottom:18px;z-index:3;display:inline-flex;align-items:center;gap:8px;padding:8px 13px;background:rgba(0,0,0,.62);border:1px solid rgba(255,255,255,.18);border-radius:6px;font-family:var(--mono);font-size:10.5px;letter-spacing:.22em;font-weight:800;color:rgba(255,255,255,.94);text-transform:uppercase;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.play-tag::before{content:'';display:inline-block;width:7px;height:7px;border-radius:50%;background:#FF4D4D;box-shadow:0 0 8px rgba(255,77,77,.7);animation:recDot 1.4s ease-in-out infinite}
+@keyframes recDot{0%,100%{opacity:.55;transform:scale(1)}50%{opacity:1;transform:scale(1.15)}}
+
+/* district color bar bottom (decorative) */
+.phase-bar{position:absolute;left:0;right:0;bottom:0;z-index:2;height:3px;background:linear-gradient(90deg,transparent,var(--bar-color,var(--gold)),transparent)}
+
+/* ===== LINEUP ===== */
+.lineup{padding:48px 0 24px}
+.lineup-h{text-align:center;font-family:var(--mono);font-size:10px;letter-spacing:.4em;font-weight:800;color:var(--text-3);text-transform:uppercase;margin-bottom:22px}
 .lineup-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
 @media(min-width:680px){.lineup-grid{grid-template-columns:repeat(12,1fr)}}
 @media(min-width:1100px){.lineup-grid{grid-template-columns:repeat(18,1fr)}}
@@ -89,9 +82,9 @@ section{padding:var(--sec-pad-y) 0}
 .lp-name{position:absolute;left:0;right:0;bottom:3px;text-align:center;font-family:var(--mono);font-size:8px;font-weight:800;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.6);z-index:2}
 
 /* ===== PRE-CTA dual buttons ===== */
-.pre-cta{padding:calc(var(--sec-pad-y) - 16px) 0 var(--sec-pad-y);text-align:center}
-.pre-cta-h{font-family:var(--display);font-style:italic;font-size:clamp(22px,2.8vw,30px);font-weight:700;color:var(--text-1);margin-bottom:6px}
-.pre-cta-sub{font-size:13px;color:var(--text-2);margin-bottom:24px}
+.pre-cta{padding:48px 0 72px;text-align:center}
+.pre-cta-h{font-family:var(--display);font-style:italic;font-size:clamp(24px,3vw,32px);font-weight:700;color:var(--text-1);margin-bottom:6px}
+.pre-cta-sub{font-size:13px;color:var(--text-2);margin-bottom:26px}
 .pre-cta-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:12px;padding:16px 30px;border-radius:999px;font-family:var(--sans);font-size:14.5px;font-weight:800;letter-spacing:-.005em;cursor:pointer;text-decoration:none;transition:all .2s var(--ease);min-width:240px;border:none}
 .btn .arr{font-family:var(--mono);font-weight:800}
@@ -99,10 +92,10 @@ section{padding:var(--sec-pad-y) 0}
 .btn-primary:hover{transform:translateY(-2px);box-shadow:0 18px 40px rgba(214,176,124,.42)}
 .btn-secondary{background:var(--card);color:var(--text-1);border:1.5px solid rgba(63,38,52,.16)}
 .btn-secondary:hover{border-color:var(--accent);color:var(--accent)}
-.pre-cta-meta{margin-top:18px;font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;color:var(--text-3);text-transform:uppercase;font-weight:700}
+.pre-cta-meta{margin-top:20px;font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;color:var(--text-3);text-transform:uppercase;font-weight:700}
 
 /* ===== footer ===== */
-.footer{padding:24px 0 36px;text-align:center;border-top:1px solid var(--divider);margin:0 32px}
+.footer{padding:24px 32px 36px;text-align:center;border-top:1px solid var(--divider)}
 .footer-brand{font-family:var(--mono);font-size:10.5px;letter-spacing:.45em;font-weight:800;color:var(--accent)}
 .footer-meta{font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;color:var(--text-3);margin-top:5px}
 </style>
@@ -119,42 +112,41 @@ section{padding:var(--sec-pad-y) 0}
   <p class="hero-sub">첫 만남, 에피소드, 결말 — <em>당신만의 스토리</em>가 만들어집니다.</p>
 </section>
 
-<section class="showcase wrap">
-  <div class="showcase-grid">
-    <div class="show-card">
-      <div class="sc-frame">
-        <img src="https://cdn.deepintothe.xyz/lucive/img/lp/taeo_entry/header.png" alt="첫 만남" loading="lazy">
-        <span class="sc-tag">실제 플레이</span>
-      </div>
-      <div class="sc-body">
-        <div class="sc-step">PHASE 02 · 첫 만남</div>
-        <div class="sc-h">5 디스트릭트, <em>35명의 루시안</em></div>
-        <div class="sc-desc">한 사람 · 한 회차 · 90초의 첫 만남.</div>
-      </div>
+<section class="phases wrap">
+
+  <!-- PHASE 02 · 첫 만남 -->
+  <div class="phase" style="--bar-color:var(--d-sunrise)">
+    <div class="phase-bg" style="background-image:url('https://cdn.deepintothe.xyz/lucive/img/lp/taeo_entry/header.png')"></div>
+    <div class="phase-content">
+      <div class="phase-step">PHASE 02 <b>·</b> 첫 만남</div>
+      <h2 class="phase-h">5 디스트릭트, <em>35명의 루시안</em></h2>
     </div>
-    <div class="show-card">
-      <div class="sc-frame">
-        <img src="https://cdn.deepintothe.xyz/lucive/img/lp/seraphine_entry/scene1.png" alt="분기" loading="lazy">
-        <span class="sc-tag">실제 플레이</span>
-      </div>
-      <div class="sc-body">
-        <div class="sc-step">PHASE 03 · 분기</div>
-        <div class="sc-h">당신의 선택이 <em>결말을 만듭니다</em></div>
-        <div class="sc-desc">한 컷마다 두세 갈래. 두 번 같은 결말은 없습니다.</div>
-      </div>
-    </div>
-    <div class="show-card">
-      <div class="sc-frame">
-        <img src="https://cdn.deepintothe.xyz/lucive/img/lp/haru_entry/header.png" alt="회귀" loading="lazy">
-        <span class="sc-tag">실제 플레이</span>
-      </div>
-      <div class="sc-body">
-        <div class="sc-step">PHASE 04 · 회귀</div>
-        <div class="sc-h">다시 돌아오면 <em>그가 기억합니다</em></div>
-        <div class="sc-desc">떠난 자리의 그의 시간은 멈추지 않습니다.</div>
-      </div>
-    </div>
+    <div class="play-tag">실제 플레이 장면</div>
+    <div class="phase-bar"></div>
   </div>
+
+  <!-- PHASE 03 · 분기 -->
+  <div class="phase" style="--bar-color:var(--d-velvet)">
+    <div class="phase-bg" style="background-image:url('https://cdn.deepintothe.xyz/lucive/img/lp/seraphine_entry/scene1.png')"></div>
+    <div class="phase-content">
+      <div class="phase-step">PHASE 03 <b>·</b> 분기</div>
+      <h2 class="phase-h">당신의 선택이 · <em>결말을 만듭니다</em></h2>
+    </div>
+    <div class="play-tag">실제 플레이 장면</div>
+    <div class="phase-bar"></div>
+  </div>
+
+  <!-- PHASE 04 · 회귀 · Linked -->
+  <div class="phase" style="--bar-color:var(--d-indie)">
+    <div class="phase-bg" style="background-image:url('https://cdn.deepintothe.xyz/lucive/img/lp/haru_entry/header.png')"></div>
+    <div class="phase-content">
+      <div class="phase-step">PHASE 04 <b>·</b> 회귀</div>
+      <h2 class="phase-h">다시 돌아오면 · <em>그가 기억합니다</em></h2>
+    </div>
+    <div class="play-tag">실제 플레이 장면</div>
+    <div class="phase-bar"></div>
+  </div>
+
 </section>
 
 <section class="lineup wrap">
