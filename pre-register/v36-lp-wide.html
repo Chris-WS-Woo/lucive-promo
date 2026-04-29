@@ -25,8 +25,6 @@
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{background:var(--bg);color:var(--text-1);font-family:var(--sans);scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
 body{overflow-x:hidden}
-html{scroll-snap-type:y proximity}
-.hero,.phase{scroll-snap-align:start;scroll-snap-stop:always}
 img{max-width:100%;display:block}
 em{font-style:italic;color:var(--accent)}
 .wrap{max-width:1280px;margin:0 auto;padding:0 32px}
@@ -118,7 +116,11 @@ em{font-style:italic;color:var(--accent)}
 .mock-head-status{font-family:var(--mono);font-size:9px;letter-spacing:.18em;color:var(--text-3);text-transform:uppercase;font-weight:700;margin-top:2px}
 .mock-head-status.linked{color:var(--accent)}
 .mock-head-status.linked::before{content:'◆ ';color:var(--accent)}
-.mock-body{flex:1;padding:14px 12px 24px;display:flex;flex-direction:column;gap:6px;background:#FFF9F7;overflow:hidden;position:relative}
+.mock-head-status.first{color:#FF4D4D}
+.mock-head-status.first::before{content:'● ';color:#FF4D4D;animation:recDot 1.4s ease-in-out infinite}
+.mock-body{flex:1;padding:14px 12px 32px;display:flex;flex-direction:column;gap:6px;background:#FFF9F7;overflow:hidden;position:relative}
+.mock-enter-cta{align-self:center;margin-top:auto;padding:11px 18px;background:linear-gradient(180deg,var(--gold),var(--gold-deep));border-radius:13px;display:inline-flex;align-items:center;gap:10px;font-family:var(--sans);font-size:12.5px;font-weight:800;color:#2c1f00;letter-spacing:-.005em;box-shadow:0 6px 16px rgba(214,176,124,.32);position:relative;z-index:2}
+.mock-enter-cta .arr{font-family:var(--mono);font-size:14px;font-weight:800}
 .mock-body[data-bg]::before{content:'';position:absolute;inset:0;background-image:var(--chat-bg);background-size:cover;background-position:center;opacity:.32;filter:blur(2px) saturate(1.1);z-index:0}
 .mock-body[data-bg]::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,249,247,.55) 0%,rgba(255,249,247,.78) 100%);z-index:0}
 .mock-body > *{position:relative;z-index:1}
@@ -189,9 +191,21 @@ em{font-style:italic;color:var(--accent)}
 @keyframes pulse{0%,100%{opacity:.45;transform:scale(1)}50%{opacity:1;transform:scale(1.3)}}
 
 /* ================= TOGGLE · PRE-CTA · FOOTER ================= */
-.view-toggle{position:fixed;top:18px;right:18px;z-index:50;display:inline-flex;background:rgba(255,249,247,.92);border:1px solid rgba(63,38,52,.16);border-radius:999px;padding:4px;box-shadow:0 6px 18px rgba(63,38,52,.12);backdrop-filter:blur(10px)}
+.view-toggle{position:fixed;top:18px;right:18px;z-index:60;display:inline-flex;background:rgba(255,249,247,.92);border:1px solid rgba(63,38,52,.16);border-radius:999px;padding:4px;box-shadow:0 6px 18px rgba(63,38,52,.12);backdrop-filter:blur(10px)}
 .view-toggle a{font-family:var(--mono);font-size:10px;letter-spacing:.18em;color:var(--text-2);text-transform:uppercase;font-weight:800;padding:7px 12px;border-radius:999px;text-decoration:none}
 .view-toggle a.active{background:var(--text-1);color:#fff}
+
+/* === floating CTA · 우하단 ============== */
+.floating-cta{position:fixed;right:18px;bottom:18px;z-index:60;display:flex;flex-direction:column;gap:8px;align-items:flex-end}
+.floating-cta a,.floating-cta button{display:inline-flex;align-items:center;gap:8px;padding:11px 16px;border-radius:999px;font-family:var(--sans);font-size:12.5px;font-weight:800;letter-spacing:-.005em;text-decoration:none;cursor:pointer;border:none;transition:all .2s var(--ease);box-shadow:0 6px 16px rgba(63,38,52,.18)}
+.floating-cta .fc-arr{font-family:var(--mono);font-size:13px;font-weight:800}
+.fc-primary{background:linear-gradient(180deg,var(--gold),var(--gold-deep));color:#2c1f00}
+.fc-primary:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(214,176,124,.4)}
+.fc-secondary{background:#fff;color:var(--text-1);border:1px solid rgba(63,38,52,.16)!important}
+.fc-secondary:hover{border-color:var(--accent)!important;color:var(--accent)}
+.fc-tertiary{background:rgba(255,249,247,.88);color:var(--text-2);border:1px solid rgba(63,38,52,.12)!important;font-size:11.5px;backdrop-filter:blur(8px)}
+.fc-tertiary:hover{color:var(--text-1)}
+@media(max-width:640px){.floating-cta a,.floating-cta button{padding:9px 13px;font-size:11.5px}.floating-cta .fc-tertiary{font-size:10.5px}}
 
 .pre-cta{padding:48px 0 80px;text-align:center;background:var(--bg)}
 .pre-cta-h{font-family:var(--display);font-style:italic;font-size:clamp(24px,3vw,32px);font-weight:700;color:var(--text-1);margin-bottom:6px}
@@ -205,9 +219,13 @@ em{font-style:italic;color:var(--accent)}
 .btn-secondary:hover{border-color:var(--accent);color:var(--accent)}
 .pre-cta-meta{margin-top:20px;font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;color:var(--text-3);text-transform:uppercase;font-weight:700}
 
-.footer{padding:24px 32px 36px;text-align:center;border-top:1px solid var(--divider);background:var(--bg)}
+.footer{padding:24px 32px 110px;text-align:center;border-top:1px solid var(--divider);background:var(--bg)}
 .footer-brand{font-family:var(--mono);font-size:10.5px;letter-spacing:.45em;font-weight:800;color:var(--accent)}
 .footer-meta{font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;color:var(--text-3);margin-top:5px}
+.footer-legal{margin-top:18px;display:flex;justify-content:center;gap:18px;flex-wrap:wrap;font-family:var(--sans);font-size:11.5px;color:var(--text-2)}
+.footer-legal a{color:var(--text-2);text-decoration:none;border-bottom:1px solid rgba(63,38,52,.18);padding-bottom:1px;transition:color .2s var(--ease),border-color .2s var(--ease)}
+.footer-legal a:hover{color:var(--text-1);border-bottom-color:var(--text-1)}
+.footer-legal .sep{color:var(--text-3);border:none}
 </style>
 </head>
 <body>
@@ -223,113 +241,87 @@ em{font-style:italic;color:var(--accent)}
   <div class="hero-noise"></div>
   <div class="hero-content">
     <div class="hero-brand">LUCIVE · NEXT-GEN CHARACTER CHAT</div>
-    <div class="hero-pre"><s>기존의 캐릭터 챗</s>은 잊어요.</div>
-    <h1 class="hero-h">당신이 상상하던 것 그 이상의 <em>캐릭터 챗</em></h1>
-    <p class="hero-sub">첫 만남, 에피소드, 결말<br>당신만의 스토리를 만드세요.</p>
+    <div class="hero-pre">당신의 상상, 그 너머의 <em>캐릭터 챗</em></div>
+    <h1 class="hero-h">첫 만남, 에피소드, 결말. <em>당신만의 스토리를 만드세요.</em></h1>
   </div>
   <div class="scroll-cue">SCROLL</div>
 </section>
 
-<!-- ===== PHASE 02 · 살아 있는 세계 · 최초 인카운터 5개 ===== -->
+<!-- ===== PHASE 02 · 살아 있는 세계 · 첫 캐릭터 챗 시작 5개 ===== -->
 <section class="phase" style="--bar-color:var(--d-velvet)">
-  <div class="phase-bg" style="background-image:url('https://cdn.deepintothe.xyz/lucive/img/lp/maria_entry/scene1.png')"></div>
+  <div class="phase-bg" style="background-image:url('https://cdn.deepintothe.xyz/lucive/img/lp/seha_entry/scene1.png')"></div>
   <div class="phase-text">
     <div class="phase-step">PHASE 02 <b>·</b> 살아 있는 세계</div>
     <h2 class="phase-h">그들은 이미 살아가고 있어요. <em>당신은 그 시간에 들어갑니다.</em></h2>
-    <p class="phase-desc">고정된 인트로는 없습니다. 캐릭터들이 서로 연결돼 살아가는 세계 — 그 흐름의 한 컷에 발을 들이고, 함께 다음 페이지를 써 내려갑니다.</p>
+    <p class="phase-desc">그들의 삶과 당신의 삶이 얽히는 첫 걸음. 지금부터 당신만의 스토리는 시작됩니다.</p>
   </div>
 
   <div class="phase-mock">
     <div class="mock-phone">
-      <div class="mock-screen mock-enc-screen">
-        <!-- Slide 1 · 마리아 (Sunrise) -->
+      <div class="mock-screen">
+        <!-- Slide 1 · 마리아 (Sunrise) — 첫 캐릭터 챗 시작 -->
         <div class="mock-slide">
-          <div class="mock-enc-stage" style="background-image:url('https://cdn.deepintothe.xyz/lucive/img/lp/maria_entry/scene1.png')">
-            <div class="mock-enc-top">
-              <div class="mock-enc-live">LIVE · 진행 중</div>
-              <div class="mock-enc-time"><div class="mock-enc-clock">02:11AM</div><div class="mock-enc-place">GALLERY · SUNRISE</div></div>
-            </div>
-            <div class="mock-enc-char"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/maria_entry/char_maria.png" alt="마리아" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
-            <div class="mock-enc-bottom">
-              <div class="mock-enc-speaker">MARIA · 마리아</div>
-              <div class="mock-enc-box">
-                <div class="mock-enc-narration">비상등이 깜빡이는 전시장. 마지막 작품 한 점 — 누군가 떼어 가려는 순간이다.</div>
-                <div class="mock-enc-line">"방금 누가 들어왔어요. 당신, 도와주실 수 있죠?"</div>
-                <div class="mock-enc-cta">이 순간에 진입</div>
-              </div>
-            </div>
+          <div class="mock-statusbar"><span class="time">02:11</span><span class="icons">●●●● 92%</span></div>
+          <div class="mock-head">
+            <div class="mock-head-avatar"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/maria.png" alt=""></div>
+            <div class="mock-head-info"><div class="mock-head-name">마리아</div><div class="mock-head-status first">FIRST CONTACT · GALLERY</div></div>
+          </div>
+          <div class="mock-body" data-bg style="--chat-bg:url('https://cdn.deepintothe.xyz/lucive/img/lp/maria_entry/scene1.png')">
+            <div class="mock-msg narration"><div class="mock-narration-text">비상등이 깜빡이는 전시장. 마지막 작품 한 점 — 누군가 떼어 가려는 순간이다.</div></div>
+            <div class="mock-msg lp"><div class="mock-mini"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/maria.png" alt=""></div><div class="mock-bubble">방금 누가 들어왔어요. 당신, 도와주실 수 있죠?</div></div>
+            <div class="mock-enter-cta">이 순간에 진입 <span class="arr">→</span></div>
           </div>
         </div>
         <!-- Slide 2 · 담야 (Neon) -->
         <div class="mock-slide">
-          <div class="mock-enc-stage" style="background-image:url('https://cdn.deepintothe.xyz/lucive/img/lp/damya_entry/scene1.png')">
-            <div class="mock-enc-top">
-              <div class="mock-enc-live">LIVE · 진행 중</div>
-              <div class="mock-enc-time"><div class="mock-enc-clock">23:47</div><div class="mock-enc-place">BACKSTREET · NEON</div></div>
-            </div>
-            <div class="mock-enc-char"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/damya_entry/char_damya.png" alt="담야" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
-            <div class="mock-enc-bottom">
-              <div class="mock-enc-speaker">DAMYA · 담야</div>
-              <div class="mock-enc-box">
-                <div class="mock-enc-narration">플래시 세례를 피해 골목으로 숨어든 셀럽. 그녀가 고개를 들고 — 당신을 발견한다.</div>
-                <div class="mock-enc-line">"...30분만요. 모른 척, 해주실래요?"</div>
-                <div class="mock-enc-cta">이 순간에 진입</div>
-              </div>
-            </div>
+          <div class="mock-statusbar"><span class="time">23:47</span><span class="icons">●●●● 78%</span></div>
+          <div class="mock-head">
+            <div class="mock-head-avatar"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/damya.png" alt=""></div>
+            <div class="mock-head-info"><div class="mock-head-name">담야</div><div class="mock-head-status first">FIRST CONTACT · BACKSTREET</div></div>
+          </div>
+          <div class="mock-body" data-bg style="--chat-bg:url('https://cdn.deepintothe.xyz/lucive/img/lp/damya_entry/scene1.png')">
+            <div class="mock-msg narration"><div class="mock-narration-text">플래시 세례를 피해 골목으로 숨어든 셀럽. 그녀가 — 당신을 발견한다.</div></div>
+            <div class="mock-msg lp"><div class="mock-mini"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/damya.png" alt=""></div><div class="mock-bubble">...30분만요. 모른 척, 해주실래요?</div></div>
+            <div class="mock-enter-cta">이 순간에 진입 <span class="arr">→</span></div>
           </div>
         </div>
         <!-- Slide 3 · 엘라 (Underground) -->
         <div class="mock-slide">
-          <div class="mock-enc-stage" style="background-image:url('https://cdn.deepintothe.xyz/lucive/img/lp/ella_entry/scene1.png')">
-            <div class="mock-enc-top">
-              <div class="mock-enc-live">LIVE · 진행 중</div>
-              <div class="mock-enc-time"><div class="mock-enc-clock">01:34AM</div><div class="mock-enc-place">UNDERPASS B11</div></div>
-            </div>
-            <div class="mock-enc-char"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/ella_entry/char_ella.png" alt="엘라" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
-            <div class="mock-enc-bottom">
-              <div class="mock-enc-speaker">ELLA · 엘라</div>
-              <div class="mock-enc-box">
-                <div class="mock-enc-narration">비밀번호 없이 들어온 첫 손님. 그녀의 칼이 카운터 위로 — 천천히 놓인다.</div>
-                <div class="mock-enc-line">"여기까지 어떻게 오셨는지부터, 천천히 들려주세요."</div>
-                <div class="mock-enc-cta">이 순간에 진입</div>
-              </div>
-            </div>
+          <div class="mock-statusbar"><span class="time">01:34</span><span class="icons">●●●● 64%</span></div>
+          <div class="mock-head">
+            <div class="mock-head-avatar"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/ella.png" alt=""></div>
+            <div class="mock-head-info"><div class="mock-head-name">엘라</div><div class="mock-head-status first">FIRST CONTACT · UNDERPASS B11</div></div>
+          </div>
+          <div class="mock-body" data-bg style="--chat-bg:url('https://cdn.deepintothe.xyz/lucive/img/lp/ella_entry/scene1.png')">
+            <div class="mock-msg narration"><div class="mock-narration-text">비밀번호 없이 들어온 첫 손님. 그녀의 칼이 카운터 위로 — 천천히 놓인다.</div></div>
+            <div class="mock-msg lp"><div class="mock-mini"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/ella.png" alt=""></div><div class="mock-bubble">여기까지 어떻게 오셨는지부터, 천천히 들려주세요.</div></div>
+            <div class="mock-enter-cta">이 순간에 진입 <span class="arr">→</span></div>
           </div>
         </div>
         <!-- Slide 4 · 이니스 (Velvet) -->
         <div class="mock-slide">
-          <div class="mock-enc-stage" style="background-image:url('https://cdn.deepintothe.xyz/lucive/img/lp/inis_entry/scene1.png')">
-            <div class="mock-enc-top">
-              <div class="mock-enc-live">LIVE · 진행 중</div>
-              <div class="mock-enc-time"><div class="mock-enc-clock">22:08</div><div class="mock-enc-place">GRAND HALL · VELVET</div></div>
-            </div>
-            <div class="mock-enc-char"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/inis_entry/char_inis.png" alt="이니스" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
-            <div class="mock-enc-bottom">
-              <div class="mock-enc-speaker">INIS · 이니스</div>
-              <div class="mock-enc-box">
-                <div class="mock-enc-narration">마지막 왈츠. 파트너 자리가 비어 있다. 그녀가 — 당신에게 손을 내민다.</div>
-                <div class="mock-enc-line">"한 곡만, 부탁드려도 될까요?"</div>
-                <div class="mock-enc-cta">이 순간에 진입</div>
-              </div>
-            </div>
+          <div class="mock-statusbar"><span class="time">22:08</span><span class="icons">●●●● 56%</span></div>
+          <div class="mock-head">
+            <div class="mock-head-avatar"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/inis.png" alt=""></div>
+            <div class="mock-head-info"><div class="mock-head-name">이니스</div><div class="mock-head-status first">FIRST CONTACT · GRAND HALL</div></div>
+          </div>
+          <div class="mock-body" data-bg style="--chat-bg:url('https://cdn.deepintothe.xyz/lucive/img/lp/inis_entry/scene1.png')">
+            <div class="mock-msg narration"><div class="mock-narration-text">마지막 왈츠. 파트너 자리가 비어 있다. 그녀가 — 당신에게 손을 내민다.</div></div>
+            <div class="mock-msg lp"><div class="mock-mini"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/inis.png" alt=""></div><div class="mock-bubble">한 곡만, 부탁드려도 될까요?</div></div>
+            <div class="mock-enter-cta">이 순간에 진입 <span class="arr">→</span></div>
           </div>
         </div>
         <!-- Slide 5 · 루온 (Indie) -->
         <div class="mock-slide">
-          <div class="mock-enc-stage" style="background-image:url('https://cdn.deepintothe.xyz/lucive/img/lp/ruon_entry/scene1.png')">
-            <div class="mock-enc-top">
-              <div class="mock-enc-live">LIVE · 진행 중</div>
-              <div class="mock-enc-time"><div class="mock-enc-clock">04:22AM</div><div class="mock-enc-place">STUDIO B · INDIE</div></div>
-            </div>
-            <div class="mock-enc-char"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/ruon_entry/char_ruon.png" alt="루온" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
-            <div class="mock-enc-bottom">
-              <div class="mock-enc-speaker">RUON · 루온</div>
-              <div class="mock-enc-box">
-                <div class="mock-enc-narration">녹음 부스. 보컬 라인이 안 풀린다. 그가 헤드폰을 벗어 — 당신에게 건넨다.</div>
-                <div class="mock-enc-line">"한 번만, 당신 목소리로 들려줄래요?"</div>
-                <div class="mock-enc-cta">이 순간에 진입</div>
-              </div>
-            </div>
+          <div class="mock-statusbar"><span class="time">04:22</span><span class="icons">●●●● 41%</span></div>
+          <div class="mock-head">
+            <div class="mock-head-avatar"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/ruon.png" alt=""></div>
+            <div class="mock-head-info"><div class="mock-head-name">루온</div><div class="mock-head-status first">FIRST CONTACT · STUDIO B</div></div>
+          </div>
+          <div class="mock-body" data-bg style="--chat-bg:url('https://cdn.deepintothe.xyz/lucive/img/lp/ruon_entry/scene1.png')">
+            <div class="mock-msg narration"><div class="mock-narration-text">녹음 부스. 보컬 라인이 안 풀린다. 그가 헤드폰을 벗어 — 당신에게 건넨다.</div></div>
+            <div class="mock-msg lp"><div class="mock-mini"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/ruon.png" alt=""></div><div class="mock-bubble">한 번만, 당신 목소리로 들려줄래요?</div></div>
+            <div class="mock-enter-cta">이 순간에 진입 <span class="arr">→</span></div>
           </div>
         </div>
         <div class="mock-dots"><span class="mock-dot"></span><span class="mock-dot"></span><span class="mock-dot"></span><span class="mock-dot"></span><span class="mock-dot"></span></div>
@@ -610,14 +602,26 @@ em{font-style:italic;color:var(--accent)}
       <a href="./v34-kr-lucive.html" class="btn btn-secondary"><span>간단하게 경험해보기</span><span class="arr">▶</span></a>
       <a href="./v35-signup.html" class="btn btn-primary"><span>바로 사전등록하러 가기</span><span class="arr">→</span></a>
     </div>
-    <div class="pre-cta-meta">D-<span id="dday">17</span> 알파 오픈 · 매주 새 디스트릭트</div>
+    <div class="pre-cta-meta">D-<span id="dday">17</span> 알파 오픈 · 매주 새 캐릭터</div>
   </div>
 </section>
 
 <footer class="footer">
   <div class="footer-brand">LUCIVE</div>
   <div class="footer-meta">DEEP INTO THE · 2026</div>
+  <div class="footer-legal">
+    <a href="./terms.html">이용약관</a>
+    <span class="sep">·</span>
+    <a href="./privacy.html">개인정보 보호 정책</a>
+  </div>
 </footer>
+
+<!-- ===== 우하단 플로팅 CTA ===== -->
+<div class="floating-cta">
+  <a href="./v35-signup.html" class="fc-primary">바로 사전등록하러 가기 <span class="fc-arr">→</span></a>
+  <a href="./v34-kr-lucive.html" class="fc-secondary">체험하러 가기 <span class="fc-arr">▶</span></a>
+  <button type="button" class="fc-tertiary" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ 처음으로 돌아가기</button>
+</div>
 
 <script>
 const CDN = 'https://cdn.deepintothe.xyz/lucive';
