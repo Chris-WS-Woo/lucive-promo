@@ -82,18 +82,18 @@ em{font-style:italic;color:var(--accent)}
 .mock-head-status{font-family:var(--mono);font-size:10px;letter-spacing:.18em;color:var(--text-3);text-transform:uppercase;font-weight:700;margin-top:2px}
 .mock-head-status.linked{color:var(--d-velvet)}
 .mock-head-status.linked::before{content:'◆ ';color:var(--d-velvet)}
-.mock-body{padding:18px 14px 22px;display:flex;flex-direction:column;gap:9px;background:#FFF9F7;min-height:380px;max-height:480px;overflow:hidden}
-.mock-msg{max-width:84%;display:flex;gap:8px;align-items:flex-end;opacity:0;transform:translateY(10px);animation:msgIn .55s var(--ease) forwards;animation-delay:var(--d,0s)}
+.mock-body{padding:18px 14px 22px;display:flex;flex-direction:column;gap:9px;background:#FFF9F7;min-height:380px;max-height:520px;overflow:hidden}
+.mock-msg{max-width:88%;display:flex;gap:8px;align-items:flex-end;opacity:0;transform:translateY(10px);animation:msgIn .55s var(--ease) forwards;animation-delay:var(--d,0s);width:fit-content}
 .mock-msg.lp{align-self:flex-start}
-.mock-msg.user{align-self:flex-end}
-.mock-msg.narration{align-self:stretch;max-width:100%}
+.mock-msg.user{align-self:flex-end;flex-direction:row-reverse}
+.mock-msg.narration{align-self:stretch;max-width:100%;width:auto}
 .mock-mini{width:28px;height:28px;border-radius:50%;flex-shrink:0;overflow:hidden;background:#d9c6cd;align-self:flex-end;margin-bottom:2px}
 .mock-mini img{width:100%;height:100%;object-fit:cover}
-.mock-bubble{padding:11px 15px;border-radius:18px;font-size:14px;line-height:1.55;word-break:keep-all}
+.mock-bubble{padding:11px 15px;border-radius:18px;font-size:14px;line-height:1.55;word-break:keep-all;width:fit-content;max-width:100%}
 .mock-msg.lp .mock-bubble{background:#fff;color:var(--text-1);border-bottom-left-radius:6px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
 .mock-msg.user .mock-bubble{background:var(--accent);color:#fff;border-bottom-right-radius:6px}
 .mock-narration-text{font-size:12px;color:var(--text-3);font-style:italic;line-height:1.5;padding:6px 10px;border-left:2px solid rgba(192,132,252,.32);background:rgba(192,132,252,.05);border-radius:0 8px 8px 0}
-.mock-typing{padding:11px 15px;background:#fff;border-radius:18px;border-bottom-left-radius:6px;display:inline-flex;gap:4px;align-items:center;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.mock-typing{padding:11px 15px;background:#fff;border-radius:18px;border-bottom-left-radius:6px;display:inline-flex;gap:4px;align-items:center;box-shadow:0 1px 3px rgba(0,0,0,.06);width:fit-content}
 .mock-typing span{width:5px;height:5px;border-radius:50%;background:var(--accent);opacity:.4;animation:typingDot 1.1s infinite ease-in-out}
 .mock-typing span:nth-child(2){animation-delay:.15s}
 .mock-typing span:nth-child(3){animation-delay:.3s}
@@ -126,15 +126,25 @@ em{font-style:italic;color:var(--accent)}
 .lineup-h{font-family:var(--display);font-style:italic;font-size:clamp(22px,2.8vw,32px);font-weight:700;color:var(--text-1);margin-bottom:6px}
 .lineup-h em{color:var(--accent)}
 .lineup-sub{font-family:var(--sans);font-size:13.5px;color:var(--text-2);margin-bottom:30px;max-width:560px;margin-left:auto;margin-right:auto;line-height:1.6}
-.lineup-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+/* mystery card grid (?) · 끝으로 갈수록 fade-out 으로 "더 많이 합류 중" 강조 */
+.lineup-wrap{position:relative;max-width:1280px;margin:0 auto}
+.lineup-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:8px}
 @media(min-width:680px){.lineup-grid{grid-template-columns:repeat(12,1fr)}}
-@media(min-width:1100px){.lineup-grid{grid-template-columns:repeat(18,1fr)}}
-.lp{position:relative;aspect-ratio:3/4;border-radius:6px;overflow:hidden;background:#d9c6cd;transition:transform .25s var(--ease)}
-.lp:hover{transform:scale(1.08);z-index:3}
-.lp img{width:100%;height:100%;object-fit:cover;object-position:top center}
-.lp::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 60%,rgba(26,16,21,.55) 100%)}
-.lp-name{position:absolute;left:0;right:0;bottom:3px;text-align:center;font-family:var(--mono);font-size:8px;font-weight:800;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.6);z-index:2}
-.lineup-foot{margin-top:20px;display:flex;justify-content:center;gap:14px;flex-wrap:wrap;font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;color:var(--text-3);text-transform:uppercase;font-weight:700}
+@media(min-width:1100px){.lineup-grid{grid-template-columns:repeat(15,1fr)}}
+.lp{position:relative;aspect-ratio:3/4;border-radius:8px;overflow:hidden;background:linear-gradient(160deg,rgba(214,176,124,.18),rgba(201,123,137,.14));border:1px solid rgba(201,123,137,.18);transition:transform .25s var(--ease),border-color .25s;display:flex;align-items:center;justify-content:center}
+.lp:hover{transform:scale(1.06);border-color:var(--accent);z-index:3}
+.lp-q{font-family:var(--display);font-style:italic;font-size:clamp(20px,2.4vw,32px);font-weight:700;color:var(--accent);opacity:.55;line-height:1}
+.lp-d{position:absolute;top:5px;right:6px;width:7px;height:7px;border-radius:50%;background:var(--gold);opacity:.55;box-shadow:0 0 6px rgba(214,176,124,.5)}
+/* 끝부분 fade-out · 마지막 1줄~2줄 점점 흐려짐 */
+.lineup-grid .lp.f1{opacity:.55}
+.lineup-grid .lp.f2{opacity:.32}
+.lineup-grid .lp.f3{opacity:.18}
+.lineup-grid .lp.f4{opacity:.08}
+/* 그라디언트 마스크로 자연스러운 fade-out */
+.lineup-grid::after{content:'';position:absolute;left:0;right:0;bottom:0;height:35%;background:linear-gradient(180deg,transparent,var(--bg) 95%);pointer-events:none}
+/* "..." 마지막 셀 */
+.lp.more{background:transparent;border:1px dashed rgba(201,123,137,.4);font-family:var(--mono);font-size:14px;color:var(--accent);font-weight:800;letter-spacing:.2em}
+.lineup-foot{margin-top:36px;display:flex;justify-content:center;gap:14px;flex-wrap:wrap;font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;color:var(--text-3);text-transform:uppercase;font-weight:700;position:relative;z-index:2}
 .lineup-foot .pulse{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--accent);margin-right:8px;vertical-align:middle;animation:pulse 1.6s ease-in-out infinite}
 @keyframes pulse{0%,100%{opacity:.45;transform:scale(1)}50%{opacity:1;transform:scale(1.3)}}
 
@@ -167,8 +177,8 @@ em{font-style:italic;color:var(--accent)}
   <div class="hero-content">
     <div class="hero-brand">LUCIVE · NEXT-GEN CHARACTER CHAT</div>
     <div class="hero-pre"><s>기존의 캐릭터 챗</s>은 잊어요.</div>
-    <h1 class="hero-h">매주 다른 세계관 · <em>새 캐릭터들이 합류</em>합니다.</h1>
-    <p class="hero-sub">첫 만남, 에피소드, 결말 — <em>당신만의 스토리</em>가 만들어집니다.</p>
+    <h1 class="hero-h">첫 만남, 에피소드, 결말 — <em>당신만의 스토리를 만드세요.</em></h1>
+    <p class="hero-sub">매주 다른 세계관 · 새 캐릭터들이 합류합니다.</p>
   </div>
   <div class="scroll-cue">SCROLL</div>
 </section>
@@ -285,16 +295,18 @@ em{font-style:italic;color:var(--accent)}
   <div class="phase-bar"></div>
 </section>
 
-<!-- ===== LINEUP ===== -->
+<!-- ===== LINEUP · ? 미스터리 카드 + 끝으로 fade-out ===== -->
 <section class="lineup">
   <div class="wrap">
-    <div class="lineup-eye">CAST · 지금 만날 수 있는</div>
-    <div class="lineup-h">35명의 캐릭터, <em>매주 더 합류합니다</em></div>
-    <p class="lineup-sub">5 디스트릭트 · 매주 새 세계관 오픈 · 알파부터 수십 명, 정식 출시 시 100명+</p>
-    <div class="lineup-grid" id="lineupGrid"></div>
+    <div class="lineup-eye">CAST · 곧 만나게 될</div>
+    <div class="lineup-h">아직 <em>밝혀지지 않은 캐릭터들</em></div>
+    <p class="lineup-sub">매주 새 세계관이 열립니다. 첫 만남마다 한 명의 정체가 풀립니다.</p>
+    <div class="lineup-wrap">
+      <div class="lineup-grid" id="lineupGrid"></div>
+    </div>
     <div class="lineup-foot">
       <span><span class="pulse"></span>매주 새 캐릭터 합류</span>
-      <span><span class="pulse"></span>곧 50명+ · 100명+ 확장</span>
+      <span><span class="pulse"></span>50명 → 100명 → 끝없이</span>
     </div>
   </div>
 </section>
@@ -332,11 +344,23 @@ const NAMES = {
   yun_ara:'윤아라', stella:'스텔라', adel:'아델', leon:'레온', sia:'시아', inis:'이니스', seraphine:'세라핀', myur:'뮤르', kael:'카엘',
   ruon:'루온', piera:'피라', nova:'노바', haru:'하루', juhyuk:'주혁', seoyul:'한서율'
 };
-document.getElementById('lineupGrid').innerHTML = Object.keys(NAMES).map(k => `
-  <div class="lp" title="${NAMES[k]}">
-    <img src="${CDN}/img/lp/${k}.png" alt="${NAMES[k]}" loading="lazy" onerror="this.style.opacity=.18">
-    <div class="lp-name">${NAMES[k]}</div>
-  </div>`).join('');
+// "?" 미스터리 카드 다수 (총 60장) · 끝으로 갈수록 흐려져 더 많은 캐릭터가 있다는 인상
+const grid = document.getElementById('lineupGrid');
+const TOTAL = 60;
+const cells = [];
+for(let i = 0; i < TOTAL; i++){
+  // 끝 ~25% 구간을 단계별 fade
+  let cls = 'lp';
+  const ratio = i / TOTAL;
+  if(ratio > 0.92) cls += ' f4';
+  else if(ratio > 0.84) cls += ' f3';
+  else if(ratio > 0.76) cls += ' f2';
+  else if(ratio > 0.68) cls += ' f1';
+  cells.push(`<div class="${cls}"><span class="lp-q">?</span><span class="lp-d"></span></div>`);
+}
+// 마지막 셀은 "..." (말줄임)
+cells[TOTAL - 1] = `<div class="lp more f4">···</div>`;
+grid.innerHTML = cells.join('');
 document.getElementById('dday').textContent = '17';
 
 // IntersectionObserver: phase의 mock 메시지 애니메이션을 뷰에 들어왔을 때 시작 (replay)

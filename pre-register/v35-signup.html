@@ -56,8 +56,33 @@ a:hover{text-decoration-color:var(--accent)}
 .back-link:hover{color:var(--accent);text-decoration:underline}
 
 /* === SUCCESS state === */
-.success{display:none;width:100%;max-width:480px;background:var(--card);border-radius:20px;padding:40px 32px 32px;text-align:center;box-shadow:0 14px 48px rgba(63,38,52,.1),0 0 0 1px rgba(214,176,124,.18);animation:fadeIn .5s var(--ease)}
+.success{display:none;width:100%;max-width:520px;background:var(--card);border-radius:20px;padding:40px 32px 32px;text-align:center;box-shadow:0 14px 48px rgba(63,38,52,.1),0 0 0 1px rgba(214,176,124,.18);animation:fadeIn .5s var(--ease)}
 .success.show{display:block}
+
+/* 프로모 코드 블록 */
+.promo-block{margin-top:20px;padding:18px;background:linear-gradient(180deg,rgba(214,176,124,.1),rgba(201,123,137,.06));border:1px solid rgba(214,176,124,.32);border-radius:14px;text-align:left}
+.promo-h{font-family:var(--display);font-style:italic;font-size:15px;font-weight:700;color:var(--text-1);margin-bottom:10px;text-align:center;line-height:1.4}
+.promo-h em{color:var(--gold-deep)}
+.promo-row{display:flex;align-items:center;gap:8px;margin-top:6px}
+.promo-row-label{font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;font-weight:800;color:var(--text-3);text-transform:uppercase;width:62px;flex-shrink:0}
+.promo-row-field{flex:1;display:flex;align-items:center;gap:6px;background:#fff;border:1px solid rgba(63,38,52,.1);border-radius:10px;padding:6px 6px 6px 12px}
+.promo-row-field code{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--text-1);flex:1;letter-spacing:-.005em}
+.promo-row-field button{padding:6px 12px;background:var(--gold);color:#2c1f00;border:none;border-radius:8px;font-family:var(--mono);font-size:10.5px;font-weight:800;cursor:pointer;letter-spacing:.06em}
+.promo-row-field button:hover{background:var(--gold-deep);color:#fff}
+.share-row{display:flex;gap:6px;margin-top:12px}
+.share{flex:1;padding:9px;background:#fff;border:1px solid rgba(63,38,52,.1);border-radius:8px;font-family:var(--sans);font-size:12px;font-weight:700;color:var(--text-1);cursor:pointer;transition:all .15s}
+.share:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.08)}
+.share.kakao:hover{background:#FEE500}
+.share.x:hover{background:#0F1419;color:#fff}
+
+/* 레퍼럴 단계 */
+.tier-block{margin-top:18px;padding:18px;background:var(--elevated);border-radius:14px;text-align:left}
+.tier-h{font-family:var(--mono);font-size:10.5px;letter-spacing:.22em;font-weight:800;color:var(--gold-deep);text-transform:uppercase;margin-bottom:12px;text-align:center}
+.tier-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.tier{padding:10px 12px;background:#fff;border:1px solid rgba(63,38,52,.08);border-radius:10px}
+.tier-n{font-family:var(--display);font-style:italic;font-size:18px;font-weight:700;color:var(--accent);line-height:1.1}
+.tier-r{font-family:var(--sans);font-size:11.5px;color:var(--text-2);line-height:1.45;margin-top:3px}
+.tier-r b{color:var(--text-1);font-weight:800;display:block}
 @keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 .success-icon{font-size:42px;color:var(--gold);margin-bottom:14px;line-height:1}
 .success-h{font-family:var(--display);font-size:30px;font-weight:700;line-height:1.18;margin-bottom:10px}
@@ -114,12 +139,48 @@ a:hover{text-decoration-color:var(--accent)}
     <h2 class="success-h">사전등록 <em>완료</em></h2>
     <p class="success-sub"><b id="ssEmail">your@email.com</b><br>으로 선발 결과·본편 첫 회차 알림이 갑니다.</p>
 
+    <!-- 프로모 코드 + 친구 초대 -->
+    <div class="promo-block">
+      <div class="promo-h">친구 초대 · <em>둘 다 +300 다이브 · 첫 회차 우선 입장</em></div>
+      <div class="promo-row">
+        <div class="promo-row-label">내 코드</div>
+        <div class="promo-row-field">
+          <code id="myCode">LUCIVE·XXX000</code>
+          <button onclick="copyTo('myCode')">복사</button>
+        </div>
+      </div>
+      <div class="promo-row">
+        <div class="promo-row-label">초대 링크</div>
+        <div class="promo-row-field">
+          <code id="myInvite">lucive.app/r/XXX000</code>
+          <button onclick="copyTo('myInvite')">복사</button>
+        </div>
+      </div>
+      <div class="share-row">
+        <button class="share kakao" onclick="share('kakao')">💬 카톡</button>
+        <button class="share x" onclick="share('x')">𝕏 X</button>
+        <button class="share link" onclick="share('link')">🔗 링크</button>
+      </div>
+    </div>
+
+    <!-- 상위 레퍼럴 보너스 단계 -->
+    <div class="tier-block">
+      <div class="tier-h">상위 레퍼럴 보너스</div>
+      <div class="tier-grid">
+        <div class="tier"><div class="tier-n">3명</div><div class="tier-r">+1,500 다이브</div></div>
+        <div class="tier"><div class="tier-n">10명</div><div class="tier-r">+5,000 다이브</div></div>
+        <div class="tier"><div class="tier-n">25명</div><div class="tier-r"><b>알파 선발 확정</b><br>+10,000 다이브</div></div>
+        <div class="tier"><div class="tier-n">50명</div><div class="tier-r"><b>본편 평생 액세스</b><br>+50,000 다이브</div></div>
+      </div>
+    </div>
+
+    <!-- 다음 단계 · 다이브 -->
     <div class="next-block">
-      <div class="next-h">다음 단계 · 다이브 보상</div>
+      <div class="next-h">다음 단계 · 다이브 추가 적립</div>
       <ul class="next-list">
-        <li>2분 설문 완주 시 <b>+500 다이브</b></li>
-        <li>알파 선발 시 <b>+2,000 다이브</b></li>
-        <li>친구 초대로 <b>둘 다 +300 다이브</b></li>
+        <li>2분 설문 완주 시 <b>+500 다이브</b> + 알파 가산점</li>
+        <li>알파 선발 시 <b>+2,000 다이브</b> 자동 지급</li>
+        <li>미선발도 위로 보상 <b>+300 다이브</b></li>
       </ul>
       <a href="./screening.html" class="next-cta">설문 시작 · 다이브 받기 →</a>
     </div>
@@ -129,23 +190,61 @@ a:hover{text-decoration-color:var(--accent)}
 </main>
 
 <script>
+function genPromo(email){
+  const seed = email.toLowerCase().replace(/[^a-z0-9]/g,'');
+  let h = 0;
+  for(let i = 0; i < seed.length; i++){ h = ((h << 5) - h) + seed.charCodeAt(i); h |= 0; }
+  const letters = 'ABCDEFGHIJKLMNPQRSTUVWXYZ';
+  const a = letters[Math.abs(h) % 25];
+  const b = letters[Math.abs(h >> 5) % 25];
+  const c = letters[Math.abs(h >> 10) % 25];
+  const num = String(Math.abs(h >> 8) % 1000).padStart(3, '0');
+  return `${a}${b}${c}${num}`;
+}
+
 function handleSubmit(e){
   e.preventDefault();
   const email = document.getElementById('email').value.trim();
   const consent = document.getElementById('consent').checked;
   if(!email || !email.includes('@') || !consent) return;
 
-  // 이메일 표시 + form 숨김 + 성공 상태 노출
+  const code = genPromo(email);
   document.getElementById('ssEmail').textContent = email;
+  document.getElementById('myCode').textContent = `LUCIVE·${code}`;
+  document.getElementById('myInvite').textContent = `lucive.app/r/${code}`;
+
   document.getElementById('formCard').classList.add('hidden');
   const s = document.getElementById('success');
   s.classList.add('show');
-  // 페이지 상단으로 스크롤
   window.scrollTo({top:0,behavior:'smooth'});
 
-  // 로컬 보존 (실서비스에서는 백엔드 POST로 교체)
-  try{ localStorage.setItem('lucive_signup', JSON.stringify({email, ts: Date.now()})); }catch(_){}
+  try{ localStorage.setItem('lucive_signup', JSON.stringify({email, code, ts: Date.now()})); }catch(_){}
 }
+
+function copyTo(id){
+  const el = document.getElementById(id);
+  const text = el.textContent;
+  navigator.clipboard?.writeText(text).then(()=>{
+    const orig = el.parentElement.querySelector('button').textContent;
+    el.parentElement.querySelector('button').textContent = '복사됨';
+    setTimeout(()=>{ el.parentElement.querySelector('button').textContent = orig; }, 1400);
+  });
+}
+
+function share(channel){
+  const code = document.getElementById('myCode').textContent;
+  const url = `https://lucive.app/r/${code.replace('LUCIVE·','')}`;
+  const text = `LUCIVE 알파테스터 사전등록 · 함께 가면 둘 다 +300 다이브\n${url}`;
+  if(channel === 'link'){
+    navigator.clipboard?.writeText(url).then(()=>alert('링크 복사됨'));
+  } else if(channel === 'x'){
+    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`, '_blank');
+  } else if(channel === 'kakao'){
+    // KakaoSDK 미연동 상태 · 링크 복사로 fallback
+    navigator.clipboard?.writeText(text).then(()=>alert('카톡 공유 링크 복사됨'));
+  }
+}
+
 document.getElementById('dday').textContent = '17';
 </script>
 

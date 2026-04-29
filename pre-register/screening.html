@@ -12,36 +12,36 @@
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{
-  /* v33 · matched to v32 chat tone · cyan/purple/pink on dark */
-  --bg:#08090C; --bg-deep:#08090C;
-  --bg-2:#0F1119;
-  --bg-3:#161822;
-  --bg-card:#161822;
-  --bg-elevated:#1C1F2E;
-  --border-subtle:rgba(255,255,255,.06);
-  --border-medium:rgba(255,255,255,.1);
-  --border-strong:rgba(255,255,255,.18);
-  --ink:#F1F3F8;
-  --ink-soft:#8B92A8;
-  --muted:#5A6178;
-  --muted-2:#3a4054;
-  /* v33 accent system · legacy amber/gold aliases mapped to cyan/purple */
-  --lucid-cyan:#06B6D4;
-  --lucid-blue:#2563EB;
-  --lucid-purple:#8B5CF6;
-  --awakening-pink:#EC4899;
-  --fragment-gold:#F59E0B;
-  --sync-green:#10B981;
-  --amber:#06B6D4;       /* legacy alias */
-  --gold:#06B6D4;        /* legacy alias */
-  --gold-soft:#8B5CF6;   /* legacy alias */
-  --gold-deep:#2563EB;   /* legacy alias */
-  --crimson:#EC4899;     /* legacy alias */
+  /* v35 · cream/gold 톤 (랜딩·signup·데모 매칭) */
+  --bg:#FFF9F7; --bg-deep:#FFF9F7;
+  --bg-2:#FAEFE8;
+  --bg-3:#FFFFFF;
+  --bg-card:#FFFFFF;
+  --bg-elevated:#FAEFE8;
+  --border-subtle:rgba(63,38,52,.06);
+  --border-medium:rgba(63,38,52,.12);
+  --border-strong:rgba(63,38,52,.22);
+  --ink:#2A1A22;
+  --ink-soft:#6B5560;
+  --muted:#9C8893;
+  --muted-2:#C9C0C5;
+  /* v35 accent system · cream/gold/pink */
+  --lucid-cyan:#C97B89;       /* now pink-accent */
+  --lucid-blue:#b8945e;       /* gold-deep */
+  --lucid-purple:#C084FC;     /* velvet */
+  --awakening-pink:#C97B89;   /* pink-accent */
+  --fragment-gold:#D6B07C;
+  --sync-green:#6FAA84;
+  --amber:#D6B07C;
+  --gold:#D6B07C;
+  --gold-soft:#E5C48A;
+  --gold-deep:#b8945e;
+  --crimson:#C97B89;
   --text-primary:var(--ink);
   --text-secondary:var(--ink-soft);
   --text-tertiary:var(--muted);
-  --gradient-primary:linear-gradient(135deg,#06B6D4,#2563EB);
-  --gradient-aurora:linear-gradient(135deg,#06B6D4,#8B5CF6,#EC4899);
+  --gradient-primary:linear-gradient(135deg,#D6B07C,#b8945e);
+  --gradient-aurora:linear-gradient(135deg,#D6B07C,#C97B89,#C084FC);
   --sans:"Inter","Noto Sans KR",system-ui,-apple-system,sans-serif;
   --font-sans:"Inter","Noto Sans KR",-apple-system,BlinkMacSystemFont,sans-serif;
   --font-display:"Space Grotesk","Inter","Noto Sans KR",sans-serif;
@@ -239,9 +239,9 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .hidden{display:none !important}
 
 /* ============ Top nav · sticky prologue back button ============ */
-.top-nav{position:sticky;top:0;z-index:50;height:var(--top-h);display:flex;align-items:center;gap:14px;padding:0 20px;background:rgba(5,8,18,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(139,92,246,.12)}
-.top-nav .top-back{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:rgba(5,8,18,.7);border:1px solid rgba(139,92,246,.24);color:var(--ink-soft);font-family:var(--font-sans);font-size:12.5px;font-weight:600;text-decoration:none;border-radius:100px;transition:all .2s;cursor:pointer}
-.top-nav .top-back:hover{border-color:var(--amber);color:var(--gold-soft);background:rgba(6,182,212,.08)}
+.top-nav{position:sticky;top:0;z-index:50;height:var(--top-h);display:flex;align-items:center;gap:14px;padding:0 20px;background:rgba(255,249,247,.92);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(63,38,52,.08)}
+.top-nav .top-back{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:rgba(255,255,255,.7);border:1px solid rgba(63,38,52,.12);color:var(--ink-soft);font-family:var(--font-sans);font-size:12.5px;font-weight:600;text-decoration:none;border-radius:100px;transition:all .2s;cursor:pointer}
+.top-nav .top-back:hover{border-color:var(--amber);color:var(--gold-deep);background:rgba(214,176,124,.08)}
 .top-nav .top-back .arr{font-family:var(--font-mono);color:var(--amber);font-size:13px}
 .top-nav .top-brand{font-family:var(--font-display);font-weight:800;font-size:16px;letter-spacing:.28em;color:var(--amber);text-decoration:none}
 .top-nav .top-spacer{flex:1}
@@ -260,9 +260,9 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 <div class="noise"></div>
 
 <nav class="top-nav">
-  <a href="./v32-kr-chat.html" class="top-back"><span class="arr">←</span><span>프롤로그로 돌아가기</span></a>
+  <a href="./v35-lp-wide.html" class="top-back"><span class="arr">←</span><span>프롤로그로 돌아가기</span></a>
   <div class="top-spacer"></div>
-  <a href="./v32-kr-chat.html" class="top-brand">LUCIVE</a>
+  <a href="./v35-lp-wide.html" class="top-brand">LUCIVE</a>
   <div class="top-spacer"></div>
   <div class="top-meta">설문 · <b>2분 소요</b></div>
 </nav>
@@ -1137,7 +1137,7 @@ function shareOn(ch) {
 }
 
 function goHome() {
-  window.location.href = './v15-kr-prologue.html';
+  window.location.href = './v35-lp-wide.html';
 }
 </script>
 
