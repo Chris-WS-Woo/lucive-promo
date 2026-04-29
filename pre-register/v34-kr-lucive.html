@@ -39,6 +39,22 @@
     background: var(--bg); position: relative; overflow: hidden;
     border-radius: 0; box-shadow: none;
   }
+  /* 상단 우측 상시 사전등록 CTA · 어느 stage에서든 빠져나올 수 있는 escape hatch */
+  .quick-signup{
+    position: fixed; top: 14px; right: 14px; z-index: 250;
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 9px 16px; border-radius: 999px;
+    background: linear-gradient(180deg, #D6B07C, #b8945e);
+    color: #2c1f00; font-family: 'Inter', sans-serif;
+    font-size: 12.5px; font-weight: 800; letter-spacing: -.005em;
+    text-decoration: none;
+    box-shadow: 0 8px 22px rgba(214,176,124,.42), 0 0 0 1px rgba(214,176,124,.5);
+    transition: transform .2s, box-shadow .2s;
+  }
+  .quick-signup:hover{ transform: translateY(-2px); box-shadow: 0 12px 28px rgba(214,176,124,.55); }
+  .quick-signup .arr{ font-family: 'JetBrains Mono', monospace; font-weight: 800; }
+  /* VN/profile/chat 단계에서도 항상 보이도록 z-index 높음 */
+  @media (max-width: 480px) { .quick-signup{ padding: 8px 13px; font-size: 11.5px; top: 10px; right: 10px } }
   /* 와이드 화면: 그리드와 콘텐츠를 더 넓게 */
   @media (min-width: 900px) {
     .lp-grid { grid-template-columns: repeat(4, 1fr); padding: 8px 32px 32px; gap: 16px; }
@@ -421,6 +437,12 @@
 
 <div class="phone">
 
+  <!-- 상단 우측 상시 사전등록 CTA · 모든 stage에 노출 (browse/profile/chat/VN) -->
+  <a href="./v35-signup.html" class="quick-signup" title="알파테스터 사전등록">
+    <span>사전등록</span>
+    <span class="arr">→</span>
+  </a>
+
   <!-- Stage -1: LP Select -->
   <div class="stage select-stage active" id="stage-select">
     <div class="select-header">
@@ -732,25 +754,38 @@ function chatAdvance() {
   body.scrollTop = body.scrollHeight;
   if (chatPhase === 'linked' && chatIdx >= seq.length) {
     $('chatHint').style.display = 'none';
-    // linked chat 종료 시점에 2개 CTA 자동 표시
-    if(!document.getElementById('postLinkCTA')){
-      const cta = document.createElement('div');
-      cta.id = 'postLinkCTA';
-      cta.style.cssText = 'align-self:center;margin:20px 8px 14px;padding:20px 22px 18px;background:linear-gradient(180deg,#FAEFE8,#FFF9F7);border:1.5px solid rgba(214,176,124,.5);border-radius:18px;text-align:center;max-width:380px;width:100%;animation:fadeIn .6s ease both;box-shadow:0 10px 32px rgba(63,38,52,.12)';
-      cta.innerHTML = `
-        <div style="font-family:\'JetBrains Mono\',monospace;font-size:10.5px;letter-spacing:.32em;font-weight:800;color:#b8945e;text-transform:uppercase;margin-bottom:6px">진입 루시브 완료 · 다음 단계</div>
-        <div style="font-family:\'Cormorant Garamond\',serif;font-size:18px;font-weight:700;line-height:1.3;color:#2A1A22;margin-bottom:6px">본편 첫 회차 · <em style="font-style:italic;color:#C97B89">먼저 만나기</em></div>
-        <div style="font-size:12.5px;color:#6B5560;line-height:1.55;margin-bottom:16px">알파테스터 사전등록하면 본편 첫 회차에 우선 입장합니다.</div>
-        <div style="display:flex;flex-direction:column;gap:8px">
-          <a href="./v35-signup.html" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 22px;background:linear-gradient(180deg,#D6B07C,#b8945e);color:#2c1f00;border-radius:999px;font-family:\'Inter\',sans-serif;font-size:14px;font-weight:800;text-decoration:none;box-shadow:0 10px 26px rgba(214,176,124,.35)">사전등록하러 가기 →</a>
-          <a href="javascript:backToSelect()" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 22px;background:transparent;color:#2A1A22;border:1.5px solid rgba(63,38,52,.18);border-radius:999px;font-family:\'Inter\',sans-serif;font-size:13.5px;font-weight:700;text-decoration:none">다른 캐릭터 체험하기 ▶</a>
+    // linked chat 종료 시점에 backdrop overlay + 2개 CTA · CTA 외 영역 클릭 보호
+    if(!document.getElementById('finalOverlay')){
+      const overlay = document.createElement('div');
+      overlay.id = 'finalOverlay';
+      overlay.style.cssText = 'position:fixed;inset:0;z-index:300;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(12,8,16,.78);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);animation:fadeIn .55s ease both';
+      overlay.innerHTML = `
+        <div id="finalCard" style="max-width:400px;width:100%;background:linear-gradient(180deg,#FAEFE8,#FFF9F7);border:1.5px solid rgba(214,176,124,.5);border-radius:22px;padding:32px 28px 26px;text-align:center;box-shadow:0 36px 90px rgba(0,0,0,.55)">
+          <div style="font-family:\'JetBrains Mono\',monospace;font-size:10.5px;letter-spacing:.32em;font-weight:800;color:#b8945e;text-transform:uppercase;margin-bottom:10px">진입 루시브 완료 · 다음 단계</div>
+          <h3 style="font-family:\'Cormorant Garamond\',serif;font-size:24px;font-weight:700;line-height:1.25;color:#2A1A22;margin-bottom:8px">본편 첫 회차 · <em style="font-style:italic;color:#C97B89">먼저 만나기</em></h3>
+          <p style="font-size:13px;color:#6B5560;line-height:1.6;margin-bottom:22px">알파테스터 사전등록하면 본편 첫 회차에 우선 입장합니다.</p>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <a href="./v35-signup.html" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 22px;background:linear-gradient(180deg,#D6B07C,#b8945e);color:#2c1f00;border-radius:999px;font-family:\'Inter\',sans-serif;font-size:14.5px;font-weight:800;text-decoration:none;box-shadow:0 12px 30px rgba(214,176,124,.4)">사전등록하러 가기 →</a>
+            <button type="button" onclick="closeFinalOverlay()" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 22px;background:transparent;color:#2A1A22;border:1.5px solid rgba(63,38,52,.18);border-radius:999px;font-family:\'Inter\',sans-serif;font-size:13.5px;font-weight:700;cursor:pointer">다른 캐릭터 체험하기 ▶</button>
+          </div>
         </div>
       `;
-      $('chatBody').appendChild(cta);
-      $('chatBody').scrollTop = $('chatBody').scrollHeight;
+      // backdrop 클릭 = 무시 (CTA 외 영역 클릭으로 우연히 빠져나가지 않게)
+      overlay.addEventListener('click', e => {
+        if(!e.target.closest('#finalCard')) e.stopPropagation();
+      }, true);
+      document.body.appendChild(overlay);
     }
   }
 }
+
+// 다른 캐릭터 체험: overlay 닫고 select 화면으로 복귀
+function closeFinalOverlay(){
+  const o = document.getElementById('finalOverlay');
+  if(o) o.remove();
+  if(typeof backToSelect === 'function') backToSelect();
+}
+window.closeFinalOverlay = closeFinalOverlay;
 
 // === Stage 2: VN ===
 function startVN() {

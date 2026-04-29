@@ -139,17 +139,31 @@ em{font-style:italic;color:var(--accent)}
 .lineup-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:8px}
 @media(min-width:680px){.lineup-grid{grid-template-columns:repeat(12,1fr)}}
 @media(min-width:1100px){.lineup-grid{grid-template-columns:repeat(15,1fr)}}
-.lp{position:relative;aspect-ratio:3/4;border-radius:8px;overflow:hidden;background:linear-gradient(160deg,rgba(214,176,124,.18),rgba(201,123,137,.14));border:1px solid rgba(201,123,137,.18);transition:transform .25s var(--ease),border-color .25s;display:flex;align-items:center;justify-content:center}
-.lp:hover{transform:scale(1.06);border-color:var(--accent);z-index:3}
-.lp-q{font-family:var(--display);font-style:italic;font-size:clamp(20px,2.4vw,32px);font-weight:700;color:var(--accent);opacity:.55;line-height:1}
-.lp-d{position:absolute;top:5px;right:6px;width:7px;height:7px;border-radius:50%;background:var(--gold);opacity:.55;box-shadow:0 0 6px rgba(214,176,124,.5)}
-/* 끝부분 fade-out · 마지막 1줄~2줄 점점 흐려짐 */
-.lineup-grid .lp.f1{opacity:.55}
-.lineup-grid .lp.f2{opacity:.32}
-.lineup-grid .lp.f3{opacity:.18}
-.lineup-grid .lp.f4{opacity:.08}
+.lp{position:relative;aspect-ratio:3/4;border-radius:8px;overflow:hidden;transition:transform .25s var(--ease),opacity .25s,filter .25s;display:flex;align-items:center;justify-content:center}
+.lp:hover{transform:scale(1.06);z-index:3}
+/* === 기존 캐릭터 (희미한 아바타) === */
+.lp-known{background:#1a1118;opacity:.62;filter:saturate(.85) brightness(.92);border:1px solid rgba(63,38,52,.06)}
+.lp-known img{width:100%;height:100%;object-fit:cover;object-position:top center}
+.lp-known::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 60%,rgba(26,16,21,.4) 100%);pointer-events:none}
+.lp-known:hover{opacity:1;filter:none}
+.lp-known .lp-name{position:absolute;left:0;right:0;bottom:3px;text-align:center;font-family:var(--mono);font-size:8px;font-weight:800;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.7);z-index:2;opacity:0;transition:opacity .25s}
+.lp-known:hover .lp-name{opacity:1}
+/* === 미스터리 ? 카드 (아직 공개 안 됨) === */
+.lp-mystery{background:linear-gradient(160deg,rgba(214,176,124,.16),rgba(201,123,137,.12));border:1px solid rgba(201,123,137,.18)}
+.lp-mystery .lp-q{font-family:var(--display);font-style:italic;font-size:clamp(20px,2.4vw,32px);font-weight:700;color:var(--accent);opacity:.55;line-height:1}
+.lp-mystery .lp-d{position:absolute;top:5px;right:6px;width:7px;height:7px;border-radius:50%;background:var(--gold);opacity:.55;box-shadow:0 0 6px rgba(214,176,124,.5)}
+.lp-mystery:hover{border-color:var(--accent)}
+/* 끝부분 fade-out · 단계별 */
+.lineup-grid .lp.f1{opacity:.42}
+.lineup-grid .lp.f2{opacity:.24}
+.lineup-grid .lp.f3{opacity:.12}
+.lineup-grid .lp.f4{opacity:.05}
+.lineup-grid .lp-known.f1{opacity:.32}
+.lineup-grid .lp-known.f2{opacity:.18}
+.lineup-grid .lp-known.f3{opacity:.10}
+.lineup-grid .lp-known.f4{opacity:.04}
 /* 그라디언트 마스크로 자연스러운 fade-out */
-.lineup-grid::after{content:'';position:absolute;left:0;right:0;bottom:0;height:35%;background:linear-gradient(180deg,transparent,var(--bg) 95%);pointer-events:none}
+.lineup-grid::after{content:'';position:absolute;left:0;right:0;bottom:0;height:30%;background:linear-gradient(180deg,transparent,var(--bg) 95%);pointer-events:none}
 /* "..." 마지막 셀 */
 .lp.more{background:transparent;border:1px dashed rgba(201,123,137,.4);font-family:var(--mono);font-size:14px;color:var(--accent);font-weight:800;letter-spacing:.2em}
 .lineup-foot{margin-top:36px;display:flex;justify-content:center;gap:14px;flex-wrap:wrap;font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;color:var(--text-3);text-transform:uppercase;font-weight:700;position:relative;z-index:2}
@@ -360,23 +374,35 @@ const NAMES = {
   yun_ara:'윤아라', stella:'스텔라', adel:'아델', leon:'레온', sia:'시아', inis:'이니스', seraphine:'세라핀', myur:'뮤르', kael:'카엘',
   ruon:'루온', piera:'피라', nova:'노바', haru:'하루', juhyuk:'주혁', seoyul:'한서율'
 };
-// "?" 미스터리 카드 다수 (총 60장) · 끝으로 갈수록 흐려져 더 많은 캐릭터가 있다는 인상
+// 라인업: 기존 35 캐릭터 (희미한 아바타) + 미스터리 ? 카드 + 끝 페이드
 const grid = document.getElementById('lineupGrid');
-const TOTAL = 60;
+const ALL = Object.keys(NAMES);
+const MYSTERY = 18; // 추가 ? 카드 수
+const total = ALL.length + MYSTERY;
 const cells = [];
-for(let i = 0; i < TOTAL; i++){
-  // 끝 ~25% 구간을 단계별 fade
-  let cls = 'lp';
-  const ratio = i / TOTAL;
-  if(ratio > 0.92) cls += ' f4';
-  else if(ratio > 0.84) cls += ' f3';
-  else if(ratio > 0.76) cls += ' f2';
-  else if(ratio > 0.68) cls += ' f1';
-  cells.push(`<div class="${cls}"><span class="lp-q">?</span><span class="lp-d"></span></div>`);
+
+// 1) 기존 캐릭터 35명 (희미하게)
+ALL.forEach(k => {
+  cells.push(`<div class="lp lp-known" title="${NAMES[k]}"><img src="${CDN}/img/lp/${k}.png" alt="${NAMES[k]}" loading="lazy" onerror="this.style.opacity=.18"><div class="lp-name">${NAMES[k]}</div></div>`);
+});
+// 2) 미스터리 ? 카드 (아직 공개 안 된 캐릭터 인상)
+for(let i = 0; i < MYSTERY; i++){
+  cells.push(`<div class="lp lp-mystery"><span class="lp-q">?</span><span class="lp-d"></span></div>`);
 }
-// 마지막 셀은 "..." (말줄임)
-cells[TOTAL - 1] = `<div class="lp more f4">···</div>`;
-grid.innerHTML = cells.join('');
+// 마지막 셀 "···"
+cells[cells.length - 1] = `<div class="lp more f4">···</div>`;
+
+// 끝쪽 단계별 fade 클래스 부여
+const out = cells.map((html, i) => {
+  const ratio = i / total;
+  let f = '';
+  if(ratio > 0.92) f = 'f4';
+  else if(ratio > 0.84) f = 'f3';
+  else if(ratio > 0.76) f = 'f2';
+  else if(ratio > 0.68) f = 'f1';
+  return f ? html.replace('class="lp ', `class="lp ${f} `) : html;
+});
+grid.innerHTML = out.join('');
 document.getElementById('dday').textContent = '17';
 
 // IntersectionObserver: phase의 mock 메시지 애니메이션을 뷰에 들어왔을 때 시작 (replay)
