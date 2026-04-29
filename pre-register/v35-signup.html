@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LUCIVE · 알파테스터 사전등록</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#FFF9F7; --card:#fff; --elevated:#FAEFE8;
+  --divider:rgba(63,38,52,.08);
+  --text-1:#2A1A22; --text-2:#6B5560; --text-3:#9C8893;
+  --accent:#C97B89; --accent-light:#FFE8EC;
+  --gold:#D6B07C; --gold-deep:#b8945e;
+  --display:'Cormorant Garamond',serif;
+  --sans:'Inter',-apple-system,'Pretendard','Apple SD Gothic Neo',sans-serif;
+  --mono:'JetBrains Mono',monospace;
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{background:var(--bg);color:var(--text-1);font-family:var(--sans);min-height:100vh;-webkit-font-smoothing:antialiased}
+em{font-style:italic;color:var(--accent)}
+a{color:var(--accent);text-decoration:underline;text-decoration-color:rgba(201,123,137,.3);text-underline-offset:2px}
+a:hover{text-decoration-color:var(--accent)}
+
+.shell{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 24px}
+
+.brand{display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.5em;font-weight:800;color:var(--accent);text-transform:uppercase;margin-bottom:32px;text-decoration:none}
+.brand .dot{display:inline-block;width:4px;height:4px;border-radius:50%;background:var(--accent);margin:0 12px;vertical-align:middle}
+
+.card{width:100%;max-width:480px;background:var(--card);border-radius:20px;padding:36px 32px 32px;box-shadow:0 14px 48px rgba(63,38,52,.1),0 0 0 1px rgba(201,123,137,.12)}
+
+.eye{font-family:var(--mono);font-size:11px;letter-spacing:.32em;font-weight:800;color:var(--gold-deep);text-transform:uppercase;margin-bottom:8px}
+.h{font-family:var(--display);font-size:32px;font-weight:700;line-height:1.18;color:var(--text-1);margin-bottom:8px}
+.h em{font-style:italic;color:var(--accent)}
+.sub{font-size:13.5px;color:var(--text-2);line-height:1.6;margin-bottom:24px}
+
+.form{display:flex;flex-direction:column;gap:14px}
+.label{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;font-weight:800;color:var(--text-2);text-transform:uppercase;margin-bottom:-6px}
+.input{width:100%;padding:14px 16px;background:var(--bg);border:1.5px solid rgba(63,38,52,.14);color:var(--text-1);font-family:var(--sans);font-size:15px;font-weight:500;outline:none;border-radius:12px;transition:all .18s var(--ease)}
+.input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(201,123,137,.15);background:#fff}
+.input::placeholder{color:var(--text-3)}
+
+.check-row{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--text-2);line-height:1.55;cursor:pointer;user-select:none;padding:4px 0}
+.check-row input[type="checkbox"]{flex-shrink:0;width:17px;height:17px;margin-top:2px;accent-color:var(--accent);cursor:pointer}
+
+.submit{width:100%;padding:16px 24px;background:linear-gradient(180deg,var(--gold),var(--gold-deep));color:#2c1f00;border:none;border-radius:999px;font-family:var(--sans);font-size:15.5px;font-weight:800;letter-spacing:-.005em;cursor:pointer;box-shadow:0 14px 32px rgba(214,176,124,.32);transition:all .2s var(--ease);margin-top:8px}
+.submit:hover{transform:translateY(-2px);box-shadow:0 18px 40px rgba(214,176,124,.42)}
+.submit:active{transform:translateY(0)}
+.submit:disabled{opacity:.55;cursor:not-allowed;transform:none;box-shadow:none}
+
+.foot{text-align:center;margin-top:18px;font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;color:var(--text-3);text-transform:uppercase;font-weight:700}
+.back-link{display:inline-flex;align-items:center;gap:6px;margin-top:16px;font-family:var(--mono);font-size:11.5px;color:var(--text-3);text-decoration:none;letter-spacing:.04em}
+.back-link:hover{color:var(--accent);text-decoration:underline}
+
+/* === SUCCESS state === */
+.success{display:none;width:100%;max-width:480px;background:var(--card);border-radius:20px;padding:40px 32px 32px;text-align:center;box-shadow:0 14px 48px rgba(63,38,52,.1),0 0 0 1px rgba(214,176,124,.18);animation:fadeIn .5s var(--ease)}
+.success.show{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.success-icon{font-size:42px;color:var(--gold);margin-bottom:14px;line-height:1}
+.success-h{font-family:var(--display);font-size:30px;font-weight:700;line-height:1.18;margin-bottom:10px}
+.success-h em{color:var(--accent);font-style:italic}
+.success-sub{font-size:14px;color:var(--text-2);line-height:1.65;margin-bottom:24px}
+.success-sub b{color:var(--text-1);font-weight:700}
+.next-block{margin-top:18px;padding:18px;background:var(--elevated);border-radius:14px;text-align:left}
+.next-h{font-family:var(--mono);font-size:10.5px;letter-spacing:.22em;font-weight:800;color:var(--gold-deep);text-transform:uppercase;margin-bottom:8px}
+.next-list{font-size:13px;color:var(--text-2);line-height:1.7;list-style:none}
+.next-list li{padding-left:18px;position:relative}
+.next-list li::before{content:'◆';position:absolute;left:0;color:var(--gold);font-size:9px;top:6px}
+.next-list b{color:var(--text-1);font-weight:700}
+.next-cta{display:inline-flex;align-items:center;justify-content:center;gap:8px;margin-top:16px;padding:11px 22px;background:transparent;border:1.5px solid var(--accent);color:var(--accent);border-radius:999px;font-family:var(--sans);font-size:13px;font-weight:700;cursor:pointer;text-decoration:none;transition:all .2s}
+.next-cta:hover{background:var(--accent);color:#fff}
+
+/* form hide once submitted */
+.card.hidden{display:none}
+
+</style>
+</head>
+<body>
+
+<main class="shell">
+  <a href="./v35-lp-wide.html" class="brand">LUCIVE<span class="dot"></span>NEXT-GEN CHARACTER CHAT</a>
+
+  <div class="card" id="formCard">
+    <div class="eye">알파테스터 사전등록</div>
+    <h1 class="h">본편 첫 회차 · <em>먼저 만나기</em></h1>
+    <p class="sub">선발 결과와 알파 시작 시점을 등록하신 이메일로 보내드립니다.</p>
+
+    <form class="form" id="signupForm" onsubmit="handleSubmit(event)">
+      <label class="label" for="email">이메일</label>
+      <input type="email" id="email" class="input" placeholder="your@email.com" autocomplete="email" required>
+
+      <label class="check-row">
+        <input type="checkbox" id="consent" checked required>
+        <span>제출 시 <a href="./terms.html" target="_blank">이용약관</a>·<a href="./privacy.html" target="_blank">개인정보 처리방침</a>에 동의합니다.</span>
+      </label>
+      <label class="check-row">
+        <input type="checkbox" id="marketing" checked>
+        <span>마케팅 정보 수신 동의 (선발 안내·본편 첫 회차 알림) · 선택</span>
+      </label>
+
+      <button type="submit" class="submit">사전등록 신청 →</button>
+    </form>
+
+    <div class="foot">D-<span id="dday">17</span> 알파 오픈 · 매주 새 디스트릭트</div>
+    <a href="./v35-lp-wide.html" class="back-link">← 메인으로</a>
+  </div>
+
+  <!-- SUCCESS state -->
+  <div class="success" id="success">
+    <div class="success-icon">✦</div>
+    <h2 class="success-h">사전등록 <em>완료</em></h2>
+    <p class="success-sub"><b id="ssEmail">your@email.com</b><br>으로 선발 결과·본편 첫 회차 알림이 갑니다.</p>
+
+    <div class="next-block">
+      <div class="next-h">다음 단계 · 다이브 보상</div>
+      <ul class="next-list">
+        <li>2분 설문 완주 시 <b>+500 다이브</b></li>
+        <li>알파 선발 시 <b>+2,000 다이브</b></li>
+        <li>친구 초대로 <b>둘 다 +300 다이브</b></li>
+      </ul>
+      <a href="./screening.html" class="next-cta">설문 시작 · 다이브 받기 →</a>
+    </div>
+
+    <a href="./v35-lp-wide.html" class="back-link">← 메인으로</a>
+  </div>
+</main>
+
+<script>
+function handleSubmit(e){
+  e.preventDefault();
+  const email = document.getElementById('email').value.trim();
+  const consent = document.getElementById('consent').checked;
+  if(!email || !email.includes('@') || !consent) return;
+
+  // 이메일 표시 + form 숨김 + 성공 상태 노출
+  document.getElementById('ssEmail').textContent = email;
+  document.getElementById('formCard').classList.add('hidden');
+  const s = document.getElementById('success');
+  s.classList.add('show');
+  // 페이지 상단으로 스크롤
+  window.scrollTo({top:0,behavior:'smooth'});
+
+  // 로컬 보존 (실서비스에서는 백엔드 POST로 교체)
+  try{ localStorage.setItem('lucive_signup', JSON.stringify({email, ts: Date.now()})); }catch(_){}
+}
+document.getElementById('dday').textContent = '17';
+</script>
+
+</body>
+</html>

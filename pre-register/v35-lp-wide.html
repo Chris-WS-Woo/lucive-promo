@@ -45,33 +45,69 @@ em{font-style:italic;color:var(--accent)}
 .hero-sub em{color:var(--gold-deep)}
 
 /* ============================================================
-   PHASE SLIDES · 각 페이즈 = 한 메시지 + 풀블리드 플레이 장면
-   좌하단에 게임 UI 스타일 "실제 플레이 장면" 태그
+   PHASE SCENES · 각 페이즈 = 풀스크린 시네마틱 + 실제 UI 목업 embed
    ============================================================ */
-.phases{padding:24px 0 32px}
-.phase{position:relative;border-radius:24px;overflow:hidden;margin:24px 0;aspect-ratio:21/9;background:#1a0e22;box-shadow:0 18px 60px rgba(63,38,52,.18)}
-@media(max-width:760px){.phase{aspect-ratio:4/5}}
-.phase-bg{position:absolute;inset:0;background-size:cover;background-position:center;z-index:0;transition:transform 1.2s var(--ease)}
-.phase:hover .phase-bg{transform:scale(1.03)}
-.phase-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.05) 0%,rgba(0,0,0,.32) 50%,rgba(0,0,0,.78) 100%)}
-.phase-content{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 40px;text-align:center;color:#fff}
-@media(max-width:760px){.phase-content{padding:40px 24px;justify-content:flex-start;padding-top:60px}}
+.phase{position:relative;width:100%;height:100vh;height:100dvh;min-height:680px;overflow:hidden;background:#1a0e22}
+.phase-bg{position:absolute;inset:0;background-size:cover;background-position:center;z-index:0;transition:transform 8s ease-out}
+.phase.in-view .phase-bg{transform:scale(1.04)}
+.phase-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.32) 0%,rgba(0,0,0,.55) 60%,rgba(0,0,0,.85) 100%)}
+
+/* center text overlay */
+.phase-content{position:absolute;left:0;right:0;top:14%;z-index:3;display:flex;flex-direction:column;align-items:center;padding:0 32px;text-align:center;color:#fff}
 .phase-step{font-family:var(--mono);font-size:11px;letter-spacing:.42em;font-weight:800;color:rgba(255,255,255,.78);text-transform:uppercase;margin-bottom:14px;text-shadow:0 2px 12px rgba(0,0,0,.55)}
 .phase-step b{color:var(--gold);font-weight:800}
-.phase-h{font-family:var(--display);font-weight:700;font-size:clamp(32px,5.4vw,68px);line-height:1.12;letter-spacing:-.005em;color:#fff;text-shadow:0 4px 24px rgba(0,0,0,.55);max-width:900px}
+.phase-h{font-family:var(--display);font-weight:700;font-size:clamp(32px,5.6vw,72px);line-height:1.12;letter-spacing:-.005em;color:#fff;text-shadow:0 4px 32px rgba(0,0,0,.65);max-width:920px}
 .phase-h em{font-style:italic;background:linear-gradient(90deg,#fce7c8,var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 
-/* === game-UI style "실제 플레이 장면" tag (bottom-left, like REC indicator) === */
-.play-tag{position:absolute;left:18px;bottom:18px;z-index:3;display:inline-flex;align-items:center;gap:8px;padding:8px 13px;background:rgba(0,0,0,.62);border:1px solid rgba(255,255,255,.18);border-radius:6px;font-family:var(--mono);font-size:10.5px;letter-spacing:.22em;font-weight:800;color:rgba(255,255,255,.94);text-transform:uppercase;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+/* embedded UI mockup (actual gameplay snippet) — bottom 절반에 floating */
+.phase-mockup{position:absolute;left:50%;bottom:90px;transform:translateX(-50%);z-index:3;width:min(640px,calc(100% - 56px));pointer-events:none}
+@media(max-width:760px){.phase-mockup{bottom:90px;width:calc(100% - 36px)}}
+
+/* mockup styles -- 실제 게임 챗/VN UI 와 동일 */
+.mock-chat{display:flex;flex-direction:column;gap:8px}
+.mock-msg{max-width:80%;display:flex;gap:8px;align-items:flex-start;animation:mockIn .6s var(--ease) both}
+.mock-msg.lp{align-self:flex-start}
+.mock-msg.user{align-self:flex-end}
+.mock-msg.narration{align-self:stretch;max-width:100%}
+.mock-avatar{width:32px;height:32px;border-radius:50%;flex-shrink:0;overflow:hidden;background:#d9c6cd;border:1.5px solid rgba(255,255,255,.45);box-shadow:0 4px 14px rgba(0,0,0,.4)}
+.mock-avatar img{width:100%;height:100%;object-fit:cover}
+.mock-bubble{padding:11px 16px;border-radius:18px;font-family:var(--sans);font-size:14px;line-height:1.55;word-break:keep-all;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 8px 24px rgba(0,0,0,.35)}
+.mock-msg.lp .mock-bubble{background:rgba(255,255,255,.95);color:var(--text-1);border-bottom-left-radius:6px}
+.mock-msg.user .mock-bubble{background:var(--accent);color:#fff;border-bottom-right-radius:6px}
+.mock-narration{align-self:center;background:rgba(0,0,0,.5);border-left:2px solid rgba(192,132,252,.6);color:rgba(255,255,255,.88);padding:8px 14px;font-style:italic;font-size:12.5px;border-radius:0 8px 8px 0;max-width:90%;backdrop-filter:blur(8px)}
+.mock-msg .typing-dots{display:inline-flex;gap:3px;padding:11px 16px;background:rgba(255,255,255,.92);border-radius:18px;border-bottom-left-radius:6px}
+.mock-msg .typing-dots span{width:5px;height:5px;border-radius:50%;background:var(--accent);opacity:.4;animation:typingDot 1.1s infinite ease-in-out}
+.mock-msg .typing-dots span:nth-child(2){animation-delay:.15s}
+.mock-msg .typing-dots span:nth-child(3){animation-delay:.3s}
+@keyframes typingDot{0%,100%{opacity:.3;transform:translateY(0)}50%{opacity:1;transform:translateY(-3px)}}
+@keyframes mockIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* VN dialogue box mockup */
+.mock-vn{background:linear-gradient(180deg,rgba(18,13,21,.85),rgba(18,13,21,.94));backdrop-filter:blur(14px);border-radius:22px;padding:18px 18px 14px;border:1px solid rgba(255,244,240,.12);box-shadow:0 14px 36px rgba(0,0,0,.4)}
+.mock-vn-speaker{display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.18em;font-weight:800;color:var(--gold);padding:0 10px 4px;text-transform:uppercase;margin-left:6px}
+.mock-vn-line{font-family:var(--display);font-style:italic;font-size:16px;line-height:1.6;color:rgba(255,248,242,.96);padding:0 4px 12px;border-bottom:1px solid rgba(255,255,255,.1);margin-bottom:10px}
+.mock-vn-choices{display:flex;flex-direction:column;gap:7px}
+.mock-choice{display:flex;align-items:center;gap:10px;padding:9px 12px;background:linear-gradient(180deg,rgba(34,26,37,.94),rgba(24,18,28,.98));border:1px solid rgba(214,176,124,.22);border-radius:14px;font-family:var(--sans);font-size:13px;color:rgba(255,248,242,.96);font-weight:600}
+.mock-choice-num{width:20px;height:20px;border-radius:50%;background:rgba(214,176,124,.18);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:10px;color:var(--gold);font-weight:800;flex-shrink:0}
+
+/* status pill (linked chat) */
+.mock-status{display:flex;align-items:center;gap:8px;padding:5px 10px;background:rgba(255,255,255,.92);border-radius:100px;font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;font-weight:800;color:var(--d-velvet);text-transform:uppercase;align-self:flex-start;margin-bottom:4px;box-shadow:0 4px 14px rgba(0,0,0,.3)}
+.mock-status::before{content:'◆';color:var(--d-velvet)}
+
+/* === game-UI style "실제 플레이 장면" tag (bottom-left, REC) === */
+.play-tag{position:absolute;left:24px;bottom:24px;z-index:4;display:inline-flex;align-items:center;gap:8px;padding:8px 13px;background:rgba(0,0,0,.62);border:1px solid rgba(255,255,255,.18);border-radius:6px;font-family:var(--mono);font-size:10.5px;letter-spacing:.22em;font-weight:800;color:rgba(255,255,255,.94);text-transform:uppercase;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
 .play-tag::before{content:'';display:inline-block;width:7px;height:7px;border-radius:50%;background:#FF4D4D;box-shadow:0 0 8px rgba(255,77,77,.7);animation:recDot 1.4s ease-in-out infinite}
 @keyframes recDot{0%,100%{opacity:.55;transform:scale(1)}50%{opacity:1;transform:scale(1.15)}}
 
 /* district color bar bottom (decorative) */
-.phase-bar{position:absolute;left:0;right:0;bottom:0;z-index:2;height:3px;background:linear-gradient(90deg,transparent,var(--bar-color,var(--gold)),transparent)}
+.phase-bar{position:absolute;left:0;right:0;bottom:0;z-index:3;height:3px;background:linear-gradient(90deg,transparent,var(--bar-color,var(--gold)),transparent)}
 
 /* ===== LINEUP ===== */
-.lineup{padding:48px 0 24px}
-.lineup-h{text-align:center;font-family:var(--mono);font-size:10px;letter-spacing:.4em;font-weight:800;color:var(--text-3);text-transform:uppercase;margin-bottom:22px}
+.lineup{padding:48px 0 24px;text-align:center}
+.lineup-eye{font-family:var(--mono);font-size:10px;letter-spacing:.42em;font-weight:800;color:var(--gold-deep);text-transform:uppercase;margin-bottom:6px}
+.lineup-h{font-family:var(--display);font-style:italic;font-size:clamp(22px,2.8vw,30px);font-weight:700;color:var(--text-1);margin-bottom:6px}
+.lineup-h em{color:var(--accent)}
+.lineup-sub{font-family:var(--sans);font-size:13px;color:var(--text-2);margin-bottom:24px}
 .lineup-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
 @media(min-width:680px){.lineup-grid{grid-template-columns:repeat(12,1fr)}}
 @media(min-width:1100px){.lineup-grid{grid-template-columns:repeat(18,1fr)}}
@@ -80,6 +116,14 @@ em{font-style:italic;color:var(--accent)}
 .lp img{width:100%;height:100%;object-fit:cover;object-position:top center}
 .lp::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 60%,rgba(26,16,21,.55) 100%)}
 .lp-name{position:absolute;left:0;right:0;bottom:3px;text-align:center;font-family:var(--mono);font-size:8px;font-weight:800;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.6);z-index:2}
+/* 더보기 / 매주 합류 카드 */
+.lp.more{background:linear-gradient(160deg,rgba(214,176,124,.18),rgba(201,123,137,.14));border:1px dashed rgba(201,123,137,.38);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:var(--accent)}
+.lp.more::after{display:none}
+.lp.more .lp-more-num{font-family:var(--display);font-style:italic;font-size:22px;font-weight:700;color:var(--gold-deep);line-height:1}
+.lp.more .lp-more-lbl{font-family:var(--mono);font-size:8.5px;letter-spacing:.18em;font-weight:800;color:var(--accent);text-transform:uppercase}
+.lineup-foot{margin-top:18px;display:flex;justify-content:center;gap:12px;flex-wrap:wrap;font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;color:var(--text-3);text-transform:uppercase;font-weight:700}
+.lineup-foot .pulse{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--accent);margin-right:8px;vertical-align:middle;animation:pulse 1.6s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:.45;transform:scale(1)}50%{opacity:1;transform:scale(1.3)}}
 
 /* ===== PRE-CTA dual buttons ===== */
 .pre-cta{padding:48px 0 72px;text-align:center}
@@ -112,46 +156,86 @@ em{font-style:italic;color:var(--accent)}
   <p class="hero-sub">첫 만남, 에피소드, 결말 — <em>당신만의 스토리</em>가 만들어집니다.</p>
 </section>
 
-<section class="phases wrap">
-
-  <!-- PHASE 02 · 첫 만남 -->
-  <div class="phase" style="--bar-color:var(--d-sunrise)">
-    <div class="phase-bg" style="background-image:url('https://cdn.deepintothe.xyz/lucive/img/lp/taeo_entry/header.png')"></div>
-    <div class="phase-content">
-      <div class="phase-step">PHASE 02 <b>·</b> 첫 만남</div>
-      <h2 class="phase-h">5 디스트릭트, <em>35명의 루시안</em></h2>
-    </div>
-    <div class="play-tag">실제 플레이 장면</div>
-    <div class="phase-bar"></div>
+<!-- PHASE 02 · 첫 만남 (full-screen scene + Pre-Link Chat 목업) -->
+<section class="phase" style="--bar-color:var(--d-sunrise)">
+  <div class="phase-bg" style="background-image:url('https://cdn.deepintothe.xyz/lucive/img/lp/taeo_entry/header.png')"></div>
+  <div class="phase-content">
+    <div class="phase-step">PHASE 02 <b>·</b> 첫 만남</div>
+    <h2 class="phase-h">5 디스트릭트, <em>35명의 캐릭터</em></h2>
   </div>
-
-  <!-- PHASE 03 · 분기 -->
-  <div class="phase" style="--bar-color:var(--d-velvet)">
-    <div class="phase-bg" style="background-image:url('https://cdn.deepintothe.xyz/lucive/img/lp/seraphine_entry/scene1.png')"></div>
-    <div class="phase-content">
-      <div class="phase-step">PHASE 03 <b>·</b> 분기</div>
-      <h2 class="phase-h">당신의 선택이 · <em>결말을 만듭니다</em></h2>
+  <div class="phase-mockup">
+    <div class="mock-chat">
+      <div class="mock-narration">자정 직전. 낯선 번호로 메시지가 도착한다.</div>
+      <div class="mock-msg lp">
+        <div class="mock-avatar"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/taeo.png" alt=""></div>
+        <div class="mock-bubble">콩 볶는 시간이 사적이라고 한 사람은 처음입니다.</div>
+      </div>
+      <div class="mock-msg lp">
+        <div class="mock-avatar"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/taeo.png" alt=""></div>
+        <div class="mock-bubble">한 잔 내려드릴까요. 처음 오신 분만 따로 받는 한 잔이 있어요.</div>
+      </div>
     </div>
-    <div class="play-tag">실제 플레이 장면</div>
-    <div class="phase-bar"></div>
   </div>
+  <div class="play-tag">실제 플레이 장면</div>
+  <div class="phase-bar"></div>
+</section>
 
-  <!-- PHASE 04 · 회귀 · Linked -->
-  <div class="phase" style="--bar-color:var(--d-indie)">
-    <div class="phase-bg" style="background-image:url('https://cdn.deepintothe.xyz/lucive/img/lp/haru_entry/header.png')"></div>
-    <div class="phase-content">
-      <div class="phase-step">PHASE 04 <b>·</b> 회귀</div>
-      <h2 class="phase-h">다시 돌아오면 · <em>그가 기억합니다</em></h2>
+<!-- PHASE 03 · 분기 (full-screen scene + VN 다이얼로그 박스 + 선택지) -->
+<section class="phase" style="--bar-color:var(--d-velvet)">
+  <div class="phase-bg" style="background-image:url('https://cdn.deepintothe.xyz/lucive/img/lp/seraphine_entry/scene1.png')"></div>
+  <div class="phase-content">
+    <div class="phase-step">PHASE 03 <b>·</b> 분기</div>
+    <h2 class="phase-h">당신의 선택이 · <em>결말을 만듭니다</em></h2>
+  </div>
+  <div class="phase-mockup">
+    <div class="mock-vn">
+      <div class="mock-vn-speaker">SERAPHINE · 세라핀</div>
+      <div class="mock-vn-line">"...새벽 기도실의 시린 공기를 좋아해요. 여기서만 한 호흡이 길게 나가요. 당신도 한 번 그 호흡을 따라 들이쉬어 봐주실래요?"</div>
+      <div class="mock-vn-choices">
+        <div class="mock-choice"><span class="mock-choice-num">1</span><span>"그 호흡을 따라 한 번 들이쉽니다"</span></div>
+        <div class="mock-choice"><span class="mock-choice-num">2</span><span>"새벽 기도가 정해진 시간이 있어요?"</span></div>
+        <div class="mock-choice"><span class="mock-choice-num">3</span><span>옷매무새를 한 번 다듬는다</span></div>
+      </div>
     </div>
-    <div class="play-tag">실제 플레이 장면</div>
-    <div class="phase-bar"></div>
   </div>
+  <div class="play-tag">실제 플레이 장면</div>
+  <div class="phase-bar"></div>
+</section>
 
+<!-- PHASE 04 · 회귀 · Linked (full-screen scene + Linked Chat 목업) -->
+<section class="phase" style="--bar-color:var(--d-indie)">
+  <div class="phase-bg" style="background-image:url('https://cdn.deepintothe.xyz/lucive/img/lp/haru_entry/header.png')"></div>
+  <div class="phase-content">
+    <div class="phase-step">PHASE 04 <b>·</b> 회귀</div>
+    <h2 class="phase-h">다시 돌아오면 · <em>그가 기억합니다</em></h2>
+  </div>
+  <div class="phase-mockup">
+    <div class="mock-chat">
+      <div class="mock-status">Linked · 싱크율 5%</div>
+      <div class="mock-narration">새벽 3시. 헤드폰 너머 잡음 한 박자.</div>
+      <div class="mock-msg lp">
+        <div class="mock-avatar"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/haru.png" alt=""></div>
+        <div class="mock-bubble">...오늘도 들으셨군요. 아무 말 안 해도 알 수 있어요.</div>
+      </div>
+      <div class="mock-msg lp">
+        <div class="mock-avatar"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/haru.png" alt=""></div>
+        <div class="mock-bubble">어제 그 사연 · 지금까지 머리에 남아 있어요. 그쪽도 그렇죠?</div>
+      </div>
+    </div>
+  </div>
+  <div class="play-tag">실제 플레이 장면</div>
+  <div class="phase-bar"></div>
 </section>
 
 <section class="lineup wrap">
-  <div class="lineup-h">35명의 루시안</div>
+  <div class="lineup-eye">CAST · 지금 만날 수 있는</div>
+  <div class="lineup-h">35명의 캐릭터, <em>매주 더 합류합니다</em></div>
+  <div class="lineup-sub">5 디스트릭트 · 매주 새 세계관 오픈 · 알파부터 수십 명, 정식 출시 시 100명+</div>
   <div class="lineup-grid" id="lineupGrid"></div>
+  <div class="lineup-foot">
+    <span><span class="pulse"></span>매주 새 캐릭터 합류</span>
+    <span><span class="pulse"></span>곧 50명+ · 100명+ 확장</span>
+  </div>
 </section>
 
 <section class="pre-cta wrap">
@@ -162,7 +246,7 @@ em{font-style:italic;color:var(--accent)}
       <span>간단하게 경험해보기</span>
       <span class="arr">▶</span>
     </a>
-    <a href="./screening.html" class="btn btn-primary">
+    <a href="./v35-signup.html" class="btn btn-primary">
       <span>바로 사전등록하러 가기</span>
       <span class="arr">→</span>
     </a>
