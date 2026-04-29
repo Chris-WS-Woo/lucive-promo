@@ -25,7 +25,6 @@
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{background:var(--bg);color:var(--text-1);font-family:var(--sans);scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
 body{overflow-x:hidden}
-/* 스크롤 스냅 · 스페이스/PageDown 으로 이동시 hero/phase 단위로 또렷하게 정렬 */
 html{scroll-snap-type:y proximity}
 .hero,.phase{scroll-snap-align:start;scroll-snap-stop:always}
 img{max-width:100%;display:block}
@@ -33,12 +32,9 @@ em{font-style:italic;color:var(--accent)}
 
 .wrap{max-width:1280px;margin:0 auto;padding:0 32px}
 
-/* =================================================================
-   PHASE 1 · HERO — 100vh 풀스크린 · 강렬한 인상
-   ================================================================= */
+/* ================= HERO ================= */
 .hero{position:relative;width:100%;height:100vh;height:100dvh;min-height:680px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:80px 32px 120px;overflow:hidden}
 .hero-bg{position:absolute;inset:0;background-size:cover;background-position:center;z-index:0;filter:saturate(1.05)}
-/* dark vignette + bottom fade so cream landing 다음 섹션과 자연스럽게 이어짐 */
 .hero-bg::after{content:'';position:absolute;inset:0;background:
   radial-gradient(ellipse at 50% 30%,rgba(0,0,0,0) 0%,rgba(0,0,0,.15) 40%,rgba(0,0,0,.65) 90%),
   linear-gradient(180deg,rgba(0,0,0,.18) 0%,rgba(0,0,0,.32) 50%,rgba(255,249,247,.92) 95%,rgba(255,249,247,1) 100%)}
@@ -55,9 +51,7 @@ em{font-style:italic;color:var(--accent)}
 .scroll-cue::after{content:'';width:1px;height:34px;background:linear-gradient(180deg,rgba(255,244,240,.6),transparent)}
 @keyframes scrollPulse{0%,100%{opacity:.45;transform:translateX(-50%) translateY(0)}50%{opacity:.95;transform:translateX(-50%) translateY(6px)}}
 
-/* =================================================================
-   PHASE 2-4 SCENES · 좌우 분할 (캐치프레이즈 ↔ 실시간 대화 목업)
-   ================================================================= */
+/* ================= PHASE LAYOUT ================= */
 .phase{position:relative;width:100%;min-height:100vh;min-height:100dvh;display:grid;grid-template-columns:1fr;align-items:center;padding:80px 32px;overflow:hidden}
 @media(min-width:980px){.phase{grid-template-columns:minmax(400px,1fr) minmax(440px,520px);gap:48px;padding:80px 64px}}
 @media(min-width:1280px){.phase{grid-template-columns:1fr 540px;gap:64px;padding:120px 80px}}
@@ -71,102 +65,102 @@ em{font-style:italic;color:var(--accent)}
 .phase-h em{font-style:italic;background:linear-gradient(90deg,#fce7c8,var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .phase-desc{font-family:var(--display);font-style:italic;font-size:clamp(15px,1.4vw,18px);color:rgba(255,244,240,.78);line-height:1.6;max-width:480px;text-shadow:0 2px 12px rgba(0,0,0,.5)}
 
-/* === 대화 목업 (우측, 실시간 등장) — 폰 프레임 안에 스크린 ============ */
+/* ================= MOCK PHONE FRAME ================= */
 .phase-mock{position:relative;z-index:2;width:100%;max-width:360px;justify-self:center;align-self:center}
 @media(min-width:980px){.phase-mock{justify-self:end;margin-right:16px;max-width:340px}}
-
-/* === phone bezel (스크린 인 스크린) === */
 .mock-phone{position:relative;background:linear-gradient(180deg,#1a1118,#0c0810);border-radius:42px;padding:9px;box-shadow:0 36px 90px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.05),inset 0 0 0 1.5px rgba(255,255,255,.04)}
 .mock-phone::before{content:'';position:absolute;top:6px;left:50%;transform:translateX(-50%);width:34%;height:22px;background:#0c0810;border-radius:0 0 14px 14px;z-index:5}
 .mock-screen{background:#FFF9F7;border-radius:34px;overflow:hidden;display:flex;flex-direction:column;height:580px;position:relative}
 .mock-statusbar{display:flex;justify-content:space-between;align-items:center;padding:12px 22px 6px;font-family:var(--sans);font-size:11px;font-weight:700;color:var(--text-1);position:relative;z-index:1}
-.mock-statusbar .time{letter-spacing:-.02em}
-.mock-statusbar .icons{display:inline-flex;gap:5px;align-items:center;color:var(--text-2);font-size:10px;letter-spacing:.06em}
+.mock-statusbar .icons{color:var(--text-2);font-size:10px;letter-spacing:.06em}
 
-/* === chat header / body === */
+/* ================= CAROUSEL SLIDES (5개 자동 순환) ================= */
+.mock-screen .mock-slide{position:absolute;inset:0;display:flex;flex-direction:column;opacity:0;animation:slideCycle 25s linear infinite;will-change:opacity}
+.mock-screen .mock-slide:nth-child(1){animation-delay:0s}
+.mock-screen .mock-slide:nth-child(2){animation-delay:5s}
+.mock-screen .mock-slide:nth-child(3){animation-delay:10s}
+.mock-screen .mock-slide:nth-child(4){animation-delay:15s}
+.mock-screen .mock-slide:nth-child(5){animation-delay:20s}
+@keyframes slideCycle{0%,24%,100%{opacity:0}4%,20%{opacity:1}}
+/* slide indicator dots */
+.mock-dots{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);display:flex;gap:5px;z-index:8;padding:6px 12px;background:rgba(0,0,0,.42);border-radius:999px;backdrop-filter:blur(8px)}
+.mock-dot{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.3);animation:dotPulse 25s linear infinite}
+.mock-dot:nth-child(1){animation-delay:0s}
+.mock-dot:nth-child(2){animation-delay:5s}
+.mock-dot:nth-child(3){animation-delay:10s}
+.mock-dot:nth-child(4){animation-delay:15s}
+.mock-dot:nth-child(5){animation-delay:20s}
+@keyframes dotPulse{0%,24%,100%{background:rgba(255,255,255,.3);transform:scale(1)}4%,20%{background:var(--gold);transform:scale(1.5)}}
+
+/* ================= CHAT BUBBLES (Phase 04) ================= */
 .mock-head{display:flex;align-items:center;gap:10px;padding:8px 14px 10px;background:rgba(255,249,247,1);border-bottom:1px solid rgba(63,38,52,.08)}
 .mock-head-avatar{width:32px;height:32px;border-radius:50%;overflow:hidden;background:#d9c6cd;flex-shrink:0}
 .mock-head-avatar img{width:100%;height:100%;object-fit:cover}
 .mock-head-info{flex:1;min-width:0}
 .mock-head-name{font-family:var(--sans);font-size:14px;font-weight:700;color:var(--text-1);letter-spacing:-.01em}
 .mock-head-status{font-family:var(--mono);font-size:9px;letter-spacing:.18em;color:var(--text-3);text-transform:uppercase;font-weight:700;margin-top:2px}
-.mock-head-status.linked{color:var(--d-velvet)}
-.mock-head-status.linked::before{content:'◆ ';color:var(--d-velvet)}
+.mock-head-status.linked{color:var(--accent)}
+.mock-head-status.linked::before{content:'◆ ';color:var(--accent)}
 
-.mock-body{flex:1;padding:14px 12px 16px;display:flex;flex-direction:column;gap:6px;background:#FFF9F7;overflow:hidden;position:relative}
-/* 장면 BG (atmospheric) — 채팅 뒤에 흐릿하게 깔림 */
+.mock-body{flex:1;padding:14px 12px 24px;display:flex;flex-direction:column;gap:6px;background:#FFF9F7;overflow:hidden;position:relative}
 .mock-body[data-bg]::before{content:'';position:absolute;inset:0;background-image:var(--chat-bg);background-size:cover;background-position:center;opacity:.32;filter:blur(2px) saturate(1.1);z-index:0}
 .mock-body[data-bg]::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,249,247,.55) 0%,rgba(255,249,247,.78) 100%);z-index:0}
 .mock-body > *{position:relative;z-index:1}
-.mock-msg{display:flex;gap:6px;align-items:flex-end;opacity:0;transform:translateY(10px);animation:msgIn .55s var(--ease) forwards;animation-delay:var(--d,0s);max-width:88%}
+.mock-msg{display:flex;gap:6px;align-items:flex-end;max-width:88%;width:fit-content}
 .mock-msg.lp{align-self:flex-start}
 .mock-msg.user{align-self:flex-end;flex-direction:row-reverse}
 .mock-msg.narration{align-self:stretch;max-width:100%;width:auto}
 .mock-mini{width:24px;height:24px;border-radius:50%;flex-shrink:0;overflow:hidden;background:#d9c6cd;align-self:flex-end;margin-bottom:1px}
 .mock-mini img{width:100%;height:100%;object-fit:cover}
-/* 연속 lp 메시지: 아바타 자리는 유지하되 비워서 정렬 깨지지 않게 (visibility:hidden) */
 .mock-msg.lp.cons .mock-mini{visibility:hidden}
 .mock-bubble{padding:9px 13px;border-radius:16px;font-size:13px;line-height:1.5;word-break:keep-all;min-width:0}
 .mock-msg.lp .mock-bubble{background:#fff;color:var(--text-1);border-bottom-left-radius:5px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
 .mock-msg.user .mock-bubble{background:var(--accent);color:#fff;border-bottom-right-radius:5px}
 .mock-narration-text{font-size:11.5px;color:var(--text-3);font-style:italic;line-height:1.5;padding:5px 9px;border-left:2px solid rgba(192,132,252,.32);background:rgba(192,132,252,.05);border-radius:0 8px 8px 0}
-.mock-typing{padding:10px 14px;background:#fff;border-radius:16px;border-bottom-left-radius:5px;display:inline-flex;gap:3px;align-items:center;box-shadow:0 1px 3px rgba(0,0,0,.06)}
-.mock-typing span{width:5px;height:5px;border-radius:50%;background:var(--accent);opacity:.4;animation:typingDot 1.1s infinite ease-in-out}
-.mock-typing span:nth-child(2){animation-delay:.15s}
-.mock-typing span:nth-child(3){animation-delay:.3s}
-@keyframes typingDot{0%,100%{opacity:.3;transform:translateY(0)}50%{opacity:1;transform:translateY(-3px)}}
-@keyframes msgIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.mock-memo{align-self:center;max-width:90%;padding:6px 10px;background:linear-gradient(180deg,rgba(214,176,124,.16),rgba(214,176,124,.08));border:1px dashed rgba(214,176,124,.42);border-radius:12px;font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;color:var(--gold-deep);text-transform:uppercase;font-weight:800;text-align:center;margin:4px 0}
 
-/* VN screen variant inside phone frame */
+/* ================= VN SCREEN (Phase 02 / 03) ================= */
 .mock-vn-screen{padding:0;height:580px;position:relative;background:#0c0810}
 .mock-vn-stage{position:absolute;inset:0;background-size:cover;background-position:center}
-.mock-vn-stage::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.18) 0%,rgba(2,6,16,.55) 60%,rgba(2,6,16,.96) 100%);z-index:1}
-/* 캐릭터 일러스트 (VN 단계 중앙 하단) */
-.mock-vn-char{position:absolute;left:50%;bottom:38%;transform:translateX(-50%);width:88%;max-width:280px;z-index:2;filter:drop-shadow(0 12px 30px rgba(0,0,0,.6));pointer-events:none}
+.mock-vn-stage::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 30%,rgba(2,6,16,.6) 60%,rgba(2,6,16,.96) 100%);z-index:1}
+.mock-vn-char{position:absolute;left:50%;bottom:36%;transform:translateX(-50%);width:88%;max-width:280px;z-index:2;filter:drop-shadow(0 12px 30px rgba(0,0,0,.6));pointer-events:none}
 .mock-vn-char img{width:100%;height:auto;display:block}
-.mock-vn-stage::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 30%,rgba(2,6,16,.6) 60%,rgba(2,6,16,.96) 100%)}
-.mock-vn-bottom{position:absolute;left:0;right:0;bottom:0;padding:14px;display:flex;flex-direction:column;gap:8px;z-index:2}
+.mock-vn-bottom{position:absolute;left:0;right:0;bottom:36px;padding:14px;display:flex;flex-direction:column;gap:8px;z-index:2}
 .mock-vn-speaker{display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.2em;font-weight:800;color:var(--gold);padding:0 12px;align-self:flex-start;text-shadow:0 2px 8px rgba(0,0,0,.55)}
-.mock-vn-box{background:linear-gradient(180deg,rgba(18,13,21,.86),rgba(18,13,21,.96));border:1px solid rgba(255,244,240,.12);border-radius:18px;padding:14px 16px 12px;backdrop-filter:blur(14px);opacity:0;animation:msgIn .55s var(--ease) forwards;animation-delay:.6s}
-.mock-vn-line{font-family:var(--display);font-style:italic;font-size:15.5px;line-height:1.6;color:rgba(255,248,242,.96)}
+.mock-vn-box{background:linear-gradient(180deg,rgba(18,13,21,.86),rgba(18,13,21,.96));border:1px solid rgba(255,244,240,.12);border-radius:18px;padding:14px 16px 12px;backdrop-filter:blur(14px)}
+.mock-vn-line{font-family:var(--display);font-style:italic;font-size:15.5px;line-height:1.55;color:rgba(255,248,242,.96)}
 .mock-vn-choices{display:flex;flex-direction:column;gap:7px;margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.1)}
-.mock-vn-choice{display:flex;align-items:center;gap:10px;padding:9px 12px;background:linear-gradient(180deg,rgba(34,26,37,.94),rgba(24,18,28,.98));border:1px solid rgba(214,176,124,.22);border-radius:14px;font-family:var(--sans);font-size:12.5px;color:rgba(255,248,242,.96);font-weight:600;opacity:0;animation:msgIn .5s var(--ease) forwards;animation-delay:var(--d,1s)}
+.mock-vn-choice{display:flex;align-items:center;gap:10px;padding:9px 12px;background:linear-gradient(180deg,rgba(34,26,37,.94),rgba(24,18,28,.98));border:1px solid rgba(214,176,124,.22);border-radius:14px;font-family:var(--sans);font-size:12.5px;color:rgba(255,248,242,.96);font-weight:600}
 .mock-vn-choice-num{width:20px;height:20px;border-radius:50%;background:rgba(214,176,124,.18);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:10px;color:var(--gold);font-weight:800;flex-shrink:0}
 
-/* === game-UI REC tag (bottom-left) === */
+/* === game-UI REC tag === */
 .play-tag{position:absolute;left:24px;bottom:24px;z-index:4;display:inline-flex;align-items:center;gap:8px;padding:8px 13px;background:rgba(0,0,0,.62);border:1px solid rgba(255,255,255,.18);border-radius:6px;font-family:var(--mono);font-size:10.5px;letter-spacing:.22em;font-weight:800;color:rgba(255,255,255,.94);text-transform:uppercase;backdrop-filter:blur(10px)}
 .play-tag::before{content:'';width:7px;height:7px;border-radius:50%;background:#FF4D4D;box-shadow:0 0 8px rgba(255,77,77,.7);animation:recDot 1.4s ease-in-out infinite}
 @keyframes recDot{0%,100%{opacity:.55;transform:scale(1)}50%{opacity:1;transform:scale(1.15)}}
 .phase-bar{position:absolute;left:0;right:0;bottom:0;z-index:3;height:3px;background:linear-gradient(90deg,transparent,var(--bar-color,var(--gold)),transparent)}
 
-/* =================================================================
-   LINEUP
-   ================================================================= */
+/* ================= LINEUP ================= */
 .lineup{padding:80px 0 48px;background:var(--bg);text-align:center}
 .lineup-eye{font-family:var(--mono);font-size:10px;letter-spacing:.42em;font-weight:800;color:var(--gold-deep);text-transform:uppercase;margin-bottom:8px}
 .lineup-h{font-family:var(--display);font-style:italic;font-size:clamp(22px,2.8vw,32px);font-weight:700;color:var(--text-1);margin-bottom:6px}
 .lineup-h em{color:var(--accent)}
 .lineup-sub{font-family:var(--sans);font-size:13.5px;color:var(--text-2);margin-bottom:30px;max-width:560px;margin-left:auto;margin-right:auto;line-height:1.6}
-/* mystery card grid (?) · 끝으로 갈수록 fade-out 으로 "더 많이 합류 중" 강조 */
 .lineup-wrap{position:relative;max-width:1280px;margin:0 auto}
 .lineup-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:8px}
 @media(min-width:680px){.lineup-grid{grid-template-columns:repeat(12,1fr)}}
 @media(min-width:1100px){.lineup-grid{grid-template-columns:repeat(15,1fr)}}
 .lp{position:relative;aspect-ratio:3/4;border-radius:8px;overflow:hidden;transition:transform .25s var(--ease),opacity .25s,filter .25s;display:flex;align-items:center;justify-content:center}
 .lp:hover{transform:scale(1.06);z-index:3}
-/* === 기존 캐릭터 (희미한 아바타) === */
 .lp-known{background:#1a1118;opacity:.62;filter:saturate(.85) brightness(.92);border:1px solid rgba(63,38,52,.06)}
 .lp-known img{width:100%;height:100%;object-fit:cover;object-position:top center}
 .lp-known::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 60%,rgba(26,16,21,.4) 100%);pointer-events:none}
 .lp-known:hover{opacity:1;filter:none}
 .lp-known .lp-name{position:absolute;left:0;right:0;bottom:3px;text-align:center;font-family:var(--mono);font-size:8px;font-weight:800;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.7);z-index:2;opacity:0;transition:opacity .25s}
 .lp-known:hover .lp-name{opacity:1}
-/* === 미스터리 ? 카드 (아직 공개 안 됨) === */
 .lp-mystery{background:linear-gradient(160deg,rgba(214,176,124,.16),rgba(201,123,137,.12));border:1px solid rgba(201,123,137,.18)}
 .lp-mystery .lp-q{font-family:var(--display);font-style:italic;font-size:clamp(20px,2.4vw,32px);font-weight:700;color:var(--accent);opacity:.55;line-height:1}
 .lp-mystery .lp-d{position:absolute;top:5px;right:6px;width:7px;height:7px;border-radius:50%;background:var(--gold);opacity:.55;box-shadow:0 0 6px rgba(214,176,124,.5)}
 .lp-mystery:hover{border-color:var(--accent)}
-/* 끝부분 fade-out · 단계별 */
 .lineup-grid .lp.f1{opacity:.42}
 .lineup-grid .lp.f2{opacity:.24}
 .lineup-grid .lp.f3{opacity:.12}
@@ -175,17 +169,17 @@ em{font-style:italic;color:var(--accent)}
 .lineup-grid .lp-known.f2{opacity:.18}
 .lineup-grid .lp-known.f3{opacity:.10}
 .lineup-grid .lp-known.f4{opacity:.04}
-/* 그라디언트 마스크로 자연스러운 fade-out */
 .lineup-grid::after{content:'';position:absolute;left:0;right:0;bottom:0;height:30%;background:linear-gradient(180deg,transparent,var(--bg) 95%);pointer-events:none}
-/* "..." 마지막 셀 */
 .lp.more{background:transparent;border:1px dashed rgba(201,123,137,.4);font-family:var(--mono);font-size:14px;color:var(--accent);font-weight:800;letter-spacing:.2em}
 .lineup-foot{margin-top:36px;display:flex;justify-content:center;gap:14px;flex-wrap:wrap;font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;color:var(--text-3);text-transform:uppercase;font-weight:700;position:relative;z-index:2}
 .lineup-foot .pulse{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--accent);margin-right:8px;vertical-align:middle;animation:pulse 1.6s ease-in-out infinite}
 @keyframes pulse{0%,100%{opacity:.45;transform:scale(1)}50%{opacity:1;transform:scale(1.3)}}
 
-/* =================================================================
-   PRE-CTA / FOOTER
-   ================================================================= */
+/* ================= PRE-CTA · view toggle · FOOTER ================= */
+.view-toggle{position:fixed;top:18px;right:18px;z-index:50;display:inline-flex;background:rgba(255,249,247,.92);border:1px solid rgba(63,38,52,.16);border-radius:999px;padding:4px;box-shadow:0 6px 18px rgba(63,38,52,.12);backdrop-filter:blur(10px)}
+.view-toggle a{font-family:var(--mono);font-size:10px;letter-spacing:.18em;color:var(--text-2);text-transform:uppercase;font-weight:800;padding:7px 12px;border-radius:999px;text-decoration:none}
+.view-toggle a.active{background:var(--text-1);color:#fff}
+
 .pre-cta{padding:48px 0 80px;text-align:center;background:var(--bg)}
 .pre-cta-h{font-family:var(--display);font-style:italic;font-size:clamp(24px,3vw,32px);font-weight:700;color:var(--text-1);margin-bottom:6px}
 .pre-cta-sub{font-size:13.5px;color:var(--text-2);margin-bottom:26px}
@@ -205,7 +199,13 @@ em{font-style:italic;color:var(--accent)}
 </head>
 <body>
 
-<!-- ===== PHASE 1 · HERO · 100vh 강렬한 인상 ===== -->
+<!-- view toggle -->
+<div class="view-toggle">
+  <a href="./v35-lp-wide.html" class="active">CAROUSEL</a>
+  <a href="./v35-lp-grid.html">GRID</a>
+</div>
+
+<!-- ===== HERO ===== -->
 <section class="hero">
   <div class="hero-bg" style="background-image:url('https://cdn.deepintothe.xyz/lucive/img/lp/seraphine_entry/profile_bg.png')"></div>
   <div class="hero-noise"></div>
@@ -218,43 +218,69 @@ em{font-style:italic;color:var(--accent)}
   <div class="scroll-cue">SCROLL</div>
 </section>
 
-<!-- ===== PHASE 2 · 첫 만남 · 좌측 카피 / 우측 Pre-Link Chat 실시간 등장 ===== -->
+<!-- ===== PHASE 02 · VISUAL NOVEL · 5 슬라이드 자동 순환 ===== -->
 <section class="phase" style="--bar-color:var(--d-sunrise)">
   <div class="phase-bg" style="background-image:url('https://cdn.deepintothe.xyz/lucive/img/lp/taeo_entry/header.png')"></div>
   <div class="phase-text">
-    <div class="phase-step">PHASE 02 <b>·</b> 첫 만남</div>
-    <h2 class="phase-h">5 디스트릭트, <em>35명의 캐릭터</em></h2>
-    <p class="phase-desc">한 사람의 첫 인사 한 통 · 90초만에 시작되는 첫 만남.</p>
+    <div class="phase-step">PHASE 02 <b>·</b> 비주얼 노블</div>
+    <h2 class="phase-h">캐릭터를 <em>읽지 마세요. 살아보세요.</em></h2>
+    <p class="phase-desc">한 컷마다 한 장면 · 5 디스트릭트, 35명의 캐릭터가 비주얼 노블로 펼쳐집니다.</p>
   </div>
+
   <div class="phase-mock">
     <div class="mock-phone">
-      <div class="mock-screen">
-        <div class="mock-statusbar"><span class="time">23:58</span><span class="icons">●●●● 100%</span></div>
-        <div class="mock-head">
-          <div class="mock-head-avatar"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/taeo.png" alt=""></div>
-          <div class="mock-head-info">
-            <div class="mock-head-name">태오</div>
-            <div class="mock-head-status">Pre-Link Chat</div>
+      <div class="mock-screen mock-vn-screen">
+        <!-- Slide 1 · 태오 (Sunrise) -->
+        <div class="mock-slide">
+          <div class="mock-vn-stage" style="background-image:url('https://cdn.deepintothe.xyz/lucive/img/lp/taeo_entry/scene1.png')">
+            <div class="mock-vn-char"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/taeo_entry/char_taeo.png" alt="태오" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
+            <div class="mock-vn-bottom">
+              <div class="mock-vn-speaker">TAEO · 태오 <span style="color:var(--d-sunrise)">· SUNRISE</span></div>
+              <div class="mock-vn-box"><div class="mock-vn-line">"콩 볶는 시간을 사적이라 한 사람은 처음입니다. 처음 오신 분만 받는 한 잔, 내려드릴게요."</div></div>
+            </div>
           </div>
         </div>
-        <div class="mock-body" data-bg style="--chat-bg:url('https://cdn.deepintothe.xyz/lucive/img/lp/taeo_entry/header.png')">
-          <div class="mock-msg narration" style="--d:.2s"><div class="mock-narration-text">자정 직전. 낯선 번호로 메시지가 도착한다.</div></div>
-          <div class="mock-msg lp" style="--d:.9s">
-            <div class="mock-mini"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/taeo.png" alt=""></div>
-            <div class="mock-bubble">콩 볶는 시간이 사적이라고 한 사람은 처음입니다.</div>
-          </div>
-          <div class="mock-msg lp cons" style="--d:1.7s">
-            <div class="mock-mini"></div>
-            <div class="mock-typing"><span></span><span></span><span></span></div>
-          </div>
-          <div class="mock-msg lp cons" style="--d:2.6s">
-            <div class="mock-mini"></div>
-            <div class="mock-bubble">한 잔 내려드릴까요. 처음 오신 분만 받는 한 잔이 있어요.</div>
-          </div>
-          <div class="mock-msg user" style="--d:3.6s">
-            <div class="mock-bubble">...어떻게 제 번호를 아셨어요?</div>
+        <!-- Slide 2 · 해준 (Neon) -->
+        <div class="mock-slide">
+          <div class="mock-vn-stage" style="background-image:url('https://cdn.deepintothe.xyz/lucive/img/lp/haejun_entry/scene1.png')">
+            <div class="mock-vn-char"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/haejun_entry/char_haejun.png" alt="해준" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
+            <div class="mock-vn-bottom">
+              <div class="mock-vn-speaker">HAEJUN · 이해준 <span style="color:var(--d-neon)">· NEON</span></div>
+              <div class="mock-vn-box"><div class="mock-vn-line">"앙코르 끝났어요. 무대 뒤에서 한 잔 — 따로 시간 잡아둘게요."</div></div>
+            </div>
           </div>
         </div>
+        <!-- Slide 3 · 라온 (Underground) -->
+        <div class="mock-slide">
+          <div class="mock-vn-stage" style="background-image:url('https://cdn.deepintothe.xyz/lucive/img/lp/raon_entry/scene1.png')">
+            <div class="mock-vn-char"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/raon_entry/char_raon.png" alt="라온" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
+            <div class="mock-vn-bottom">
+              <div class="mock-vn-speaker">RAON · 라온 <span style="color:var(--d-underground)">· UNDERGROUND</span></div>
+              <div class="mock-vn-box"><div class="mock-vn-line">"비 내리는 날의 첫 손님이 제일 깊게 새겨져요. 어디에 — 어떤 자국을 남기고 싶나요."</div></div>
+            </div>
+          </div>
+        </div>
+        <!-- Slide 4 · 세라핀 (Velvet) -->
+        <div class="mock-slide">
+          <div class="mock-vn-stage" style="background-image:url('https://cdn.deepintothe.xyz/lucive/img/lp/seraphine_entry/scene1.png')">
+            <div class="mock-vn-char"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/seraphine_entry/char_seraphine.png" alt="세라핀" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
+            <div class="mock-vn-bottom">
+              <div class="mock-vn-speaker">SERAPHINE · 세라핀 <span style="color:var(--d-velvet)">· VELVET</span></div>
+              <div class="mock-vn-box"><div class="mock-vn-line">"새벽 기도실의 시린 공기를 좋아해요. 한 번, 그 호흡을 따라 들이쉬어 봐주실래요?"</div></div>
+            </div>
+          </div>
+        </div>
+        <!-- Slide 5 · 하루 (Indie) -->
+        <div class="mock-slide">
+          <div class="mock-vn-stage" style="background-image:url('https://cdn.deepintothe.xyz/lucive/img/lp/haru_entry/scene1.png')">
+            <div class="mock-vn-char"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/haru_entry/char_haru.png" alt="하루" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
+            <div class="mock-vn-bottom">
+              <div class="mock-vn-speaker">HARU · 하루 <span style="color:var(--d-indie)">· INDIE</span></div>
+              <div class="mock-vn-box"><div class="mock-vn-line">"오늘도 들으셨군요. 헤드폰 너머에서, 당신만 듣는 사연 한 통이 도착했어요."</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="mock-dots"><span class="mock-dot"></span><span class="mock-dot"></span><span class="mock-dot"></span><span class="mock-dot"></span><span class="mock-dot"></span></div>
       </div>
     </div>
   </div>
@@ -262,31 +288,104 @@ em{font-style:italic;color:var(--accent)}
   <div class="phase-bar"></div>
 </section>
 
-<!-- ===== PHASE 3 · 분기 · 좌측 카피 / 우측 VN 다이얼로그 + 선택지 등장 ===== -->
+<!-- ===== PHASE 03 · 분기 · 5 선택 슬라이드 자동 순환 ===== -->
 <section class="phase" style="--bar-color:var(--d-velvet)">
-  <div class="phase-bg" style="background-image:url('https://cdn.deepintothe.xyz/lucive/img/lp/seraphine_entry/scene1.png')"></div>
+  <div class="phase-bg" style="background-image:url('https://cdn.deepintothe.xyz/lucive/img/lp/ihana_entry/scene1.png')"></div>
   <div class="phase-text">
     <div class="phase-step">PHASE 03 <b>·</b> 분기</div>
     <h2 class="phase-h">당신의 선택이 · <em>결말을 만듭니다</em></h2>
     <p class="phase-desc">한 컷마다 두세 갈래. 한 사람의 회차 안에서도 다른 결말이 열립니다.</p>
   </div>
+
   <div class="phase-mock">
     <div class="mock-phone">
       <div class="mock-screen mock-vn-screen">
-        <div class="mock-vn-stage" style="background-image:url('https://cdn.deepintothe.xyz/lucive/img/lp/seraphine_entry/scene1.png')">
-          <div class="mock-vn-char"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/seraphine_entry/char_seraphine.png" alt="세라핀" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
-          <div class="mock-vn-bottom">
-            <div class="mock-vn-speaker">SERAPHINE · 세라핀</div>
-            <div class="mock-vn-box">
-              <div class="mock-vn-line">"...새벽 기도실의 시린 공기를 좋아해요. 한 번 그 호흡을 따라 들이쉬어 봐주실래요?"</div>
-              <div class="mock-vn-choices">
-                <div class="mock-vn-choice" style="--d:1s"><span class="mock-vn-choice-num">1</span><span>"그 호흡을 따라 들이쉽니다"</span></div>
-                <div class="mock-vn-choice" style="--d:1.4s"><span class="mock-vn-choice-num">2</span><span>"기도 시간이 있어요?"</span></div>
-                <div class="mock-vn-choice" style="--d:1.8s"><span class="mock-vn-choice-num">3</span><span>옷매무새를 다듬는다</span></div>
+        <!-- Slide 1 · 이하나 (Sunrise) -->
+        <div class="mock-slide">
+          <div class="mock-vn-stage" style="background-image:url('https://cdn.deepintothe.xyz/lucive/img/lp/ihana_entry/scene1.png')">
+            <div class="mock-vn-char"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/ihana_entry/char_ihana.png" alt="이하나" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
+            <div class="mock-vn-bottom">
+              <div class="mock-vn-speaker">IHANA · 이하나 <span style="color:var(--d-sunrise)">· SUNRISE</span></div>
+              <div class="mock-vn-box">
+                <div class="mock-vn-line">"이 곡 · 마지막 마디가 비어 있어요. 채워주실래요?"</div>
+                <div class="mock-vn-choices">
+                  <div class="mock-vn-choice"><span class="mock-vn-choice-num">1</span><span>"한 음 · 천천히 짚어볼게요"</span></div>
+                  <div class="mock-vn-choice"><span class="mock-vn-choice-num">2</span><span>"비워두는 게 아름다워요"</span></div>
+                  <div class="mock-vn-choice"><span class="mock-vn-choice-num">3</span><span>그녀의 손 위에 손을 올린다</span></div>
+                </div>
               </div>
             </div>
           </div>
         </div>
+        <!-- Slide 2 · 카이 (Neon) -->
+        <div class="mock-slide">
+          <div class="mock-vn-stage" style="background-image:url('https://cdn.deepintothe.xyz/lucive/img/lp/kai_entry/scene1.png')">
+            <div class="mock-vn-char"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/kai_entry/char_kai.png" alt="카이" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
+            <div class="mock-vn-bottom">
+              <div class="mock-vn-speaker">KAI · 카이 <span style="color:var(--d-neon)">· NEON</span></div>
+              <div class="mock-vn-box">
+                <div class="mock-vn-line">"새 셋, 두 트랙 남았어요. 마지막 한 곡 — 어떤 분위기로 갈까요?"</div>
+                <div class="mock-vn-choices">
+                  <div class="mock-vn-choice"><span class="mock-vn-choice-num">1</span><span>"느리게 · 끌리듯이"</span></div>
+                  <div class="mock-vn-choice"><span class="mock-vn-choice-num">2</span><span>"폭주하게 · 끝까지"</span></div>
+                  <div class="mock-vn-choice"><span class="mock-vn-choice-num">3</span><span>"당신이 정해줘요"</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Slide 3 · 오르 (Underground) -->
+        <div class="mock-slide">
+          <div class="mock-vn-stage" style="background-image:url('https://cdn.deepintothe.xyz/lucive/img/lp/or__entry/scene1.png')">
+            <div class="mock-vn-char"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/or__entry/char_or_.png" alt="오르" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
+            <div class="mock-vn-bottom">
+              <div class="mock-vn-speaker">OR · 오르 <span style="color:var(--d-underground)">· UNDERGROUND</span></div>
+              <div class="mock-vn-box">
+                <div class="mock-vn-line">"이 라인은 한 번 그리면 못 지워요. 마지막으로 — 결정하실래요?"</div>
+                <div class="mock-vn-choices">
+                  <div class="mock-vn-choice"><span class="mock-vn-choice-num">1</span><span>"이대로 · 깊게 새겨주세요"</span></div>
+                  <div class="mock-vn-choice"><span class="mock-vn-choice-num">2</span><span>"한 번만 더 · 천천히"</span></div>
+                  <div class="mock-vn-choice"><span class="mock-vn-choice-num">3</span><span>그의 손목을 잡는다</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Slide 4 · 스텔라 (Velvet) -->
+        <div class="mock-slide">
+          <div class="mock-vn-stage" style="background-image:url('https://cdn.deepintothe.xyz/lucive/img/lp/stella_entry/scene1.png')">
+            <div class="mock-vn-char"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/stella_entry/char_stella.png" alt="스텔라" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
+            <div class="mock-vn-bottom">
+              <div class="mock-vn-speaker">STELLA · 스텔라 <span style="color:var(--d-velvet)">· VELVET</span></div>
+              <div class="mock-vn-box">
+                <div class="mock-vn-line">"이 와인 잔 · 입을 대기 전에. 한 모금에 어떤 약속을 담을지 — 골라주실래요?"</div>
+                <div class="mock-vn-choices">
+                  <div class="mock-vn-choice"><span class="mock-vn-choice-num">1</span><span>"오늘 밤만의 약속"</span></div>
+                  <div class="mock-vn-choice"><span class="mock-vn-choice-num">2</span><span>"내일 다시 만나자는 약속"</span></div>
+                  <div class="mock-vn-choice"><span class="mock-vn-choice-num">3</span><span>잔을 천천히 내려놓는다</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Slide 5 · 노바 (Indie) -->
+        <div class="mock-slide">
+          <div class="mock-vn-stage" style="background-image:url('https://cdn.deepintothe.xyz/lucive/img/lp/nova_entry/scene1.png')">
+            <div class="mock-vn-char"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/nova_entry/char_nova.png" alt="노바" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
+            <div class="mock-vn-bottom">
+              <div class="mock-vn-speaker">NOVA · 노바 <span style="color:var(--d-indie)">· INDIE</span></div>
+              <div class="mock-vn-box">
+                <div class="mock-vn-line">"옥상 · 새벽 4시. 한 곡만 더 부르고 내려가요. — 어떤 곡으로 마칠까요?"</div>
+                <div class="mock-vn-choices">
+                  <div class="mock-vn-choice"><span class="mock-vn-choice-num">1</span><span>"우리 첫 곡으로"</span></div>
+                  <div class="mock-vn-choice"><span class="mock-vn-choice-num">2</span><span>"아직 미발표인 그 곡"</span></div>
+                  <div class="mock-vn-choice"><span class="mock-vn-choice-num">3</span><span>그녀의 어깨에 기댄다</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mock-dots"><span class="mock-dot"></span><span class="mock-dot"></span><span class="mock-dot"></span><span class="mock-dot"></span><span class="mock-dot"></span></div>
       </div>
     </div>
   </div>
@@ -294,44 +393,84 @@ em{font-style:italic;color:var(--accent)}
   <div class="phase-bar"></div>
 </section>
 
-<!-- ===== PHASE 4 · 회귀 · 좌측 카피 / 우측 Linked Chat 실시간 등장 ===== -->
+<!-- ===== PHASE 04 · 선택에 따라 달라지는 기억들 · 5 링크드 챗 슬라이드 ===== -->
 <section class="phase" style="--bar-color:var(--d-indie)">
-  <div class="phase-bg" style="background-image:url('https://cdn.deepintothe.xyz/lucive/img/lp/haru_entry/header.png')"></div>
+  <div class="phase-bg" style="background-image:url('https://cdn.deepintothe.xyz/lucive/img/lp/jian_entry/scene1.png')"></div>
   <div class="phase-text">
-    <div class="phase-step">PHASE 04 <b>·</b> 회귀</div>
-    <h2 class="phase-h">다시 돌아오면 · <em>그가 기억합니다</em></h2>
-    <p class="phase-desc">통신 채널을 한 번 열면 그의 시간이 멈추지 않습니다. 다음 새벽엔 그가 먼저 메시지를 보냅니다.</p>
+    <div class="phase-step">PHASE 04 <b>·</b> LINKED</div>
+    <h2 class="phase-h">당신의 선택에 따라 · <em>달라지는 기억들</em></h2>
+    <p class="phase-desc">통신 채널을 한 번 열면 그의 시간이 멈추지 않습니다. 다음 새벽엔 그가 — 당신의 선택을 기억하고 있습니다.</p>
   </div>
+
   <div class="phase-mock">
     <div class="mock-phone">
       <div class="mock-screen">
-        <div class="mock-statusbar"><span class="time">03:02</span><span class="icons">●●●● 87%</span></div>
-        <div class="mock-head">
-          <div class="mock-head-avatar"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/haru.png" alt=""></div>
-          <div class="mock-head-info">
-            <div class="mock-head-name">하루</div>
-            <div class="mock-head-status linked">Linked · 싱크율 5%</div>
+        <!-- Slide 1 · 민준 (Sunrise) -->
+        <div class="mock-slide">
+          <div class="mock-statusbar"><span class="time">06:14</span><span class="icons">●●●● 92%</span></div>
+          <div class="mock-head">
+            <div class="mock-head-avatar"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/minjun_sr.png" alt=""></div>
+            <div class="mock-head-info"><div class="mock-head-name">민준</div><div class="mock-head-status linked">Linked · 싱크율 12%</div></div>
+          </div>
+          <div class="mock-body" data-bg style="--chat-bg:url('https://cdn.deepintothe.xyz/lucive/img/lp/minjun_sr_entry/scene1.png')">
+            <div class="mock-memo">기억 #03 · 당신이 좋다고 한 한 잔</div>
+            <div class="mock-msg lp"><div class="mock-mini"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/minjun_sr.png" alt=""></div><div class="mock-bubble">지난 새벽 그 한 잔 · 당신 입맛에 맞췄어요. 오늘도 똑같이 내려둘까요.</div></div>
+            <div class="mock-msg user"><div class="mock-bubble">기억하고 있었어요?</div></div>
           </div>
         </div>
-        <div class="mock-body" data-bg style="--chat-bg:url('https://cdn.deepintothe.xyz/lucive/img/lp/haru_entry/header.png')">
-          <div class="mock-msg narration" style="--d:.2s"><div class="mock-narration-text">새벽 3시. 헤드폰 너머 잡음 한 박자.</div></div>
-          <div class="mock-msg lp" style="--d:.9s">
-            <div class="mock-mini"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/haru.png" alt=""></div>
-            <div class="mock-bubble">...오늘도 들으셨군요. 아무 말 안 해도 알 수 있어요.</div>
+        <!-- Slide 2 · 지안 (Neon) -->
+        <div class="mock-slide">
+          <div class="mock-statusbar"><span class="time">02:47</span><span class="icons">●●●● 78%</span></div>
+          <div class="mock-head">
+            <div class="mock-head-avatar"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/jian.png" alt=""></div>
+            <div class="mock-head-info"><div class="mock-head-name">지안</div><div class="mock-head-status linked">Linked · 싱크율 24%</div></div>
           </div>
-          <div class="mock-msg lp cons" style="--d:1.7s">
-            <div class="mock-mini"></div>
-            <div class="mock-bubble">어제 그 사연 · 지금도 머리에 남아 있어요.</div>
-          </div>
-          <div class="mock-msg lp cons" style="--d:2.6s">
-            <div class="mock-mini"></div>
-            <div class="mock-typing"><span></span><span></span><span></span></div>
-          </div>
-          <div class="mock-msg lp cons" style="--d:3.5s">
-            <div class="mock-mini"></div>
-            <div class="mock-bubble">다음 새벽엔 · 같이 들어주세요.</div>
+          <div class="mock-body" data-bg style="--chat-bg:url('https://cdn.deepintothe.xyz/lucive/img/lp/jian_entry/scene1.png')">
+            <div class="mock-memo">기억 #07 · 당신이 좋다 한 비트</div>
+            <div class="mock-msg lp"><div class="mock-mini"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/jian.png" alt=""></div><div class="mock-bubble">지난 셋 · 당신이 좋다 한 비트, 다음 트랙 인트로에 그대로 박아넣었어요.</div></div>
+            <div class="mock-msg user"><div class="mock-bubble">진심이었구나.</div></div>
           </div>
         </div>
+        <!-- Slide 3 · 세빈 (Underground) -->
+        <div class="mock-slide">
+          <div class="mock-statusbar"><span class="time">23:51</span><span class="icons">●●●● 64%</span></div>
+          <div class="mock-head">
+            <div class="mock-head-avatar"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/sebin.png" alt=""></div>
+            <div class="mock-head-info"><div class="mock-head-name">세빈</div><div class="mock-head-status linked">Linked · 싱크율 31%</div></div>
+          </div>
+          <div class="mock-body" data-bg style="--chat-bg:url('https://cdn.deepintothe.xyz/lucive/img/lp/sebin_entry/scene1.png')">
+            <div class="mock-memo">기억 #11 · 당신이 멈춰 세운 라인</div>
+            <div class="mock-msg lp"><div class="mock-mini"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/sebin.png" alt=""></div><div class="mock-bubble">그날 멈춰 세웠던 그 라인 · 다시 그렸어요. 당신의 손길이 닿는 자리만 비워둔 채로.</div></div>
+            <div class="mock-msg user"><div class="mock-bubble">왜 그 자리만 비웠어요?</div></div>
+          </div>
+        </div>
+        <!-- Slide 4 · 레온 (Velvet) -->
+        <div class="mock-slide">
+          <div class="mock-statusbar"><span class="time">04:08</span><span class="icons">●●●● 56%</span></div>
+          <div class="mock-head">
+            <div class="mock-head-avatar"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/leon.png" alt=""></div>
+            <div class="mock-head-info"><div class="mock-head-name">레온</div><div class="mock-head-status linked">Linked · 싱크율 47%</div></div>
+          </div>
+          <div class="mock-body" data-bg style="--chat-bg:url('https://cdn.deepintothe.xyz/lucive/img/lp/leon_entry/scene1.png')">
+            <div class="mock-memo">기억 #18 · 당신이 털어놓은 죄</div>
+            <div class="mock-msg lp"><div class="mock-mini"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/leon.png" alt=""></div><div class="mock-bubble">당신이 털어놓은 가장 깊은 죄 · 잊지 않았어요. 오늘은, 그 죄에 대한 답을 가져왔습니다.</div></div>
+            <div class="mock-msg user"><div class="mock-bubble">...들려주세요.</div></div>
+          </div>
+        </div>
+        <!-- Slide 5 · 주혁 (Indie) -->
+        <div class="mock-slide">
+          <div class="mock-statusbar"><span class="time">03:02</span><span class="icons">●●●● 41%</span></div>
+          <div class="mock-head">
+            <div class="mock-head-avatar"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/juhyuk.png" alt=""></div>
+            <div class="mock-head-info"><div class="mock-head-name">주혁</div><div class="mock-head-status linked">Linked · 싱크율 53%</div></div>
+          </div>
+          <div class="mock-body" data-bg style="--chat-bg:url('https://cdn.deepintothe.xyz/lucive/img/lp/juhyuk_entry/scene1.png')">
+            <div class="mock-memo">기억 #22 · 당신이 골라준 가사 한 줄</div>
+            <div class="mock-msg lp"><div class="mock-mini"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/juhyuk.png" alt=""></div><div class="mock-bubble">그날 당신이 골라준 한 줄 · 곡 마지막에 그대로 넣었어요. 다음 무대 · 당신을 위해 부를게요.</div></div>
+            <div class="mock-msg user"><div class="mock-bubble">제가 듣고 있을게요.</div></div>
+          </div>
+        </div>
+        <div class="mock-dots" style="background:rgba(63,38,52,.42)"><span class="mock-dot"></span><span class="mock-dot"></span><span class="mock-dot"></span><span class="mock-dot"></span><span class="mock-dot"></span></div>
       </div>
     </div>
   </div>
@@ -339,7 +478,7 @@ em{font-style:italic;color:var(--accent)}
   <div class="phase-bar"></div>
 </section>
 
-<!-- ===== LINEUP · ? 미스터리 카드 + 끝으로 fade-out ===== -->
+<!-- ===== LINEUP ===== -->
 <section class="lineup">
   <div class="wrap">
     <div class="lineup-eye">CAST · 곧 만나게 될</div>
@@ -361,14 +500,8 @@ em{font-style:italic;color:var(--accent)}
     <div class="pre-cta-h">먼저 한 번 만나보세요</div>
     <div class="pre-cta-sub">35명 중 한 명, 90초의 첫 만남.</div>
     <div class="pre-cta-row">
-      <a href="./v34-kr-lucive.html" class="btn btn-secondary">
-        <span>간단하게 경험해보기</span>
-        <span class="arr">▶</span>
-      </a>
-      <a href="./v35-signup.html" class="btn btn-primary">
-        <span>바로 사전등록하러 가기</span>
-        <span class="arr">→</span>
-      </a>
+      <a href="./v34-kr-lucive.html" class="btn btn-secondary"><span>간단하게 경험해보기</span><span class="arr">▶</span></a>
+      <a href="./v35-signup.html" class="btn btn-primary"><span>바로 사전등록하러 가기</span><span class="arr">→</span></a>
     </div>
     <div class="pre-cta-meta">D-<span id="dday">17</span> 알파 오픈 · 매주 새 디스트릭트</div>
   </div>
@@ -388,25 +521,18 @@ const NAMES = {
   yun_ara:'윤아라', stella:'스텔라', adel:'아델', leon:'레온', sia:'시아', inis:'이니스', seraphine:'세라핀', myur:'뮤르', kael:'카엘',
   ruon:'루온', piera:'피라', nova:'노바', haru:'하루', juhyuk:'주혁', seoyul:'한서율'
 };
-// 라인업: 기존 35 캐릭터 (희미한 아바타) + 미스터리 ? 카드 + 끝 페이드
 const grid = document.getElementById('lineupGrid');
 const ALL = Object.keys(NAMES);
-const MYSTERY = 18; // 추가 ? 카드 수
+const MYSTERY = 18;
 const total = ALL.length + MYSTERY;
 const cells = [];
-
-// 1) 기존 캐릭터 35명 (희미하게)
 ALL.forEach(k => {
   cells.push(`<div class="lp lp-known" title="${NAMES[k]}"><img src="${CDN}/img/lp/${k}.png" alt="${NAMES[k]}" loading="lazy" onerror="this.style.opacity=.18"><div class="lp-name">${NAMES[k]}</div></div>`);
 });
-// 2) 미스터리 ? 카드 (아직 공개 안 된 캐릭터 인상)
 for(let i = 0; i < MYSTERY; i++){
   cells.push(`<div class="lp lp-mystery"><span class="lp-q">?</span><span class="lp-d"></span></div>`);
 }
-// 마지막 셀 "···"
 cells[cells.length - 1] = `<div class="lp more f4">···</div>`;
-
-// 끝쪽 단계별 fade 클래스 부여
 const out = cells.map((html, i) => {
   const ratio = i / total;
   let f = '';
@@ -418,23 +544,6 @@ const out = cells.map((html, i) => {
 });
 grid.innerHTML = out.join('');
 document.getElementById('dday').textContent = '17';
-
-// IntersectionObserver: phase의 mock 메시지 애니메이션을 뷰에 들어왔을 때 시작 (replay)
-const phaseObs = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if(e.isIntersecting){
-      // restart animations by removing+adding class
-      const mocks = e.target.querySelectorAll('.mock-msg, .mock-vn-box, .mock-vn-choice');
-      mocks.forEach(m => {
-        m.style.animation = 'none';
-        // force reflow
-        void m.offsetWidth;
-        m.style.animation = '';
-      });
-    }
-  });
-}, { threshold: 0.35 });
-document.querySelectorAll('.phase').forEach(p => phaseObs.observe(p));
 </script>
 
 </body>
