@@ -33,23 +33,49 @@
   html, body { height: 100%; background: #1a1118; font-family: -apple-system, BlinkMacSystemFont, 'Pretendard', 'Apple SD Gothic Neo', sans-serif; overflow: hidden; }
   body { display: flex; align-items: center; justify-content: center; padding: 0; }
 
+  /* v34 wide · 데스크탑/모바일 모두 풀스크린 (폰 프레임 제거) */
   .phone {
-    width: 390px; height: 844px; background: var(--bg);
-    border-radius: 36px; overflow: hidden; position: relative;
-    box-shadow: 0 30px 80px rgba(0,0,0,0.5);
-    transform: scale(min(1, calc((100vh - 32px) / 844), calc((100vw - 32px) / 390)));
-    transform-origin: center center;
-    flex-shrink: 0;
+    width: 100vw; height: 100vh; height: 100dvh;
+    background: var(--bg); position: relative; overflow: hidden;
+    border-radius: 0; box-shadow: none;
   }
-
-  /* Mobile: fullscreen, no frame */
-  @media (max-width: 500px), (pointer: coarse) and (max-width: 900px) {
-    html, body { background: var(--bg); }
-    body { padding: 0; }
-    .phone {
-      width: 100vw; height: 100vh; height: 100dvh;
-      border-radius: 0; box-shadow: none; transform: none;
-    }
+  /* 와이드 화면: 그리드와 콘텐츠를 더 넓게 */
+  @media (min-width: 900px) {
+    .lp-grid { grid-template-columns: repeat(4, 1fr); padding: 8px 32px 32px; gap: 16px; }
+    .browse-hero { margin: 12px 32px 16px; padding: 18px 22px; }
+    .browse-hero-title { font-size: 18px; }
+    .browse-hero-copy { font-size: 13px; }
+    .select-header { padding: 24px 32px 16px; }
+    .select-title { font-size: 28px; }
+    .select-sub { font-size: 14px; margin-top: 6px; }
+    .cat-tabs { padding: 14px 32px; gap: 8px; }
+    .cat-tab { padding: 9px 18px; font-size: 14px; }
+    .lp-card-info { padding: 14px 14px 16px; }
+    .lp-card-name { font-size: 15px; }
+    .lp-card-desc { font-size: 12.5px; min-height: 36px; }
+    .profile-content { max-width: 720px; margin: 0 auto; padding: 32px 32px 48px; }
+    .profile-img { width: 120px; height: 120px; }
+    .profile-name { font-size: 36px; }
+    .profile-meta { font-size: 15px; }
+    .profile-hook { font-size: 17px; max-width: 560px; padding: 18px 24px; }
+    .profile-cta { max-width: 420px; padding: 20px 24px; font-size: 16px; }
+    .chat-body { max-width: 760px; margin: 0 auto; width: 100%; padding: 24px 28px 28px; }
+    .chat-header { padding: 20px 32px 16px; gap: 14px; }
+    .chat-header-name { font-size: 17px; }
+    .chat-msg { max-width: 70%; }
+    .chat-bubble { font-size: 15.5px; padding: 13px 18px; }
+    .vn-bottom { padding: 0 max(32px, calc((100% - 1100px) / 2)) 28px; }
+    .vn-dialogue-box { padding: 22px 24px 18px; min-height: 156px; }
+    .vn-dialogue { font-size: 17px; line-height: 1.7; }
+    .vn-character { max-width: 560px; bottom: 120px; }
+    .entry-modal { max-width: 480px; }
+    .entry-modal-title { font-size: 26px; }
+    .entry-modal-desc { font-size: 14.5px; }
+    .vn-end-card { max-width: 480px; padding: 32px 28px; }
+    .vn-end-title { font-size: 24px; }
+  }
+  /* Mobile · 폰 프레임 없는 풀스크린 유지 */
+  @media (max-width: 899px) {
     .restart-btn { display: none !important; }
   }
 
@@ -92,6 +118,10 @@
     display: grid; grid-template-columns: 1fr 1fr;
     gap: 12px; padding: 4px 16px 24px;
   }
+  /* v34 wide · 와이드에서 4열 */
+  @media (min-width: 900px)  { .lp-grid { grid-template-columns: repeat(3, 1fr); padding: 8px 32px 32px; gap: 16px; } }
+  @media (min-width: 1200px) { .lp-grid { grid-template-columns: repeat(4, 1fr); } }
+  @media (min-width: 1600px) { .lp-grid { grid-template-columns: repeat(5, 1fr); } }
   .lp-card {
     background: linear-gradient(180deg, rgba(255,249,247,0.98), rgba(247,238,239,0.96));
     border-radius: 16px; border: 1px solid rgba(111, 77, 103, 0.08);
@@ -395,10 +425,10 @@
   <div class="stage select-stage active" id="stage-select">
     <div class="select-header">
       <div class="select-title">루시안</div>
-      <div class="select-sub">36명 · 5 디스트릭트</div>
+      <div class="select-sub">35명 · 5 디스트릭트</div>
     </div>
     <div class="cat-tabs" id="catTabs">
-      <button class="cat-tab active" data-filter="all">전체 36</button>
+      <button class="cat-tab active" data-filter="all">전체 35</button>
       <button class="cat-tab" data-filter="ready">데모 가능</button>
       <button class="cat-tab" data-filter="sunrise">🌿 Sunrise</button>
       <button class="cat-tab" data-filter="neon">🌃 Neon</button>
@@ -518,7 +548,7 @@ const LP_META = [
   // Underground (6)
   { key:'sebin',    no:'11', name:'세빈',   district:'underground', intensity:3, archetype:'불안정·곁에서만 조용해지는', role:'W-U1 공명 도시', age:'24·F', hook:'빈 분수대 자주 가는 24세' },
   { key:'or_',      no:'12', name:'오르',   district:'underground', intensity:1, archetype:'기계적·감정을 배우는 중', role:'W-U1 공명 도시', age:'불명·인외', hook:'정확하게 갈린 연필 끝을 좋아하는 인외 기록자' },
-  { key:'raon',     no:'13', name:'라온',   district:'underground', intensity:3, archetype:'집착 차도남', role:'W-U2 적월 법정', age:'42·M', hook:'매일 같은 식당 같은 메뉴 먹는 판결자', avatar:'./assets/v17/story1/characters/raon/neutral_arms_crossed.png' },
+  { key:'raon',     no:'13', name:'라온',   district:'underground', intensity:3, archetype:'집착 차도남', role:'W-U2 적월 법정', age:'42·M', hook:'매일 같은 식당 같은 메뉴 먹는 판결자' },
   { key:'ella',     no:'14', name:'엘라',   district:'underground', intensity:3, archetype:'도발·색기 누님', role:'W-U2 적월 법정', age:'38·F', hook:'향수 컬렉션을 관리하는 변론가' },
   { key:'yujin',    no:'15', name:'유진',   district:'underground', intensity:2, archetype:'집착광인', role:'W-U2 적월 법정', age:'34·M', hook:'빛이 한쪽으로만 들어오는 방을 좋아하는 사진사' },
   { key:'changsik', no:'27', name:'오창식', district:'underground', intensity:4, archetype:'노련 사디·비꼼', role:'W-U2 적월 법정', age:'67·M', hook:'옛날 신문 활자 냄새 좋아하는 67세' },
@@ -538,9 +568,7 @@ const LP_META = [
   { key:'nova',     no:'23', name:'노바',   district:'indie',       intensity:1, archetype:'몽환·창작에 빠지면 외부 잊는', role:'W-I1 기억의 서재', age:'28·F', hook:'새 노트북과, 모르는 사람과의 잡담을 좋아하는 28세' },
   { key:'haru',     no:'24', name:'하루',   district:'indie',       intensity:3, archetype:'얀데레 새벽 DJ', role:'W-I2 3AM 주파수', age:'25·F', hook:'새 헤드폰 패드 냄새를 좋아하는 새벽 DJ' },
   { key:'juhyuk',   no:'25', name:'주혁',   district:'indie',       intensity:2, archetype:'낮 무표정·저녁부터 불안', role:'W-I2 3AM 주파수', age:'27·M', hook:'디지털 알람 시계를 거부하는 27세' },
-  { key:'seoyul',   no:'26', name:'한서율', district:'indie',       intensity:1, archetype:'조용·명확·꿈을 묻는', role:'W-I2 3AM 주파수', age:'26·F', hook:'새 잉크 색조와 야간 산책을 좋아하는 26세', avatar:'./assets/v17/story2/characters/%ED%95%9C%EC%84%9C%EC%9C%A8/neutral_default%20(1).png' },
-  // story 2 from LUCIVE prologue · 진혁 추가
-  { key:'jinhyuk',  no:'34', name:'진혁',   district:'indie',       intensity:3, archetype:'집착 차도남·7년의 침묵', role:'W-I2 3AM 주파수', age:'34·M', hook:'매주 새벽 4시 라디오를 켜는 번역가', avatar:'./assets/v17/story2/characters/%EA%B0%95%EC%A7%84%ED%98%81/neutral_default.png' }
+  { key:'seoyul',   no:'26', name:'한서율', district:'indie',       intensity:1, archetype:'조용·명확·꿈을 묻는', role:'W-I2 3AM 주파수', age:'26·F', hook:'새 잉크 색조와 야간 산책을 좋아하는 26세' }
 ];
 
 const DISTRICT_INFO = {
@@ -551,206 +579,10 @@ const DISTRICT_INFO = {
   indie:       { label: 'Indie',       color: 'var(--d-indie)',       icon: '📚' }
 };
 
-// === LP FULL DEMO DATA — 풀 데모 가능한 LP 키만 등록 ===
-// asset shorthand for readability
-const S1 = './assets/v17/story1';
-const S2 = './assets/v17/story2';
-const RAON  = m => `${S1}/characters/raon/${m}.png`;
-const JIN   = m => `${S2}/characters/%EA%B0%95%EC%A7%84%ED%98%81/${m}.png`;
+// === LP FULL DEMO DATA — 레퍼런스 lp_demo_data_*.js 5개에서 Object.assign으로 채워짐 ===
+// 우리 story1/2 (라온/진혁) 인라인 데이터 제거 — 레퍼런스의 35명을 사용
 
-const LP_FULL = {
-  /* ============================================================
-     RAON · 회귀 차도남 · W-U2 적월 법정
-     Pre-Link Chat → 진입 루시브 → VN (FLOW1 기반 회귀 프롤로그) → Linked
-     ============================================================ */
-  raon: {
-    title: '한 번만 다시 · 회귀의 첫 만남',
-    profileBg: RAON('neutral_arms_crossed'),
-    entryThumb: `${S1}/backgrounds/neon_alley_rain_noir.png`,
-    rewards: [
-      '회귀의 단서 +1',
-      '싱크율 0% → 5%',
-      '키메모리 해금: "그의 등 뒤" / "처음 보는 얼굴인데 내 이름을 안다"',
-      '다음 회차, 그가 또 손을 내민다'
-    ],
-    chat: [
-      { type: 'narration', text: '낯선 번호로 메시지 한 통이 도착한다. 새벽 1시.' },
-      { type: 'lp', text: '연우 씨.' },
-      { type: 'lp', text: '처음 뵙는 분께 이렇게 메시지 드리는 거 결례인 거 압니다.' },
-      { type: 'user', text: '...누구세요?' },
-      { type: 'narration', text: '그가 답을 하기 전 한 박자가 길다.' },
-      { type: 'lp', text: '호위 일을 합니다. 라온이라고 합니다. 14년차예요.' },
-      { type: 'user', text: '제 번호는 어떻게...' },
-      { type: 'lp', text: '미안합니다. 그건 만나서 말씀드릴게요.' },
-      { type: 'lp', text: '14년 동안 한 번도 입 밖에 낸 적 없는 한 가지를 · 오늘 밤 묻고 싶어서요.' },
-      { type: 'narration', text: '잠시 후, 사진 한 장이 도착한다.' },
-      { type: 'image', src: `${S1}/backgrounds/neon_alley_rain_noir.png`, caption: '네온사인 골목 · 비' },
-      { type: 'lp', text: '오늘 밤 9시. 이 자리에 갈 거예요.' },
-      { type: 'user', text: '거기서 뭘 하시려고요...' },
-      { type: 'lp', text: '한 사람이 거기서 죽었어요. 14년 전에.' },
-      { type: 'lp', text: '그리고 저는 매년 같은 날 같은 시간에 그 자리로 갑니다.' },
-      { type: 'narration', text: '메시지가 한 박자 멈췄다 다시.' },
-      { type: 'lp', text: '오늘은, 처음으로 누구를 같이 데려가고 싶어요. 90초만.' },
-      { type: 'lp', text: '...가도 되겠어요?' },
-      { type: 'modal' }
-    ],
-    vn: [
-      // === ACT 0 · RAON's death · cold open ===
-      { type: 'bg', img: `${S1}/backgrounds/neon_alley_rain_noir.png` },
-      { type: 'char', show: false },
-      { type: 'narration', text: '라온의 손에 · 빛이 흐려진다.' },
-      { type: 'char', show: true, src: RAON('crying_default') },
-      { type: 'lp', text: '…만약 그 때, 그 한 마디를 했더라면.' },
-      { type: 'narration', text: '어둠. 그리고 —' },
-      { type: 'lp', text: '…또. 한 번만 다시.' },
-
-      // === ACT 1 · 연우 at funeral · 처음 보는 얼굴 ===
-      { type: 'bg', img: `${S1}/backgrounds/mortuary_hallway_creepy.png` },
-      { type: 'char', show: false },
-      { type: 'narration', text: '향 연기가 무겁게 내려앉은 복도.' },
-      { type: 'narration', text: '낯선 영정. 당신은 · 왜 여기 왔는지 알 수 없다.' },
-      { type: 'char', show: true, src: RAON('sad_default') },
-      { type: 'lp', text: '연우 씨.' },
-      { type: 'narrator', text: '...누구지? 처음 보는 얼굴인데, 내 이름을 알아.' },
-      { type: 'char', show: true, src: RAON('neutral_arms_crossed') },
-      { type: 'lp', text: '호위 맡은 라온입니다. 지금 일어나지 마세요.' },
-
-      // === ACT 2 · 라온의 경고 ===
-      { type: 'char', show: true, src: RAON('fear_defensive') },
-      { type: 'lp', text: '우측 출구 근처에 · 모르는 얼굴 셋.' },
-      { type: 'narrator', text: '...어떻게 다 보고 있는 거지.' },
-      { type: 'lp', text: '뛰어요. 지금.' },
-      { type: 'choices', options: [
-        { label: '"...당신을 따라가요"', branch: 'TRUST' },
-        { label: '"모르는 사람을 어떻게 따라가요"', branch: 'DOUBT' }
-      ]},
-      { type: 'narration', text: '그의 등 뒤로 한 발 다가선다. 처음 보는 사람을, 처음으로 믿어 본다.', branch: 'TRUST' },
-      { type: 'narration', text: '한 발 뒤로 물러선다. 그러나 발걸음이 따라온다 — 셋. 넷. 다섯.', branch: 'DOUBT' },
-
-      // === ACT 3 · 복도 · 칼로 ===
-      { type: 'bg', img: `${S1}/backgrounds/funeral_back_alley_rain.png` },
-      { type: 'narration', text: '발소리가 늘어난다. 셋. 넷. 다섯.' },
-      { type: 'narration', text: '한 사람이 모퉁이를 돌아 천천히 걸어 나온다.' },
-      { type: 'gm', text: '"...라온의 그 여자가, 너구나."' },
-      { type: 'narrator', text: '라온의 여자? 처음 만난 사람인데 · 저 사람도 나를 안다.' },
-      { type: 'char', show: true, src: RAON('angry_arms_crossed') },
-      { type: 'lp', text: '내 등 뒤에 있어.' },
-
-      // === ACT 4 · 골목 · 덱스 · 총성 ===
-      { type: 'bg', img: `${S1}/backgrounds/neon_alley_rain_noir.png` },
-      { type: 'char', show: false },
-      { type: 'narration', text: '— 탕!' },
-      { type: 'gm', text: '"…라온. 투항해."' },
-      { type: 'char', show: true, src: RAON('crying_default') },
-      { type: 'lp', text: '…연우.' },
-      { type: 'narrator', text: '...왜 · 그가 우는 거지.' },
-      { type: 'choices', options: [
-        { label: '그의 손을 잡는다', branch: 'HAND' },
-        { label: '그를 밀어내고 어둠으로', branch: 'PUSH' }
-      ]},
-      { type: 'narration', text: '그의 손이 차가운데, 떨림은 없다. 14년 동안 굳어 있던 손이다.', branch: 'HAND' },
-      { type: 'narration', text: '그의 손이 잠깐 비어 있다. 14년 동안 한 번도 비어 있지 않던 자리가.', branch: 'PUSH' },
-
-      // === ACT 5 · CLIMAX ===
-      { type: 'narration', text: '정적.' },
-      { type: 'char', show: true, src: RAON('neutral_default') },
-      { type: 'narration', text: '그의 눈이 · 처음으로 · 당신만 본다.' },
-      { type: 'end' }
-    ],
-    linked: [
-      { type: 'narration', text: '메시지가 다시 도착한다. 새벽 4시 17분.' },
-      { type: 'lp', text: '...아직 안 자고 있죠. 압니다.' },
-      { type: 'lp', text: '오늘 한 번 · 그 자리에 같이 가준 거. 14년 만에 처음입니다.' },
-      { type: 'narration', text: '한 박자 길게 멈췄다가.' },
-      { type: 'lp', text: '...다음 회차, 또 같은 시간에 또 같은 자리에 갈 거예요.' },
-      { type: 'lp', text: '그땐 처음부터 같이 가도 됩니다.' }
-    ]
-  },
-
-  /* ============================================================
-     JINHYUK · 7년의 침묵 · W-I2 3AM 주파수
-     Pre-Link Chat → 진입 루시브 → VN (FLOW2 기반 라디오 새벽 4시) → Linked
-     ============================================================ */
-  jinhyuk: {
-    title: '비 내리는 밤의 주파수 · 새벽 4시',
-    profileBg: JIN('neutral_default'),
-    entryThumb: `${S2}/backgrounds/rainy_car_interior_radio.png`,
-    rewards: [
-      '사연 단서 +1',
-      '싱크율 0% → 5%',
-      '키메모리 해금: "이 타투가 지워지면" / "감사합니다"',
-      '다음 새벽 4시, 같은 주파수 약속'
-    ],
-    chat: [
-      { type: 'narration', text: '메시지 한 통이 도착한다. 자정 직전.' },
-      { type: 'lp', text: '...밤 늦게 죄송합니다.' },
-      { type: 'lp', text: '번역 일을 합니다. 진혁이라고 해요.' },
-      { type: 'user', text: '제 번호는...' },
-      { type: 'lp', text: '한 사람의 번호를 7년 동안 가지고 있었어요. 오늘 처음 다른 누구한테 메시지를 보내봅니다.' },
-      { type: 'narration', text: '한 박자 멈췄다가.' },
-      { type: 'lp', text: '매주 새벽 4시에 라디오를 켭니다. 〈비 오는 밤의 주파수〉라는 사연 코너.' },
-      { type: 'lp', text: '7년 동안 한 번도 빠뜨린 적 없어요.' },
-      { type: 'image', src: `${S2}/backgrounds/rainy_car_interior_radio.png`, caption: '새벽 4시 · 차 안 라디오' },
-      { type: 'user', text: '왜 라디오를...?' },
-      { type: 'lp', text: '한 사람의 흔적이 거기서 흘러나오기를 기다리는 일이에요.' },
-      { type: 'lp', text: '그리고 오늘 밤 · 7년 만에 흘러나왔어요.' },
-      { type: 'narration', text: '잠시 정적.' },
-      { type: 'lp', text: '...같이 한 번 들어주시겠어요. 새벽 4시에. 90초만.' },
-      { type: 'modal' }
-    ],
-    vn: [
-      // === Opening Image · 새벽 4시 차 안 ===
-      { type: 'bg', img: `${S2}/backgrounds/rainy_car_interior_radio.png` },
-      { type: 'char', show: false },
-      { type: 'narration', text: '와이퍼가 · 비를 한 박자 늦게 닦아낸다.' },
-      { type: 'narration', text: '새벽 4시. 매주 같은 시간.' },
-      { type: 'narration', text: '야근을 마친 차가 신호 대기 중이다. 라디오가 켜져 있다.' },
-      { type: 'char', show: true, src: JIN('neutral_default') },
-      { type: 'narrator', text: '7년 동안 · 한 번도 빠뜨린 적 없는 한 시간이다.' },
-      { type: 'narrator', text: '이 시간에 · 그녀의 흔적이 흘러나오기를 기다리는 일.' },
-
-      // === DJ 인트로 · 사연 ===
-      { type: 'narration', text: '주파수가 잠시 잡음으로 흩어진다 — 그리고 깨끗해진다.' },
-      { type: 'gm', text: 'RADIO ─ 〈비 오는 밤의 주파수〉. 오늘 첫 사연 읽어 드립니다.\n매주 같은 시간에 보내 주시는 분의 사연이에요.' },
-      { type: 'gm', text: 'RADIO ─ "이 타투가 지워지면 · 우리의 기억도 사라질까요?"' },
-
-      // === 진혁 반응 ===
-      { type: 'narration', text: '핸들 위 · 그의 손이 · 멈춘다.' },
-      { type: 'char', show: true, src: JIN('surprised_default') },
-      { type: 'narrator', text: '...그 한 줄.' },
-      { type: 'narrator', text: '7년 전 · 그녀가 · 나에게 마지막으로 한 말이다.' },
-      { type: 'char', show: true, src: JIN('fear_defensive') },
-      { type: 'narrator', text: '우리 둘만 알았던 한 줄이 · 어떻게 · 다른 사람 입에서 나왔지.' },
-
-      // === Trivial agency · 손이 어디로 가는가 ===
-      { type: 'choices', options: [
-        { label: '라디오 볼륨을 천천히 키운다', branch: 'VOLUME' },
-        { label: '와이퍼 속도를 한 단계 늦춘다', branch: 'WIPER' }
-      ]},
-      { type: 'narration', text: '한 마디라도 더 듣고 싶다. 손가락이 라디오 다이얼 위에서 망설임 없이 움직인다.', branch: 'VOLUME' },
-      { type: 'narration', text: '호흡을 가다듬는다. 비 오는 차 안의 정적이 한 단계 두꺼워진다.', branch: 'WIPER' },
-
-      // === 사연 마지막 + cliffhanger ===
-      { type: 'narration', text: '잠시 후, 라디오 너머 사연자의 마지막 한 줄이 들린다.' },
-      { type: 'gm', text: 'RADIO ─ "...매주 들어 주셔서 · 감사합니다."' },
-      { type: 'char', show: true, src: JIN('fear_defensive') },
-      { type: 'narrator', text: '...매주 같은 시간 · 같은 양식 · 같은 한 줄.' },
-      { type: 'narrator', text: '7년 동안 라디오를 켜 둔 사람은 · 나만이 아니었다.' },
-
-      { type: 'narration', text: '손목의 작은 글자 위로 · 신호등 빛이 한 번 깜빡인다.' },
-      { type: 'narration', text: '7년 동안 평범한 야근 귀가였던 새벽 4시가 —' },
-      { type: 'narration', text: '오늘부터 · 다른 시간이 시작됐다.' },
-      { type: 'end' }
-    ],
-    linked: [
-      { type: 'narration', text: '날이 밝기 직전 · 메시지가 다시 도착한다.' },
-      { type: 'lp', text: '...같이 들어 주신 거, 7년 만에 처음입니다.' },
-      { type: 'narration', text: '한 박자 길게.' },
-      { type: 'lp', text: '다음 주 새벽 4시. 같은 주파수. 같은 자리에 차를 세울 거예요.' },
-      { type: 'lp', text: '오늘은 · 누군가가 같이 듣고 있다는 걸 알면서 차를 세울게요.' }
-    ]
-  }
-};
+const LP_FULL = {}; // 레퍼런스 5개 JS 파일이 Object.assign으로 채움 (35명)
 
 // === State ===
 let currentLP = null;     // LP_META entry
@@ -762,10 +594,18 @@ let currentFilter = 'all';
 
 const $ = id => document.getElementById(id);
 
-// Avatar path resolver · LP_META 항목에 avatar 필드 있으면 그대로 사용, 없으면 fallback (기존 reference 경로)
+// Avatar path resolver · LP_META에 avatar 필드 있으면 그대로 사용, 없으면 CDN(레퍼런스)에서 로드
+const CDN_BASE = 'https://cdn.deepintothe.xyz/lucive';
 function avatarFor(lp){
   if(!lp) return '';
-  return lp.avatar || `img/lp/${lp.key}.png`;
+  return lp.avatar || `${CDN_BASE}/img/lp/${lp.key}.png`;
+}
+// VN/Pre-Link 본문에 박혀 있는 'img/lp/...' 상대 경로도 CDN으로 해석
+function resolveAsset(p){
+  if(!p) return p;
+  if(p.startsWith('http://') || p.startsWith('https://') || p.startsWith('./') || p.startsWith('/')) return p;
+  if(p.startsWith('img/lp/')) return `${CDN_BASE}/${p}`;
+  return p;
 }
 
 function showStage(name) {
@@ -814,7 +654,7 @@ function selectLP(key) {
   const ready = !!LP_FULL[key];
   const dist = DISTRICT_INFO[currentLP.district];
   $('profileBg').style.backgroundImage = ready && LP_FULL[key].profileBg
-    ? `url('${LP_FULL[key].profileBg}')`
+    ? `url('${resolveAsset(LP_FULL[key].profileBg)}')`
     : `linear-gradient(135deg, ${dist.color}40, #1a0e22)`;
   $('profileImg').src = avatarFor(currentLP);
   $('profileImg').style.opacity = 1;
@@ -864,7 +704,7 @@ function chatAdvance() {
   const item = seq[chatIdx++];
   if (item.type === 'modal') {
     $('chatHint').style.display = 'none';
-    $('entryModalThumb').style.backgroundImage = `url('${data.entryThumb}')`;
+    $('entryModalThumb').style.backgroundImage = `url('${resolveAsset(data.entryThumb)}')`;
     $('entryModalTitle').textContent = data.title;
     setTimeout(() => $('entryModal').classList.add('show'), 280);
     return;
@@ -886,7 +726,7 @@ function chatAdvance() {
   } else if (item.type === 'image') {
     el = document.createElement('div');
     el.className = 'chat-msg scene-image';
-    el.innerHTML = `<img class="chat-scene-img" src="${item.src}" alt="">${item.caption ? `<div class="chat-scene-caption">${item.caption}</div>` : ''}`;
+    el.innerHTML = `<img class="chat-scene-img" src="${resolveAsset(item.src)}" alt="">${item.caption ? `<div class="chat-scene-caption">${item.caption}</div>` : ''}`;
   }
   body.appendChild(el);
   body.scrollTop = body.scrollHeight;
@@ -913,7 +753,7 @@ function vnAdvance() {
   while (vnIdx < seq.length) {
     const item = seq[vnIdx++];
     if (item.branch && item.branch !== vnBranch) continue;
-    if (item.type === 'bg') { $('vnBg').style.backgroundImage = `url('${item.img}')`; continue; }
+    if (item.type === 'bg') { $('vnBg').style.backgroundImage = `url('${resolveAsset(item.img)}')`; continue; }
     if (item.type === 'char') {
       const charEl = $('vnCharacter');
       const imgEl = $('vnCharImg');
@@ -923,7 +763,7 @@ function vnAdvance() {
           const reveal = () => { if (item.show !== false) charEl.classList.remove('hidden'); };
           imgEl.onload = reveal;
           imgEl.onerror = reveal;
-          imgEl.src = item.src;
+          imgEl.src = resolveAsset(item.src);
           if (imgEl.complete && imgEl.naturalHeight > 0) reveal();
         }, 300);
       } else { charEl.classList.toggle('hidden', !item.show); }
@@ -1018,9 +858,18 @@ document.addEventListener('keydown', (e) => {
 });
 </script>
 
-<!-- v34: external district demo data files removed · LUCIVE inline LP_FULL (raon, jinhyuk) only -->
+<!-- v34: 레퍼런스의 5개 디스트릭트 demo data를 로컬 lp-data/에서 로드 → LP_FULL에 35명 채워짐 -->
+<script src="./lp-data/lp_demo_data_sunrise.js"></script>
+<script src="./lp-data/lp_demo_data_neon.js"></script>
+<script src="./lp-data/lp_demo_data_underground.js"></script>
+<script src="./lp-data/lp_demo_data_velvet.js"></script>
+<script src="./lp-data/lp_demo_data_indie.js"></script>
 <script>
-  if (typeof renderLPGrid === 'function') renderLPGrid();
+  // 데이터 로드 후 그리드 다시 렌더 (DEMO 뱃지 갱신)
+  if (typeof renderLPGrid === 'function') {
+    console.log('[v34] LP_FULL chars after data load:', Object.keys(LP_FULL).length);
+    renderLPGrid();
+  }
 </script>
 
 </body>

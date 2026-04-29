@@ -3,22 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LUCIVE · 그가 당신의 결말을 만듭니다 (v35 wide)</title>
-<meta name="description" content="36명의 루시안 · 5 디스트릭트 · 당신의 선택이 결말을 만든다. LUCIVE 알파테스터 사전등록.">
+<title>LUCIVE · 그가 당신의 결말을 만듭니다 (v35)</title>
+<meta name="description" content="36명의 루시안 · 5 디스트릭트 · 당신의 선택이 결말을 만든다.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&family=JetBrains+Mono:wght@500;700;800&family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&family=JetBrains+Mono:wght@500;700;800&family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500;1,700&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#08090C; --bg-soft:#0F0B16; --bg-elev:#161121;
   --ink:#F5F0EE; --ink-soft:#C9C3CD; --muted:#7A7080;
   --gold:#D6B07C; --gold-soft:rgba(214,176,124,.7);
-  --pink:#EC4899; --purple:#8B5CF6; --cyan:#06B6D4; --blue:#2563EB;
-  --d-sunrise:#FFB56B;
-  --d-neon:#5EC8FF;
-  --d-underground:#D45877;
-  --d-velvet:#C084FC;
-  --d-indie:#7EE5B8;
+  --pink:#EC4899; --purple:#8B5CF6; --cyan:#06B6D4;
+  --d-sunrise:#FFB56B; --d-neon:#5EC8FF; --d-underground:#D45877; --d-velvet:#C084FC; --d-indie:#7EE5B8;
   --display:'Cormorant Garamond',serif;
   --sans:'Inter',-apple-system,sans-serif;
   --mono:'JetBrains Mono',monospace;
@@ -27,276 +23,198 @@
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{background:var(--bg);color:var(--ink);font-family:var(--sans);scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
 body{overflow-x:hidden}
-
 img{max-width:100%;display:block}
-em{font-style:normal;background:linear-gradient(90deg,var(--cyan),var(--purple),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+em{font-style:italic;background:linear-gradient(90deg,var(--gold),#fce7c8);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 
-.section{position:relative;width:100%;padding:120px 32px;display:flex;flex-direction:column;align-items:center;overflow:hidden}
-@media(min-width:1100px){.section{padding:160px 40px}}
-
-.kicker{font-family:var(--mono);font-size:11px;letter-spacing:.4em;font-weight:800;color:var(--gold);text-transform:uppercase;margin-bottom:18px}
-.section-h{font-family:var(--display);font-size:clamp(36px,6vw,72px);font-weight:700;letter-spacing:-.01em;line-height:1.08;text-align:center;color:var(--ink);max-width:1100px}
-.section-sub{font-size:clamp(15px,1.4vw,18px);color:var(--ink-soft);line-height:1.7;text-align:center;max-width:680px;margin-top:22px}
-
-/* =================== PHASE 1 · HERO =================== */
-.hero{min-height:100vh;min-height:100dvh;justify-content:center;padding:80px 32px}
+/* ===== HERO (50-60vh, compact) ===== */
+.hero{position:relative;min-height:62vh;min-height:62dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 32px 60px;text-align:center;overflow:hidden}
 .hero-bg{position:absolute;inset:0;background-size:cover;background-position:center;z-index:0;filter:saturate(1.05)}
-.hero-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,9,12,.55) 0%,rgba(8,9,12,.45) 35%,rgba(8,9,12,.85) 75%,rgba(8,9,12,1) 100%)}
-.hero-noise{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.04;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:256px}
-.hero-content{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;max-width:1100px;text-align:center}
-.hero-brand{font-family:var(--mono);font-size:13px;letter-spacing:.5em;font-weight:800;color:var(--gold);text-transform:uppercase;margin-bottom:32px}
-.hero-h{font-family:var(--display);font-size:clamp(44px,8.5vw,108px);font-weight:700;letter-spacing:-.015em;line-height:1.02;color:var(--ink)}
-.hero-h s{text-decoration:line-through;text-decoration-color:rgba(245,240,238,.32);text-decoration-thickness:1.5px;color:var(--muted);font-style:italic}
+.hero-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,9,12,.55) 0%,rgba(8,9,12,.5) 30%,rgba(8,9,12,.92) 90%,rgba(8,9,12,1) 100%)}
+.hero-content{position:relative;z-index:2;max-width:1080px}
+.hero-brand{font-family:var(--mono);font-size:11.5px;letter-spacing:.5em;font-weight:800;color:var(--gold);text-transform:uppercase;margin-bottom:24px}
+.hero-h{font-family:var(--display);font-size:clamp(34px,5.6vw,64px);font-weight:700;letter-spacing:-.01em;line-height:1.14;color:var(--ink)}
 .hero-h em{font-style:italic}
-.hero-sub{font-size:clamp(16px,1.6vw,21px);color:rgba(245,240,238,.78);line-height:1.7;margin-top:36px;max-width:720px;letter-spacing:-.005em}
-.hero-meta{display:flex;gap:32px;justify-content:center;flex-wrap:wrap;margin-top:38px;font-family:var(--mono);font-size:12px;letter-spacing:.18em;color:var(--gold-soft);text-transform:uppercase;font-weight:700}
-.hero-meta .dot{display:inline-block;width:4px;height:4px;border-radius:50%;background:var(--gold);margin-right:10px;vertical-align:middle}
-.scroll-cue{position:absolute;bottom:34px;left:50%;transform:translateX(-50%);z-index:3;font-family:var(--mono);font-size:10px;letter-spacing:.32em;color:rgba(245,240,238,.55);text-transform:uppercase;font-weight:700;display:flex;flex-direction:column;align-items:center;gap:8px;animation:scrollPulse 2.4s ease-in-out infinite}
-.scroll-cue::after{content:'';width:1px;height:36px;background:linear-gradient(180deg,rgba(245,240,238,.55),transparent)}
-@keyframes scrollPulse{0%,100%{opacity:.4;transform:translateX(-50%) translateY(0)}50%{opacity:.9;transform:translateX(-50%) translateY(6px)}}
+.hero-h-sub{display:block;font-size:.78em;color:rgba(245,240,238,.92);margin-top:14px;font-weight:500}
+.hero-meta{display:flex;gap:28px;justify-content:center;flex-wrap:wrap;margin-top:28px;font-family:var(--mono);font-size:11.5px;letter-spacing:.22em;color:var(--gold-soft);text-transform:uppercase;font-weight:700}
+.hero-meta .dot{display:inline-block;width:4px;height:4px;border-radius:50%;background:var(--gold);margin-right:8px;vertical-align:middle}
 
-/* =================== PHASE 2 · CHARACTERS · DISTRICTS =================== */
-.characters{background:linear-gradient(180deg,var(--bg) 0%,var(--bg-soft) 100%)}
-.districts-grid{display:grid;grid-template-columns:1fr;gap:24px;width:100%;max-width:1280px;margin-top:64px}
-@media(min-width:780px){.districts-grid{grid-template-columns:1fr 1fr}}
-@media(min-width:1280px){.districts-grid{grid-template-columns:1fr 1fr 1fr}}
-.district-card{position:relative;border-radius:20px;overflow:hidden;background:linear-gradient(180deg,var(--bg-elev),var(--bg-soft));border:1px solid rgba(255,255,255,.06);min-height:520px;display:flex;flex-direction:column;transition:transform .35s var(--ease),border-color .35s}
-.district-card:hover{transform:translateY(-4px);border-color:rgba(214,176,124,.35)}
-.dc-hero{position:relative;height:240px;overflow:hidden;background:#1a1118}
-.dc-hero img{width:100%;height:100%;object-fit:cover;opacity:.86;transition:transform .8s var(--ease),opacity .35s}
-.district-card:hover .dc-hero img{transform:scale(1.04);opacity:1}
-.dc-hero::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,9,12,.05) 0%,rgba(8,9,12,.45) 60%,rgba(22,17,33,.95) 100%)}
-.dc-tag{position:absolute;top:16px;left:18px;z-index:2;font-family:var(--mono);font-size:10px;letter-spacing:.34em;font-weight:800;text-transform:uppercase;padding:6px 12px;border-radius:100px;backdrop-filter:blur(10px);background:rgba(8,9,12,.7);border:1px solid var(--dc-color,var(--gold))}
-.district-card[data-d="sunrise"]     .dc-tag{color:var(--d-sunrise);    border-color:rgba(255,181,107,.45)}
-.district-card[data-d="neon"]        .dc-tag{color:var(--d-neon);       border-color:rgba(94,200,255,.45)}
-.district-card[data-d="underground"] .dc-tag{color:var(--d-underground);border-color:rgba(212,88,119,.45)}
-.district-card[data-d="velvet"]      .dc-tag{color:var(--d-velvet);     border-color:rgba(192,132,252,.45)}
-.district-card[data-d="indie"]       .dc-tag{color:var(--d-indie);      border-color:rgba(126,229,184,.45)}
-.dc-body{position:relative;z-index:2;padding:24px 24px 28px;flex:1;display:flex;flex-direction:column;gap:14px}
-.dc-name{font-family:var(--display);font-size:30px;font-weight:700;color:var(--ink);letter-spacing:-.01em;line-height:1.05}
-.dc-name em{font-style:italic}
-.dc-genre{font-family:var(--mono);font-size:11px;letter-spacing:.18em;font-weight:700;color:var(--ink-soft);text-transform:uppercase;opacity:.85}
-.dc-quote{font-family:var(--display);font-style:italic;font-size:17px;line-height:1.55;color:rgba(245,240,238,.86);padding:8px 0;border-left:2px solid var(--dc-bar,var(--gold-soft));padding-left:14px;margin-top:6px}
-.district-card[data-d="sunrise"]     .dc-quote{border-left-color:rgba(255,181,107,.55)}
-.district-card[data-d="neon"]        .dc-quote{border-left-color:rgba(94,200,255,.55)}
-.district-card[data-d="underground"] .dc-quote{border-left-color:rgba(212,88,119,.55)}
-.district-card[data-d="velvet"]      .dc-quote{border-left-color:rgba(192,132,252,.55)}
-.district-card[data-d="indie"]       .dc-quote{border-left-color:rgba(126,229,184,.55)}
-.dc-cast{display:flex;gap:12px;margin-top:auto;padding-top:14px;border-top:1px dashed rgba(255,255,255,.08);align-items:center;flex-wrap:wrap}
-.dc-cast-label{font-family:var(--mono);font-size:9px;letter-spacing:.24em;font-weight:800;color:var(--muted);text-transform:uppercase;width:100%;margin-bottom:4px}
-.dc-avatar{width:46px;height:46px;border-radius:50%;overflow:hidden;background:#2a1f2c;border:1.5px solid rgba(214,176,124,.32);flex-shrink:0;position:relative}
-.dc-avatar img{width:100%;height:100%;object-fit:cover;object-position:top center;transition:transform .4s var(--ease)}
-.dc-avatar:hover img{transform:scale(1.08)}
-.dc-avatar-name{position:absolute;bottom:-22px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:9px;letter-spacing:.06em;color:var(--ink-soft);white-space:nowrap;opacity:0;transition:opacity .25s,bottom .25s}
-.dc-avatar:hover .dc-avatar-name{opacity:1;bottom:-18px}
-.dc-more{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.04em;padding:0 4px;font-weight:600}
+/* ===== UNIFIED SHOWCASE (Phase 2+3+4 in single horizontal row) ===== */
+.showcase{padding:80px 32px;background:linear-gradient(180deg,var(--bg) 0%,var(--bg-soft) 100%);position:relative}
+.showcase-head{text-align:center;max-width:920px;margin:0 auto 48px}
+.kicker{font-family:var(--mono);font-size:11px;letter-spacing:.4em;font-weight:800;color:var(--gold);text-transform:uppercase;margin-bottom:14px}
+.showcase-h{font-family:var(--display);font-size:clamp(28px,3.8vw,42px);font-weight:700;letter-spacing:-.005em;line-height:1.18}
+.showcase-h em{font-style:italic}
+.showcase-cards{display:grid;grid-template-columns:1fr;gap:18px;max-width:1320px;margin:0 auto}
+@media(min-width:900px){.showcase-cards{grid-template-columns:1fr 1fr 1fr}}
 
-/* =================== PHASE 3 · CHOICES & ENDINGS =================== */
-.choices{background:linear-gradient(180deg,var(--bg-soft) 0%,var(--bg-elev) 100%)}
-.choices-stack{display:grid;grid-template-columns:1fr;gap:24px;width:100%;max-width:1280px;margin-top:80px}
-@media(min-width:1100px){.choices-stack{grid-template-columns:repeat(3,1fr)}}
-.choice-frame{position:relative;border-radius:20px;overflow:hidden;background:#0a070e;border:1px solid rgba(255,255,255,.08);box-shadow:0 24px 60px rgba(0,0,0,.5);min-height:440px;display:flex;flex-direction:column}
-.cf-bg{position:absolute;inset:0;background-size:cover;background-position:center;opacity:.7;filter:saturate(1.05) blur(.5px)}
-.cf-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.2) 0%,rgba(8,4,12,.55) 50%,rgba(8,4,12,.96) 100%)}
-.cf-content{position:relative;z-index:2;padding:18px;flex:1;display:flex;flex-direction:column;gap:10px;justify-content:flex-end}
-.cf-eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.32em;font-weight:800;color:var(--gold);text-transform:uppercase}
-.cf-speaker{font-family:var(--mono);font-size:11px;letter-spacing:.18em;color:var(--gold);font-weight:800;letter-spacing:.18em}
-.cf-line{font-family:var(--display);font-style:italic;font-size:18px;line-height:1.55;color:rgba(245,240,238,.95);padding:14px 16px;background:rgba(8,9,12,.78);border-radius:12px;border:1px solid rgba(255,255,255,.08);backdrop-filter:blur(8px)}
-.cf-options{display:flex;flex-direction:column;gap:8px;margin-top:6px}
-.cf-opt{display:flex;align-items:center;gap:10px;padding:11px 14px;background:linear-gradient(180deg,rgba(34,26,37,.94),rgba(24,18,28,.98));border:1px solid rgba(214,176,124,.22);border-radius:14px;font-size:13.5px;color:rgba(255,248,242,.96);font-weight:600;line-height:1.4}
-.cf-opt-num{width:22px;height:22px;border-radius:50%;background:rgba(214,176,124,.16);border:1px solid rgba(214,176,124,.32);display:flex;align-items:center;justify-content:center;color:var(--gold);font-family:var(--mono);font-size:10px;font-weight:800;flex-shrink:0}
-.endings-row{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;width:100%;max-width:1100px;margin-top:74px}
-@media(min-width:780px){.endings-row{grid-template-columns:repeat(4,1fr)}}
-.ending-tile{position:relative;border-radius:14px;overflow:hidden;aspect-ratio:3/4;background:#0a070e;border:1px solid rgba(214,176,124,.2)}
-.ending-tile img{width:100%;height:100%;object-fit:cover;opacity:.55;filter:saturate(.8)}
-.ending-tile::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.2),rgba(8,4,12,.92))}
-.et-body{position:absolute;inset:0;padding:14px;display:flex;flex-direction:column;justify-content:flex-end;z-index:2}
-.et-tag{font-family:var(--mono);font-size:9px;letter-spacing:.28em;color:var(--gold-soft);text-transform:uppercase;font-weight:800;margin-bottom:6px}
-.et-name{font-family:var(--display);font-style:italic;font-size:18px;line-height:1.2;color:var(--ink);margin-bottom:4px}
-.et-syn{font-family:var(--sans);font-size:11.5px;color:rgba(245,240,238,.7);line-height:1.45}
-.et-lock{position:absolute;top:12px;right:12px;font-size:14px;opacity:.5;z-index:3}
+/* showcase card */
+.sc-card{position:relative;border-radius:18px;overflow:hidden;background:var(--bg-elev);border:1px solid rgba(255,255,255,.06);min-height:460px;display:flex;flex-direction:column;transition:transform .35s var(--ease),border-color .35s}
+.sc-card:hover{transform:translateY(-3px);border-color:rgba(214,176,124,.35)}
+.sc-frame{position:relative;height:240px;overflow:hidden;background:#0a070e}
+.sc-frame img{width:100%;height:100%;object-fit:cover;opacity:.94;transition:transform .8s var(--ease),opacity .35s}
+.sc-card:hover .sc-frame img{transform:scale(1.04);opacity:1}
+.sc-frame::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.05) 0%,rgba(8,5,12,.45) 70%,rgba(22,17,33,.95) 100%)}
+.sc-real-tag{position:absolute;top:12px;left:12px;z-index:3;font-family:var(--mono);font-size:9.5px;letter-spacing:.28em;font-weight:800;color:#fff;text-transform:uppercase;padding:5px 10px;background:rgba(8,9,12,.78);backdrop-filter:blur(8px);border:1px solid rgba(214,176,124,.5);border-radius:100px}
+.sc-real-tag::before{content:'●';color:#10B981;margin-right:6px;animation:liveBlink 1.6s ease-in-out infinite}
+@keyframes liveBlink{0%,100%{opacity:.6}50%{opacity:1}}
+.sc-phase{position:absolute;top:12px;right:12px;z-index:3;font-family:var(--mono);font-size:10px;letter-spacing:.32em;font-weight:800;color:var(--gold);padding:5px 10px;background:rgba(8,9,12,.7);backdrop-filter:blur(8px);border-radius:100px}
+.sc-body{padding:20px 22px 22px;flex:1;display:flex;flex-direction:column;gap:10px}
+.sc-h{font-family:var(--display);font-size:24px;font-weight:700;letter-spacing:-.005em;line-height:1.2;color:var(--ink)}
+.sc-h em{font-style:italic}
+.sc-sub{font-family:var(--sans);font-size:13px;color:var(--ink-soft);line-height:1.55;opacity:.92}
+.sc-mini{display:flex;flex-direction:column;gap:6px;margin-top:6px;padding-top:12px;border-top:1px dashed rgba(255,255,255,.08)}
+.sc-mini-row{font-family:var(--sans);font-size:12px;color:rgba(245,240,238,.78);line-height:1.5}
+.sc-mini-row b{color:var(--gold);font-weight:700;font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;display:block;margin-bottom:2px}
+.sc-cast{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.sc-cast-mini{width:32px;height:32px;border-radius:50%;overflow:hidden;background:#2a1f2c;border:1.5px solid rgba(214,176,124,.3);flex-shrink:0}
+.sc-cast-mini img{width:100%;height:100%;object-fit:cover;object-position:top center}
+.sc-options-mini{display:flex;flex-direction:column;gap:5px;margin-top:6px}
+.sc-opt-mini{font-family:var(--sans);font-size:12px;padding:8px 12px;background:rgba(214,176,124,.08);border:1px solid rgba(214,176,124,.2);border-radius:10px;color:rgba(245,240,238,.92);line-height:1.4;display:flex;gap:8px;align-items:center}
+.sc-opt-mini-num{width:18px;height:18px;border-radius:50%;background:rgba(214,176,124,.18);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:9px;font-weight:800;color:var(--gold);flex-shrink:0}
 
-/* =================== PHASE 4 · LINKED RELATIONSHIP =================== */
-.linked{background:linear-gradient(180deg,var(--bg-elev) 0%,var(--bg-soft) 100%)}
-.linked-stack{display:grid;grid-template-columns:1fr;gap:36px;max-width:1100px;width:100%;margin-top:74px;align-items:flex-start}
-@media(min-width:980px){.linked-stack{grid-template-columns:repeat(3,1fr)}}
-.linked-frame{position:relative;border-radius:24px;overflow:hidden;background:#FFF9F7;border:1px solid rgba(255,255,255,.04);box-shadow:0 28px 70px rgba(0,0,0,.55);min-height:480px;display:flex;flex-direction:column}
-.lf-head{padding:14px 16px 12px;display:flex;align-items:center;gap:12px;background:rgba(255,249,247,1);border-bottom:1px solid rgba(63,38,52,.08);flex-shrink:0}
-.lf-back{font-size:18px;color:#9C8893;width:24px}
-.lf-avatar{width:36px;height:36px;border-radius:50%;overflow:hidden;flex-shrink:0;background:#d9c6cd}
-.lf-avatar img{width:100%;height:100%;object-fit:cover}
-.lf-name{font-size:15px;font-weight:700;color:#2A1A22}
-.lf-status{font-size:11px;color:#C084FC;font-weight:700;margin-top:2px;letter-spacing:.04em}
-.lf-status::before{content:'◆ ';color:#C084FC}
-.lf-body{flex:1;padding:18px 14px;display:flex;flex-direction:column;gap:10px;overflow:hidden;background:#FFF9F7}
-.lf-msg{max-width:84%;animation:msgIn .4s ease}
-.lf-msg.lp{align-self:flex-start;display:flex;gap:8px}
-.lf-msg-avatar{width:30px;height:30px;border-radius:50%;overflow:hidden;flex-shrink:0;background:#d9c6cd}
-.lf-msg-avatar img{width:100%;height:100%;object-fit:cover}
-.lf-bubble{padding:10px 14px;border-radius:18px;font-size:14px;line-height:1.55;background:#fff;color:#2A1A22;border-bottom-left-radius:6px;box-shadow:0 1px 3px rgba(0,0,0,.06);word-break:keep-all}
-.lf-narration{align-self:stretch;max-width:100%;font-size:12px;color:#9C8893;font-style:italic;padding:6px 10px;border-left:2px solid rgba(178,131,208,.3);background:rgba(178,131,208,.05);border-radius:0 8px 8px 0}
-.lf-divider{align-self:center;font-family:var(--mono);font-size:10px;letter-spacing:.24em;color:#C084FC;font-weight:800;padding:8px 0;text-transform:uppercase}
-@keyframes msgIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+/* ===== PRE-CTA dual buttons ===== */
+.pre-cta{padding:60px 32px 44px;background:radial-gradient(ellipse at 50% 0%,rgba(214,176,124,.1),transparent 70%),var(--bg-soft);text-align:center}
+.pre-cta-head{font-family:var(--display);font-size:clamp(24px,3vw,34px);font-weight:700;letter-spacing:-.005em;line-height:1.2;max-width:680px;margin:0 auto 8px}
+.pre-cta-head em{font-style:italic}
+.pre-cta-sub{font-size:13.5px;color:var(--ink-soft);line-height:1.55;max-width:560px;margin:0 auto 32px}
+.pre-cta-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;max-width:760px;margin:0 auto}
+.pre-cta-btn{display:inline-flex;align-items:center;justify-content:center;gap:14px;padding:18px 32px;border-radius:100px;font-family:var(--sans);font-size:15.5px;font-weight:800;letter-spacing:-.005em;cursor:pointer;text-decoration:none;transition:all .25s var(--ease);min-width:280px}
+.pre-cta-btn .arr{font-family:var(--mono);font-weight:800}
+.pre-cta-btn.primary{background:linear-gradient(180deg,var(--gold),#b8945e);color:#2c1f00;box-shadow:0 18px 44px rgba(214,176,124,.32),0 0 0 1px rgba(214,176,124,.5)}
+.pre-cta-btn.primary:hover{transform:translateY(-2px);box-shadow:0 24px 56px rgba(214,176,124,.42)}
+.pre-cta-btn.secondary{background:rgba(8,9,12,.5);color:var(--ink);border:1.5px solid rgba(245,240,238,.22)}
+.pre-cta-btn.secondary:hover{border-color:var(--gold);color:var(--gold)}
+.pre-cta-meta{margin-top:22px;font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;color:var(--muted);text-transform:uppercase;font-weight:700}
 
-/* =================== PHASE 5 · CTA + LINEUP =================== */
-.cta-section{background:radial-gradient(ellipse at 30% 0%,rgba(214,176,124,.08),transparent 60%),linear-gradient(180deg,var(--bg-soft),var(--bg) 80%);min-height:100vh;justify-content:center}
-.lineup-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;max-width:780px;width:100%;margin-top:54px}
-@media(min-width:780px){.lineup-grid{grid-template-columns:repeat(9,1fr)}}
-@media(min-width:1100px){.lineup-grid{grid-template-columns:repeat(12,1fr);max-width:1100px}}
-.lp-thumb{position:relative;aspect-ratio:3/4;border-radius:8px;overflow:hidden;background:#1a1118;border:1px solid rgba(255,255,255,.05);transition:transform .3s var(--ease),border-color .3s}
-.lp-thumb:hover{transform:scale(1.06);border-color:rgba(214,176,124,.5);z-index:3}
+/* ===== LINEUP (compact 36 thumbs) ===== */
+.lineup{padding:30px 32px 70px;background:var(--bg);text-align:center}
+.lineup-h{font-family:var(--mono);font-size:11px;letter-spacing:.36em;font-weight:800;color:var(--gold-soft);text-transform:uppercase;margin-bottom:18px}
+.lineup-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:6px;max-width:1100px;margin:0 auto}
+@media(min-width:780px){.lineup-grid{grid-template-columns:repeat(12,1fr)}}
+@media(min-width:1100px){.lineup-grid{grid-template-columns:repeat(18,1fr)}}
+.lp-thumb{position:relative;aspect-ratio:3/4;border-radius:6px;overflow:hidden;background:#1a1118;transition:transform .3s var(--ease),opacity .3s}
+.lp-thumb:hover{transform:scale(1.08);z-index:3}
 .lp-thumb img{width:100%;height:100%;object-fit:cover;object-position:top center}
-.lp-thumb::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 60%,rgba(8,9,12,.92))}
-.lp-thumb-name{position:absolute;left:6px;right:6px;bottom:5px;font-family:var(--mono);font-size:9px;font-weight:800;letter-spacing:.04em;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.7);z-index:2;text-align:center}
-.cta-actions{display:flex;flex-direction:column;align-items:center;gap:14px;margin-top:60px;width:100%;max-width:480px}
-.cta-primary{display:inline-flex;align-items:center;justify-content:center;gap:14px;padding:22px 44px;background:linear-gradient(180deg,var(--gold),#b8945e);color:#2c1f00;border:none;border-radius:100px;font-family:var(--sans);font-size:17px;font-weight:900;letter-spacing:-.005em;cursor:pointer;text-decoration:none;box-shadow:0 24px 56px rgba(214,176,124,.3),0 0 0 1px rgba(214,176,124,.5);transition:all .25s var(--ease);width:100%}
-.cta-primary:hover{transform:translateY(-2px);box-shadow:0 30px 68px rgba(214,176,124,.42),0 0 0 1px rgba(214,176,124,.7)}
-.cta-primary .arr{font-family:var(--mono);font-weight:800}
-.cta-secondary{font-family:var(--mono);font-size:12px;letter-spacing:.18em;color:var(--ink-soft);text-decoration:none;text-transform:uppercase;font-weight:700;padding:12px;border-bottom:1px solid transparent;transition:border-color .2s}
-.cta-secondary:hover{border-bottom-color:var(--gold)}
-.cta-meta{display:flex;gap:24px;flex-wrap:wrap;justify-content:center;font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:var(--gold-soft);text-transform:uppercase;font-weight:700;margin-top:18px}
+.lp-thumb::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 60%,rgba(8,9,12,.85))}
+.lp-thumb-name{position:absolute;left:0;right:0;bottom:3px;font-family:var(--mono);font-size:8px;font-weight:800;letter-spacing:.04em;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.7);text-align:center;z-index:2}
 
-/* footer */
-.footer{padding:50px 32px 80px;text-align:center;border-top:1px solid rgba(255,255,255,.05);background:var(--bg)}
-.footer-brand{font-family:var(--mono);font-size:12px;letter-spacing:.45em;font-weight:800;color:var(--gold);margin-bottom:8px}
-.footer-meta{font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--muted)}
-
-/* fade-in on scroll · 기본 visible (헤드리스 환경 + JS 비활성 환경에서도 콘텐츠 노출 보장) · 인터섹션이 발화하면 .visible 추가되며 부드럽게 다시 진입하는 듯한 미세 효과 */
-.fade-in{opacity:1;transform:translateY(0);transition:opacity .8s var(--ease),transform .8s var(--ease)}
-@media (prefers-reduced-motion: no-preference){
-  .fade-in{opacity:.6;transform:translateY(20px)}
-  .fade-in.visible{opacity:1;transform:translateY(0)}
-}
+/* ===== footer ===== */
+.footer{padding:30px 32px 50px;text-align:center;border-top:1px solid rgba(255,255,255,.05);background:var(--bg)}
+.footer-brand{font-family:var(--mono);font-size:11px;letter-spacing:.45em;font-weight:800;color:var(--gold);margin-bottom:6px}
+.footer-meta{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;color:var(--muted)}
 
 </style>
 </head>
 <body>
 
-<!-- ========== PHASE 1 · HERO ========== -->
-<section class="section hero">
+<!-- HERO -->
+<section class="hero">
   <div class="hero-bg" style="background-image:url('https://cdn.deepintothe.xyz/lucive/img/lp/kael_entry/profile_bg.png')"></div>
-  <div class="hero-noise"></div>
-  <div class="hero-content fade-in visible">
+  <div class="hero-content">
     <div class="hero-brand">LUCIVE · NEXT-GEN CHARACTER CHAT</div>
-    <h1 class="hero-h"><s>고정 설정된 캐릭터 챗</s>은 잊어요.<br><em>그가 · 당신의 결말을 만듭니다.</em></h1>
-    <p class="hero-sub">매주 다른 디스트릭트가 열리고 · 매주 새 루시안이 합류합니다.<br>당신의 첫 만남, 당신의 회차, 당신의 결말 — 두 번 같은 결말은 없습니다.</p>
+    <h1 class="hero-h">매주 다른 세계관 · <em>새 캐릭터들이 합류합니다.</em><br><span class="hero-h-sub">첫 만남, 에피소드, 결말 — <em>당신만의 스토리</em>가 만들어집니다.</span></h1>
     <div class="hero-meta">
       <span><span class="dot"></span>36명의 루시안</span>
       <span><span class="dot"></span>5 디스트릭트</span>
-      <span><span class="dot"></span>분기·회귀·갠계 기억</span>
+      <span><span class="dot"></span>분기 · 회귀 · 관계 기억</span>
     </div>
   </div>
-  <div class="scroll-cue">SCROLL</div>
 </section>
 
-<!-- ========== PHASE 2 · CHARACTERS / DISTRICTS ========== -->
-<section class="section characters">
-  <div class="kicker fade-in">PHASE 02 · 첫 만남</div>
-  <h2 class="section-h fade-in">5 디스트릭트 · <em>36명의 루시안</em></h2>
-  <p class="section-sub fade-in">각 디스트릭트는 다른 톤·다른 결말을 품습니다. 같은 시간에 다른 사람을 만나면 · 다른 회차가 열립니다.</p>
-  <div class="districts-grid" id="districtsGrid"></div>
+<!-- 3-COLUMN SHOWCASE (Phase 2 + 3 + 4) -->
+<section class="showcase">
+  <div class="showcase-head">
+    <div class="kicker">실제 플레이 화면</div>
+    <h2 class="showcase-h">한 번의 만남이 · <em>당신의 회차</em>를 결정합니다</h2>
+  </div>
+
+  <div class="showcase-cards">
+
+    <!-- Card 1 · 첫 만남 (Phase 2) -->
+    <div class="sc-card">
+      <div class="sc-frame">
+        <img src="https://cdn.deepintothe.xyz/lucive/img/lp/kael_entry/header.png" alt="첫 만남">
+        <span class="sc-real-tag">ACTUAL · 첫 만남</span>
+        <span class="sc-phase">PHASE 02</span>
+      </div>
+      <div class="sc-body">
+        <div class="sc-h">5 디스트릭트 · <em>36명의 루시안</em></div>
+        <div class="sc-sub">각 디스트릭트는 다른 톤과 다른 결말을 품습니다. 90초만에 한 사람의 첫 만남.</div>
+        <div class="sc-mini">
+          <div class="sc-mini-row"><b>SUNRISE / NEON / UNDERGROUND / VELVET / INDIE</b>잊힌 정원 · 에코 랭크 · 적월 법정 · 가면무도회 · 3AM 주파수</div>
+        </div>
+        <div class="sc-cast" id="scCast"></div>
+      </div>
+    </div>
+
+    <!-- Card 2 · 선택과 결말 (Phase 3) -->
+    <div class="sc-card">
+      <div class="sc-frame">
+        <img src="https://cdn.deepintothe.xyz/lucive/img/lp/kael_entry/scene1.png" alt="선택">
+        <span class="sc-real-tag">ACTUAL · 분기 선택</span>
+        <span class="sc-phase">PHASE 03</span>
+      </div>
+      <div class="sc-body">
+        <div class="sc-h">당신의 선택이 · <em>결말을 만듭니다</em></div>
+        <div class="sc-sub">VN 한 컷마다 두세 갈래. 한 사람의 회차에서도 분기되고, 다른 회차로 가면 다른 결말이 열립니다.</div>
+        <div class="sc-options-mini">
+          <div class="sc-opt-mini"><span class="sc-opt-mini-num">1</span><span>"그래서 서명을 못 하시는 거예요?"</span></div>
+          <div class="sc-opt-mini"><span class="sc-opt-mini-num">2</span><span>"한 잔 더 하고 정해도 돼요"</span></div>
+          <div class="sc-opt-mini"><span class="sc-opt-mini-num">3</span><span>서류를 손으로 한 번 덮는다</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 3 · 회귀 (Phase 4) -->
+    <div class="sc-card">
+      <div class="sc-frame">
+        <img src="https://cdn.deepintothe.xyz/lucive/img/lp/kael_entry/scene3.png" alt="회귀">
+        <span class="sc-real-tag">ACTUAL · 회귀 · Linked</span>
+        <span class="sc-phase">PHASE 04</span>
+      </div>
+      <div class="sc-body">
+        <div class="sc-h">다시 돌아오면 · <em>그가 당신을 기억합니다</em></div>
+        <div class="sc-sub">통신 채널을 한 번 열면 그의 시간이 멈추지 않습니다. 다음 새벽에 그가 먼저 메시지를 보냅니다.</div>
+        <div class="sc-mini">
+          <div class="sc-mini-row"><b>LINKED CHAT · 카엘</b>"...어젯밤 일을 두고두고 이상하게 기억하게 될 것 같아요. 잠은 좀 잤어요? 저는 거의 못 잤습니다. 25년 동안 잘 자던 사람인데."</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
 </section>
 
-<!-- ========== PHASE 3 · CHOICES & ENDINGS ========== -->
-<section class="section choices">
-  <div class="kicker fade-in">PHASE 03 · 분기</div>
-  <h2 class="section-h fade-in">당신의 선택이 · <em>결말을 만듭니다</em></h2>
-  <p class="section-sub fade-in">VN 한 컷마다 두세 갈래. 한 사람의 회차 안에서도 분기되고 · 다른 회차로 가면 다른 사람의 결말이 열립니다.</p>
-  <div class="choices-stack" id="choicesStack"></div>
-  <div class="endings-row fade-in" id="endingsRow"></div>
-</section>
-
-<!-- ========== PHASE 4 · LINKED ========== -->
-<section class="section linked">
-  <div class="kicker fade-in">PHASE 04 · 회귀</div>
-  <h2 class="section-h fade-in">다시 돌아오면 · <em>그가 당신을 기억합니다</em></h2>
-  <p class="section-sub fade-in">한 번 통신 채널을 열면 · 떠난 자리에 그의 시간이 멈추지 않습니다. 다음 새벽에 그가 먼저 메시지를 보냅니다.</p>
-  <div class="linked-stack" id="linkedStack"></div>
-</section>
-
-<!-- ========== PHASE 5 · CTA / LINEUP ========== -->
-<section class="section cta-section">
-  <div class="kicker fade-in">PHASE 05 · 사전 등록</div>
-  <h2 class="section-h fade-in">알파테스터 선발 · <em>당신의 첫 회차</em></h2>
-  <p class="section-sub fade-in">36명 중 한 사람의 첫 만남을 90초만에 · 알파테스터에게 우선 공개합니다.</p>
-  <div class="lineup-grid fade-in" id="lineupGrid"></div>
-  <div class="cta-actions fade-in">
-    <a href="./screening.html" class="cta-primary">
-      <span>알파테스터 선발 신청 · 본편 첫 회차</span>
+<!-- PRE-CTA dual buttons -->
+<section class="pre-cta">
+  <div class="pre-cta-head">먼저 한 번 · <em>90초만 만나보세요</em></div>
+  <div class="pre-cta-sub">알파테스터 신청 전, 36명 중 한 명의 첫 만남을 직접 체험할 수 있습니다.</div>
+  <div class="pre-cta-row">
+    <a href="./v34-kr-lucive.html" class="pre-cta-btn secondary">
+      <span>간단하게 경험해보기</span>
+      <span class="arr">▶</span>
+    </a>
+    <a href="./screening.html" class="pre-cta-btn primary">
+      <span>바로 사전등록하러 가기</span>
       <span class="arr">→</span>
     </a>
-    <a href="./v34-kr-lucive.html" class="cta-secondary">먼저 데모로 만나보기 (라온 · 진혁)</a>
-    <div class="cta-meta">
-      <span>D-<span id="dday">17</span> 알파 오픈</span>
-      <span>매주 새 디스트릭트</span>
-      <span>회차마다 다른 결말</span>
-    </div>
   </div>
+  <div class="pre-cta-meta">D-<span id="dday">17</span> 알파 오픈 · 매주 새 디스트릭트</div>
+</section>
+
+<!-- LINEUP -->
+<section class="lineup">
+  <div class="lineup-h">36명의 루시안</div>
+  <div class="lineup-grid" id="lineupGrid"></div>
 </section>
 
 <footer class="footer">
-  <div class="footer-brand">LUCIVE · 2026</div>
-  <div class="footer-meta">DEEP INTO THE</div>
+  <div class="footer-brand">LUCIVE</div>
+  <div class="footer-meta">DEEP INTO THE · 2026</div>
 </footer>
 
 <script>
 const CDN = 'https://cdn.deepintothe.xyz/lucive';
 
-/* ===== district presentation data — 5 cards for Phase 2 ===== */
-const DISTRICTS = [
-  {
-    id: 'sunrise',
-    icon: '🌿',
-    name: '잊힌 정원',
-    nameEm: 'Sunrise',
-    genre: '온화 · 일상 · 햇살 사이의 빈 자리',
-    quote: '"콩 볶는 시간이 사적이라고 한 사람은 처음입니다."',
-    bg: `${CDN}/img/lp/taeo_entry/header.png`,
-    cast: ['taeo','ihana','minjun_sr','maria','seha','ryo']
-  },
-  {
-    id: 'neon',
-    icon: '🌃',
-    name: '에코 랭크 / 시그널 노이즈',
-    nameEm: 'Neon',
-    genre: '도시 · 새벽 · 화면 너머의 진실',
-    quote: '"키캡 갈고 코드 짜고 — 새벽 5시가 가장 정직한 시간이에요."',
-    bg: `${CDN}/img/lp/haejun_entry/header.png`,
-    cast: ['haejun','kai','jian','damya','lise','nia','levi','lana']
-  },
-  {
-    id: 'underground',
-    icon: '🌍',
-    name: '공명 도시 / 적월 법정',
-    nameEm: 'Underground',
-    genre: '판결 · 회귀 · 같은 식당 같은 메뉴',
-    quote: '"매일 같은 자리에 앉는다는 건 · 한 번에 깨지면 못 돌아오는 일이에요."',
-    bg: `${CDN}/img/lp/raon_entry/header.png`,
-    cast: ['sebin','or_','raon','ella','yujin','changsik']
-  },
-  {
-    id: 'velvet',
-    icon: '💎',
-    name: '자정의 가면무도회 / 낙인의 왕국',
-    nameEm: 'Velvet',
-    genre: '가면 · 의식 · 25년 만의 변칙',
-    quote: '"이 잔이 비기 전엔 결정 안 합니다. 25년 만의 변칙이에요."',
-    bg: `${CDN}/img/lp/kael_entry/header.png`,
-    cast: ['yun_ara','stella','adel','leon','sia','inis','seraphine','myur','kael']
-  },
-  {
-    id: 'indie',
-    icon: '📚',
-    name: '기억의 서재 / 3AM 주파수',
-    nameEm: 'Indie',
-    genre: '기록 · 새벽 · 한 줄의 잉크',
-    quote: '"매주 새벽 4시에 라디오를 켭니다. 그게 의식이에요."',
-    bg: `${CDN}/img/lp/haru_entry/header.png`,
-    cast: ['ruon','piera','nova','haru','juhyuk','seoyul']
-  }
-];
-
-/* ===== character names map (subset for hover labels) ===== */
 const NAMES = {
   taeo:'태오', ihana:'이하나', minjun_sr:'민준', maria:'마리아', seha:'세하', ryo:'료',
   haejun:'이해준', kai:'카이', jian:'지안', damya:'담야', lise:'리제', nia:'니아', levi:'레비', lana:'라나',
@@ -305,198 +223,22 @@ const NAMES = {
   ruon:'루온', piera:'피라', nova:'노바', haru:'하루', juhyuk:'주혁', seoyul:'한서율'
 };
 
-const ALL_KEYS = Object.keys(NAMES);
+// 5 districts에서 1명씩 대표 picks (showcase Card 1 mini cast)
+const PICKS = ['taeo','haejun','raon','kael','haru'];
 
-/* ===== phase 3 · sample choice frames ===== */
-const CHOICE_FRAMES = [
-  {
-    bg: `${CDN}/img/lp/kael_entry/scene1.png`,
-    eyebrow: 'V · 자정의 가면무도회',
-    speaker: 'KAEL · 카엘',
-    line: '"...25년 동안 이 자리에 앉은 사람이 일곱 명인데, 누구한테도 안 했어요. ...그래서 당신이 좀 무섭습니다."',
-    options: [
-      '"그래서 서명을 못 하시는 거예요?"',
-      '"내일까지 시간 있어요. 한 잔 더 하고 정해도 돼요"',
-      '서류를 손으로 한 번 덮는다'
-    ]
-  },
-  {
-    bg: `${CDN}/img/lp/raon_entry/scene1.png`,
-    eyebrow: 'U · 적월 법정',
-    speaker: 'RAON · 라온',
-    line: '"...뛰어요. 지금. 우측 출구 근처에 모르는 얼굴 셋."',
-    options: [
-      '그의 등 뒤로 붙는다 — 처음 보는 사람을 처음으로 믿어 본다',
-      '군중 속으로 흩어진다 — 모르는 사람을 따를 수는 없다'
-    ]
-  },
-  {
-    bg: `${CDN}/img/lp/haru_entry/scene1.png`,
-    eyebrow: 'I · 3AM 주파수',
-    speaker: 'HARU · 하루',
-    line: '"매주 새벽 3시에 같은 사람이 같은 사연으로 들어와요. ...오늘은 그 사람이 당신이라는 걸 알게 됐어요."',
-    options: [
-      '"...그게 무서워요?"',
-      '"그러면 같이 들어볼래요?"',
-      '주파수를 한 칸 돌린다'
-    ]
-  }
-];
+document.getElementById('scCast').innerHTML = PICKS.map(k => `
+  <div class="sc-cast-mini" title="${NAMES[k]}">
+    <img src="${CDN}/img/lp/${k}.png" alt="${NAMES[k]}" loading="lazy" onerror="this.style.opacity=.2">
+  </div>`).join('');
 
-/* ===== phase 3 · 4 ending tiles teaser ===== */
-const ENDINGS = [
-  { tag: 'ENDING #01', name: '재회 · Reunion', syn: '곁에 있을 자유. 매일 다시 약속하는 일상.', bg: `${CDN}/img/lp/raon_entry/scene3.png` },
-  { tag: 'ENDING #02', name: '지움 · Erase', syn: '가장 멀리 떨어져 서로를 지키는 사랑의 한 형태.', bg: `${CDN}/img/lp/seoyul_entry/scene2.png` },
-  { tag: 'ENDING #03', name: '함정 · Dark', syn: '소유로 굳어버린 사랑. 한 쌍의 정적 속 감옥.', bg: `${CDN}/img/lp/yujin_entry/scene2.png` },
-  { tag: 'ENDING #04', name: '잃음 · Lost', syn: '한 마디도 입 밖에 내지 못한 채 또 한 번 지워진 사람.', bg: `${CDN}/img/lp/changsik_entry/scene2.png` }
-];
+// lineup 36 thumbnails (라인업 = NAMES 키 35 + jinhyuk 36 → 그러나 reference엔 jinhyuk 없음, 35만 사용)
+const ALL = Object.keys(NAMES);
+document.getElementById('lineupGrid').innerHTML = ALL.map(k => `
+  <div class="lp-thumb" title="${NAMES[k]}">
+    <img src="${CDN}/img/lp/${k}.png" alt="${NAMES[k]}" loading="lazy" onerror="this.style.opacity=.18">
+    <div class="lp-thumb-name">${NAMES[k]}</div>
+  </div>`).join('');
 
-/* ===== phase 4 · linked chat samples ===== */
-const LINKED_FRAMES = [
-  {
-    key: 'kael',
-    name: '카엘',
-    status: 'Linked · 싱크율 5%',
-    msgs: [
-      { type:'narration', text:'집무실. 햇빛이 들어와 있다. 서류는 책상 한구석에 그대로 덮여 있다.' },
-      { type:'lp', text:'회의에서 그 안건은 한 주 미뤘습니다. 부하들이 의아해하더군요.' },
-      { type:'narration', text:'책상 옆 빈 와인 병을 한 번 보고 다시 너에게.' },
-      { type:'lp', text:'...어젯밤 일을 두고두고 이상하게 기억하게 될 것 같아요. 잠은 좀 잤어요? 저는 거의 못 잤습니다.' },
-      { type:'lp', text:'...오늘은 의자가 또 흔들리네요. 어제만 안 흔들렸어요. 그게 좀 의아해서요.' }
-    ]
-  },
-  {
-    key: 'raon',
-    name: '라온',
-    status: 'Linked · 회귀 1회',
-    msgs: [
-      { type:'narration', text:'메시지가 다시 도착한다. 새벽 4시 17분.' },
-      { type:'lp', text:'...아직 안 자고 있죠. 압니다.' },
-      { type:'lp', text:'오늘 한 번 그 자리에 같이 가준 거 · 14년 만에 처음입니다.' },
-      { type:'narration', text:'한 박자 길게 멈췄다가.' },
-      { type:'lp', text:'...다음 회차, 또 같은 시간에 또 같은 자리에 갈 거예요. 그땐 처음부터 같이 가도 됩니다.' }
-    ]
-  },
-  {
-    key: 'haru',
-    name: '하루',
-    status: 'Linked · 주파수 동기',
-    msgs: [
-      { type:'narration', text:'새벽 3시. 헤드폰 너머 잡음 한 박자.' },
-      { type:'lp', text:'...오늘도 들으셨군요. 아무 말 안 해도 알 수 있어요.' },
-      { type:'lp', text:'어제 그 사연 · 지금까지 머리에 남아 있어요. 그쪽도 그렇죠?' },
-      { type:'narration', text:'마이크가 잠깐 비어 있다.' },
-      { type:'lp', text:'다음 새벽엔 · 같은 자리에 같이 들어주세요. 그게 우리 둘만의 코너예요.' }
-    ]
-  }
-];
-
-/* ===== render Phase 2 districts ===== */
-function renderDistricts(){
-  const root = document.getElementById('districtsGrid');
-  root.innerHTML = DISTRICTS.map(d => {
-    const cast = d.cast.slice(0, 6); // first 6 chars (avatars)
-    const remaining = d.cast.length - cast.length;
-    return `
-      <div class="district-card fade-in" data-d="${d.id}">
-        <div class="dc-hero"><img src="${d.bg}" alt="${d.name}" loading="lazy" onerror="this.style.display='none'"></div>
-        <div class="dc-tag">${d.icon} ${d.nameEm} · D ${d.id.toUpperCase()}</div>
-        <div class="dc-body">
-          <div class="dc-genre">${d.genre}</div>
-          <div class="dc-name">${d.name}</div>
-          <div class="dc-quote">${d.quote}</div>
-          <div class="dc-cast">
-            <div class="dc-cast-label">CAST · ${d.cast.length}명</div>
-            ${cast.map(k => `
-              <div class="dc-avatar" title="${NAMES[k]||k}">
-                <img src="${CDN}/img/lp/${k}.png" alt="${NAMES[k]||k}" loading="lazy" onerror="this.style.opacity=.2">
-                <span class="dc-avatar-name">${NAMES[k]||k}</span>
-              </div>`).join('')}
-            ${remaining > 0 ? `<span class="dc-more">+${remaining}</span>` : ''}
-          </div>
-        </div>
-      </div>`;
-  }).join('');
-}
-
-/* ===== render Phase 3 choice frames + endings ===== */
-function renderChoices(){
-  const root = document.getElementById('choicesStack');
-  root.innerHTML = CHOICE_FRAMES.map(c => `
-    <div class="choice-frame fade-in">
-      <div class="cf-bg" style="background-image:url('${c.bg}')"></div>
-      <div class="cf-content">
-        <div class="cf-eyebrow">${c.eyebrow}</div>
-        <div class="cf-speaker">${c.speaker}</div>
-        <div class="cf-line">${c.line}</div>
-        <div class="cf-options">
-          ${c.options.map((o,i) => `<div class="cf-opt"><span class="cf-opt-num">${i+1}</span><span>${o}</span></div>`).join('')}
-        </div>
-      </div>
-    </div>`).join('');
-
-  const er = document.getElementById('endingsRow');
-  er.innerHTML = ENDINGS.map(e => `
-    <div class="ending-tile fade-in">
-      <img src="${e.bg}" alt="${e.name}" loading="lazy" onerror="this.style.opacity=.2">
-      <span class="et-lock">🔒</span>
-      <div class="et-body">
-        <div class="et-tag">${e.tag}</div>
-        <div class="et-name">${e.name}</div>
-        <div class="et-syn">${e.syn}</div>
-      </div>
-    </div>`).join('');
-}
-
-/* ===== render Phase 4 linked chat samples ===== */
-function renderLinked(){
-  const root = document.getElementById('linkedStack');
-  root.innerHTML = LINKED_FRAMES.map(l => `
-    <div class="linked-frame fade-in">
-      <div class="lf-head">
-        <div class="lf-back">‹</div>
-        <div class="lf-avatar"><img src="${CDN}/img/lp/${l.key}.png" alt="${l.name}" loading="lazy" onerror="this.style.opacity=.2"></div>
-        <div>
-          <div class="lf-name">${l.name}</div>
-          <div class="lf-status">${l.status}</div>
-        </div>
-      </div>
-      <div class="lf-body">
-        <div class="lf-divider">진입 루시브 완료 · 다음 만남</div>
-        ${l.msgs.map(m => {
-          if(m.type === 'narration') return `<div class="lf-narration">${m.text}</div>`;
-          return `<div class="lf-msg lp">
-            <div class="lf-msg-avatar"><img src="${CDN}/img/lp/${l.key}.png" alt="" loading="lazy" onerror="this.style.opacity=.2"></div>
-            <div class="lf-bubble">${m.text}</div>
-          </div>`;
-        }).join('')}
-      </div>
-    </div>`).join('');
-}
-
-/* ===== render Phase 5 lineup ===== */
-function renderLineup(){
-  const root = document.getElementById('lineupGrid');
-  root.innerHTML = ALL_KEYS.map(k => `
-    <div class="lp-thumb fade-in" title="${NAMES[k]}">
-      <img src="${CDN}/img/lp/${k}.png" alt="${NAMES[k]}" loading="lazy" onerror="this.style.opacity=.18">
-      <div class="lp-thumb-name">${NAMES[k]}</div>
-    </div>`).join('');
-}
-
-/* ===== fade-in observer ===== */
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
-}, { threshold: 0.12 });
-
-renderDistricts();
-renderChoices();
-renderLinked();
-renderLineup();
-
-document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-
-/* D-day countdown · 알파 오픈 · 임시 고정 17일 */
 document.getElementById('dday').textContent = '17';
 </script>
 
