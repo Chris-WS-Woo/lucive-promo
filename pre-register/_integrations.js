@@ -31,6 +31,15 @@ window.LUCIVE_INTEGRATIONS = (function(){
     // 형식: 'https://hooks.zapier.com/hooks/catch/...'
     ZAPIER_WEBHOOK: 'https://hooks.zapier.com/hooks/catch/27287979/uva8pju/',
 
+    // 언어별 커뮤니티 URL · 사전등록 후 안내에 사용
+    // ko / en / ja / zh
+    COMMUNITY_URLS: {
+      ko: 'https://open.kakao.com/o/g4LZmfri',  // 카카오톡 오픈채팅
+      en: 'https://discord.gg/lucive',           // Discord (placeholder, 실제 invite로 교체)
+      ja: 'https://discord.gg/lucive',           // 동일 Discord 또는 LINE
+      zh: 'https://discord.gg/lucive',           // Discord (Telegram도 옵션)
+    },
+
     /* ─────────────── 옵션 ─────────────── */
 
     // 디버그 모드: API 미호출, 콘솔 로그만
@@ -43,6 +52,34 @@ window.LUCIVE_INTEGRATIONS = (function(){
   function isOk(key){ return !!CONFIG[key] && CONFIG[key].length > 0; }
   function dbg(...args){ if(CONFIG.DEBUG) console.log('[LUCIVE]', ...args); }
 
+  /**
+   * 현재 페이지의 언어 감지 (ISO 639-1 2자리 코드).
+   * 우선순위: <html lang> → URL ?lang= → navigator.language → 'ko' fallback
+   */
+  function detectLang(){
+    const supported = ['ko','en','ja','zh'];
+    const fromHtml = (document.documentElement.lang || '').toLowerCase().split('-')[0];
+    if(supported.includes(fromHtml)) return fromHtml;
+    const fromUrl = new URLSearchParams(location.search).get('lang');
+    if(fromUrl && supported.includes(fromUrl.toLowerCase())) return fromUrl.toLowerCase();
+    const fromNav = (navigator.language || 'ko').toLowerCase().split('-')[0];
+    if(supported.includes(fromNav)) return fromNav;
+    return 'ko';
+  }
+
+  /** 언어별 커뮤니티 URL 반환 */
+  function communityUrl(lang){
+    lang = lang || detectLang();
+    return (CONFIG.COMMUNITY_URLS && CONFIG.COMMUNITY_URLS[lang]) || CONFIG.COMMUNITY_URLS.ko || '';
+  }
+
+  /** properties 에 language 자동 주입 */
+  function withLang(props){
+    props = props || {};
+    if(!props.language) props.language = detectLang();
+    return props;
+  }
+
   /* ─────────────── Klaviyo ─────────────── */
 
   /**
@@ -51,7 +88,7 @@ window.LUCIVE_INTEGRATIONS = (function(){
    * @returns {Promise<boolean>}
    */
   async function klaviyoSubscribe(email, properties){
-    properties = properties || {};
+    properties = withLang(properties);
     if(!isOk('KLAVIYO_PUBLIC_KEY') || !isOk('KLAVIYO_LIST_ID')){
       dbg('subscribe skipped (no key/list)', email, properties);
       return false;
@@ -82,7 +119,7 @@ window.LUCIVE_INTEGRATIONS = (function(){
    * 설문 응답 같은 추가 데이터를 저장할 때 사용.
    */
   async function klaviyoIdentify(email, properties){
-    properties = properties || {};
+    properties = withLang(properties);
     if(!isOk('KLAVIYO_PUBLIC_KEY')){
       dbg('identify skipped (no key)', email, properties);
       return false;
@@ -205,5 +242,7 @@ window.LUCIVE_INTEGRATIONS = (function(){
     klaviyoTrack: klaviyoTrack,
     gaEvent: gaEvent,
     zapierWebhook: zapierWebhook,
+    detectLang: detectLang,
+    communityUrl: communityUrl,
   };
 })();
