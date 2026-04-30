@@ -55,6 +55,23 @@
   .quick-signup .arr{ font-family: 'JetBrains Mono', monospace; font-weight: 800; }
   /* VN/profile/chat 단계에서도 항상 보이도록 z-index 높음 */
   @media (max-width: 480px) { .quick-signup{ padding: 8px 13px; font-size: 11.5px; top: 10px; right: 10px } }
+
+  /* 상단 좌측 이전으로 돌아가기 · 직전 페이지로 (v38 등) */
+  .quick-back{
+    position: fixed; top: 14px; left: 14px; z-index: 250;
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 9px 15px; border-radius: 999px;
+    background: rgba(255,249,247,.92);
+    color: #6B5560; font-family: 'Inter', sans-serif;
+    font-size: 12.5px; font-weight: 700; letter-spacing: -.005em;
+    text-decoration: none; cursor: pointer; border: 1px solid rgba(63,38,52,.16);
+    box-shadow: 0 6px 18px rgba(63,38,52,.18);
+    backdrop-filter: blur(10px);
+    transition: all .2s;
+  }
+  .quick-back:hover{ border-color: #C97B89; color: #2A1A22; transform: translateY(-1px); }
+  .quick-back .arr{ font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: 13px; }
+  @media (max-width: 480px) { .quick-back{ padding: 8px 12px; font-size: 11.5px; top: 10px; left: 10px } }
   /* 와이드 화면: 그리드와 콘텐츠를 더 넓게 */
   @media (min-width: 900px) {
     .lp-grid { grid-template-columns: repeat(4, 1fr); padding: 8px 32px 32px; gap: 16px; }
@@ -436,6 +453,12 @@
 <body>
 
 <div class="phone">
+
+  <!-- 상단 좌측 이전으로 돌아가기 · 직전 페이지로 -->
+  <a href="#" class="quick-back" onclick="if(history.length>1){history.back();return false}else{location.href='./v38-lp-wide.html';return false}" title="이전으로 돌아가기">
+    <span class="arr">←</span>
+    <span>이전으로</span>
+  </a>
 
   <!-- 상단 우측 상시 사전등록 CTA · 모든 stage에 노출 (browse/profile/chat/VN) -->
   <a href="./v35-signup.html" class="quick-signup" title="알파테스터 사전등록">
