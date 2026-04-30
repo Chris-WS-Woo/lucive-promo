@@ -16,19 +16,20 @@ window.LUCIVE_INTEGRATIONS = (function(){
 
     // Klaviyo Public API Key (Account → Settings → API Keys)
     // 형식: 6자 영숫자 (예: 'AbC123')
-    KLAVIYO_PUBLIC_KEY: '',
+    // ⚠️ Private Key (pk_xxx...) 는 절대 여기 두지 마세요. 이 파일은 브라우저로 노출됩니다.
+    KLAVIYO_PUBLIC_KEY: 'VLcTTr',
 
     // Klaviyo List ID (Audience → Lists & Segments → 해당 리스트 → Settings)
     // 형식: 6자 영숫자 (예: 'XyZ789')
-    KLAVIYO_LIST_ID: '',
+    KLAVIYO_LIST_ID: 'VMHgYx',
 
     // GA4 Measurement ID (Admin → Data Streams → Web Stream)
-    // 형식: 'G-XXXXXXXXXX'
-    GA4_MEASUREMENT_ID: '',
+    // 형식: 'G-9QC121BKET'
+    GA4_MEASUREMENT_ID: 'G-9QC121BKET',
 
     // Zapier Catch Webhook URL (선택 · Slack 알림 / Sheet 백업)
     // 형식: 'https://hooks.zapier.com/hooks/catch/...'
-    ZAPIER_WEBHOOK: '',
+    ZAPIER_WEBHOOK: 'https://hooks.zapier.com/hooks/catch/27287979/uva8pju/',
 
     /* ─────────────── 옵션 ─────────────── */
 
