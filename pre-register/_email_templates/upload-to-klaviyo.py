@@ -20,6 +20,13 @@ import urllib.request
 import urllib.error
 from pathlib import Path
 
+# Windows 콘솔 cp949 호환을 위해 stdout 을 UTF-8 로 재구성
+try:
+    sys.stdout.reconfigure(encoding="utf-8")
+    sys.stderr.reconfigure(encoding="utf-8")
+except Exception:
+    pass
+
 
 def load_private_key():
     """프로젝트 루트의 .env 에서 KLAVIYO_PRIVATE_KEY 읽기."""
@@ -65,21 +72,21 @@ def upload_template(name: str, html_path: Path, private_key: str):
         method="POST",
     )
 
-    print(f"▸ Uploading '{name}' to Klaviyo...")
+    print(f"> Uploading '{name}' to Klaviyo...")
 
     try:
         with urllib.request.urlopen(req) as resp:
             body = resp.read().decode("utf-8")
             data = json.loads(body)
             template_id = data.get("data", {}).get("id", "")
-            print(f"✓ Created (HTTP {resp.status})")
+            print(f"[OK] Created (HTTP {resp.status})")
             print(f"  Template ID: {template_id}")
-            print(f'  Klaviyo → Content → Templates 에서 "{name}" 확인')
+            print(f'  Klaviyo > Content > Templates 에서 "{name}" 확인')
             print()
-            print("  Flow 에 연결: Flows → 해당 Flow → Email action → "
-                  "Use existing template → 위 ID 선택")
+            print("  Flow 연결: Flows > 해당 Flow > Email action > "
+                  "Use existing template > 위 ID 선택")
     except urllib.error.HTTPError as e:
-        print(f"✗ Failed (HTTP {e.code})")
+        print(f"[FAIL] HTTP {e.code}")
         try:
             err_body = e.read().decode("utf-8")
             err_json = json.loads(err_body)
@@ -88,7 +95,7 @@ def upload_template(name: str, html_path: Path, private_key: str):
             print(err_body)
         sys.exit(1)
     except urllib.error.URLError as e:
-        sys.exit(f"✗ Network error: {e.reason}")
+        sys.exit(f"[FAIL] Network error: {e.reason}")
 
 
 def main():
