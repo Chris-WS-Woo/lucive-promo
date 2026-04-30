@@ -65,10 +65,33 @@
 
 **목표**: 사전등록 직후 자동으로 환영 메일 발송 (프로모 코드 포함).
 
+#### 옵션 A — 템플릿 자동 업로드 (권장)
+
+저장소에 미리 디자인된 반응형 HTML 템플릿이 포함되어 있어요:
+- `pre-register/_email_templates/01-welcome.html` (cream/gold 톤, Outlook/Gmail/iOS 호환)
+
+**업로드 (한 번만)**:
+1. 프로젝트 루트 `.env` 에 `KLAVIYO_PRIVATE_KEY=pk_xxxxx` 추가 (Klaviyo Account → Settings → API Keys → Private Key 만들고 권한 설정)
+2. 터미널에서:
+   ```bash
+   cd pre-register/_email_templates
+   # macOS / Linux / Git Bash (jq 필요)
+   ./upload-to-klaviyo.sh "Welcome — Pre-register" 01-welcome.html
+   # 또는 Windows / 어디서든 (Python 3 표준 라이브러리만)
+   python upload-to-klaviyo.py "Welcome — Pre-register" 01-welcome.html
+   ```
+3. 콘솔에 Template ID 출력됨. Klaviyo → Content → Templates 에 동일 이름으로 즉시 등장.
+
+**Flow 만들기**:
 1. **Flows** → **Create Flow** → **Create from Scratch**
-2. **Trigger**: Metric → `Pre-registered` (커스텀 이벤트, 자동 등록됨)
-3. **Action**: Email → 발송 시점 즉시
-4. 이메일 내용 (예시):
+2. **Trigger**: Metric → `Pre-registered`
+3. **Action**: Email → 즉시 발송
+4. Email 편집 화면 → **Use existing template** → 방금 업로드한 `Welcome — Pre-register` 선택
+5. 발신자/주소 확인 후 **Live ON**
+
+#### 옵션 B — 직접 카피 복붙
+
+UI 에서 새 템플릿 생성 후 아래 카피를 직접 입력:
 
 ```
 Subject: LUCIVE 사전등록 완료 — 당신만의 코드입니다
