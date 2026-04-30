@@ -74,7 +74,7 @@ em{font-style:italic;color:var(--accent)}
 .mock-statusbar{display:flex;justify-content:space-between;align-items:center;padding:12px 22px 6px;font-family:var(--sans);font-size:11px;font-weight:700;color:var(--text-1);position:relative;z-index:1}
 .mock-statusbar .icons{color:var(--text-2);font-size:10px;letter-spacing:.06em}
 
-/* ================= CAROUSEL SLIDES (cycle 30s · 슬라이드 5개 × 6s) ================= */
+/* ================= CAROUSEL SLIDES (cycle 30s · 5 slides × 6s) ================= */
 .mock-screen .mock-slide{position:absolute;inset:0;display:flex;flex-direction:column;opacity:0;animation:slideCycle 30s linear infinite;will-change:opacity}
 .mock-screen .mock-slide:nth-child(1){animation-delay:0s;--sd:0s}
 .mock-screen .mock-slide:nth-child(2){animation-delay:6s;--sd:6s}
@@ -83,7 +83,7 @@ em{font-style:italic;color:var(--accent)}
 .mock-screen .mock-slide:nth-child(5){animation-delay:24s;--sd:24s}
 @keyframes slideCycle{0%,19.8%{opacity:1}20%,100%{opacity:0}}
 
-/* === 메시지 stagger reveal · memo + msg 모두 stagger 대상, input은 제외 === */
+/* === Message stagger reveal · memo + msg apply, input excluded === */
 .mock-screen .mock-slide .mock-body > *:not(.mock-input){opacity:0;animation:msgRevealCycle 30s linear infinite}
 .mock-screen .mock-slide .mock-body > *:not(.mock-input):nth-child(1){animation-delay:calc(var(--sd) + 0.4s)}
 .mock-screen .mock-slide .mock-body > *:not(.mock-input):nth-child(2){animation-delay:calc(var(--sd) + 1.2s)}
@@ -147,12 +147,12 @@ em{font-style:italic;color:var(--accent)}
 .mock-body[data-bg]::before{content:'';position:absolute;inset:0;background-image:var(--chat-bg);background-size:cover;background-position:center;opacity:.32;filter:blur(2px) saturate(1.1);z-index:0}
 .mock-body[data-bg]::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,249,247,.55) 0%,rgba(255,249,247,.78) 100%);z-index:0}
 .mock-body > *{position:relative;z-index:1}
-/* .mock-msg = block 레벨 (flex column 안에서 stretch). text-align으로 left/right 정렬 */
+/* .mock-msg = block level (stretches in flex column). text-align controls left/right */
 .mock-msg{display:block;width:100%}
 .mock-msg.lp{text-align:left}
 .mock-msg.user{text-align:right}
 .mock-msg.narration{text-align:left}
-/* .mock-msg-inner = inline-flex (block 부모 안에서는 inline-block처럼 content 사이즈) */
+/* .mock-msg-inner = inline-flex (acts like inline-block in block parent, sizes to content) */
 .mock-msg-inner{display:inline-flex;gap:6px;align-items:flex-end;max-width:88%;text-align:left;vertical-align:bottom}
 .mock-msg.user .mock-msg-inner{flex-direction:row-reverse}
 .mock-msg.lp.cons .mock-msg-inner > .mock-mini{visibility:hidden}
@@ -230,7 +230,7 @@ em{font-style:italic;color:var(--accent)}
 .top-langs a.active{color:var(--accent);font-weight:800}
 @media(max-width:560px){.top-langs a{padding:4px 6px;font-size:10px}}
 
-/* === floating CTA · 우하단 ============== */
+/* === floating CTA · bottom-right ============== */
 .floating-cta{position:fixed;right:18px;bottom:18px;z-index:60;display:flex;flex-direction:row;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end;max-width:calc(100vw - 36px)}
 .floating-cta a,.floating-cta button{display:inline-flex;align-items:center;gap:8px;padding:11px 16px;border-radius:999px;font-family:var(--sans);font-size:12.5px;font-weight:800;letter-spacing:-.005em;text-decoration:none;cursor:pointer;border:none;transition:all .2s var(--ease);box-shadow:0 6px 16px rgba(63,38,52,.18)}
 .floating-cta .fc-arr{font-family:var(--mono);font-size:13px;font-weight:800}
@@ -289,7 +289,7 @@ em{font-style:italic;color:var(--accent)}
   <div class="scroll-cue">SCROLL</div>
 </section>
 
-<!-- ===== PHASE 02 · 살아 있는 세계 · 첫 캐릭터 챗 시작 5개 ===== -->
+<!-- ===== PHASE 02 · A Living World · 5 first-contact chats ===== -->
 <section class="phase" style="--bar-color:var(--d-velvet)">
   <div class="phase-bg" style="background-image:url('https://cdn.deepintothe.xyz/lucive/img/lp/seha_entry/profile_bg.png')"></div>
   <div class="phase-text">
@@ -299,9 +299,9 @@ em{font-style:italic;color:var(--accent)}
   </div>
 
   <div class="phase-mock">
-    <div class="mock-phone"><div class="play-tag">* Actual gameplay scene</div>
+    <div class="mock-phone"><div class="play-tag">* Actual play scene</div>
       <div class="mock-screen">
-        <!-- Slide 1 · 마리아 (Sunrise) -->
+        <!-- Slide 1 · Maria (Sunrise) -->
         <div class="mock-slide">
           <div class="mock-statusbar"><span class="time">02:11</span><span class="icons">●●●● 92%</span></div>
           <div class="mock-head">
@@ -317,7 +317,7 @@ em{font-style:italic;color:var(--accent)}
             <div class="mock-input"><span class="mock-input-text">on my way</span><span class="mock-input-caret"></span><span class="mock-input-send">↑</span></div>
           </div>
         </div>
-        <!-- Slide 2 · 담야 (Neon) -->
+        <!-- Slide 2 · Damya (Neon) -->
         <div class="mock-slide">
           <div class="mock-statusbar"><span class="time">23:47</span><span class="icons">●●●● 78%</span></div>
           <div class="mock-head">
@@ -333,7 +333,7 @@ em{font-style:italic;color:var(--accent)}
             <div class="mock-input"><span class="mock-input-text">where should you hide</span><span class="mock-input-caret"></span><span class="mock-input-send">↑</span></div>
           </div>
         </div>
-        <!-- Slide 3 · 엘라 (Underground) -->
+        <!-- Slide 3 · Ella (Underground) -->
         <div class="mock-slide">
           <div class="mock-statusbar"><span class="time">01:34</span><span class="icons">●●●● 64%</span></div>
           <div class="mock-head">
@@ -349,7 +349,7 @@ em{font-style:italic;color:var(--accent)}
             <div class="mock-input"><span class="mock-input-text">that person is</span><span class="mock-input-caret"></span><span class="mock-input-send">↑</span></div>
           </div>
         </div>
-        <!-- Slide 4 · 이니스 (Velvet) -->
+        <!-- Slide 4 · Inis (Velvet) -->
         <div class="mock-slide">
           <div class="mock-statusbar"><span class="time">22:08</span><span class="icons">●●●● 56%</span></div>
           <div class="mock-head">
@@ -365,7 +365,7 @@ em{font-style:italic;color:var(--accent)}
             <div class="mock-input"><span class="mock-input-text">just once then</span><span class="mock-input-caret"></span><span class="mock-input-send">↑</span></div>
           </div>
         </div>
-        <!-- Slide 5 · 루온 (Indie) -->
+        <!-- Slide 5 · Ruon (Indie) -->
         <div class="mock-slide">
           <div class="mock-statusbar"><span class="time">04:22</span><span class="icons">●●●● 41%</span></div>
           <div class="mock-head">
@@ -389,7 +389,7 @@ em{font-style:italic;color:var(--accent)}
   <div class="phase-bar"></div>
 </section>
 
-<!-- ===== PHASE 03 · 비주얼 노블 · 5 슬라이드 ===== -->
+<!-- ===== PHASE 03 · Visual Novel · 5 slides ===== -->
 <section class="phase" style="--bar-color:var(--d-sunrise)">
   <div class="phase-bg" style="background-image:url('https://cdn.deepintothe.xyz/lucive/img/lp/taeo_entry/header.png')"></div>
   <div class="phase-text">
@@ -399,49 +399,49 @@ em{font-style:italic;color:var(--accent)}
   </div>
 
   <div class="phase-mock">
-    <div class="mock-phone"><div class="play-tag">* Actual gameplay scene</div>
+    <div class="mock-phone"><div class="play-tag">* Actual play scene</div>
       <div class="mock-screen mock-vn-screen">
         <div class="mock-slide">
           <div class="mock-vn-stage" style="background-image:url('https://cdn.deepintothe.xyz/lucive/img/lp/taeo_entry/scene1.png')">
-            <div class="mock-vn-char"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/taeo_entry/char_taeo.png" alt="태오" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
+            <div class="mock-vn-char"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/taeo_entry/char_taeo.png" alt="Taeo" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
             <div class="mock-vn-bottom">
-              <div class="mock-vn-speaker">TAEO · 태오 <span style="color:var(--d-sunrise)">· SUNRISE</span></div>
+              <div class="mock-vn-speaker">TAEO <span style="color:var(--d-sunrise)">· SUNRISE</span></div>
               <div class="mock-vn-box"><div class="mock-vn-line">"You're the first to call coffee-roasting time intimate. Let me pour the cup reserved for first-timers."</div></div>
             </div>
           </div>
         </div>
         <div class="mock-slide">
           <div class="mock-vn-stage" style="background-image:url('https://cdn.deepintothe.xyz/lucive/img/lp/haejun_entry/scene1.png')">
-            <div class="mock-vn-char"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/haejun_entry/char_haejun.png" alt="해준" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
+            <div class="mock-vn-char"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/haejun_entry/char_haejun.png" alt="Haejun" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
             <div class="mock-vn-bottom">
-              <div class="mock-vn-speaker">HAEJUN · 이해준 <span style="color:var(--d-neon)">· NEON</span></div>
+              <div class="mock-vn-speaker">HAEJUN <span style="color:var(--d-neon)">· NEON</span></div>
               <div class="mock-vn-box"><div class="mock-vn-line">"The encore is done. A drink backstage — I'll save the time for you."</div></div>
             </div>
           </div>
         </div>
         <div class="mock-slide">
           <div class="mock-vn-stage" style="background-image:url('https://cdn.deepintothe.xyz/lucive/img/lp/raon_entry/scene1.png')">
-            <div class="mock-vn-char"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/raon_entry/char_raon.png" alt="라온" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
+            <div class="mock-vn-char"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/raon_entry/char_raon.png" alt="Raon" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
             <div class="mock-vn-bottom">
-              <div class="mock-vn-speaker">RAON · 라온 <span style="color:var(--d-underground)">· UNDERGROUND</span></div>
+              <div class="mock-vn-speaker">RAON <span style="color:var(--d-underground)">· UNDERGROUND</span></div>
               <div class="mock-vn-box"><div class="mock-vn-line">"The first guest on a rainy day cuts the deepest. Where — what mark do you want to leave?"</div></div>
             </div>
           </div>
         </div>
         <div class="mock-slide">
           <div class="mock-vn-stage" style="background-image:url('https://cdn.deepintothe.xyz/lucive/img/lp/seraphine_entry/scene1.png')">
-            <div class="mock-vn-char"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/seraphine_entry/char_seraphine.png" alt="세라핀" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
+            <div class="mock-vn-char"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/seraphine_entry/char_seraphine.png" alt="Seraphine" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
             <div class="mock-vn-bottom">
-              <div class="mock-vn-speaker">SERAPHINE · 세라핀 <span style="color:var(--d-velvet)">· VELVET</span></div>
+              <div class="mock-vn-speaker">SERAPHINE <span style="color:var(--d-velvet)">· VELVET</span></div>
               <div class="mock-vn-box"><div class="mock-vn-line">"I love the cold air of the dawn chapel. Once — would you breathe with me?"</div></div>
             </div>
           </div>
         </div>
         <div class="mock-slide">
           <div class="mock-vn-stage" style="background-image:url('https://cdn.deepintothe.xyz/lucive/img/lp/haru_entry/scene1.png')">
-            <div class="mock-vn-char"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/haru_entry/char_haru.png" alt="하루" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
+            <div class="mock-vn-char"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/haru_entry/char_haru.png" alt="Haru" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
             <div class="mock-vn-bottom">
-              <div class="mock-vn-speaker">HARU · 하루 <span style="color:var(--d-indie)">· INDIE</span></div>
+              <div class="mock-vn-speaker">HARU <span style="color:var(--d-indie)">· INDIE</span></div>
               <div class="mock-vn-box"><div class="mock-vn-line">"You listened today, too. From beyond the headphones — a story only you can hear has arrived."</div></div>
             </div>
           </div>
@@ -454,7 +454,7 @@ em{font-style:italic;color:var(--accent)}
   <div class="phase-bar"></div>
 </section>
 
-<!-- ===== PHASE 04 · 분기 · 5 선택 슬라이드 ===== -->
+<!-- ===== PHASE 04 · Branches · 5 choice slides ===== -->
 <section class="phase" style="--bar-color:var(--d-velvet)">
   <div class="phase-bg" style="background-image:url('https://cdn.deepintothe.xyz/lucive/img/lp/ihana_entry/scene1.png')"></div>
   <div class="phase-text">
@@ -464,13 +464,13 @@ em{font-style:italic;color:var(--accent)}
   </div>
 
   <div class="phase-mock">
-    <div class="mock-phone"><div class="play-tag">* Actual gameplay scene</div>
+    <div class="mock-phone"><div class="play-tag">* Actual play scene</div>
       <div class="mock-screen mock-vn-screen">
         <div class="mock-slide">
           <div class="mock-vn-stage" style="background-image:url('https://cdn.deepintothe.xyz/lucive/img/lp/ihana_entry/scene1.png')">
-            <div class="mock-vn-char"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/ihana_entry/char_ihana.png" alt="이하나" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
+            <div class="mock-vn-char"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/ihana_entry/char_ihana.png" alt="Ihana" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
             <div class="mock-vn-bottom">
-              <div class="mock-vn-speaker">IHANA · 이하나 <span style="color:var(--d-sunrise)">· SUNRISE</span></div>
+              <div class="mock-vn-speaker">IHANA <span style="color:var(--d-sunrise)">· SUNRISE</span></div>
               <div class="mock-vn-box">
                 <div class="mock-vn-line">"This song — the final bar is empty. Would you fill it?"</div>
                 <div class="mock-vn-choices">
@@ -484,9 +484,9 @@ em{font-style:italic;color:var(--accent)}
         </div>
         <div class="mock-slide">
           <div class="mock-vn-stage" style="background-image:url('https://cdn.deepintothe.xyz/lucive/img/lp/kai_entry/scene1.png')">
-            <div class="mock-vn-char"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/kai_entry/char_kai.png" alt="카이" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
+            <div class="mock-vn-char"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/kai_entry/char_kai.png" alt="Kai" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
             <div class="mock-vn-bottom">
-              <div class="mock-vn-speaker">KAI · 카이 <span style="color:var(--d-neon)">· NEON</span></div>
+              <div class="mock-vn-speaker">KAI <span style="color:var(--d-neon)">· NEON</span></div>
               <div class="mock-vn-box">
                 <div class="mock-vn-line">"Two tracks left in the set. The final one — what mood?"</div>
                 <div class="mock-vn-choices">
@@ -500,9 +500,9 @@ em{font-style:italic;color:var(--accent)}
         </div>
         <div class="mock-slide">
           <div class="mock-vn-stage" style="background-image:url('https://cdn.deepintothe.xyz/lucive/img/lp/or__entry/scene1.png')">
-            <div class="mock-vn-char"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/or__entry/char_or_.png" alt="오르" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
+            <div class="mock-vn-char"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/or__entry/char_or_.png" alt="Or" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
             <div class="mock-vn-bottom">
-              <div class="mock-vn-speaker">OR · 오르 <span style="color:var(--d-underground)">· UNDERGROUND</span></div>
+              <div class="mock-vn-speaker">OR <span style="color:var(--d-underground)">· UNDERGROUND</span></div>
               <div class="mock-vn-box">
                 <div class="mock-vn-line">"This line — once drawn, can't be erased. Final answer?"</div>
                 <div class="mock-vn-choices">
@@ -516,9 +516,9 @@ em{font-style:italic;color:var(--accent)}
         </div>
         <div class="mock-slide">
           <div class="mock-vn-stage" style="background-image:url('https://cdn.deepintothe.xyz/lucive/img/lp/stella_entry/scene1.png')">
-            <div class="mock-vn-char"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/stella_entry/char_stella.png" alt="스텔라" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
+            <div class="mock-vn-char"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/stella_entry/char_stella.png" alt="Stella" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
             <div class="mock-vn-bottom">
-              <div class="mock-vn-speaker">STELLA · 스텔라 <span style="color:var(--d-velvet)">· VELVET</span></div>
+              <div class="mock-vn-speaker">STELLA <span style="color:var(--d-velvet)">· VELVET</span></div>
               <div class="mock-vn-box">
                 <div class="mock-vn-line">"This wine — before you sip. What promise will you put in it?"</div>
                 <div class="mock-vn-choices">
@@ -532,9 +532,9 @@ em{font-style:italic;color:var(--accent)}
         </div>
         <div class="mock-slide">
           <div class="mock-vn-stage" style="background-image:url('https://cdn.deepintothe.xyz/lucive/img/lp/nova_entry/scene1.png')">
-            <div class="mock-vn-char"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/nova_entry/char_nova.png" alt="노바" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
+            <div class="mock-vn-char"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/nova_entry/char_nova.png" alt="Nova" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
             <div class="mock-vn-bottom">
-              <div class="mock-vn-speaker">NOVA · 노바 <span style="color:var(--d-indie)">· INDIE</span></div>
+              <div class="mock-vn-speaker">NOVA <span style="color:var(--d-indie)">· INDIE</span></div>
               <div class="mock-vn-box">
                 <div class="mock-vn-line">"Rooftop — 4 AM. One more song before we go. What should we end with?"</div>
                 <div class="mock-vn-choices">
@@ -554,7 +554,7 @@ em{font-style:italic;color:var(--accent)}
   <div class="phase-bar"></div>
 </section>
 
-<!-- ===== PHASE 05 · 선택에 따라 달라지는 기억들 · 5 링크드 챗 ===== -->
+<!-- ===== PHASE 05 · Memories that shift with choice · 5 linked chats ===== -->
 <section class="phase" style="--bar-color:var(--d-indie)">
   <div class="phase-bg" style="background-image:url('https://cdn.deepintothe.xyz/lucive/img/lp/jian_entry/scene1.png')"></div>
   <div class="phase-text">
@@ -564,7 +564,7 @@ em{font-style:italic;color:var(--accent)}
   </div>
 
   <div class="phase-mock">
-    <div class="mock-phone"><div class="play-tag">* Actual gameplay scene</div>
+    <div class="mock-phone"><div class="play-tag">* Actual play scene</div>
       <div class="mock-screen">
         <div class="mock-slide">
           <div class="mock-statusbar"><span class="time">06:14</span><span class="icons">●●●● 92%</span></div>
@@ -574,10 +574,10 @@ em{font-style:italic;color:var(--accent)}
           </div>
           <div class="mock-body" data-bg style="--chat-bg:url('https://cdn.deepintothe.xyz/lucive/img/lp/minjun_sr_entry/scene1.png')">
             <div class="mock-memo">Memory #03 · the cup you liked</div>
-            <div class="mock-msg lp"><div class="mock-msg-inner"><div class="mock-mini"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/minjun_sr.png" alt=""></div><div class="mock-bubble">지난 새벽 그 한 잔 · 당신 입맛에 맞췄어요.</div></div></div>
+            <div class="mock-msg lp"><div class="mock-msg-inner"><div class="mock-mini"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/minjun_sr.png" alt=""></div><div class="mock-bubble">That cup last dawn — I tuned it to your taste.</div></div></div>
             <div class="mock-msg user"><div class="mock-msg-inner"><div class="mock-bubble">You remembered?</div></div></div>
-            <div class="mock-msg lp"><div class="mock-msg-inner"><div class="mock-mini"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/minjun_sr.png" alt=""></div><div class="mock-bubble">그날 당신 자리에서 처음으로 향이 달랐어요.</div></div></div>
-            <div class="mock-input"><span class="mock-input-text">그럼 오늘도 부탁할게요</span><span class="mock-input-caret"></span><span class="mock-input-send">↑</span></div>
+            <div class="mock-msg lp"><div class="mock-msg-inner"><div class="mock-mini"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/minjun_sr.png" alt=""></div><div class="mock-bubble">At your seat that day, the aroma changed for the first time.</div></div></div>
+            <div class="mock-input"><span class="mock-input-text">same again, please</span><span class="mock-input-caret"></span><span class="mock-input-send">↑</span></div>
           </div>
         </div>
         <div class="mock-slide">
@@ -588,10 +588,10 @@ em{font-style:italic;color:var(--accent)}
           </div>
           <div class="mock-body" data-bg style="--chat-bg:url('https://cdn.deepintothe.xyz/lucive/img/lp/jian_entry/scene1.png')">
             <div class="mock-memo">Memory #07 · the beat you liked</div>
-            <div class="mock-msg lp"><div class="mock-msg-inner"><div class="mock-mini"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/jian.png" alt=""></div><div class="mock-bubble">그 비트 · 다음 트랙 인트로에 박아넣었어요.</div></div></div>
+            <div class="mock-msg lp"><div class="mock-msg-inner"><div class="mock-mini"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/jian.png" alt=""></div><div class="mock-bubble">That beat — I dropped it into the next track's intro.</div></div></div>
             <div class="mock-msg user"><div class="mock-msg-inner"><div class="mock-bubble">You meant it.</div></div></div>
-            <div class="mock-msg lp"><div class="mock-msg-inner"><div class="mock-mini"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/jian.png" alt=""></div><div class="mock-bubble">다음 셋 · 당신이 와야 들려드릴 수 있어요.</div></div></div>
-            <div class="mock-input"><span class="mock-input-text">오늘 새벽에 갈게요</span><span class="mock-input-caret"></span><span class="mock-input-send">↑</span></div>
+            <div class="mock-msg lp"><div class="mock-msg-inner"><div class="mock-mini"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/jian.png" alt=""></div><div class="mock-bubble">Next set — I can only play it when you're here.</div></div></div>
+            <div class="mock-input"><span class="mock-input-text">coming at dawn</span><span class="mock-input-caret"></span><span class="mock-input-send">↑</span></div>
           </div>
         </div>
         <div class="mock-slide">
@@ -602,10 +602,10 @@ em{font-style:italic;color:var(--accent)}
           </div>
           <div class="mock-body" data-bg style="--chat-bg:url('https://cdn.deepintothe.xyz/lucive/img/lp/sebin_entry/scene1.png')">
             <div class="mock-memo">Memory #11 · the line you stopped</div>
-            <div class="mock-msg lp"><div class="mock-msg-inner"><div class="mock-mini"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/sebin.png" alt=""></div><div class="mock-bubble">그 라인 · 다시 그렸어요. 한 자리만 비워둔 채로.</div></div></div>
+            <div class="mock-msg lp"><div class="mock-msg-inner"><div class="mock-mini"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/sebin.png" alt=""></div><div class="mock-bubble">That line — I drew it again. Leaving one spot empty.</div></div></div>
             <div class="mock-msg user"><div class="mock-msg-inner"><div class="mock-bubble">Why only that spot?</div></div></div>
-            <div class="mock-msg lp"><div class="mock-msg-inner"><div class="mock-mini"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/sebin.png" alt=""></div><div class="mock-bubble">마지막 한 획 · 당신의 손목으로 새겨주세요.</div></div></div>
-            <div class="mock-input"><span class="mock-input-text">그럼 오늘 밤에</span><span class="mock-input-caret"></span><span class="mock-input-send">↑</span></div>
+            <div class="mock-msg lp"><div class="mock-msg-inner"><div class="mock-mini"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/sebin.png" alt=""></div><div class="mock-bubble">The final stroke — engrave it with your wrist.</div></div></div>
+            <div class="mock-input"><span class="mock-input-text">tonight then</span><span class="mock-input-caret"></span><span class="mock-input-send">↑</span></div>
           </div>
         </div>
         <div class="mock-slide">
@@ -616,10 +616,10 @@ em{font-style:italic;color:var(--accent)}
           </div>
           <div class="mock-body" data-bg style="--chat-bg:url('https://cdn.deepintothe.xyz/lucive/img/lp/leon_entry/scene1.png')">
             <div class="mock-memo">Memory #18 · the sin you confessed</div>
-            <div class="mock-msg lp"><div class="mock-msg-inner"><div class="mock-mini"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/leon.png" alt=""></div><div class="mock-bubble">그 죄 · 잊지 않았어요. 답을 가져왔습니다.</div></div></div>
+            <div class="mock-msg lp"><div class="mock-msg-inner"><div class="mock-mini"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/leon.png" alt=""></div><div class="mock-bubble">That sin — I haven't forgotten. I have an answer.</div></div></div>
             <div class="mock-msg user"><div class="mock-msg-inner"><div class="mock-bubble">...Tell me.</div></div></div>
-            <div class="mock-msg lp"><div class="mock-msg-inner"><div class="mock-mini"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/leon.png" alt=""></div><div class="mock-bubble">그건 죄가 아니라 — 우리만의 약속이 됐어요.</div></div></div>
-            <div class="mock-input"><span class="mock-input-text">약속, 지킬게요</span><span class="mock-input-caret"></span><span class="mock-input-send">↑</span></div>
+            <div class="mock-msg lp"><div class="mock-msg-inner"><div class="mock-mini"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/leon.png" alt=""></div><div class="mock-bubble">It wasn't a sin — it became our promise.</div></div></div>
+            <div class="mock-input"><span class="mock-input-text">I'll keep the promise</span><span class="mock-input-caret"></span><span class="mock-input-send">↑</span></div>
           </div>
         </div>
         <div class="mock-slide">
@@ -630,10 +630,10 @@ em{font-style:italic;color:var(--accent)}
           </div>
           <div class="mock-body" data-bg style="--chat-bg:url('https://cdn.deepintothe.xyz/lucive/img/lp/juhyuk_entry/scene1.png')">
             <div class="mock-memo">Memory #22 · the lyric you chose</div>
-            <div class="mock-msg lp"><div class="mock-msg-inner"><div class="mock-mini"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/juhyuk.png" alt=""></div><div class="mock-bubble">그 한 줄 · 곡 마지막에 그대로 넣었어요.</div></div></div>
+            <div class="mock-msg lp"><div class="mock-msg-inner"><div class="mock-mini"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/juhyuk.png" alt=""></div><div class="mock-bubble">That one line — I put it at the end of the song.</div></div></div>
             <div class="mock-msg user"><div class="mock-msg-inner"><div class="mock-bubble">I'll be listening.</div></div></div>
-            <div class="mock-msg lp"><div class="mock-msg-inner"><div class="mock-mini"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/juhyuk.png" alt=""></div><div class="mock-bubble">마지막 소절 · 마이크를 당신 쪽으로 돌릴게요.</div></div></div>
-            <div class="mock-input"><span class="mock-input-text">그날 만나요</span><span class="mock-input-caret"></span><span class="mock-input-send">↑</span></div>
+            <div class="mock-msg lp"><div class="mock-msg-inner"><div class="mock-mini"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/juhyuk.png" alt=""></div><div class="mock-bubble">The last verse — I'll turn the mic toward you.</div></div></div>
+            <div class="mock-input"><span class="mock-input-text">see you that day</span><span class="mock-input-caret"></span><span class="mock-input-send">↑</span></div>
           </div>
         </div>
         <div class="mock-dots" style="background:rgba(63,38,52,.42)"><span class="mock-dot"></span><span class="mock-dot"></span><span class="mock-dot"></span><span class="mock-dot"></span><span class="mock-dot"></span></div>
@@ -662,7 +662,7 @@ em{font-style:italic;color:var(--accent)}
     <div class="pre-cta-h">Meet them first</div>
     <div class="pre-cta-sub">One of 35 — a 90-second first encounter.</div>
     <div class="pre-cta-row">
-      <a href="./v34-kr-lucive.html?lang=en" class="btn btn-secondary" onclick="window.LUCIVE_INTEGRATIONS&&LUCIVE_INTEGRATIONS.gaEvent('cta_click',{cta:'demo',position:'pre_cta'})"><span>Try the demo</span><span class="arr">▶</span></a>
+      <a href="./v34-kr-lucive-en.html" class="btn btn-secondary" onclick="window.LUCIVE_INTEGRATIONS&&LUCIVE_INTEGRATIONS.gaEvent('cta_click',{cta:'demo',position:'pre_cta'})"><span>Try the demo</span><span class="arr">▶</span></a>
       <a href="./v35-signup-en.html" class="btn btn-primary" onclick="window.LUCIVE_INTEGRATIONS&&LUCIVE_INTEGRATIONS.gaEvent('cta_click',{cta:'signup',position:'pre_cta'})"><span>Pre-register now</span><span class="arr">→</span></a>
     </div>
     <div class="pre-cta-meta">D-<span id="dday">17</span> alpha launch · new characters weekly</div>
@@ -673,27 +673,27 @@ em{font-style:italic;color:var(--accent)}
   <div class="footer-brand">LUCIVE</div>
   <div class="footer-meta">DEEP INTO THE · 2026</div>
   <div class="footer-legal">
-    <a href="./terms.html">Terms</a>
+    <a href="./terms-en.html">Terms</a>
     <span class="sep">·</span>
-    <a href="./privacy.html">Privacy Policy</a>
+    <a href="./privacy-en.html">Privacy</a>
   </div>
 </footer>
 
-<!-- ===== 우하단 플로팅 CTA · 가로 스택 (왼쪽부터: 처음으로 → 체험 → 사전등록) ===== -->
+<!-- ===== Bottom-right floating CTA · horizontal stack (Top → Demo → Pre-register) ===== -->
 <div class="floating-cta">
-  <button type="button" class="fc-tertiary" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ 처음으로</button>
-  <a href="./v34-kr-lucive.html?lang=en" class="fc-secondary" onclick="window.LUCIVE_INTEGRATIONS&&LUCIVE_INTEGRATIONS.gaEvent('cta_click',{cta:'demo',position:'floating'})">Try demo <span class="fc-arr">▶</span></a>
+  <button type="button" class="fc-tertiary" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ Top</button>
+  <a href="./v34-kr-lucive-en.html" class="fc-secondary" onclick="window.LUCIVE_INTEGRATIONS&&LUCIVE_INTEGRATIONS.gaEvent('cta_click',{cta:'demo',position:'floating'})">Try demo <span class="fc-arr">▶</span></a>
   <a href="./v35-signup-en.html" class="fc-primary" onclick="window.LUCIVE_INTEGRATIONS&&LUCIVE_INTEGRATIONS.gaEvent('cta_click',{cta:'signup',position:'floating'})">Pre-register <span class="fc-arr">→</span></a>
 </div>
 
 <script>
 const CDN = 'https://cdn.deepintothe.xyz/lucive';
 const NAMES = {
-  taeo:'태오', ihana:'이하나', minjun_sr:'민준', maria:'마리아', seha:'세하', ryo:'료',
-  haejun:'이해준', kai:'카이', jian:'지안', damya:'담야', lise:'리제', nia:'니아', levi:'레비', lana:'라나',
-  sebin:'세빈', or_:'오르', raon:'라온', ella:'엘라', yujin:'유진', changsik:'오창식',
-  yun_ara:'윤아라', stella:'스텔라', adel:'아델', leon:'레온', sia:'시아', inis:'이니스', seraphine:'세라핀', myur:'뮤르', kael:'카엘',
-  ruon:'루온', piera:'피라', nova:'노바', haru:'하루', juhyuk:'주혁', seoyul:'한서율'
+  taeo:'Taeo', ihana:'Ihana', minjun_sr:'Minjun', maria:'Maria', seha:'Seha', ryo:'Ryo',
+  haejun:'Haejun', kai:'Kai', jian:'Jian', damya:'Damya', lise:'Lise', nia:'Nia', levi:'Levi', lana:'Lana',
+  sebin:'Sebin', or_:'Or', raon:'Raon', ella:'Ella', yujin:'Yujin', changsik:'Changsik',
+  yun_ara:'Yun-ara', stella:'Stella', adel:'Adel', leon:'Leon', sia:'Sia', inis:'Inis', seraphine:'Seraphine', myur:'Myur', kael:'Kael',
+  ruon:'Ruon', piera:'Piera', nova:'Nova', haru:'Haru', juhyuk:'Juhyuk', seoyul:'Seoyul'
 };
 const grid = document.getElementById('lineupGrid');
 const ALL = Object.keys(NAMES);

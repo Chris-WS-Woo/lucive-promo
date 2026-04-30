@@ -60,7 +60,7 @@ a:hover{text-decoration-color:var(--accent)}
 .success{display:none;width:100%;max-width:520px;background:var(--card);border-radius:20px;padding:40px 32px 32px;text-align:center;box-shadow:0 14px 48px rgba(63,38,52,.1),0 0 0 1px rgba(214,176,124,.18);animation:fadeIn .5s var(--ease)}
 .success.show{display:block}
 
-/* 프로모 코드 블록 */
+/* Promo code block */
 .promo-block{margin-top:20px;padding:18px;background:linear-gradient(180deg,rgba(214,176,124,.1),rgba(201,123,137,.06));border:1px solid rgba(214,176,124,.32);border-radius:14px;text-align:left}
 .promo-h{font-family:var(--display);font-style:italic;font-size:15px;font-weight:700;color:var(--text-1);margin-bottom:10px;text-align:center;line-height:1.4}
 .promo-h em{color:var(--gold-deep)}
@@ -76,7 +76,7 @@ a:hover{text-decoration-color:var(--accent)}
 .share.kakao:hover{background:#FEE500}
 .share.x:hover{background:#0F1419;color:#fff}
 
-/* 레퍼럴 단계 */
+/* Referral tiers */
 .tier-block{margin-top:18px;padding:20px;background:var(--elevated);border-radius:14px;text-align:left}
 .tier-h{font-family:var(--display);font-size:19px;font-weight:700;color:var(--text-1);letter-spacing:-.005em;margin-bottom:14px;display:flex;align-items:baseline;gap:8px}
 .tier-h::before{content:'◆';color:var(--gold);font-size:13px;flex-shrink:0}
@@ -124,7 +124,7 @@ a:hover{text-decoration-color:var(--accent)}
 
       <label class="check-row">
         <input type="checkbox" id="consent" checked required>
-        <span>By submitting, you agree to the <a href="./terms.html" target="_blank">Terms</a> and <a href="./privacy.html" target="_blank">Privacy Policy</a>.</span>
+        <span>By submitting, you agree to the <a href="./terms-en.html" target="_blank">Terms</a> and <a href="./privacy-en.html" target="_blank">Privacy Policy</a>.</span>
       </label>
       <label class="check-row">
         <input type="checkbox" id="marketing" checked>
@@ -144,7 +144,7 @@ a:hover{text-decoration-color:var(--accent)}
     <h2 class="success-h"><em>Registered</em></h2>
     <p class="success-sub"><b id="ssEmail">your@email.com</b><br> — alpha launch and first chapter alerts will be sent here.</p>
 
-    <!-- 프로모 코드 + 친구 초대 -->
+    <!-- Promo code + friend invite -->
     <div class="promo-block">
       <div class="promo-h">Invite a friend · <em>both get +100 Dive</em></div>
       <div class="promo-row">
@@ -168,7 +168,7 @@ a:hover{text-decoration-color:var(--accent)}
       </div>
     </div>
 
-    <!-- 상위 레퍼럴 보너스 단계 -->
+    <!-- Top referral bonus -->
     <div class="tier-block">
       <div class="tier-h">Top referral <em>bonus</em></div>
       <div class="tier-grid">
@@ -177,7 +177,7 @@ a:hover{text-decoration-color:var(--accent)}
       </div>
     </div>
 
-    <!-- 다음 단계 · 다이브 -->
+    <!-- Next · Dive -->
     <div class="next-block">
       <div class="next-h">Survey rewards <em></em></div>
       <ul class="next-list">
@@ -288,8 +288,8 @@ function share(channel){
   } else if(channel === 'x'){
     window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`, '_blank');
   } else if(channel === 'kakao'){
-    // KakaoSDK 미연동 상태 · 링크 Copy로 fallback
-    navigator.clipboard?.writeText(text).then(()=>alert('카톡 공유 Link copied'));
+    // Kakao SDK not connected · fallback to link copy
+    navigator.clipboard?.writeText(text).then(()=>alert('Link copied'));
   }
 }
 
