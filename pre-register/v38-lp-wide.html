@@ -81,14 +81,13 @@ em{font-style:italic;color:var(--accent)}
 .mock-screen .mock-slide:nth-child(5){animation-delay:24s;--sd:24s}
 @keyframes slideCycle{0%,19.8%{opacity:1}20%,100%{opacity:0}}
 
-/* === 메시지 stagger reveal · 한 칸씩 실시간으로 등장 === */
-.mock-screen .mock-slide .mock-body > *{opacity:0;animation:msgRevealCycle 30s linear infinite}
-.mock-screen .mock-slide .mock-body > *:nth-child(1){animation-delay:calc(var(--sd) + 0.3s)}
-.mock-screen .mock-slide .mock-body > *:nth-child(2){animation-delay:calc(var(--sd) + 1s)}
-.mock-screen .mock-slide .mock-body > *:nth-child(3){animation-delay:calc(var(--sd) + 1.7s)}
-.mock-screen .mock-slide .mock-body > *:nth-child(4){animation-delay:calc(var(--sd) + 2.5s)}
-.mock-screen .mock-slide .mock-body > *:nth-child(5){animation-delay:calc(var(--sd) + 3.3s)}
-.mock-screen .mock-slide .mock-body > *:nth-child(6){animation-delay:calc(var(--sd) + 4.1s)}
+/* === 메시지 stagger reveal · 한 칸씩 실시간으로 등장 (입력창은 제외, 항상 보임) === */
+.mock-screen .mock-slide .mock-body > .mock-msg{opacity:0;animation:msgRevealCycle 30s linear infinite}
+.mock-screen .mock-slide .mock-body > .mock-msg:nth-child(1){animation-delay:calc(var(--sd) + 0.4s)}
+.mock-screen .mock-slide .mock-body > .mock-msg:nth-child(2){animation-delay:calc(var(--sd) + 1.2s)}
+.mock-screen .mock-slide .mock-body > .mock-msg:nth-child(3){animation-delay:calc(var(--sd) + 2s)}
+.mock-screen .mock-slide .mock-body > .mock-msg:nth-child(4){animation-delay:calc(var(--sd) + 2.9s)}
+.mock-screen .mock-slide .mock-body > .mock-msg:nth-child(5){animation-delay:calc(var(--sd) + 3.8s)}
 @keyframes msgRevealCycle{
   0%{opacity:0;transform:translateY(10px)}
   1.5%{opacity:1;transform:translateY(0)}
