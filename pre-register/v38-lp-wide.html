@@ -81,13 +81,13 @@ em{font-style:italic;color:var(--accent)}
 .mock-screen .mock-slide:nth-child(5){animation-delay:24s;--sd:24s}
 @keyframes slideCycle{0%,19.8%{opacity:1}20%,100%{opacity:0}}
 
-/* === 메시지 stagger reveal · 한 칸씩 실시간으로 등장 (입력창은 제외, 항상 보임) === */
-.mock-screen .mock-slide .mock-body > .mock-msg{opacity:0;animation:msgRevealCycle 30s linear infinite}
-.mock-screen .mock-slide .mock-body > .mock-msg:nth-child(1){animation-delay:calc(var(--sd) + 0.4s)}
-.mock-screen .mock-slide .mock-body > .mock-msg:nth-child(2){animation-delay:calc(var(--sd) + 1.2s)}
-.mock-screen .mock-slide .mock-body > .mock-msg:nth-child(3){animation-delay:calc(var(--sd) + 2s)}
-.mock-screen .mock-slide .mock-body > .mock-msg:nth-child(4){animation-delay:calc(var(--sd) + 2.9s)}
-.mock-screen .mock-slide .mock-body > .mock-msg:nth-child(5){animation-delay:calc(var(--sd) + 3.8s)}
+/* === 메시지 stagger reveal · memo + msg 모두 stagger 대상, input은 제외 === */
+.mock-screen .mock-slide .mock-body > *:not(.mock-input){opacity:0;animation:msgRevealCycle 30s linear infinite}
+.mock-screen .mock-slide .mock-body > *:not(.mock-input):nth-child(1){animation-delay:calc(var(--sd) + 0.4s)}
+.mock-screen .mock-slide .mock-body > *:not(.mock-input):nth-child(2){animation-delay:calc(var(--sd) + 1.2s)}
+.mock-screen .mock-slide .mock-body > *:not(.mock-input):nth-child(3){animation-delay:calc(var(--sd) + 2s)}
+.mock-screen .mock-slide .mock-body > *:not(.mock-input):nth-child(4){animation-delay:calc(var(--sd) + 2.9s)}
+.mock-screen .mock-slide .mock-body > *:not(.mock-input):nth-child(5){animation-delay:calc(var(--sd) + 3.8s)}
 @keyframes msgRevealCycle{
   0%{opacity:0;transform:translateY(10px)}
   1.5%{opacity:1;transform:translateY(0)}
@@ -564,8 +564,10 @@ em{font-style:italic;color:var(--accent)}
           </div>
           <div class="mock-body" data-bg style="--chat-bg:url('https://cdn.deepintothe.xyz/lucive/img/lp/minjun_sr_entry/scene1.png')">
             <div class="mock-memo">기억 #03 · 당신이 좋다고 한 한 잔</div>
-            <div class="mock-msg lp"><div class="mock-msg-inner"><div class="mock-mini"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/minjun_sr.png" alt=""></div><div class="mock-bubble">지난 새벽 그 한 잔 · 당신 입맛에 맞췄어요. 오늘도 똑같이 내려둘까요.</div></div></div>
+            <div class="mock-msg lp"><div class="mock-msg-inner"><div class="mock-mini"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/minjun_sr.png" alt=""></div><div class="mock-bubble">지난 새벽 그 한 잔 · 당신 입맛에 맞췄어요.</div></div></div>
             <div class="mock-msg user"><div class="mock-msg-inner"><div class="mock-bubble">기억하고 있었어요?</div></div></div>
+            <div class="mock-msg lp"><div class="mock-msg-inner"><div class="mock-mini"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/minjun_sr.png" alt=""></div><div class="mock-bubble">그날 당신 자리에서 처음으로 향이 달랐어요.</div></div></div>
+            <div class="mock-input"><span class="mock-input-text">그럼 오늘도 부탁할게요</span><span class="mock-input-caret"></span><span class="mock-input-send">↑</span></div>
           </div>
         </div>
         <div class="mock-slide">
@@ -576,8 +578,10 @@ em{font-style:italic;color:var(--accent)}
           </div>
           <div class="mock-body" data-bg style="--chat-bg:url('https://cdn.deepintothe.xyz/lucive/img/lp/jian_entry/scene1.png')">
             <div class="mock-memo">기억 #07 · 당신이 좋다 한 비트</div>
-            <div class="mock-msg lp"><div class="mock-msg-inner"><div class="mock-mini"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/jian.png" alt=""></div><div class="mock-bubble">지난 셋 · 당신이 좋다 한 비트, 다음 트랙 인트로에 그대로 박아넣었어요.</div></div></div>
+            <div class="mock-msg lp"><div class="mock-msg-inner"><div class="mock-mini"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/jian.png" alt=""></div><div class="mock-bubble">그 비트 · 다음 트랙 인트로에 박아넣었어요.</div></div></div>
             <div class="mock-msg user"><div class="mock-msg-inner"><div class="mock-bubble">진심이었구나.</div></div></div>
+            <div class="mock-msg lp"><div class="mock-msg-inner"><div class="mock-mini"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/jian.png" alt=""></div><div class="mock-bubble">다음 셋 · 당신이 와야 들려드릴 수 있어요.</div></div></div>
+            <div class="mock-input"><span class="mock-input-text">오늘 새벽에 갈게요</span><span class="mock-input-caret"></span><span class="mock-input-send">↑</span></div>
           </div>
         </div>
         <div class="mock-slide">
@@ -588,8 +592,10 @@ em{font-style:italic;color:var(--accent)}
           </div>
           <div class="mock-body" data-bg style="--chat-bg:url('https://cdn.deepintothe.xyz/lucive/img/lp/sebin_entry/scene1.png')">
             <div class="mock-memo">기억 #11 · 당신이 멈춰 세운 라인</div>
-            <div class="mock-msg lp"><div class="mock-msg-inner"><div class="mock-mini"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/sebin.png" alt=""></div><div class="mock-bubble">그날 멈춰 세웠던 그 라인 · 다시 그렸어요. 당신의 손길이 닿는 자리만 비워둔 채로.</div></div></div>
+            <div class="mock-msg lp"><div class="mock-msg-inner"><div class="mock-mini"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/sebin.png" alt=""></div><div class="mock-bubble">그 라인 · 다시 그렸어요. 한 자리만 비워둔 채로.</div></div></div>
             <div class="mock-msg user"><div class="mock-msg-inner"><div class="mock-bubble">왜 그 자리만 비웠어요?</div></div></div>
+            <div class="mock-msg lp"><div class="mock-msg-inner"><div class="mock-mini"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/sebin.png" alt=""></div><div class="mock-bubble">마지막 한 획 · 당신의 손목으로 새겨주세요.</div></div></div>
+            <div class="mock-input"><span class="mock-input-text">그럼 오늘 밤에</span><span class="mock-input-caret"></span><span class="mock-input-send">↑</span></div>
           </div>
         </div>
         <div class="mock-slide">
@@ -600,8 +606,10 @@ em{font-style:italic;color:var(--accent)}
           </div>
           <div class="mock-body" data-bg style="--chat-bg:url('https://cdn.deepintothe.xyz/lucive/img/lp/leon_entry/scene1.png')">
             <div class="mock-memo">기억 #18 · 당신이 털어놓은 죄</div>
-            <div class="mock-msg lp"><div class="mock-msg-inner"><div class="mock-mini"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/leon.png" alt=""></div><div class="mock-bubble">당신이 털어놓은 가장 깊은 죄 · 잊지 않았어요. 오늘은, 그 죄에 대한 답을 가져왔습니다.</div></div></div>
+            <div class="mock-msg lp"><div class="mock-msg-inner"><div class="mock-mini"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/leon.png" alt=""></div><div class="mock-bubble">그 죄 · 잊지 않았어요. 답을 가져왔습니다.</div></div></div>
             <div class="mock-msg user"><div class="mock-msg-inner"><div class="mock-bubble">...들려주세요.</div></div></div>
+            <div class="mock-msg lp"><div class="mock-msg-inner"><div class="mock-mini"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/leon.png" alt=""></div><div class="mock-bubble">그건 죄가 아니라 — 우리만의 약속이 됐어요.</div></div></div>
+            <div class="mock-input"><span class="mock-input-text">약속, 지킬게요</span><span class="mock-input-caret"></span><span class="mock-input-send">↑</span></div>
           </div>
         </div>
         <div class="mock-slide">
@@ -612,8 +620,10 @@ em{font-style:italic;color:var(--accent)}
           </div>
           <div class="mock-body" data-bg style="--chat-bg:url('https://cdn.deepintothe.xyz/lucive/img/lp/juhyuk_entry/scene1.png')">
             <div class="mock-memo">기억 #22 · 당신이 골라준 가사 한 줄</div>
-            <div class="mock-msg lp"><div class="mock-msg-inner"><div class="mock-mini"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/juhyuk.png" alt=""></div><div class="mock-bubble">그날 당신이 골라준 한 줄 · 곡 마지막에 그대로 넣었어요. 다음 무대 · 당신을 위해 부를게요.</div></div></div>
+            <div class="mock-msg lp"><div class="mock-msg-inner"><div class="mock-mini"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/juhyuk.png" alt=""></div><div class="mock-bubble">그 한 줄 · 곡 마지막에 그대로 넣었어요.</div></div></div>
             <div class="mock-msg user"><div class="mock-msg-inner"><div class="mock-bubble">제가 듣고 있을게요.</div></div></div>
+            <div class="mock-msg lp"><div class="mock-msg-inner"><div class="mock-mini"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/juhyuk.png" alt=""></div><div class="mock-bubble">마지막 소절 · 마이크를 당신 쪽으로 돌릴게요.</div></div></div>
+            <div class="mock-input"><span class="mock-input-text">그날 만나요</span><span class="mock-input-caret"></span><span class="mock-input-send">↑</span></div>
           </div>
         </div>
         <div class="mock-dots" style="background:rgba(63,38,52,.42)"><span class="mock-dot"></span><span class="mock-dot"></span><span class="mock-dot"></span><span class="mock-dot"></span><span class="mock-dot"></span></div>
