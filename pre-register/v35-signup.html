@@ -76,21 +76,25 @@ a:hover{text-decoration-color:var(--accent)}
 .share.x:hover{background:#0F1419;color:#fff}
 
 /* 레퍼럴 단계 */
-.tier-block{margin-top:18px;padding:18px;background:var(--elevated);border-radius:14px;text-align:left}
-.tier-h{font-family:var(--mono);font-size:10.5px;letter-spacing:.22em;font-weight:800;color:var(--gold-deep);text-transform:uppercase;margin-bottom:12px;text-align:center}
-.tier-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.tier{padding:10px 12px;background:#fff;border:1px solid rgba(63,38,52,.08);border-radius:10px}
-.tier-n{font-family:var(--display);font-style:italic;font-size:18px;font-weight:700;color:var(--accent);line-height:1.1}
-.tier-r{font-family:var(--sans);font-size:11.5px;color:var(--text-2);line-height:1.45;margin-top:3px}
-.tier-r b{color:var(--text-1);font-weight:800;display:block}
+.tier-block{margin-top:18px;padding:20px;background:var(--elevated);border-radius:14px;text-align:left}
+.tier-h{font-family:var(--display);font-size:19px;font-weight:700;color:var(--text-1);letter-spacing:-.005em;margin-bottom:14px;display:flex;align-items:baseline;gap:8px}
+.tier-h::before{content:'◆';color:var(--gold);font-size:13px;flex-shrink:0}
+.tier-h em{font-style:italic;color:var(--accent)}
+.tier-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tier{padding:14px;background:#fff;border:1px solid rgba(63,38,52,.08);border-radius:12px}
+.tier-n{font-family:var(--display);font-style:italic;font-size:22px;font-weight:700;color:var(--accent);line-height:1;margin-bottom:8px}
+.tier-r{font-family:var(--sans);font-size:12px;color:var(--text-2);line-height:1.5}
+.tier-r b{color:var(--text-1);font-weight:800;display:block;font-size:13px;margin-bottom:2px}
 @keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 .success-icon{font-size:42px;color:var(--gold);margin-bottom:14px;line-height:1}
 .success-h{font-family:var(--display);font-size:30px;font-weight:700;line-height:1.18;margin-bottom:10px}
 .success-h em{color:var(--accent);font-style:italic}
 .success-sub{font-size:14px;color:var(--text-2);line-height:1.65;margin-bottom:24px}
 .success-sub b{color:var(--text-1);font-weight:700}
-.next-block{margin-top:18px;padding:18px;background:var(--elevated);border-radius:14px;text-align:left}
-.next-h{font-family:var(--mono);font-size:10.5px;letter-spacing:.22em;font-weight:800;color:var(--gold-deep);text-transform:uppercase;margin-bottom:8px}
+.next-block{margin-top:18px;padding:20px;background:var(--elevated);border-radius:14px;text-align:left}
+.next-h{font-family:var(--display);font-size:19px;font-weight:700;color:var(--text-1);letter-spacing:-.005em;margin-bottom:12px;display:flex;align-items:baseline;gap:8px}
+.next-h::before{content:'◆';color:var(--gold);font-size:13px;flex-shrink:0}
+.next-h em{font-style:italic;color:var(--accent)}
 .next-list{font-size:13px;color:var(--text-2);line-height:1.7;list-style:none}
 .next-list li{padding-left:18px;position:relative}
 .next-list li::before{content:'◆';position:absolute;left:0;color:var(--gold);font-size:9px;top:6px}
@@ -141,7 +145,7 @@ a:hover{text-decoration-color:var(--accent)}
 
     <!-- 프로모 코드 + 친구 초대 -->
     <div class="promo-block">
-      <div class="promo-h">친구 초대 · <em>둘 다 +300 다이브 · 첫 회차 우선 입장</em></div>
+      <div class="promo-h">친구 초대 · <em>둘 다 +100 다이브</em></div>
       <div class="promo-row">
         <div class="promo-row-label">내 코드</div>
         <div class="promo-row-field">
@@ -165,18 +169,16 @@ a:hover{text-decoration-color:var(--accent)}
 
     <!-- 상위 레퍼럴 보너스 단계 -->
     <div class="tier-block">
-      <div class="tier-h">상위 레퍼럴 보너스</div>
+      <div class="tier-h">상위 레퍼럴 <em>보너스</em></div>
       <div class="tier-grid">
-        <div class="tier"><div class="tier-n">3명</div><div class="tier-r">+1,500 다이브</div></div>
-        <div class="tier"><div class="tier-n">10명</div><div class="tier-r">+5,000 다이브</div></div>
-        <div class="tier"><div class="tier-n">25명</div><div class="tier-r"><b>알파 선발 확정</b><br>+10,000 다이브</div></div>
-        <div class="tier"><div class="tier-n">50명</div><div class="tier-r"><b>본편 평생 액세스</b><br>+50,000 다이브</div></div>
+        <div class="tier"><div class="tier-n">1위</div><div class="tier-r"><b>기본 서비스 평생 무료</b>서비스 존속 기간 동안</div></div>
+        <div class="tier"><div class="tier-n">2 - 5위</div><div class="tier-r"><b>기본 서비스 5개월 무료</b>본인 + 추천한 친구 전원</div></div>
       </div>
     </div>
 
     <!-- 다음 단계 · 다이브 -->
     <div class="next-block">
-      <div class="next-h">다음 단계 · 다이브 추가 적립</div>
+      <div class="next-h">설문 완료 시 <em>혜택</em></div>
       <ul class="next-list">
         <li>2분 설문 완주 시 <b>+500 다이브</b> + 알파 가산점</li>
         <li>알파 선발 시 <b>+2,000 다이브</b> 자동 지급</li>
@@ -234,7 +236,7 @@ function copyTo(id){
 function share(channel){
   const code = document.getElementById('myCode').textContent;
   const url = `https://lucive.app/r/${code.replace('LUCIVE·','')}`;
-  const text = `LUCIVE 알파테스터 사전등록 · 함께 가면 둘 다 +300 다이브\n${url}`;
+  const text = `LUCIVE 알파테스터 사전등록 · 함께 가면 둘 다 +100 다이브\n${url}`;
   if(channel === 'link'){
     navigator.clipboard?.writeText(url).then(()=>alert('링크 복사됨'));
   } else if(channel === 'x'){
