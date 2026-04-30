@@ -74,13 +74,15 @@
               <!-- intro -->
               <tr>
                 <td class="px text-2" style="padding:18px 40px 0;font-family:'Inter','Noto Sans KR',sans-serif;font-size:15px;line-height:1.7;color:#6B5560">
-                  사전등록을 받았습니다.
+                  사전등록이 완료되었습니다.
                 </td>
               </tr>
+              <!-- spacer -->
+              <tr><td style="line-height:18px;font-size:1px">&nbsp;</td></tr>
 
               <!-- promo code block -->
               <tr>
-                <td class="px" style="padding:24px 40px 0">
+                <td class="px" style="padding:6px 40px 0">
                   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#FAEFE8;border-radius:12px">
                     <tr>
                       <td style="padding:18px 20px">
@@ -91,10 +93,12 @@
                   </table>
                 </td>
               </tr>
+              <!-- spacer -->
+              <tr><td style="line-height:10px;font-size:1px">&nbsp;</td></tr>
 
               <!-- invite link block -->
               <tr>
-                <td class="px" style="padding:10px 40px 0">
+                <td class="px" style="padding:0 40px 0">
                   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#FAEFE8;border-radius:12px">
                     <tr>
                       <td style="padding:18px 20px">
@@ -103,24 +107,65 @@
                           <a href="{{ event.invite_url }}" style="color:#b8945e;text-decoration:underline">{{ event.invite_url }}</a>
                         </div>
                         <div style="margin-top:12px;font-family:'Inter','Noto Sans KR',sans-serif;font-size:13px;color:#6B5560;line-height:1.6">
-                          이 링크로 친구가 가입하면 — 둘 다 <b style="color:#2A1A22">+100 다이브</b>.<br>
-                          초대 1위는 서비스 존속 기간 내 기본 플랜 평생 무료, 2-5위는 본인과 친구 전원 5개월 무료.
+                          이 링크로 친구가 가입하면 — 둘 다 <b style="color:#2A1A22">+100 다이브</b>.
                         </div>
                       </td>
                     </tr>
                   </table>
                 </td>
               </tr>
+              <!-- spacer -->
+              <tr><td style="line-height:18px;font-size:1px">&nbsp;</td></tr>
+
+              <!-- referral tier bonus box (NEW) -->
+              <tr>
+                <td class="px" style="padding:0 40px 0">
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#ffffff;border:1px solid rgba(63,38,52,0.10);border-radius:12px">
+                    <tr>
+                      <td style="padding:18px 20px 6px">
+                        <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:17px;font-weight:700;color:#2A1A22;letter-spacing:-0.005em">
+                          <span style="color:#D6B07C">◆</span>&nbsp;
+                          추천 순위 <em style="font-style:italic;color:#C97B89">보너스</em>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="padding:6px 14px 18px">
+                        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                          <tr>
+                            <!-- 1위 -->
+                            <td valign="top" width="49%" style="padding:14px;background:#FAEFE8;border-radius:10px">
+                              <div style="font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:20px;font-weight:700;color:#C97B89;line-height:1">1위</div>
+                              <div style="margin-top:8px;font-family:'Inter','Noto Sans KR',sans-serif;font-size:13px;font-weight:800;color:#2A1A22;line-height:1.45">기본 플랜<br>평생 이용권</div>
+                              <div style="margin-top:4px;font-family:'Inter','Noto Sans KR',sans-serif;font-size:12px;color:#6B5560;line-height:1.5">서비스 존속 기간 내</div>
+                            </td>
+                            <td width="2%">&nbsp;</td>
+                            <!-- 2-5위 -->
+                            <td valign="top" width="49%" style="padding:14px;background:#FAEFE8;border-radius:10px">
+                              <div style="font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:20px;font-weight:700;color:#C97B89;line-height:1">2 - 5위</div>
+                              <div style="margin-top:8px;font-family:'Inter','Noto Sans KR',sans-serif;font-size:13px;font-weight:800;color:#2A1A22;line-height:1.45">기본 플랜<br>5개월 무료</div>
+                              <div style="margin-top:4px;font-family:'Inter','Noto Sans KR',sans-serif;font-size:12px;color:#6B5560;line-height:1.5">본인 + 추천한 친구 전원</div>
+                            </td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <!-- spacer -->
+              <tr><td style="line-height:32px;font-size:1px">&nbsp;</td></tr>
 
               <!-- next step lede -->
               <tr>
-                <td class="px text-1" style="padding:32px 40px 0;font-family:'Inter','Noto Sans KR',sans-serif;font-size:15px;line-height:1.7;color:#2A1A22;font-weight:600">
+                <td class="px text-1" style="padding:0 40px 0;font-family:'Inter','Noto Sans KR',sans-serif;font-size:15px;line-height:1.7;color:#2A1A22;font-weight:600">
                   다음 한 가지가 남았어요.
                 </td>
               </tr>
               <tr>
                 <td class="px text-2" style="padding:6px 40px 22px;font-family:'Inter','Noto Sans KR',sans-serif;font-size:14px;line-height:1.7;color:#6B5560">
-                  2분 설문 → Dip 500 즉시 지급, 핵심 테스터 활동 안내 우선 발송.
+                  2분 설문 → Dip 500 즉시 지급.<br>
+                  핵심 테스터 활동 안내 우선 발송.
                 </td>
               </tr>
 
@@ -146,11 +191,12 @@
               <!-- closing -->
               <tr>
                 <td class="px" style="padding:0 40px 8px;font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:17px;line-height:1.55;color:#6B5560">
-                  알파 오픈은 D-17. 다시 만나요.
+                  알파 오픈은 D-17.<br>
+                  다시 만나요.
                 </td>
               </tr>
               <tr>
-                <td class="px text-3" style="padding:0 40px 36px;font-family:'Inter',sans-serif;font-size:13px;color:#9C8893">— LUCIVE</td>
+                <td class="px text-3" style="padding:14px 40px 36px;font-family:'Inter',sans-serif;font-size:13px;color:#9C8893">— LUCIVE</td>
               </tr>
 
             </table>
