@@ -26,7 +26,7 @@
 html,body{background:var(--bg);color:var(--text-1);font-family:var(--sans);scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
 body{overflow-x:hidden}
 html{scroll-snap-type:y proximity}
-.hero,.phase,.lineup,.pre-cta{scroll-snap-align:start;scroll-snap-stop:always}
+.hero,.phase,.lineup{scroll-snap-align:start;scroll-snap-stop:always}
 img{max-width:100%;display:block}
 em{font-style:italic;color:var(--accent)}
 .wrap{max-width:1280px;margin:0 auto;padding:0 32px}
@@ -183,11 +183,11 @@ em{font-style:italic;color:var(--accent)}
 .phase-bar{position:absolute;left:0;right:0;bottom:0;z-index:3;height:3px;background:linear-gradient(90deg,transparent,var(--bar-color,var(--gold)),transparent)}
 
 /* ================= LINEUP ================= */
-.lineup{padding:80px 0 48px;background:var(--bg);text-align:center}
+.lineup{padding:56px 0 24px;background:var(--bg);text-align:center}
 .lineup-eye{font-family:var(--mono);font-size:10px;letter-spacing:.42em;font-weight:800;color:var(--gold-deep);text-transform:uppercase;margin-bottom:8px}
 .lineup-h{font-family:var(--display);font-style:italic;font-size:clamp(22px,2.8vw,32px);font-weight:700;color:var(--text-1);margin-bottom:6px}
 .lineup-h em{color:var(--accent)}
-.lineup-sub{font-family:var(--sans);font-size:13.5px;color:var(--text-2);margin-bottom:30px;max-width:560px;margin-left:auto;margin-right:auto;line-height:1.6}
+.lineup-sub{font-family:var(--sans);font-size:13.5px;color:var(--text-2);margin-bottom:20px;max-width:560px;margin-left:auto;margin-right:auto;line-height:1.6}
 .lineup-wrap{position:relative;max-width:1280px;margin:0 auto}
 .lineup-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:8px}
 @media(min-width:680px){.lineup-grid{grid-template-columns:repeat(12,1fr)}}
@@ -214,8 +214,6 @@ em{font-style:italic;color:var(--accent)}
 .lineup-grid .lp-known.f4{opacity:.04}
 .lineup-grid::after{content:'';position:absolute;left:0;right:0;bottom:0;height:30%;background:linear-gradient(180deg,transparent,var(--bg) 95%);pointer-events:none}
 .lp.more{background:transparent;border:1px dashed rgba(201,123,137,.4);font-family:var(--mono);font-size:14px;color:var(--accent);font-weight:800;letter-spacing:.2em}
-.lineup-foot{margin-top:36px;display:flex;justify-content:center;gap:14px;flex-wrap:wrap;font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;color:var(--text-3);text-transform:uppercase;font-weight:700;position:relative;z-index:2}
-.lineup-foot .pulse{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--accent);margin-right:8px;vertical-align:middle;animation:pulse 1.6s ease-in-out infinite}
 @keyframes pulse{0%,100%{opacity:.45;transform:scale(1)}50%{opacity:1;transform:scale(1.3)}}
 
 /* ================= TOP NAV · FLOATING CTA · PRE-CTA · FOOTER ================= */
@@ -238,7 +236,7 @@ em{font-style:italic;color:var(--accent)}
 .fc-tertiary:hover{color:var(--text-1)}
 @media(max-width:640px){.floating-cta a,.floating-cta button{padding:9px 13px;font-size:11.5px}.floating-cta .fc-tertiary{font-size:10.5px}}
 
-.pre-cta{padding:48px 0 80px;text-align:center;background:var(--bg)}
+.pre-cta{padding:18px 0 48px;text-align:center;background:var(--bg)}
 .pre-cta-h{font-family:var(--display);font-style:italic;font-size:clamp(24px,3vw,32px);font-weight:700;color:var(--text-1);margin-bottom:6px}
 .pre-cta-sub{font-size:13.5px;color:var(--text-2);margin-bottom:26px}
 .pre-cta-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
@@ -643,10 +641,6 @@ em{font-style:italic;color:var(--accent)}
     <div class="lineup-wrap">
       <div class="lineup-grid" id="lineupGrid"></div>
     </div>
-    <div class="lineup-foot">
-      <span><span class="pulse"></span>매주 새 캐릭터 합류</span>
-      <span><span class="pulse"></span>50명 → 100명 → 끝없이</span>
-    </div>
   </div>
 </section>
 
@@ -691,7 +685,7 @@ const NAMES = {
 };
 const grid = document.getElementById('lineupGrid');
 const ALL = Object.keys(NAMES);
-const MYSTERY = 18;
+const MYSTERY = 10;
 const total = ALL.length + MYSTERY;
 const cells = [];
 ALL.forEach(k => {
