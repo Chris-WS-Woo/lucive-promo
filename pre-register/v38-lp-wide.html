@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LUCIVE · 당신의 상상, 그 너머의 캐릭터 챗</title>
+<script src="./_integrations.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,700&display=swap" rel="stylesheet">
@@ -262,7 +263,7 @@ em{font-style:italic;color:var(--accent)}
 <!-- ===== TOP NAV ===== -->
 <nav class="top-nav">
   <a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false" class="top-brand">LUCIVE</a>
-  <a href="./v35-signup.html" class="top-signup">사전등록 <span class="arr">→</span></a>
+  <a href="./v35-signup.html" class="top-signup" onclick="window.LUCIVE_INTEGRATIONS&&LUCIVE_INTEGRATIONS.gaEvent('cta_click',{cta:'signup',position:'top_nav'})">사전등록 <span class="arr">→</span></a>
 </nav>
 
 <!-- ===== HERO ===== -->
@@ -650,8 +651,8 @@ em{font-style:italic;color:var(--accent)}
     <div class="pre-cta-h">먼저 한 번 만나보세요</div>
     <div class="pre-cta-sub">35명 중 한 명, 90초의 첫 만남.</div>
     <div class="pre-cta-row">
-      <a href="./v34-kr-lucive.html" class="btn btn-secondary"><span>간단하게 경험해보기</span><span class="arr">▶</span></a>
-      <a href="./v35-signup.html" class="btn btn-primary"><span>바로 사전등록하러 가기</span><span class="arr">→</span></a>
+      <a href="./v34-kr-lucive.html" class="btn btn-secondary" onclick="window.LUCIVE_INTEGRATIONS&&LUCIVE_INTEGRATIONS.gaEvent('cta_click',{cta:'demo',position:'pre_cta'})"><span>간단하게 경험해보기</span><span class="arr">▶</span></a>
+      <a href="./v35-signup.html" class="btn btn-primary" onclick="window.LUCIVE_INTEGRATIONS&&LUCIVE_INTEGRATIONS.gaEvent('cta_click',{cta:'signup',position:'pre_cta'})"><span>바로 사전등록하러 가기</span><span class="arr">→</span></a>
     </div>
     <div class="pre-cta-meta">D-<span id="dday">17</span> 알파 오픈 · 매주 새 캐릭터</div>
   </div>
@@ -670,8 +671,8 @@ em{font-style:italic;color:var(--accent)}
 <!-- ===== 우하단 플로팅 CTA · 가로 스택 (왼쪽부터: 처음으로 → 체험 → 사전등록) ===== -->
 <div class="floating-cta">
   <button type="button" class="fc-tertiary" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ 처음으로</button>
-  <a href="./v34-kr-lucive.html" class="fc-secondary">체험하러 가기 <span class="fc-arr">▶</span></a>
-  <a href="./v35-signup.html" class="fc-primary">바로 사전등록하러 가기 <span class="fc-arr">→</span></a>
+  <a href="./v34-kr-lucive.html" class="fc-secondary" onclick="window.LUCIVE_INTEGRATIONS&&LUCIVE_INTEGRATIONS.gaEvent('cta_click',{cta:'demo',position:'floating'})">체험하러 가기 <span class="fc-arr">▶</span></a>
+  <a href="./v35-signup.html" class="fc-primary" onclick="window.LUCIVE_INTEGRATIONS&&LUCIVE_INTEGRATIONS.gaEvent('cta_click',{cta:'signup',position:'floating'})">바로 사전등록하러 가기 <span class="fc-arr">→</span></a>
 </div>
 
 <script>

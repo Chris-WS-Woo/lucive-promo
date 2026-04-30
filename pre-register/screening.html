@@ -6,6 +6,7 @@
 <title>Lucive — 핵심 사용자 설문</title>
 <meta name="description" content="8가지 짧은 질문 · 약 2분. 완주 시 Dip 500 즉시 지급, 핵심 테스터 활동 시 추가 혜택.">
 <meta name="robots" content="noindex">
+<script src="./_integrations.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Noto+Serif+KR:wght@400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -1107,19 +1108,51 @@ function showMilestone(text, sub, icon) {
 }
 
 function submitSurvey() {
-  // TODO: Supabase submission
-  //   supabase.from('alpha_screening').insert({
-  //     user_id: currentUser.id, answers, submitted_at: new Date() })
   console.log('[screening] submitted', answers);
 
-  // Clear saved state (or keep for resubmit prevention)
-  // localStorage.removeItem(STORAGE_KEY);
-
+  // UI 전환 (기존 동일)
   document.getElementById('questionContainer').classList.add('hidden');
   document.getElementById('header').style.display = 'none';
   document.getElementById('footer').style.display = 'none';
   document.getElementById('incentive').style.display = 'none';
   document.getElementById('complete').classList.remove('hidden');
+
+  // ── Klaviyo + GA4 + Zapier (background, non-blocking) ──
+  const I = window.LUCIVE_INTEGRATIONS;
+  if(!I) return;
+
+  // 직전 사전등록의 이메일 끌어옴 (없으면 익명)
+  let email = '';
+  try { email = (JSON.parse(localStorage.getItem('lucive_signup') || '{}').email) || ''; } catch(_){}
+
+  if(email){
+    // 답변을 평탄화해 properties 로 저장 (Klaviyo 세그먼트 가능)
+    const props = {
+      survey_completed: true,
+      survey_completed_at: new Date().toISOString()
+    };
+    Object.keys(answers).forEach(k => {
+      const v = answers[k];
+      props['survey_' + k] = Array.isArray(v) ? v.join(', ') : (v == null ? '' : String(v));
+    });
+    I.klaviyoIdentify(email, props);
+    I.klaviyoTrack(email, 'Survey Completed', {
+      answer_count: Object.keys(answers).length
+    });
+  }else{
+    console.warn('[screening] no signup email in localStorage; Klaviyo update skipped');
+  }
+
+  I.gaEvent('survey_complete', {
+    answer_count: Object.keys(answers).length,
+    has_email: !!email
+  });
+  I.zapierWebhook({
+    type: 'survey_complete',
+    email: email,
+    answers: answers,
+    ts: new Date().toISOString()
+  });
 }
 
 function shareOn(ch) {
@@ -1137,7 +1170,7 @@ function shareOn(ch) {
 }
 
 function goHome() {
-  window.location.href = './v35-lp-wide.html';
+  window.location.href = './v38-lp-wide.html';
 }
 </script>
 

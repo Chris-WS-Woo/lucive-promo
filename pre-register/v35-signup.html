@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LUCIVE · 핵심 테스터 사전등록</title>
+<script src="./_integrations.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,700&display=swap" rel="stylesheet">
@@ -115,7 +116,7 @@ a:hover{text-decoration-color:var(--accent)}
   <div class="card" id="formCard">
     <div class="eye">핵심 테스터 사전등록</div>
     <h1 class="h">본편 첫 회차 · <em>먼저 만나기</em></h1>
-    <p class="sub">선발 결과와 알파 시작 시점을 등록하신 이메일로 보내드립니다.</p>
+    <p class="sub">알파 시작 시점과 핵심 테스터 안내를 등록하신 이메일로 보내드립니다.</p>
 
     <form class="form" id="signupForm" onsubmit="handleSubmit(event)">
       <label class="label" for="email">이메일</label>
@@ -133,8 +134,8 @@ a:hover{text-decoration-color:var(--accent)}
       <button type="submit" class="submit">사전등록 신청 →</button>
     </form>
 
-    <div class="foot">D-<span id="dday">17</span> 알파 오픈 · 매주 새 디스트릭트</div>
-    <a href="./v35-lp-wide.html" class="back-link">← 메인으로</a>
+    <div class="foot">D-<span id="dday">17</span> 알파 오픈 · 매주 새 캐릭터</div>
+    <a href="./v38-lp-wide.html" class="back-link">← 메인으로</a>
   </div>
 
   <!-- SUCCESS state -->
@@ -208,11 +209,16 @@ function handleSubmit(e){
   e.preventDefault();
   const email = document.getElementById('email').value.trim();
   const consent = document.getElementById('consent').checked;
+  const marketing = document.getElementById('marketing').checked;
   if(!email || !email.includes('@') || !consent) return;
 
   const code = genPromo(email);
+  const promoCode = `LUCIVE·${code}`;
+  const inviteUrl = `https://lucive.app/r/${code}`;
+  const referralCode = new URLSearchParams(location.search).get('r') || '';
+
   document.getElementById('ssEmail').textContent = email;
-  document.getElementById('myCode').textContent = `LUCIVE·${code}`;
+  document.getElementById('myCode').textContent = promoCode;
   document.getElementById('myInvite').textContent = `lucive.app/r/${code}`;
 
   document.getElementById('formCard').classList.add('hidden');
@@ -221,6 +227,38 @@ function handleSubmit(e){
   window.scrollTo({top:0,behavior:'smooth'});
 
   try{ localStorage.setItem('lucive_signup', JSON.stringify({email, code, ts: Date.now()})); }catch(_){}
+
+  // ── Klaviyo + GA4 + Zapier (background, non-blocking) ──
+  const I = window.LUCIVE_INTEGRATIONS;
+  if(I){
+    const props = {
+      promo_code: promoCode,
+      invite_url: inviteUrl,
+      referral_code: referralCode,
+      marketing_consent: !!marketing,
+      signup_source: 'v35-signup',
+      signup_at: new Date().toISOString()
+    };
+    I.klaviyoSubscribe(email, props);
+    I.klaviyoTrack(email, 'Pre-registered', {
+      promo_code: promoCode,
+      referral_code: referralCode
+    });
+    I.gaEvent('sign_up', {
+      method: 'email',
+      has_referral: !!referralCode,
+      marketing_consent: !!marketing
+    });
+    I.zapierWebhook({
+      type: 'signup',
+      email: email,
+      promo_code: promoCode,
+      invite_url: inviteUrl,
+      referral_code: referralCode,
+      marketing_consent: !!marketing,
+      ts: new Date().toISOString()
+    });
+  }
 }
 
 function copyTo(id){
@@ -237,6 +275,14 @@ function share(channel){
   const code = document.getElementById('myCode').textContent;
   const url = `https://lucive.app/r/${code.replace('LUCIVE·','')}`;
   const text = `LUCIVE 핵심 테스터 사전등록 · 함께 가면 둘 다 +100 다이브\n${url}`;
+  // GA4 + Klaviyo share tracking
+  const I = window.LUCIVE_INTEGRATIONS;
+  if(I){
+    I.gaEvent('share', { method: channel, content_type: 'invite_link' });
+    let signupEmail = '';
+    try{ signupEmail = (JSON.parse(localStorage.getItem('lucive_signup')||'{}').email)||''; }catch(_){}
+    if(signupEmail) I.klaviyoTrack(signupEmail, 'Share Clicked', { channel: channel });
+  }
   if(channel === 'link'){
     navigator.clipboard?.writeText(url).then(()=>alert('링크 복사됨'));
   } else if(channel === 'x'){
