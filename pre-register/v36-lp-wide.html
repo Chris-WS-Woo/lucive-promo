@@ -25,6 +25,8 @@
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{background:var(--bg);color:var(--text-1);font-family:var(--sans);scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
 body{overflow-x:hidden}
+html{scroll-snap-type:y proximity}
+.hero,.phase,.lineup,.pre-cta{scroll-snap-align:start;scroll-snap-stop:always}
 img{max-width:100%;display:block}
 em{font-style:italic;color:var(--accent)}
 .wrap{max-width:1280px;margin:0 auto;padding:0 32px}
@@ -127,15 +129,15 @@ em{font-style:italic;color:var(--accent)}
 .mock-body[data-bg]::before{content:'';position:absolute;inset:0;background-image:var(--chat-bg);background-size:cover;background-position:center;opacity:.32;filter:blur(2px) saturate(1.1);z-index:0}
 .mock-body[data-bg]::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,249,247,.55) 0%,rgba(255,249,247,.78) 100%);z-index:0}
 .mock-body > *{position:relative;z-index:1}
-.mock-msg{display:flex;gap:6px;align-items:flex-end;max-width:88%}
+.mock-msg{display:flex;gap:6px;align-items:flex-end}
 .mock-msg.lp{align-self:flex-start}
 .mock-msg.user{align-self:flex-end;flex-direction:row-reverse}
-.mock-msg.narration{align-self:stretch;max-width:100%}
+.mock-msg.narration{align-self:stretch;width:auto}
 .mock-msg.lp.cons .mock-mini{visibility:hidden}
 .mock-narration-text{font-size:11.5px;color:var(--text-2);font-style:italic;line-height:1.5;padding:5px 9px;border-left:2px solid rgba(192,132,252,.34);background:rgba(192,132,252,.05);border-radius:0 8px 8px 0}
 .mock-mini{width:24px;height:24px;border-radius:50%;flex-shrink:0;overflow:hidden;background:#d9c6cd;align-self:flex-end;margin-bottom:1px}
 .mock-mini img{width:100%;height:100%;object-fit:cover}
-.mock-bubble{padding:9px 13px;border-radius:16px;font-size:13px;line-height:1.5;word-break:keep-all;width:fit-content;max-width:100%}
+.mock-bubble{padding:9px 13px;border-radius:16px;font-size:13px;line-height:1.5;word-break:keep-all;max-width:240px}
 .mock-msg.lp .mock-bubble{background:#fff;color:var(--text-1);border-bottom-left-radius:5px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
 .mock-msg.user .mock-bubble{background:var(--accent);color:#fff;border-bottom-right-radius:5px}
 .mock-memo{align-self:center;max-width:90%;padding:6px 10px;background:linear-gradient(180deg,rgba(214,176,124,.16),rgba(214,176,124,.08));border:1px dashed rgba(214,176,124,.42);border-radius:12px;font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;color:var(--gold-deep);text-transform:uppercase;font-weight:800;text-align:center;margin:4px 0}
@@ -196,18 +198,25 @@ em{font-style:italic;color:var(--accent)}
 .lineup-foot .pulse{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--accent);margin-right:8px;vertical-align:middle;animation:pulse 1.6s ease-in-out infinite}
 @keyframes pulse{0%,100%{opacity:.45;transform:scale(1)}50%{opacity:1;transform:scale(1.3)}}
 
-/* ================= BOTTOM BAR · PRE-CTA · FOOTER ================= */
-.bottom-bar{position:fixed;left:0;right:0;bottom:0;z-index:55;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 20px;background:rgba(255,249,247,.94);border-top:1px solid rgba(63,38,52,.12);backdrop-filter:blur(14px);box-shadow:0 -4px 18px rgba(63,38,52,.08)}
-.bb-left,.bb-right{display:flex;align-items:center;gap:10px}
-.bb-btn{display:inline-flex;align-items:center;gap:7px;padding:10px 16px;border-radius:999px;font-family:var(--sans);font-size:13px;font-weight:800;letter-spacing:-.005em;text-decoration:none;cursor:pointer;border:none;transition:all .2s var(--ease);white-space:nowrap}
-.bb-btn .arr{font-family:var(--mono);font-size:13px;font-weight:800}
-.bb-tertiary{background:transparent;color:var(--text-2);padding:8px 12px;font-size:12px;font-weight:700}
-.bb-tertiary:hover{color:var(--text-1);background:rgba(63,38,52,.06)}
-.bb-secondary{background:#fff;color:var(--text-1);border:1px solid rgba(63,38,52,.16)}
-.bb-secondary:hover{border-color:var(--accent);color:var(--accent)}
-.bb-primary{background:linear-gradient(180deg,var(--gold),var(--gold-deep));color:#2c1f00;box-shadow:0 4px 14px rgba(214,176,124,.3)}
-.bb-primary:hover{transform:translateY(-1px);box-shadow:0 8px 20px rgba(214,176,124,.4)}
-@media(max-width:640px){.bottom-bar{padding:8px 14px;gap:8px}.bb-btn{padding:9px 12px;font-size:11.5px}.bb-tertiary{padding:7px 10px;font-size:11px}.bb-secondary{display:none}}
+/* ================= TOP NAV · FLOATING CTA · PRE-CTA · FOOTER ================= */
+.top-nav{position:fixed;top:0;left:0;right:0;z-index:55;display:flex;align-items:center;justify-content:space-between;padding:11px 22px;background:rgba(255,249,247,.82);backdrop-filter:blur(14px);border-bottom:1px solid rgba(63,38,52,.06);box-shadow:0 2px 12px rgba(63,38,52,.04)}
+.top-brand{font-family:var(--mono);font-size:13px;letter-spacing:.45em;font-weight:800;color:var(--text-1);text-decoration:none;transition:color .2s var(--ease)}
+.top-brand:hover{color:var(--accent)}
+.top-signup{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:999px;background:linear-gradient(180deg,var(--gold),var(--gold-deep));color:#2c1f00;font-family:var(--sans);font-size:12.5px;font-weight:800;text-decoration:none;box-shadow:0 4px 12px rgba(214,176,124,.3);transition:all .2s var(--ease);letter-spacing:-.005em}
+.top-signup:hover{transform:translateY(-1px);box-shadow:0 8px 18px rgba(214,176,124,.42)}
+.top-signup .arr{font-family:var(--mono);font-size:13px;font-weight:800}
+
+/* === floating CTA · 우하단 ============== */
+.floating-cta{position:fixed;right:18px;bottom:18px;z-index:60;display:flex;flex-direction:column;gap:8px;align-items:flex-end}
+.floating-cta a,.floating-cta button{display:inline-flex;align-items:center;gap:8px;padding:11px 16px;border-radius:999px;font-family:var(--sans);font-size:12.5px;font-weight:800;letter-spacing:-.005em;text-decoration:none;cursor:pointer;border:none;transition:all .2s var(--ease);box-shadow:0 6px 16px rgba(63,38,52,.18)}
+.floating-cta .fc-arr{font-family:var(--mono);font-size:13px;font-weight:800}
+.fc-primary{background:linear-gradient(180deg,var(--gold),var(--gold-deep));color:#2c1f00}
+.fc-primary:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(214,176,124,.4)}
+.fc-secondary{background:#fff;color:var(--text-1);border:1px solid rgba(63,38,52,.16)!important}
+.fc-secondary:hover{border-color:var(--accent)!important;color:var(--accent)}
+.fc-tertiary{background:rgba(255,249,247,.88);color:var(--text-2);border:1px solid rgba(63,38,52,.12)!important;font-size:11.5px;backdrop-filter:blur(8px)}
+.fc-tertiary:hover{color:var(--text-1)}
+@media(max-width:640px){.floating-cta a,.floating-cta button{padding:9px 13px;font-size:11.5px}.floating-cta .fc-tertiary{font-size:10.5px}}
 
 .pre-cta{padding:48px 0 80px;text-align:center;background:var(--bg)}
 .pre-cta-h{font-family:var(--display);font-style:italic;font-size:clamp(24px,3vw,32px);font-weight:700;color:var(--text-1);margin-bottom:6px}
@@ -221,7 +230,7 @@ em{font-style:italic;color:var(--accent)}
 .btn-secondary:hover{border-color:var(--accent);color:var(--accent)}
 .pre-cta-meta{margin-top:20px;font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;color:var(--text-3);text-transform:uppercase;font-weight:700}
 
-.footer{padding:24px 32px 90px;text-align:center;border-top:1px solid var(--divider);background:var(--bg)}
+.footer{padding:24px 32px 110px;text-align:center;border-top:1px solid var(--divider);background:var(--bg)}
 .footer-brand{font-family:var(--mono);font-size:10.5px;letter-spacing:.45em;font-weight:800;color:var(--accent)}
 .footer-meta{font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;color:var(--text-3);margin-top:5px}
 .footer-legal{margin-top:18px;display:flex;justify-content:center;gap:18px;flex-wrap:wrap;font-family:var(--sans);font-size:11.5px;color:var(--text-2)}
@@ -231,6 +240,12 @@ em{font-style:italic;color:var(--accent)}
 </style>
 </head>
 <body>
+
+<!-- ===== TOP NAV ===== -->
+<nav class="top-nav">
+  <a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false" class="top-brand">LUCIVE</a>
+  <a href="./v35-signup.html" class="top-signup">사전등록 <span class="arr">→</span></a>
+</nav>
 
 <!-- ===== HERO ===== -->
 <section class="hero">
@@ -628,15 +643,11 @@ em{font-style:italic;color:var(--accent)}
   </div>
 </footer>
 
-<!-- ===== 하단 슬림 바 ===== -->
-<div class="bottom-bar">
-  <div class="bb-left">
-    <button type="button" class="bb-btn bb-tertiary" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ 처음으로</button>
-  </div>
-  <div class="bb-right">
-    <a href="./v34-kr-lucive.html" class="bb-btn bb-secondary">체험하러 가기 <span class="arr">▶</span></a>
-    <a href="./v35-signup.html" class="bb-btn bb-primary">사전등록 <span class="arr">→</span></a>
-  </div>
+<!-- ===== 우하단 플로팅 CTA ===== -->
+<div class="floating-cta">
+  <a href="./v35-signup.html" class="fc-primary">바로 사전등록하러 가기 <span class="fc-arr">→</span></a>
+  <a href="./v34-kr-lucive.html" class="fc-secondary">체험하러 가기 <span class="fc-arr">▶</span></a>
+  <button type="button" class="fc-tertiary" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ 처음으로 돌아가기</button>
 </div>
 
 <script>
