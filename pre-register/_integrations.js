@@ -35,8 +35,8 @@ window.LUCIVE_INTEGRATIONS = (function(){
     // ko / en / ja / zh
     COMMUNITY_URLS: {
       ko: 'https://open.kakao.com/o/g4LZmfri',  // 카카오톡 오픈채팅
-      en: 'https://discord.gg/lucive',           // Discord (placeholder, 실제 invite로 교체)
-      ja: 'https://discord.gg/lucive',           // 동일 Discord 또는 LINE
+      en: 'https://discord.gg/lucive',           // Discord (placeholder · 실제 invite로 교체)
+      ja: 'https://line.me/R/ti/p/@lucive',      // LINE 公式アカウント (placeholder)
       zh: 'https://discord.gg/lucive',           // Discord (Telegram도 옵션)
     },
 

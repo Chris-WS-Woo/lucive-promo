@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LUCIVE · 想像を超えた、キャラクターチャット</title>
+<script src="./_integrations.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#FFF9F7; --card:#fff; --elevated:#FAEFE8;
+  --divider:rgba(63,38,52,.08);
+  --text-1:#2A1A22; --text-2:#6B5560; --text-3:#9C8893;
+  --accent:#C97B89; --accent-light:#FFE8EC;
+  --gold:#D6B07C; --gold-deep:#b8945e;
+  --d-sunrise:#FFB56B; --d-neon:#5EC8FF; --d-underground:#D45877; --d-velvet:#C084FC; --d-indie:#7EE5B8;
+  --shadow-card:0 8px 28px rgba(63,38,52,.08);
+  --shadow-cta:0 14px 32px rgba(214,176,124,.32);
+  --display:'Cormorant Garamond',serif;
+  --sans:'Inter',-apple-system,'Pretendard','Apple SD Gothic Neo',sans-serif;
+  --mono:'JetBrains Mono',monospace;
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{background:var(--bg);color:var(--text-1);font-family:var(--sans);scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{overflow-x:hidden}
+html{scroll-snap-type:y proximity}
+.hero,.phase,.lineup{scroll-snap-align:start;scroll-snap-stop:always}
+img{max-width:100%;display:block}
+em{font-style:italic;color:var(--accent)}
+.wrap{max-width:1280px;margin:0 auto;padding:0 32px}
+
+/* ================= HERO ================= */
+.hero{position:relative;width:100%;height:100vh;height:100dvh;min-height:680px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:80px 32px 120px;overflow:hidden}
+.hero-bg{position:absolute;inset:0;background-size:cover;background-position:center;z-index:0;filter:saturate(1.05)}
+.hero-bg::after{content:'';position:absolute;inset:0;background:
+  radial-gradient(ellipse at 50% 30%,rgba(0,0,0,0) 0%,rgba(0,0,0,.15) 40%,rgba(0,0,0,.65) 90%),
+  linear-gradient(180deg,rgba(0,0,0,.18) 0%,rgba(0,0,0,.32) 50%,rgba(255,249,247,.92) 95%,rgba(255,249,247,1) 100%)}
+.hero-noise{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.05;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:256px;mix-blend-mode:overlay}
+.hero-content{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;max-width:1100px}
+.hero-brand{font-family:var(--mono);font-size:12px;letter-spacing:.5em;font-weight:800;color:var(--gold);text-transform:uppercase;margin-bottom:34px;text-shadow:0 2px 10px rgba(0,0,0,.5)}
+.hero-pre{font-family:var(--display);font-style:italic;font-size:clamp(18px,2vw,24px);color:rgba(255,244,240,.7);margin-bottom:22px;text-shadow:0 2px 14px rgba(0,0,0,.55)}
+.hero-pre s{text-decoration:line-through;text-decoration-thickness:1.5px;text-decoration-color:rgba(255,244,240,.4);color:rgba(255,244,240,.7)}
+.hero-pre em{font-style:italic;font-weight:700;font-size:1.5em;letter-spacing:-.005em;background:linear-gradient(90deg,#fce7c8,var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 2px 18px rgba(214,176,124,.42)) drop-shadow(0 1px 6px rgba(0,0,0,.5));padding-left:4px}
+.hero-h{font-family:var(--display);font-weight:700;font-size:clamp(38px,6.2vw,80px);line-height:1.08;letter-spacing:-.015em;color:#fff;text-shadow:0 6px 36px rgba(0,0,0,.7),0 2px 12px rgba(0,0,0,.5);max-width:1000px}
+.hero-h em{font-style:italic;background:linear-gradient(90deg,#fce7c8,var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;white-space:nowrap}
+.hero-sub{font-family:var(--display);font-style:italic;font-weight:500;font-size:clamp(20px,2.4vw,28px);line-height:1.45;color:rgba(255,244,240,.94);max-width:780px;margin-top:24px;text-shadow:0 2px 16px rgba(0,0,0,.55)}
+.scroll-cue{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);z-index:3;font-family:var(--mono);font-size:10px;letter-spacing:.32em;color:rgba(255,244,240,.6);text-transform:uppercase;font-weight:700;display:flex;flex-direction:column;align-items:center;gap:10px;animation:scrollPulse 2.4s ease-in-out infinite}
+.scroll-cue::after{content:'';width:1px;height:34px;background:linear-gradient(180deg,rgba(255,244,240,.6),transparent)}
+@keyframes scrollPulse{0%,100%{opacity:.45;transform:translateX(-50%) translateY(0)}50%{opacity:.95;transform:translateX(-50%) translateY(6px)}}
+
+/* ================= PHASE LAYOUT ================= */
+.phase{position:relative;width:100%;min-height:100vh;min-height:100dvh;display:grid;grid-template-columns:1fr;align-items:center;padding:80px 32px;overflow:hidden}
+@media(min-width:980px){.phase{grid-template-columns:minmax(400px,1fr) minmax(440px,520px);gap:48px;padding:80px 64px}}
+@media(min-width:1280px){.phase{grid-template-columns:1fr 540px;gap:64px;padding:120px 80px}}
+.phase-bg{position:absolute;inset:0;background-size:cover;background-position:center;z-index:0;filter:saturate(1.05)}
+.phase-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.42) 0%,rgba(0,0,0,.7) 100%)}
+.phase-text{position:relative;z-index:2;color:#fff;display:flex;flex-direction:column;gap:18px}
+@media(min-width:980px){.phase-text{padding-right:24px}}
+.phase-step{font-family:var(--mono);font-size:11px;letter-spacing:.42em;font-weight:800;color:var(--gold);text-transform:uppercase;text-shadow:0 2px 10px rgba(0,0,0,.5)}
+.phase-step b{color:#fce7c8;font-weight:800}
+.phase-h{font-family:var(--display);font-weight:700;font-size:clamp(34px,4.6vw,60px);line-height:1.1;letter-spacing:-.01em;color:#fff;text-shadow:0 4px 24px rgba(0,0,0,.6)}
+.phase-h em{font-style:italic;background:linear-gradient(90deg,#fce7c8,var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.phase-desc{font-family:var(--display);font-style:italic;font-size:clamp(15px,1.4vw,18px);color:rgba(255,244,240,.78);line-height:1.6;max-width:480px;text-shadow:0 2px 12px rgba(0,0,0,.5)}
+
+/* ================= MOCK PHONE FRAME ================= */
+.phase-mock{position:relative;z-index:2;width:100%;max-width:360px;justify-self:center;align-self:center}
+@media(min-width:980px){.phase-mock{justify-self:end;margin-right:16px;max-width:340px}}
+.mock-phone{position:relative;background:linear-gradient(180deg,#1a1118,#0c0810);border-radius:42px;padding:9px;box-shadow:0 36px 90px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.05),inset 0 0 0 1.5px rgba(255,255,255,.04)}
+.mock-phone::before{content:'';position:absolute;top:6px;left:50%;transform:translateX(-50%);width:34%;height:22px;background:#0c0810;border-radius:0 0 14px 14px;z-index:5}
+.mock-screen{background:#FFF9F7;border-radius:34px;overflow:hidden;display:flex;flex-direction:column;height:580px;position:relative}
+.mock-statusbar{display:flex;justify-content:space-between;align-items:center;padding:12px 22px 6px;font-family:var(--sans);font-size:11px;font-weight:700;color:var(--text-1);position:relative;z-index:1}
+.mock-statusbar .icons{color:var(--text-2);font-size:10px;letter-spacing:.06em}
+
+/* ================= CAROUSEL SLIDES (cycle 30s · 5 slides × 6s) ================= */
+.mock-screen .mock-slide{position:absolute;inset:0;display:flex;flex-direction:column;opacity:0;animation:slideCycle 30s linear infinite;will-change:opacity}
+.mock-screen .mock-slide:nth-child(1){animation-delay:0s;--sd:0s}
+.mock-screen .mock-slide:nth-child(2){animation-delay:6s;--sd:6s}
+.mock-screen .mock-slide:nth-child(3){animation-delay:12s;--sd:12s}
+.mock-screen .mock-slide:nth-child(4){animation-delay:18s;--sd:18s}
+.mock-screen .mock-slide:nth-child(5){animation-delay:24s;--sd:24s}
+@keyframes slideCycle{0%,19.8%{opacity:1}20%,100%{opacity:0}}
+
+/* === Message stagger reveal · memo + msg apply, input excluded === */
+.mock-screen .mock-slide .mock-body > *:not(.mock-input){opacity:0;animation:msgRevealCycle 30s linear infinite}
+.mock-screen .mock-slide .mock-body > *:not(.mock-input):nth-child(1){animation-delay:calc(var(--sd) + 0.4s)}
+.mock-screen .mock-slide .mock-body > *:not(.mock-input):nth-child(2){animation-delay:calc(var(--sd) + 1.2s)}
+.mock-screen .mock-slide .mock-body > *:not(.mock-input):nth-child(3){animation-delay:calc(var(--sd) + 2s)}
+.mock-screen .mock-slide .mock-body > *:not(.mock-input):nth-child(4){animation-delay:calc(var(--sd) + 2.9s)}
+.mock-screen .mock-slide .mock-body > *:not(.mock-input):nth-child(5){animation-delay:calc(var(--sd) + 3.8s)}
+@keyframes msgRevealCycle{
+  0%{opacity:0;transform:translateY(10px)}
+  1.5%{opacity:1;transform:translateY(0)}
+  19.8%{opacity:1;transform:translateY(0)}
+  20%,100%{opacity:0;transform:translateY(0)}
+}
+
+.mock-dots{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);display:flex;gap:5px;z-index:8;padding:6px 12px;background:rgba(0,0,0,.42);border-radius:999px;backdrop-filter:blur(8px)}
+.mock-dot{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.3);animation:dotPulse 30s linear infinite}
+.mock-dot:nth-child(1){animation-delay:0s}
+.mock-dot:nth-child(2){animation-delay:6s}
+.mock-dot:nth-child(3){animation-delay:12s}
+.mock-dot:nth-child(4){animation-delay:18s}
+.mock-dot:nth-child(5){animation-delay:24s}
+@keyframes dotPulse{0%,19.8%{background:var(--gold);transform:scale(1.5)}20%,100%{background:rgba(255,255,255,.3);transform:scale(1)}}
+
+/* ================= ENCOUNTER SCREEN (Phase 02) ================= */
+.mock-enc-screen{padding:0;height:580px;position:relative;background:#0c0810}
+.mock-enc-stage{position:absolute;inset:0;background-size:cover;background-position:center}
+.mock-enc-stage::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.55) 0%,rgba(0,0,0,.18) 28%,rgba(2,6,16,.5) 60%,rgba(2,6,16,.96) 100%);z-index:1}
+.mock-enc-top{position:absolute;left:14px;right:14px;top:14px;display:flex;justify-content:space-between;align-items:flex-start;z-index:3;gap:10px}
+.mock-enc-live{display:inline-flex;align-items:center;gap:6px;padding:5px 9px;background:rgba(0,0,0,.55);border:1px solid rgba(255,77,77,.4);border-radius:5px;font-family:var(--mono);font-size:9.5px;letter-spacing:.22em;font-weight:800;color:#fff;text-transform:uppercase;backdrop-filter:blur(8px)}
+.mock-enc-live::before{content:'';width:6px;height:6px;border-radius:50%;background:#FF4D4D;box-shadow:0 0 6px rgba(255,77,77,.7);animation:recDot 1.4s ease-in-out infinite}
+.mock-enc-time{display:flex;flex-direction:column;align-items:flex-end;gap:2px;text-align:right;background:rgba(0,0,0,.45);padding:4px 9px;border-radius:5px;border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(8px)}
+.mock-enc-clock{font-family:var(--mono);font-size:13px;letter-spacing:.04em;font-weight:800;color:#fff}
+.mock-enc-place{font-family:var(--mono);font-size:8.5px;letter-spacing:.2em;font-weight:800;color:var(--gold);text-transform:uppercase}
+.mock-enc-char{position:absolute;left:50%;bottom:34%;transform:translateX(-50%);width:88%;max-width:280px;z-index:2;filter:drop-shadow(0 12px 30px rgba(0,0,0,.6));pointer-events:none}
+.mock-enc-char img{width:100%;height:auto;display:block}
+.mock-enc-bottom{position:absolute;left:0;right:0;bottom:14px;padding:14px;display:flex;flex-direction:column;gap:8px;z-index:2}
+.mock-enc-speaker{font-family:var(--mono);font-size:11px;letter-spacing:.2em;font-weight:800;color:var(--gold);align-self:flex-start;padding:0 12px;text-shadow:0 2px 8px rgba(0,0,0,.55)}
+.mock-enc-box{background:linear-gradient(180deg,rgba(18,13,21,.86),rgba(18,13,21,.96));border:1px solid rgba(255,244,240,.12);border-radius:18px;padding:13px 16px 12px;backdrop-filter:blur(14px)}
+.mock-enc-narration{font-family:var(--display);font-style:italic;font-size:13px;line-height:1.5;color:rgba(255,248,242,.7);padding-bottom:9px;margin-bottom:9px;border-bottom:1px dashed rgba(255,255,255,.12)}
+.mock-enc-line{font-family:var(--display);font-style:italic;font-size:15.5px;line-height:1.55;color:rgba(255,248,242,.96)}
+.mock-enc-cta{margin-top:11px;padding:8px 12px;background:linear-gradient(180deg,rgba(214,176,124,.22),rgba(214,176,124,.1));border:1px solid rgba(214,176,124,.36);border-radius:11px;display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;font-weight:800;color:var(--gold);text-transform:uppercase}
+.mock-enc-cta::after{content:'→';font-size:13px;font-weight:800}
+
+/* ================= CHAT BUBBLES (Phase 05) ================= */
+.mock-head{display:flex;align-items:center;gap:10px;padding:8px 14px 10px;background:rgba(255,249,247,1);border-bottom:1px solid rgba(63,38,52,.08)}
+.mock-head-avatar{width:32px;height:32px;border-radius:50%;overflow:hidden;background:#d9c6cd;flex-shrink:0}
+.mock-head-avatar img{width:100%;height:100%;object-fit:cover}
+.mock-head-info{flex:1;min-width:0}
+.mock-head-name{font-family:var(--sans);font-size:14px;font-weight:700;color:var(--text-1);letter-spacing:-.01em}
+.mock-head-status{font-family:var(--mono);font-size:9px;letter-spacing:.18em;color:var(--text-3);text-transform:uppercase;font-weight:700;margin-top:2px}
+.mock-head-status.linked{color:var(--accent)}
+.mock-head-status.linked::before{content:'◆ ';color:var(--accent)}
+.mock-head-status.first{color:#FF4D4D}
+.mock-head-status.first::before{content:'● ';color:#FF4D4D;animation:recDot 1.4s ease-in-out infinite}
+.mock-body{flex:1;padding:14px 12px 32px;display:flex;flex-direction:column;gap:6px;background:#FFF9F7;overflow:hidden;position:relative}
+.mock-input{margin-top:auto;display:flex;align-items:center;gap:6px;padding:8px 8px 8px 14px;background:rgba(255,249,247,.96);border:1px solid rgba(63,38,52,.12);border-radius:22px;font-family:var(--sans);font-size:12.5px;color:var(--text-2);position:relative;z-index:2;box-shadow:0 -2px 10px rgba(63,38,52,.04)}
+.mock-input-text{color:var(--text-1);max-width:0;opacity:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex-shrink:0;animation:inputTextReveal 30s linear infinite;animation-delay:calc(var(--sd) + 4.5s)}
+@keyframes inputTextReveal{0%{max-width:0;opacity:0}2%{max-width:200px;opacity:1}19.8%{max-width:200px;opacity:1}20%,100%{max-width:0;opacity:0}}
+.mock-input-caret{display:inline-block;width:1.5px;height:14px;background:var(--accent);animation:caretBlink 1s steps(2) infinite;flex-shrink:0;margin-right:auto}
+.mock-input-send{width:28px;height:28px;border-radius:50%;background:linear-gradient(180deg,var(--gold),var(--gold-deep));display:inline-flex;align-items:center;justify-content:center;color:#2c1f00;font-family:var(--mono);font-size:13px;font-weight:800;flex-shrink:0;box-shadow:0 2px 6px rgba(214,176,124,.28)}
+@keyframes caretBlink{50%{opacity:0}}
+.mock-body[data-bg]::before{content:'';position:absolute;inset:0;background-image:var(--chat-bg);background-size:cover;background-position:center;opacity:.32;filter:blur(2px) saturate(1.1);z-index:0}
+.mock-body[data-bg]::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,249,247,.55) 0%,rgba(255,249,247,.78) 100%);z-index:0}
+.mock-body > *{position:relative;z-index:1}
+/* .mock-msg = block level (stretches in flex column). text-align controls left/right */
+.mock-msg{display:block;width:100%}
+.mock-msg.lp{text-align:left}
+.mock-msg.user{text-align:right}
+.mock-msg.narration{text-align:left}
+/* .mock-msg-inner = inline-flex (acts like inline-block in block parent, sizes to content) */
+.mock-msg-inner{display:inline-flex;gap:6px;align-items:flex-end;max-width:88%;text-align:left;vertical-align:bottom}
+.mock-msg.user .mock-msg-inner{flex-direction:row-reverse}
+.mock-msg.lp.cons .mock-msg-inner > .mock-mini{visibility:hidden}
+.mock-narration-text{display:block;font-size:11.5px;color:var(--text-2);font-style:italic;line-height:1.5;padding:5px 9px;border-left:2px solid rgba(192,132,252,.34);background:rgba(192,132,252,.05);border-radius:0 8px 8px 0}
+.mock-mini{width:24px;height:24px;border-radius:50%;flex-shrink:0;overflow:hidden;background:#d9c6cd;align-self:flex-end;margin-bottom:1px}
+.mock-mini img{width:100%;height:100%;object-fit:cover}
+.mock-bubble{padding:9px 13px;border-radius:16px;font-size:13px;line-height:1.5;word-break:keep-all;max-width:240px}
+.mock-msg.lp .mock-bubble{background:#fff;color:var(--text-1);border-bottom-left-radius:5px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.mock-msg.user .mock-bubble{background:var(--accent);color:#fff;border-bottom-right-radius:5px}
+.mock-memo{align-self:center;max-width:90%;padding:6px 10px;background:linear-gradient(180deg,rgba(214,176,124,.16),rgba(214,176,124,.08));border:1px dashed rgba(214,176,124,.42);border-radius:12px;font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;color:var(--gold-deep);text-transform:uppercase;font-weight:800;text-align:center;margin:4px 0}
+
+/* ================= VN SCREEN (Phase 03 / 04) ================= */
+.mock-vn-screen{padding:0;height:580px;position:relative;background:#0c0810}
+.mock-vn-stage{position:absolute;inset:0;background-size:cover;background-position:center}
+.mock-vn-stage::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 30%,rgba(2,6,16,.6) 60%,rgba(2,6,16,.96) 100%);z-index:1}
+.mock-vn-char{position:absolute;left:50%;bottom:36%;transform:translateX(-50%);width:88%;max-width:280px;z-index:2;filter:drop-shadow(0 12px 30px rgba(0,0,0,.6));pointer-events:none}
+.mock-vn-char img{width:100%;height:auto;display:block}
+.mock-vn-bottom{position:absolute;left:0;right:0;bottom:36px;padding:14px;display:flex;flex-direction:column;gap:8px;z-index:2}
+.mock-vn-speaker{display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.2em;font-weight:800;color:var(--gold);padding:0 12px;align-self:flex-start;text-shadow:0 2px 8px rgba(0,0,0,.55)}
+.mock-vn-box{background:linear-gradient(180deg,rgba(18,13,21,.86),rgba(18,13,21,.96));border:1px solid rgba(255,244,240,.12);border-radius:18px;padding:14px 16px 12px;backdrop-filter:blur(14px)}
+.mock-vn-line{font-family:var(--display);font-style:italic;font-size:15.5px;line-height:1.55;color:rgba(255,248,242,.96)}
+.mock-vn-choices{display:flex;flex-direction:column;gap:7px;margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.1)}
+.mock-vn-choice{display:flex;align-items:center;gap:10px;padding:9px 12px;background:linear-gradient(180deg,rgba(34,26,37,.94),rgba(24,18,28,.98));border:1px solid rgba(214,176,124,.22);border-radius:14px;font-family:var(--sans);font-size:12.5px;color:rgba(255,248,242,.96);font-weight:600}
+.mock-vn-choice-num{width:20px;height:20px;border-radius:50%;background:rgba(214,176,124,.18);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:10px;color:var(--gold);font-weight:800;flex-shrink:0}
+
+/* === game-UI REC tag === */
+.play-tag{position:absolute;bottom:-26px;right:0;z-index:8;font-family:var(--display);font-style:italic;font-size:12.5px;letter-spacing:.005em;color:rgba(255,244,240,.62);text-shadow:0 1px 6px rgba(0,0,0,.55);white-space:nowrap}
+@keyframes recDot{0%,100%{opacity:.55;transform:scale(1)}50%{opacity:1;transform:scale(1.15)}}
+.phase-bar{position:absolute;left:0;right:0;bottom:0;z-index:3;height:3px;background:linear-gradient(90deg,transparent,var(--bar-color,var(--gold)),transparent)}
+
+/* ================= LINEUP ================= */
+.lineup{padding:56px 0 24px;background:var(--bg);text-align:center}
+.lineup-eye{font-family:var(--mono);font-size:10px;letter-spacing:.42em;font-weight:800;color:var(--gold-deep);text-transform:uppercase;margin-bottom:8px}
+.lineup-h{font-family:var(--display);font-style:italic;font-size:clamp(22px,2.8vw,32px);font-weight:700;color:var(--text-1);margin-bottom:6px}
+.lineup-h em{color:var(--accent)}
+.lineup-sub{font-family:var(--sans);font-size:13.5px;color:var(--text-2);margin-bottom:20px;max-width:560px;margin-left:auto;margin-right:auto;line-height:1.6}
+.lineup-wrap{position:relative;max-width:1280px;margin:0 auto}
+.lineup-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:8px}
+@media(min-width:680px){.lineup-grid{grid-template-columns:repeat(12,1fr)}}
+@media(min-width:1100px){.lineup-grid{grid-template-columns:repeat(15,1fr)}}
+.lp{position:relative;aspect-ratio:3/4;border-radius:8px;overflow:hidden;transition:transform .25s var(--ease),opacity .25s,filter .25s;display:flex;align-items:center;justify-content:center}
+.lp:hover{transform:scale(1.06);z-index:3}
+.lp-known{background:#1a1118;opacity:.62;filter:saturate(.85) brightness(.92);border:1px solid rgba(63,38,52,.06)}
+.lp-known img{width:100%;height:100%;object-fit:cover;object-position:top center}
+.lp-known::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 60%,rgba(26,16,21,.4) 100%);pointer-events:none}
+.lp-known:hover{opacity:1;filter:none}
+.lp-known .lp-name{position:absolute;left:0;right:0;bottom:3px;text-align:center;font-family:var(--mono);font-size:8px;font-weight:800;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.7);z-index:2;opacity:0;transition:opacity .25s}
+.lp-known:hover .lp-name{opacity:1}
+.lp-mystery{background:linear-gradient(160deg,rgba(214,176,124,.16),rgba(201,123,137,.12));border:1px solid rgba(201,123,137,.18)}
+.lp-mystery .lp-q{font-family:var(--display);font-style:italic;font-size:clamp(20px,2.4vw,32px);font-weight:700;color:var(--accent);opacity:.55;line-height:1}
+.lp-mystery .lp-d{position:absolute;top:5px;right:6px;width:7px;height:7px;border-radius:50%;background:var(--gold);opacity:.55;box-shadow:0 0 6px rgba(214,176,124,.5)}
+.lp-mystery:hover{border-color:var(--accent)}
+.lineup-grid .lp.f1{opacity:.42}
+.lineup-grid .lp.f2{opacity:.24}
+.lineup-grid .lp.f3{opacity:.12}
+.lineup-grid .lp.f4{opacity:.05}
+.lineup-grid .lp-known.f1{opacity:.32}
+.lineup-grid .lp-known.f2{opacity:.18}
+.lineup-grid .lp-known.f3{opacity:.10}
+.lineup-grid .lp-known.f4{opacity:.04}
+.lineup-grid::after{content:'';position:absolute;left:0;right:0;bottom:0;height:30%;background:linear-gradient(180deg,transparent,var(--bg) 95%);pointer-events:none}
+.lp.more{background:transparent;border:1px dashed rgba(201,123,137,.4);font-family:var(--mono);font-size:14px;color:var(--accent);font-weight:800;letter-spacing:.2em}
+@keyframes pulse{0%,100%{opacity:.45;transform:scale(1)}50%{opacity:1;transform:scale(1.3)}}
+
+/* ================= TOP NAV · FLOATING CTA · PRE-CTA · FOOTER ================= */
+.top-nav{position:fixed;top:0;left:0;right:0;z-index:55;display:flex;align-items:center;justify-content:space-between;padding:11px 22px;background:rgba(255,249,247,.82);backdrop-filter:blur(14px);border-bottom:1px solid rgba(63,38,52,.06);box-shadow:0 2px 12px rgba(63,38,52,.04)}
+.top-brand{font-family:var(--mono);font-size:13px;letter-spacing:.45em;font-weight:800;color:var(--text-1);text-decoration:none;transition:color .2s var(--ease)}
+.top-brand:hover{color:var(--accent)}
+.top-signup{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:999px;background:linear-gradient(180deg,var(--gold),var(--gold-deep));color:#2c1f00;font-family:var(--sans);font-size:12.5px;font-weight:800;text-decoration:none;box-shadow:0 4px 12px rgba(214,176,124,.3);transition:all .2s var(--ease);letter-spacing:-.005em}
+.top-signup:hover{transform:translateY(-1px);box-shadow:0 8px 18px rgba(214,176,124,.42)}
+.top-signup .arr{font-family:var(--mono);font-size:13px;font-weight:800}
+.top-langs{display:inline-flex;align-items:center;gap:2px}
+.top-langs a{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;color:var(--text-3);text-decoration:none;padding:5px 9px;border-radius:6px;transition:color .2s var(--ease),background .2s var(--ease)}
+.top-langs a:hover{color:var(--text-1);background:rgba(63,38,52,.04)}
+.top-langs a.active{color:var(--accent);font-weight:800}
+@media(max-width:560px){.top-langs a{padding:4px 6px;font-size:10px}}
+
+/* === floating CTA · bottom-right ============== */
+.floating-cta{position:fixed;right:18px;bottom:18px;z-index:60;display:flex;flex-direction:row;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end;max-width:calc(100vw - 36px)}
+.floating-cta a,.floating-cta button{display:inline-flex;align-items:center;gap:8px;padding:11px 16px;border-radius:999px;font-family:var(--sans);font-size:12.5px;font-weight:800;letter-spacing:-.005em;text-decoration:none;cursor:pointer;border:none;transition:all .2s var(--ease);box-shadow:0 6px 16px rgba(63,38,52,.18)}
+.floating-cta .fc-arr{font-family:var(--mono);font-size:13px;font-weight:800}
+.fc-primary{background:linear-gradient(180deg,var(--gold),var(--gold-deep));color:#2c1f00}
+.fc-primary:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(214,176,124,.4)}
+.fc-secondary{background:#fff;color:var(--text-1);border:1px solid rgba(63,38,52,.16)!important}
+.fc-secondary:hover{border-color:var(--accent)!important;color:var(--accent)}
+.fc-tertiary{background:rgba(255,249,247,.88);color:var(--text-2);border:1px solid rgba(63,38,52,.12)!important;font-size:11.5px;backdrop-filter:blur(8px)}
+.fc-tertiary:hover{color:var(--text-1)}
+@media(max-width:640px){.floating-cta a,.floating-cta button{padding:9px 13px;font-size:11.5px}.floating-cta .fc-tertiary{font-size:10.5px}}
+
+.pre-cta{padding:18px 0 48px;text-align:center;background:var(--bg)}
+.pre-cta-h{font-family:var(--display);font-style:italic;font-size:clamp(24px,3vw,32px);font-weight:700;color:var(--text-1);margin-bottom:6px}
+.pre-cta-sub{font-size:13.5px;color:var(--text-2);margin-bottom:26px}
+.pre-cta-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:12px;padding:16px 30px;border-radius:999px;font-family:var(--sans);font-size:14.5px;font-weight:800;letter-spacing:-.005em;cursor:pointer;text-decoration:none;transition:all .2s var(--ease);min-width:240px;border:none}
+.btn .arr{font-family:var(--mono);font-weight:800}
+.btn-primary{background:linear-gradient(180deg,var(--gold),var(--gold-deep));color:#2c1f00;box-shadow:var(--shadow-cta)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 18px 40px rgba(214,176,124,.42)}
+.btn-secondary{background:var(--card);color:var(--text-1);border:1.5px solid rgba(63,38,52,.16)}
+.btn-secondary:hover{border-color:var(--accent);color:var(--accent)}
+.pre-cta-meta{margin-top:20px;font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;color:var(--text-3);text-transform:uppercase;font-weight:700}
+
+.footer{padding:24px 32px 110px;text-align:center;border-top:1px solid var(--divider);background:var(--bg)}
+.footer-brand{font-family:var(--mono);font-size:10.5px;letter-spacing:.45em;font-weight:800;color:var(--accent)}
+.footer-meta{font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;color:var(--text-3);margin-top:5px}
+.footer-legal{margin-top:18px;display:flex;justify-content:center;gap:18px;flex-wrap:wrap;font-family:var(--sans);font-size:11.5px;color:var(--text-2)}
+.footer-legal a{color:var(--text-2);text-decoration:none;border-bottom:1px solid rgba(63,38,52,.18);padding-bottom:1px;transition:color .2s var(--ease),border-color .2s var(--ease)}
+.footer-legal a:hover{color:var(--text-1);border-bottom-color:var(--text-1)}
+.footer-legal .sep{color:var(--text-3);border:none}
+</style>
+</head>
+<body>
+
+<!-- ===== TOP NAV ===== -->
+<nav class="top-nav">
+  <a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false" class="top-brand">LUCIVE</a>
+  <div class="top-langs">
+    <a href="./v38-lp-wide.html">한</a>
+    <a href="./v38-lp-wide-en.html">EN</a>
+    <a href="./v38-lp-wide-ja.html" class="active">日</a>
+    <a href="./v38-lp-wide-zh.html">中</a>
+  </div>
+  <a href="./v35-signup-ja.html" class="top-signup" onclick="window.LUCIVE_INTEGRATIONS&&LUCIVE_INTEGRATIONS.gaEvent('cta_click',{cta:'signup',position:'top_nav'})">事前登録 <span class="arr">→</span></a>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="hero-bg" style="background-image:url('https://cdn.deepintothe.xyz/lucive/img/lp/seraphine_entry/profile_bg.png')"></div>
+  <div class="hero-noise"></div>
+  <div class="hero-content">
+    <div class="hero-brand">LUCIVE · NEXT-GEN CHARACTER CHAT</div>
+    <div class="hero-pre">想像を超えた、<em>キャラクターチャット</em></div>
+    <h1 class="hero-h">出会い、エピソード、結末。<br><em>あなただけの物語を紡いで。</em></h1>
+  </div>
+  <div class="scroll-cue">SCROLL</div>
+</section>
+
+<!-- ===== PHASE 02 · A Living World · 5 first-contact chats ===== -->
+<section class="phase" style="--bar-color:var(--d-velvet)">
+  <div class="phase-bg" style="background-image:url('https://cdn.deepintothe.xyz/lucive/img/lp/seha_entry/profile_bg.png')"></div>
+  <div class="phase-text">
+    <div class="phase-step">PHASE 02 <b>·</b> 息づく世界</div>
+    <h2 class="phase-h">彼らはもう生きています。<em>あなたはその瞬間に踏み込みます。</em></h2>
+    <p class="phase-desc">彼らの人生とあなたの人生が交わる、はじめの一歩。物語はここから始まります。</p>
+  </div>
+
+  <div class="phase-mock">
+    <div class="mock-phone"><div class="play-tag">* 実際のプレイシーンです</div>
+      <div class="mock-screen">
+        <!-- Slide 1 · Maria (Sunrise) -->
+        <div class="mock-slide">
+          <div class="mock-statusbar"><span class="time">02:11</span><span class="icons">●●●● 92%</span></div>
+          <div class="mock-head">
+            <div class="mock-head-avatar"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/maria.png" alt=""></div>
+            <div class="mock-head-info"><div class="mock-head-name">マリア</div><div class="mock-head-status first">FIRST CONTACT · GALLERY</div></div>
+          </div>
+          <div class="mock-body" data-bg style="--chat-bg:url('https://cdn.deepintothe.xyz/lucive/img/lp/maria_entry/scene1.png')">
+            <div class="mock-msg narration"><div class="mock-narration-text">非常灯が点滅する展示室。最後の一作 — 誰かが持ち去ろうとしている。</div></div>
+            <div class="mock-msg lp"><div class="mock-msg-inner"><div class="mock-mini"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/maria.png" alt=""></div><div class="mock-bubble">今、誰かが入ってきました。手伝っていただけますか?</div></div></div>
+            <div class="mock-msg lp cons"><div class="mock-msg-inner"><div class="mock-mini"></div><div class="mock-bubble">静かに —— この一作だけ守ってください。</div></div></div>
+            <div class="mock-msg user"><div class="mock-msg-inner"><div class="mock-bubble">どこへ行けばいいですか?</div></div></div>
+            <div class="mock-msg lp"><div class="mock-msg-inner"><div class="mock-mini"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/maria.png" alt=""></div><div class="mock-bubble">キュレーターブースの裏へ。急がず、ゆっくり来てください。</div></div></div>
+            <div class="mock-input"><span class="mock-input-text">いま向かいます</span><span class="mock-input-caret"></span><span class="mock-input-send">↑</span></div>
+          </div>
+        </div>
+        <!-- Slide 2 · Damya (Neon) -->
+        <div class="mock-slide">
+          <div class="mock-statusbar"><span class="time">23:47</span><span class="icons">●●●● 78%</span></div>
+          <div class="mock-head">
+            <div class="mock-head-avatar"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/damya.png" alt=""></div>
+            <div class="mock-head-info"><div class="mock-head-name">ダミャ</div><div class="mock-head-status first">FIRST CONTACT · BACKSTREET</div></div>
+          </div>
+          <div class="mock-body" data-bg style="--chat-bg:url('https://cdn.deepintothe.xyz/lucive/img/lp/damya_entry/scene1.png')">
+            <div class="mock-msg narration"><div class="mock-narration-text">フラッシュを避け、路地に身を潜めたセレブ。彼女が — あなたを見つける。</div></div>
+            <div class="mock-msg lp"><div class="mock-msg-inner"><div class="mock-mini"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/damya.png" alt=""></div><div class="mock-bubble">...30分だけ。見ないふりをしていただけますか?</div></div></div>
+            <div class="mock-msg lp cons"><div class="mock-msg-inner"><div class="mock-mini"></div><div class="mock-bubble">こんなお願いをして、ごめんなさい。</div></div></div>
+            <div class="mock-msg user"><div class="mock-msg-inner"><div class="mock-bubble">人がすべて立ち去るまで。</div></div></div>
+            <div class="mock-msg lp"><div class="mock-msg-inner"><div class="mock-mini"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/damya.png" alt=""></div><div class="mock-bubble">...ありがとう。お名前は、聞かないでおきます。</div></div></div>
+            <div class="mock-input"><span class="mock-input-text">どこに隠れていればいい</span><span class="mock-input-caret"></span><span class="mock-input-send">↑</span></div>
+          </div>
+        </div>
+        <!-- Slide 3 · Ella (Underground) -->
+        <div class="mock-slide">
+          <div class="mock-statusbar"><span class="time">01:34</span><span class="icons">●●●● 64%</span></div>
+          <div class="mock-head">
+            <div class="mock-head-avatar"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/ella.png" alt=""></div>
+            <div class="mock-head-info"><div class="mock-head-name">エラ</div><div class="mock-head-status first">FIRST CONTACT · UNDERPASS B11</div></div>
+          </div>
+          <div class="mock-body" data-bg style="--chat-bg:url('https://cdn.deepintothe.xyz/lucive/img/lp/ella_entry/scene1.png')">
+            <div class="mock-msg narration"><div class="mock-narration-text">パスワードなしで入った初めての客。彼女のナイフが、ゆっくりとカウンターに置かれる。</div></div>
+            <div class="mock-msg lp"><div class="mock-msg-inner"><div class="mock-mini"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/ella.png" alt=""></div><div class="mock-bubble">ここまでどうやって来たのか — ゆっくり、聞かせてください。</div></div></div>
+            <div class="mock-msg lp cons"><div class="mock-msg-inner"><div class="mock-mini"></div><div class="mock-bubble">嘘は — 一度で十分です。</div></div></div>
+            <div class="mock-msg user"><div class="mock-msg-inner"><div class="mock-bubble">探している人がいて、来ました。</div></div></div>
+            <div class="mock-msg lp"><div class="mock-msg-inner"><div class="mock-mini"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/ella.png" alt=""></div><div class="mock-bubble">...お名前。それから、聞かせてください。</div></div></div>
+            <div class="mock-input"><span class="mock-input-text">その人は</span><span class="mock-input-caret"></span><span class="mock-input-send">↑</span></div>
+          </div>
+        </div>
+        <!-- Slide 4 · Inis (Velvet) -->
+        <div class="mock-slide">
+          <div class="mock-statusbar"><span class="time">22:08</span><span class="icons">●●●● 56%</span></div>
+          <div class="mock-head">
+            <div class="mock-head-avatar"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/inis.png" alt=""></div>
+            <div class="mock-head-info"><div class="mock-head-name">イニス</div><div class="mock-head-status first">FIRST CONTACT · GRAND HALL</div></div>
+          </div>
+          <div class="mock-body" data-bg style="--chat-bg:url('https://cdn.deepintothe.xyz/lucive/img/lp/inis_entry/scene1.png')">
+            <div class="mock-msg narration"><div class="mock-narration-text">最後のワルツ。パートナーの場所が空いている。彼女が — あなたに手を差し伸べる。</div></div>
+            <div class="mock-msg lp"><div class="mock-msg-inner"><div class="mock-mini"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/inis.png" alt=""></div><div class="mock-bubble">一曲だけ、お願いしてもいいですか?</div></div></div>
+            <div class="mock-msg lp cons"><div class="mock-msg-inner"><div class="mock-mini"></div><div class="mock-bubble">足は — 私の足の上に、そのまま乗せてください。</div></div></div>
+            <div class="mock-msg user"><div class="mock-msg-inner"><div class="mock-bubble">踊れなくても、いいんですか?</div></div></div>
+            <div class="mock-msg lp"><div class="mock-msg-inner"><div class="mock-mini"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/inis.png" alt=""></div><div class="mock-bubble">大丈夫です。音楽に — ついて来てくださればいいです。</div></div></div>
+            <div class="mock-input"><span class="mock-input-text">じゃあ一度だけ</span><span class="mock-input-caret"></span><span class="mock-input-send">↑</span></div>
+          </div>
+        </div>
+        <!-- Slide 5 · Ruon (Indie) -->
+        <div class="mock-slide">
+          <div class="mock-statusbar"><span class="time">04:22</span><span class="icons">●●●● 41%</span></div>
+          <div class="mock-head">
+            <div class="mock-head-avatar"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/ruon.png" alt=""></div>
+            <div class="mock-head-info"><div class="mock-head-name">ルオン</div><div class="mock-head-status first">FIRST CONTACT · STUDIO B</div></div>
+          </div>
+          <div class="mock-body" data-bg style="--chat-bg:url('https://cdn.deepintothe.xyz/lucive/img/lp/ruon_entry/scene1.png')">
+            <div class="mock-msg narration"><div class="mock-narration-text">レコーディングブース。ボーカルラインがどうしても出てこない。彼がヘッドホンを外して — あなたに渡す。</div></div>
+            <div class="mock-msg lp"><div class="mock-msg-inner"><div class="mock-mini"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/ruon.png" alt=""></div><div class="mock-bubble">一度だけ、あなたの声で聞かせてもらえますか?</div></div></div>
+            <div class="mock-msg lp cons"><div class="mock-msg-inner"><div class="mock-mini"></div><div class="mock-bubble">上手くなくていいんです。本気なら、それで十分です。</div></div></div>
+            <div class="mock-msg user"><div class="mock-msg-inner"><div class="mock-bubble">どんな歌詞で?</div></div></div>
+            <div class="mock-msg lp"><div class="mock-msg-inner"><div class="mock-mini"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/ruon.png" alt=""></div><div class="mock-bubble">いまこの瞬間が — どう見えるか。その一行だけで十分です。</div></div></div>
+            <div class="mock-input"><span class="mock-input-text">夜明けに</span><span class="mock-input-caret"></span><span class="mock-input-send">↑</span></div>
+          </div>
+        </div>
+        <div class="mock-dots"><span class="mock-dot"></span><span class="mock-dot"></span><span class="mock-dot"></span><span class="mock-dot"></span><span class="mock-dot"></span></div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="phase-bar"></div>
+</section>
+
+<!-- ===== PHASE 03 · Visual Novel · 5 slides ===== -->
+<section class="phase" style="--bar-color:var(--d-sunrise)">
+  <div class="phase-bg" style="background-image:url('https://cdn.deepintothe.xyz/lucive/img/lp/taeo_entry/header.png')"></div>
+  <div class="phase-text">
+    <div class="phase-step">PHASE 03 <b>·</b> ビジュアルノベル</div>
+    <h2 class="phase-h">キャラクターを<em>読まないで。</em></h2>
+    <p class="phase-desc">一カット、一場面。毎週、新しい世界とキャラクターがビジュアルノベルとして広がります。</p>
+  </div>
+
+  <div class="phase-mock">
+    <div class="mock-phone"><div class="play-tag">* 実際のプレイシーンです</div>
+      <div class="mock-screen mock-vn-screen">
+        <div class="mock-slide">
+          <div class="mock-vn-stage" style="background-image:url('https://cdn.deepintothe.xyz/lucive/img/lp/taeo_entry/scene1.png')">
+            <div class="mock-vn-char"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/taeo_entry/char_taeo.png" alt="テオ" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
+            <div class="mock-vn-bottom">
+              <div class="mock-vn-speaker">TAEO ・ テオ <span style="color:var(--d-sunrise)">· SUNRISE</span></div>
+              <div class="mock-vn-box"><div class="mock-vn-line">「コーヒーを焙煎する時間を私的だと言ったのは、あなたが初めてです。初めての方にだけお出しする一杯、淹れて差し上げます。」</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="mock-slide">
+          <div class="mock-vn-stage" style="background-image:url('https://cdn.deepintothe.xyz/lucive/img/lp/haejun_entry/scene1.png')">
+            <div class="mock-vn-char"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/haejun_entry/char_haejun.png" alt="ヘジュン" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
+            <div class="mock-vn-bottom">
+              <div class="mock-vn-speaker">HAEJUN ・ ヘジュン <span style="color:var(--d-neon)">· NEON</span></div>
+              <div class="mock-vn-box"><div class="mock-vn-line">「アンコール、終わりました。バックステージで一杯 — 時間を取っておきます。」</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="mock-slide">
+          <div class="mock-vn-stage" style="background-image:url('https://cdn.deepintothe.xyz/lucive/img/lp/raon_entry/scene1.png')">
+            <div class="mock-vn-char"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/raon_entry/char_raon.png" alt="ラオン" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
+            <div class="mock-vn-bottom">
+              <div class="mock-vn-speaker">RAON ・ ラオン <span style="color:var(--d-underground)">· UNDERGROUND</span></div>
+              <div class="mock-vn-box"><div class="mock-vn-line">「雨の日の最初のお客様が、いちばん深く刻まれます。どこに — どんな印を残したいですか。」</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="mock-slide">
+          <div class="mock-vn-stage" style="background-image:url('https://cdn.deepintothe.xyz/lucive/img/lp/seraphine_entry/scene1.png')">
+            <div class="mock-vn-char"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/seraphine_entry/char_seraphine.png" alt="セラフィン" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
+            <div class="mock-vn-bottom">
+              <div class="mock-vn-speaker">SERAPHINE ・ セラフィン <span style="color:var(--d-velvet)">· VELVET</span></div>
+              <div class="mock-vn-box"><div class="mock-vn-line">「夜明けの祈祷室の冷たい空気が好きなんです。一度、その呼吸に合わせてみていただけますか。」</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="mock-slide">
+          <div class="mock-vn-stage" style="background-image:url('https://cdn.deepintothe.xyz/lucive/img/lp/haru_entry/scene1.png')">
+            <div class="mock-vn-char"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/haru_entry/char_haru.png" alt="ハル" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
+            <div class="mock-vn-bottom">
+              <div class="mock-vn-speaker">HARU ・ ハル <span style="color:var(--d-indie)">· INDIE</span></div>
+              <div class="mock-vn-box"><div class="mock-vn-line">「今日も聴いてくださったんですね。ヘッドホンの向こうから — あなただけに届く一通の便りがあります。」</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="mock-dots"><span class="mock-dot"></span><span class="mock-dot"></span><span class="mock-dot"></span><span class="mock-dot"></span><span class="mock-dot"></span></div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="phase-bar"></div>
+</section>
+
+<!-- ===== PHASE 04 · Branches · 5 choice slides ===== -->
+<section class="phase" style="--bar-color:var(--d-velvet)">
+  <div class="phase-bg" style="background-image:url('https://cdn.deepintothe.xyz/lucive/img/lp/ihana_entry/scene1.png')"></div>
+  <div class="phase-text">
+    <div class="phase-step">PHASE 04 <b>·</b> 分岐</div>
+    <h2 class="phase-h">あなたの選択が、<em>結末を形づくります</em></h2>
+    <p class="phase-desc">一場面ごとに二〜三の分岐。一人のキャラクターの中でも、異なる結末が開かれていきます。</p>
+  </div>
+
+  <div class="phase-mock">
+    <div class="mock-phone"><div class="play-tag">* 実際のプレイシーンです</div>
+      <div class="mock-screen mock-vn-screen">
+        <div class="mock-slide">
+          <div class="mock-vn-stage" style="background-image:url('https://cdn.deepintothe.xyz/lucive/img/lp/ihana_entry/scene1.png')">
+            <div class="mock-vn-char"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/ihana_entry/char_ihana.png" alt="イハナ" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
+            <div class="mock-vn-bottom">
+              <div class="mock-vn-speaker">IHANA ・ イハナ <span style="color:var(--d-sunrise)">· SUNRISE</span></div>
+              <div class="mock-vn-box">
+                <div class="mock-vn-line">「この曲 — 最後の小節が空いています。埋めてくださいませんか?」</div>
+                <div class="mock-vn-choices">
+                  <div class="mock-vn-choice"><span class="mock-vn-choice-num">1</span><span>「一音、ゆっくり」</span></div>
+                  <div class="mock-vn-choice"><span class="mock-vn-choice-num">2</span><span>「空けておく方が美しい」</span></div>
+                  <div class="mock-vn-choice"><span class="mock-vn-choice-num">3</span><span>彼女の手の上に手を重ねる</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mock-slide">
+          <div class="mock-vn-stage" style="background-image:url('https://cdn.deepintothe.xyz/lucive/img/lp/kai_entry/scene1.png')">
+            <div class="mock-vn-char"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/kai_entry/char_kai.png" alt="カイ" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
+            <div class="mock-vn-bottom">
+              <div class="mock-vn-speaker">KAI ・ カイ <span style="color:var(--d-neon)">· NEON</span></div>
+              <div class="mock-vn-box">
+                <div class="mock-vn-line">「セットはあと2曲。最後 — どんな雰囲気で?」</div>
+                <div class="mock-vn-choices">
+                  <div class="mock-vn-choice"><span class="mock-vn-choice-num">1</span><span>「ゆっくり、引き寄せられるように」</span></div>
+                  <div class="mock-vn-choice"><span class="mock-vn-choice-num">2</span><span>「燃え尽きるまで」</span></div>
+                  <div class="mock-vn-choice"><span class="mock-vn-choice-num">3</span><span>「あなたが決めて」</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mock-slide">
+          <div class="mock-vn-stage" style="background-image:url('https://cdn.deepintothe.xyz/lucive/img/lp/or__entry/scene1.png')">
+            <div class="mock-vn-char"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/or__entry/char_or_.png" alt="オル" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
+            <div class="mock-vn-bottom">
+              <div class="mock-vn-speaker">OR ・ オル <span style="color:var(--d-underground)">· UNDERGROUND</span></div>
+              <div class="mock-vn-box">
+                <div class="mock-vn-line">「このライン — 一度入れたら消せません。最終決定、しますか?」</div>
+                <div class="mock-vn-choices">
+                  <div class="mock-vn-choice"><span class="mock-vn-choice-num">1</span><span>「このまま、深く刻んで」</span></div>
+                  <div class="mock-vn-choice"><span class="mock-vn-choice-num">2</span><span>「もう一度、ゆっくり」</span></div>
+                  <div class="mock-vn-choice"><span class="mock-vn-choice-num">3</span><span>彼の手首をつかむ</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mock-slide">
+          <div class="mock-vn-stage" style="background-image:url('https://cdn.deepintothe.xyz/lucive/img/lp/stella_entry/scene1.png')">
+            <div class="mock-vn-char"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/stella_entry/char_stella.png" alt="ステラ" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
+            <div class="mock-vn-bottom">
+              <div class="mock-vn-speaker">STELLA ・ ステラ <span style="color:var(--d-velvet)">· VELVET</span></div>
+              <div class="mock-vn-box">
+                <div class="mock-vn-line">「このワイン — 口をつける前に。一口にどんな約束を込めるか、選んでください。」</div>
+                <div class="mock-vn-choices">
+                  <div class="mock-vn-choice"><span class="mock-vn-choice-num">1</span><span>「今夜だけの約束」</span></div>
+                  <div class="mock-vn-choice"><span class="mock-vn-choice-num">2</span><span>「明日また会おうという約束」</span></div>
+                  <div class="mock-vn-choice"><span class="mock-vn-choice-num">3</span><span>グラスをそっと置く</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mock-slide">
+          <div class="mock-vn-stage" style="background-image:url('https://cdn.deepintothe.xyz/lucive/img/lp/nova_entry/scene1.png')">
+            <div class="mock-vn-char"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/nova_entry/char_nova.png" alt="ノヴァ" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
+            <div class="mock-vn-bottom">
+              <div class="mock-vn-speaker">NOVA ・ ノヴァ <span style="color:var(--d-indie)">· INDIE</span></div>
+              <div class="mock-vn-box">
+                <div class="mock-vn-line">「屋上 — 朝4時。もう一曲歌って降りましょう。どの曲で締めますか?」</div>
+                <div class="mock-vn-choices">
+                  <div class="mock-vn-choice"><span class="mock-vn-choice-num">1</span><span>「私たちの最初の曲」</span></div>
+                  <div class="mock-vn-choice"><span class="mock-vn-choice-num">2</span><span>「まだ未発表のあの曲」</span></div>
+                  <div class="mock-vn-choice"><span class="mock-vn-choice-num">3</span><span>彼女の肩にもたれる</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mock-dots"><span class="mock-dot"></span><span class="mock-dot"></span><span class="mock-dot"></span><span class="mock-dot"></span><span class="mock-dot"></span></div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="phase-bar"></div>
+</section>
+
+<!-- ===== PHASE 05 · Memories that shift with choice · 5 linked chats ===== -->
+<section class="phase" style="--bar-color:var(--d-indie)">
+  <div class="phase-bg" style="background-image:url('https://cdn.deepintothe.xyz/lucive/img/lp/jian_entry/scene1.png')"></div>
+  <div class="phase-text">
+    <div class="phase-step">PHASE 05 <b>·</b> LINKED</div>
+    <h2 class="phase-h"><em>選択によって変わっていく、</em>記憶たち</h2>
+    <p class="phase-desc">通信チャンネルを一度開けば、彼の時間は止まりません。次の夜明け、彼が — あなたの選択を覚えています。</p>
+  </div>
+
+  <div class="phase-mock">
+    <div class="mock-phone"><div class="play-tag">* 実際のプレイシーンです</div>
+      <div class="mock-screen">
+        <div class="mock-slide">
+          <div class="mock-statusbar"><span class="time">06:14</span><span class="icons">●●●● 92%</span></div>
+          <div class="mock-head">
+            <div class="mock-head-avatar"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/minjun_sr.png" alt=""></div>
+            <div class="mock-head-info"><div class="mock-head-name">ミンジュン</div><div class="mock-head-status linked">Linked · シンク率 12%</div></div>
+          </div>
+          <div class="mock-body" data-bg style="--chat-bg:url('https://cdn.deepintothe.xyz/lucive/img/lp/minjun_sr_entry/scene1.png')">
+            <div class="mock-memo">記憶 #03 · あなたが気に入った一杯</div>
+            <div class="mock-msg lp"><div class="mock-msg-inner"><div class="mock-mini"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/minjun_sr.png" alt=""></div><div class="mock-bubble">あの夜明けの一杯 — あなたの好みに合わせました。</div></div></div>
+            <div class="mock-msg user"><div class="mock-msg-inner"><div class="mock-bubble">覚えていてくれたんですか?</div></div></div>
+            <div class="mock-msg lp"><div class="mock-msg-inner"><div class="mock-mini"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/minjun_sr.png" alt=""></div><div class="mock-bubble">あの日、あなたの席で、初めて香りが違ったんです。</div></div></div>
+            <div class="mock-input"><span class="mock-input-text">じゃあ今日もお願いします</span><span class="mock-input-caret"></span><span class="mock-input-send">↑</span></div>
+          </div>
+        </div>
+        <div class="mock-slide">
+          <div class="mock-statusbar"><span class="time">02:47</span><span class="icons">●●●● 78%</span></div>
+          <div class="mock-head">
+            <div class="mock-head-avatar"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/jian.png" alt=""></div>
+            <div class="mock-head-info"><div class="mock-head-name">ジアン</div><div class="mock-head-status linked">Linked · シンク率 24%</div></div>
+          </div>
+          <div class="mock-body" data-bg style="--chat-bg:url('https://cdn.deepintothe.xyz/lucive/img/lp/jian_entry/scene1.png')">
+            <div class="mock-memo">記憶 #07 · あなたが好きと言ったビート</div>
+            <div class="mock-msg lp"><div class="mock-msg-inner"><div class="mock-mini"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/jian.png" alt=""></div><div class="mock-bubble">あのビート — 次のトラックのイントロにそのまま入れました。</div></div></div>
+            <div class="mock-msg user"><div class="mock-msg-inner"><div class="mock-bubble">You meant it.</div></div></div>
+            <div class="mock-msg lp"><div class="mock-msg-inner"><div class="mock-mini"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/jian.png" alt=""></div><div class="mock-bubble">次のセット — あなたが来ないと、聴かせられません。</div></div></div>
+            <div class="mock-input"><span class="mock-input-text">今日の夜明けに行きます</span><span class="mock-input-caret"></span><span class="mock-input-send">↑</span></div>
+          </div>
+        </div>
+        <div class="mock-slide">
+          <div class="mock-statusbar"><span class="time">23:51</span><span class="icons">●●●● 64%</span></div>
+          <div class="mock-head">
+            <div class="mock-head-avatar"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/sebin.png" alt=""></div>
+            <div class="mock-head-info"><div class="mock-head-name">セビン</div><div class="mock-head-status linked">Linked · シンク率 31%</div></div>
+          </div>
+          <div class="mock-body" data-bg style="--chat-bg:url('https://cdn.deepintothe.xyz/lucive/img/lp/sebin_entry/scene1.png')">
+            <div class="mock-memo">記憶 #11 · あなたが止めた一線</div>
+            <div class="mock-msg lp"><div class="mock-msg-inner"><div class="mock-mini"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/sebin.png" alt=""></div><div class="mock-bubble">あの線 — もう一度引きました。一カ所だけ、空けたままで。</div></div></div>
+            <div class="mock-msg user"><div class="mock-msg-inner"><div class="mock-bubble">どうしてそこだけ?</div></div></div>
+            <div class="mock-msg lp"><div class="mock-msg-inner"><div class="mock-mini"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/sebin.png" alt=""></div><div class="mock-bubble">最後の一画 — あなたの手首で刻んでください。</div></div></div>
+            <div class="mock-input"><span class="mock-input-text">じゃあ今夜に</span><span class="mock-input-caret"></span><span class="mock-input-send">↑</span></div>
+          </div>
+        </div>
+        <div class="mock-slide">
+          <div class="mock-statusbar"><span class="time">04:08</span><span class="icons">●●●● 56%</span></div>
+          <div class="mock-head">
+            <div class="mock-head-avatar"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/leon.png" alt=""></div>
+            <div class="mock-head-info"><div class="mock-head-name">レオン</div><div class="mock-head-status linked">Linked · シンク率 47%</div></div>
+          </div>
+          <div class="mock-body" data-bg style="--chat-bg:url('https://cdn.deepintothe.xyz/lucive/img/lp/leon_entry/scene1.png')">
+            <div class="mock-memo">記憶 #18 · あなたが打ち明けた罪</div>
+            <div class="mock-msg lp"><div class="mock-msg-inner"><div class="mock-mini"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/leon.png" alt=""></div><div class="mock-bubble">あの罪 — 忘れていません。今日は、答えを持ってきました。</div></div></div>
+            <div class="mock-msg user"><div class="mock-msg-inner"><div class="mock-bubble">...聞かせてください。</div></div></div>
+            <div class="mock-msg lp"><div class="mock-msg-inner"><div class="mock-mini"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/leon.png" alt=""></div><div class="mock-bubble">それは罪ではなく — 私たちの約束になりました。</div></div></div>
+            <div class="mock-input"><span class="mock-input-text">約束、守ります</span><span class="mock-input-caret"></span><span class="mock-input-send">↑</span></div>
+          </div>
+        </div>
+        <div class="mock-slide">
+          <div class="mock-statusbar"><span class="time">03:02</span><span class="icons">●●●● 41%</span></div>
+          <div class="mock-head">
+            <div class="mock-head-avatar"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/juhyuk.png" alt=""></div>
+            <div class="mock-head-info"><div class="mock-head-name">ジュヒョク</div><div class="mock-head-status linked">Linked · シンク率 53%</div></div>
+          </div>
+          <div class="mock-body" data-bg style="--chat-bg:url('https://cdn.deepintothe.xyz/lucive/img/lp/juhyuk_entry/scene1.png')">
+            <div class="mock-memo">記憶 #22 · あなたが選んだ歌詞</div>
+            <div class="mock-msg lp"><div class="mock-msg-inner"><div class="mock-mini"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/juhyuk.png" alt=""></div><div class="mock-bubble">あの一行 — 曲の最後に、そのまま入れました。</div></div></div>
+            <div class="mock-msg user"><div class="mock-msg-inner"><div class="mock-bubble">聴いていますね。</div></div></div>
+            <div class="mock-msg lp"><div class="mock-msg-inner"><div class="mock-mini"><img src="https://cdn.deepintothe.xyz/lucive/img/lp/juhyuk.png" alt=""></div><div class="mock-bubble">最後の一節 — マイクをあなたの方に向けます。</div></div></div>
+            <div class="mock-input"><span class="mock-input-text">その日に会いましょう</span><span class="mock-input-caret"></span><span class="mock-input-send">↑</span></div>
+          </div>
+        </div>
+        <div class="mock-dots" style="background:rgba(63,38,52,.42)"><span class="mock-dot"></span><span class="mock-dot"></span><span class="mock-dot"></span><span class="mock-dot"></span><span class="mock-dot"></span></div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="phase-bar"></div>
+</section>
+
+<!-- ===== LINEUP ===== -->
+<section class="lineup">
+  <div class="wrap">
+    <div class="lineup-eye">CAST · 近日公開</div>
+    <div class="lineup-h"><em>まだ明かされていないキャラクターたち</em></div>
+    <p class="lineup-sub">毎週、新しい世界が開かれます。最初の出会いごとに、一人の正体が解き明かされます。</p>
+    <div class="lineup-wrap">
+      <div class="lineup-grid" id="lineupGrid"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PRE-CTA ===== -->
+<section class="pre-cta">
+  <div class="wrap">
+    <div class="pre-cta-h">まず一度、出会ってみてください</div>
+    <div class="pre-cta-sub">35人の中の一人、90秒の最初の出会い。</div>
+    <div class="pre-cta-row">
+      <a href="./v34-kr-lucive-ja.html" class="btn btn-secondary" onclick="window.LUCIVE_INTEGRATIONS&&LUCIVE_INTEGRATIONS.gaEvent('cta_click',{cta:'demo',position:'pre_cta'})"><span>デモを試す</span><span class="arr">▶</span></a>
+      <a href="./v35-signup-ja.html" class="btn btn-primary" onclick="window.LUCIVE_INTEGRATIONS&&LUCIVE_INTEGRATIONS.gaEvent('cta_click',{cta:'signup',position:'pre_cta'})"><span>今すぐ事前登録</span><span class="arr">→</span></a>
+    </div>
+    <div class="pre-cta-meta">D-<span id="dday">17</span> アルファ公開 · 毎週新キャラクター</div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer-brand">LUCIVE</div>
+  <div class="footer-meta">DEEP INTO THE · 2026</div>
+  <div class="footer-legal">
+    <a href="./terms-ja.html">利用規約</a>
+    <span class="sep">·</span>
+    <a href="./privacy-ja.html">プライバシー</a>
+  </div>
+</footer>
+
+<!-- ===== Bottom-right floating CTA · horizontal stack (Top → Demo → Pre-register) ===== -->
+<div class="floating-cta">
+  <button type="button" class="fc-tertiary" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ トップ</button>
+  <a href="./v34-kr-lucive-ja.html" class="fc-secondary" onclick="window.LUCIVE_INTEGRATIONS&&LUCIVE_INTEGRATIONS.gaEvent('cta_click',{cta:'demo',position:'floating'})">デモ <span class="fc-arr">▶</span></a>
+  <a href="./v35-signup-ja.html" class="fc-primary" onclick="window.LUCIVE_INTEGRATIONS&&LUCIVE_INTEGRATIONS.gaEvent('cta_click',{cta:'signup',position:'floating'})">事前登録 <span class="fc-arr">→</span></a>
+</div>
+
+<script>
+const CDN = 'https://cdn.deepintothe.xyz/lucive';
+const NAMES = {
+  taeo:'テオ', ihana:'イハナ', minjun_sr:'ミンジュン', maria:'マリア', seha:'セハ', ryo:'リョ',
+  haejun:'ヘジュン', kai:'カイ', jian:'ジアン', damya:'ダミャ', lise:'リゼ', nia:'ニア', levi:'レビ', lana:'ラナ',
+  sebin:'セビン', or_:'オル', raon:'ラオン', ella:'エラ', yujin:'ユジン', changsik:'チャンシク',
+  yun_ara:'ユンアラ', stella:'ステラ', adel:'アデル', leon:'レオン', sia:'シア', inis:'イニス', seraphine:'セラフィン', myur:'ミュル', kael:'カエル',
+  ruon:'ルオン', piera:'ピラ', nova:'ノヴァ', haru:'ハル', juhyuk:'ジュヒョク', seoyul:'ソユル'
+};
+const grid = document.getElementById('lineupGrid');
+const ALL = Object.keys(NAMES);
+const MYSTERY = 10;
+const total = ALL.length + MYSTERY;
+const cells = [];
+ALL.forEach(k => {
+  cells.push(`<div class="lp lp-known" title="${NAMES[k]}"><img src="${CDN}/img/lp/${k}.png" alt="${NAMES[k]}" loading="lazy" onerror="this.style.opacity=.18"><div class="lp-name">${NAMES[k]}</div></div>`);
+});
+for(let i = 0; i < MYSTERY; i++){
+  cells.push(`<div class="lp lp-mystery"><span class="lp-q">?</span><span class="lp-d"></span></div>`);
+}
+cells[cells.length - 1] = `<div class="lp more f4">···</div>`;
+const out = cells.map((html, i) => {
+  const ratio = i / total;
+  let f = '';
+  if(ratio > 0.92) f = 'f4';
+  else if(ratio > 0.84) f = 'f3';
+  else if(ratio > 0.76) f = 'f2';
+  else if(ratio > 0.68) f = 'f1';
+  return f ? html.replace('class="lp ', `class="lp ${f} `) : html;
+});
+grid.innerHTML = out.join('');
+document.getElementById('dday').textContent = '17';
+</script>
+
+</body>
+</html>
