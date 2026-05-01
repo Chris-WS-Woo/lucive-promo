@@ -162,7 +162,7 @@ a:hover{text-decoration-color:var(--accent)}
         </div>
       </div>
       <div class="share-row">
-        <button class="share kakao" onclick="share('kakao')">💬 KakaoTalk</button>
+        <button class="share kakao" onclick="share('discord')">💬 Discord</button>
         <button class="share x" onclick="share('x')">𝕏 X</button>
         <button class="share link" onclick="share('link')">🔗 Link</button>
       </div>
@@ -185,7 +185,7 @@ a:hover{text-decoration-color:var(--accent)}
         <li><b>Core tester activities</b> → bonus Dive + special perks</li>
         <li>Priority alpha launch + first chapter alerts</li>
       </ul>
-      <a href="./screening.html?lang=en" class="next-cta">Start survey · earn Dive →</a>
+      <a href="./screening-en.html" class="next-cta">Start survey · earn Dive →</a>
     </div>
 
     <a href="./v35-lp-wide.html" class="back-link">← Back to main</a>
@@ -283,11 +283,13 @@ function share(channel){
     try{ signupEmail = (JSON.parse(localStorage.getItem('lucive_signup')||'{}').email)||''; }catch(_){}
     if(signupEmail) I.klaviyoTrack(signupEmail, 'Share Clicked', { channel: channel });
   }
-  if(channel === 'link'){
+  if(channel === 'discord'){
+    window.open('https://discord.gg/lucive', '_blank');
+  } else if(channel === 'link'){
     navigator.clipboard?.writeText(url).then(()=>alert('Link copied'));
   } else if(channel === 'x'){
     window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`, '_blank');
-  } else if(channel === 'kakao'){
+  } else if(channel === 'discord' || channel === 'kakao'){
     // Kakao SDK not connected · fallback to link copy
     navigator.clipboard?.writeText(text).then(()=>alert('Link copied'));
   }
