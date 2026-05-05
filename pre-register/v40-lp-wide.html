@@ -701,12 +701,16 @@ const ALL = Object.keys(NAMES);
 const MYSTERY = 10;
 const total = ALL.length + MYSTERY;
 const cells = [];
-// 1번: 강서린
-cells.push(`<div class="lp lp-known" title="강서린"><img src="./signup-assets/characters/seorin-yandere-smile.png" alt="강서린" loading="lazy" onerror="this.parentElement.querySelector('.lp-q')&&(this.style.display='none')"><div class="lp-name">강서린</div></div>`);
-// 2번: 노을 (이미지 있으면 표시, 없으면 물음표)
-cells.push(`<div class="lp lp-known" title="노을" style="position:relative"><img src="./signup-assets/characters/noeul/avatar.png" alt="노을" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='none';this.parentElement.classList.remove('lp-known');this.parentElement.classList.add('lp-mystery');this.parentElement.innerHTML='<span class=lp-q>?</span><span class=lp-d></span>';"><div class="lp-name">노을</div></div>`);
+// 1: 강서린
+cells.push(`<div class="lp lp-known" title="강서린"><img src="./signup-assets/characters/seorin-yandere-smile.png" alt="강서린" loading="lazy" onerror="this.style.opacity=.18"><div class="lp-name">강서린</div></div>`);
+// 2: 노을
+cells.push(`<div class="lp lp-known" title="노을"><img src="./signup-assets/characters/noeul/profile.png" alt="노을" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='none';this.parentElement.classList.remove('lp-known');this.parentElement.classList.add('lp-mystery');this.parentElement.innerHTML='<span class=lp-q>?</span><span class=lp-d></span>';"><div class="lp-name">노을</div></div>`);
+// 3: 봄이
+cells.push(`<div class="lp lp-known" title="봄이"><img src="./signup-assets/characters/bomi/profile.png" alt="봄이" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='none';this.parentElement.classList.remove('lp-known');this.parentElement.classList.add('lp-mystery');this.parentElement.innerHTML='<span class=lp-q>?</span><span class=lp-d></span>';"><div class="lp-name">봄이</div></div>`);
+// 4: 차서연
+cells.push(`<div class="lp lp-known" title="차서연"><img src="./signup-assets/characters/chaseoyeon/profile.png" alt="차서연" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='none';this.parentElement.classList.remove('lp-known');this.parentElement.classList.add('lp-mystery');this.parentElement.innerHTML='<span class=lp-q>?</span><span class=lp-d></span>';"><div class="lp-name">차서연</div></div>`);
 // 나머지: 물음표
-ALL.slice(2).forEach(k => {
+ALL.slice(4).forEach(k => {
   cells.push(`<div class="lp lp-mystery"><span class="lp-q">?</span><span class="lp-d"></span></div>`);
 });
 for(let i = 0; i < MYSTERY; i++){
