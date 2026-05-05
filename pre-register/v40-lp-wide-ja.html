@@ -702,7 +702,12 @@ const ALL = Object.keys(NAMES);
 const MYSTERY = 10;
 const total = ALL.length + MYSTERY;
 const cells = [];
-ALL.forEach(k => {
+// 1번: 강서린
+cells.push(`<div class="lp lp-known" title="カン・ソリン"><img src="./signup-assets/characters/seorin-yandere-smile.png" alt="カン・ソリン" loading="lazy" onerror="this.parentElement.querySelector('.lp-q')&&(this.style.display='none')"><div class="lp-name">カン・ソリン</div></div>`);
+// 2번: 노을 (이미지 있으면 표시, 없으면 물음표)
+cells.push(`<div class="lp lp-known" title="ノウル" style="position:relative"><img src="./signup-assets/characters/noeul/avatar.png" alt="ノウル" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='none';this.parentElement.classList.remove('lp-known');this.parentElement.classList.add('lp-mystery');this.parentElement.innerHTML='<span class=lp-q>?</span><span class=lp-d></span>';"><div class="lp-name">ノウル</div></div>`);
+// 나머지: 물음표
+ALL.slice(2).forEach(k => {
   cells.push(`<div class="lp lp-mystery"><span class="lp-q">?</span><span class="lp-d"></span></div>`);
 });
 for(let i = 0; i < MYSTERY; i++){
