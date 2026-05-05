@@ -34,10 +34,10 @@ em{font-style:italic;color:var(--accent)}
 
 /* ================= HERO ================= */
 .hero{position:relative;width:100%;height:100vh;height:100dvh;min-height:680px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:80px 32px 120px;overflow:hidden}
-.hero-bg{position:absolute;inset:0;background-size:cover;background-position:center;z-index:0;filter:saturate(1.05)}
+.hero-bg{position:absolute;inset:0;background-size:cover;background-position:center top;z-index:0;filter:saturate(1.1) brightness(1.05)}
 .hero-bg::after{content:'';position:absolute;inset:0;background:
-  radial-gradient(ellipse at 50% 30%,rgba(0,0,0,0) 0%,rgba(0,0,0,.15) 40%,rgba(0,0,0,.65) 90%),
-  linear-gradient(180deg,rgba(0,0,0,.18) 0%,rgba(0,0,0,.32) 50%,rgba(255,249,247,.92) 95%,rgba(255,249,247,1) 100%)}
+  radial-gradient(ellipse at 50% 45%,rgba(0,0,0,0) 0%,rgba(0,0,0,0) 30%,rgba(0,0,0,.25) 100%),
+  linear-gradient(180deg,rgba(0,0,0,.15) 0%,rgba(0,0,0,.02) 25%,rgba(0,0,0,.02) 60%,rgba(255,249,247,.88) 93%,rgba(255,249,247,1) 100%)}
 .hero-noise{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.05;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:256px;mix-blend-mode:overlay}
 .hero-content{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;max-width:1100px}
 .hero-brand{font-family:var(--mono);font-size:12px;letter-spacing:.5em;font-weight:800;color:var(--gold);text-transform:uppercase;margin-bottom:34px;text-shadow:0 2px 10px rgba(0,0,0,.5)}
@@ -278,7 +278,7 @@ em{font-style:italic;color:var(--accent)}
 
 <!-- ===== HERO ===== -->
 <section class="hero">
-  <div class="hero-bg" style="background-image:url('./signup-assets/scenes/bg/r_rooftop.jpg')"></div>
+  <div class="hero-bg" style="background-image:url('./signup-assets/scenes/bg/hero_bg_b3.jpg')"></div>
   <div class="hero-noise"></div>
   <div class="hero-content">
     <div class="hero-brand">LUCIVE · NEXT-GEN CHARACTER CHAT</div>
@@ -410,7 +410,7 @@ em{font-style:italic;color:var(--accent)}
           </div>
         </div>
         <div class="mock-slide">
-          <div class="mock-vn-stage" style="background-image:url('./signup-assets/scenes/bg/r_rooftop.jpg')">
+          <div class="mock-vn-stage" style="background-image:url('./signup-assets/scenes/bg/hero_bg_b3.jpg')">
             <div class="mock-vn-char"><img src="./signup-assets/seorin/vn_yandere.png" alt="해준" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
             <div class="mock-vn-bottom">
               <div class="mock-vn-speaker">HAEJUN · 이해준 <span style="color:var(--d-neon)">· NEON</span></div>
@@ -530,7 +530,7 @@ em{font-style:italic;color:var(--accent)}
           </div>
         </div>
         <div class="mock-slide">
-          <div class="mock-vn-stage" style="background-image:url('./signup-assets/scenes/bg/r_rooftop.jpg')">
+          <div class="mock-vn-stage" style="background-image:url('./signup-assets/scenes/bg/hero_bg_b3.jpg')">
             <div class="mock-vn-char"><img src="./signup-assets/seorin/vn_yandere.png" alt="노바" loading="lazy" onerror="this.parentElement.style.display='none'"></div>
             <div class="mock-vn-bottom">
               <div class="mock-vn-speaker">NOVA · 노바 <span style="color:var(--d-indie)">· INDIE</span></div>
