@@ -208,8 +208,8 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .complete-share-desc{font-size:13px;color:var(--text-secondary);margin-bottom:16px;line-height:1.6}
 .share-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
 .share-btn{padding:11px 18px;border-radius:100px;font-family:var(--font-sans);font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:6px;border:1px solid transparent}
-.share-btn[data-ch="kakao"]{background:#FEE500;color:#3C1E1E;border-color:#F5D900}
-.share-btn[data-ch="kakao"]:hover{background:#FFED4A;transform:translateY(-1px);box-shadow:0 6px 18px rgba(254,229,0,.35)}
+.share-btn[data-ch="discord"]{background:#FEE500;color:#3C1E1E;border-color:#F5D900}
+.share-btn[data-ch="discord"]:hover{background:#FFED4A;transform:translateY(-1px);box-shadow:0 6px 18px rgba(254,229,0,.35)}
 .share-btn[data-ch="x"]{background:#000;color:#fff;border-color:#222;font-family:var(--font-display);letter-spacing:.01em}
 .share-btn[data-ch="x"]:hover{background:#1A1A1A;transform:translateY(-1px);box-shadow:0 6px 18px rgba(0,0,0,.55)}
 .share-btn[data-ch="link"]{background:rgba(5,8,18,.7);color:var(--ink);border-color:rgba(139,92,246,.26)}
@@ -261,9 +261,9 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 <div class="noise"></div>
 
 <nav class="top-nav">
-  <a href="./v38-lp-wide-en.html" class="top-back"><span class="arr">←</span><span>Back to main</span></a>
+  <a href="./v40-lp-wide-en.html" class="top-back"><span class="arr">←</span><span>Back to main</span></a>
   <div class="top-spacer"></div>
-  <a href="./v38-lp-wide.html" class="top-brand">LUCIVE</a>
+  <a href="./v40-lp-wide-en.html" class="top-brand">LUCIVE</a>
   <div class="top-spacer"></div>
   <div class="top-meta">Survey · <b>2 min</b></div>
 </nav>
@@ -374,7 +374,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
             <li>Updates <b>before official announcements</b></li>
             <li><b>Real reviews</b> from other core testers</li>
           </ul>
-          <a href="https://discord.gg/lucive" target="_blank" rel="noopener" class="cc-link">
+          <a href="https://discord.gg/GgSBUzHTZ" target="_blank" rel="noopener" class="cc-link">
             <span>💬</span><span>Join our Discord</span><span>→</span>
           </a>
           <p class="cc-note">📬 Or use the invite link in the <b>welcome email</b></p>
@@ -1160,7 +1160,7 @@ function shareOn(ch) {
   const text = 'Lucive — visual-novel AI companions. Pre-register together for launch perks.';
   if (ch === 'x') {
     window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
-  } else if (ch === 'kakao') {
+  } else if (ch === 'discord') {
     alert('[mock] Discord share integration pending');
   } else {
     navigator.clipboard.writeText(url).then(() => {
@@ -1170,7 +1170,7 @@ function shareOn(ch) {
 }
 
 function goHome() {
-  window.location.href = './v38-lp-wide.html';
+  window.location.href = './v40-lp-wide-en.html';
 }
 </script>
 

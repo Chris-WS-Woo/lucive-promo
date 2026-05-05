@@ -135,7 +135,7 @@ a:hover{text-decoration-color:var(--accent)}
     </form>
 
     <div class="foot">D-<span id="dday">17</span> アルファ公開 · 毎週新キャラクター</div>
-    <a href="./v38-lp-wide-ja.html" class="back-link">← トップへ戻る</a>
+    <a href="./v40-lp-wide-ja.html" class="back-link">← トップへ戻る</a>
   </div>
 
   <!-- SUCCESS state -->
@@ -162,7 +162,7 @@ a:hover{text-decoration-color:var(--accent)}
         </div>
       </div>
       <div class="share-row">
-        <button class="share kakao" onclick="share('discord')">💬 LINE</button>
+        <button class="share kakao" onclick="share('discord')">💬 Discord</button>
         <button class="share x" onclick="share('x')">𝕏 X</button>
         <button class="share link" onclick="share('link')">🔗 リンク</button>
       </div>
@@ -284,7 +284,7 @@ function share(channel){
     if(signupEmail) I.klaviyoTrack(signupEmail, 'Share Clicked', { channel: channel });
   }
   if(channel === 'discord'){
-    window.open('https://line.me/R/ti/p/@lucive', '_blank');
+    window.open('https://discord.gg/GgSBUzHTZ', '_blank');
   } else if(channel === 'link'){
     navigator.clipboard?.writeText(url).then(()=>alert('リンクをコピーしました'));
   } else if(channel === 'x'){

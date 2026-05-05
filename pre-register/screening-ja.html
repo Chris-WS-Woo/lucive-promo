@@ -208,8 +208,8 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .complete-share-desc{font-size:13px;color:var(--text-secondary);margin-bottom:16px;line-height:1.6}
 .share-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
 .share-btn{padding:11px 18px;border-radius:100px;font-family:var(--font-sans);font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:6px;border:1px solid transparent}
-.share-btn[data-ch="kakao"]{background:#FEE500;color:#3C1E1E;border-color:#F5D900}
-.share-btn[data-ch="kakao"]:hover{background:#FFED4A;transform:translateY(-1px);box-shadow:0 6px 18px rgba(254,229,0,.35)}
+.share-btn[data-ch="discord"]{background:#FEE500;color:#3C1E1E;border-color:#F5D900}
+.share-btn[data-ch="discord"]:hover{background:#FFED4A;transform:translateY(-1px);box-shadow:0 6px 18px rgba(254,229,0,.35)}
 .share-btn[data-ch="x"]{background:#000;color:#fff;border-color:#222;font-family:var(--font-display);letter-spacing:.01em}
 .share-btn[data-ch="x"]:hover{background:#1A1A1A;transform:translateY(-1px);box-shadow:0 6px 18px rgba(0,0,0,.55)}
 .share-btn[data-ch="link"]{background:rgba(5,8,18,.7);color:var(--ink);border-color:rgba(139,92,246,.26)}
@@ -261,9 +261,9 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 <div class="noise"></div>
 
 <nav class="top-nav">
-  <a href="./v38-lp-wide-ja.html" class="top-back"><span class="arr">←</span><span>トップへ戻る</span></a>
+  <a href="./v40-lp-wide-ja.html" class="top-back"><span class="arr">←</span><span>トップへ戻る</span></a>
   <div class="top-spacer"></div>
-  <a href="./v38-lp-wide.html" class="top-brand">LUCIVE</a>
+  <a href="./v40-lp-wide-ja.html" class="top-brand">LUCIVE</a>
   <div class="top-spacer"></div>
   <div class="top-meta">アンケート · <b>約2分</b></div>
 </nav>
@@ -357,7 +357,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
             <b style="color:var(--lucid-purple)">2-5位:招待友達全員3ヶ月無料</b>
           </div>
           <div class="share-row">
-            <button class="share-btn" data-ch="discord" onclick="shareOn('discord')">💬 LINE</button>
+            <button class="share-btn" data-ch="discord" onclick="shareOn('discord')">💬 Discord</button>
             <button class="share-btn" data-ch="x" onclick="shareOn('x')">𝕏 X</button>
             <button class="share-btn" data-ch="link" onclick="shareOn('link')">🔗 リンクをコピー</button>
           </div>
@@ -374,7 +374,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
             <li>公式アナウンスより<b>先に届くアップデート</b></li>
             <li>他のコアテスターの<b>実際の使用レビュー</b></li>
           </ul>
-          <a href="https://line.me/R/ti/p/@lucive" target="_blank" rel="noopener" class="cc-link">
+          <a href="https://discord.gg/GgSBUzHTZ" target="_blank" rel="noopener" class="cc-link">
             <span>💬</span><span>LINEに参加する</span><span>→</span>
           </a>
           <p class="cc-note">📬 または<b>ウェルカムメール</b>の招待リンクから</p>
@@ -1160,8 +1160,8 @@ function shareOn(ch) {
   const text = 'Lucive — ビジュアルノベルで出会うAI伴走者。一緒に事前登録すると公開特典があります。';
   if (ch === 'x') {
     window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
-  } else if (ch === 'kakao') {
-    window.open('https://line.me/R/ti/p/@lucive', '_blank');
+  } else if (ch === 'discord') {
+    window.open('https://discord.gg/GgSBUzHTZ', '_blank');
   } else {
     navigator.clipboard.writeText(url).then(() => {
       alert('リンクをコピーしました');
@@ -1170,7 +1170,7 @@ function shareOn(ch) {
 }
 
 function goHome() {
-  window.location.href = './v38-lp-wide.html';
+  window.location.href = './v40-lp-wide-ja.html';
 }
 </script>
 

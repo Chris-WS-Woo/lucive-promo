@@ -32,11 +32,11 @@ window.LUCIVE_INTEGRATIONS = (function(){
     ZAPIER_WEBHOOK: 'https://hooks.zapier.com/hooks/catch/27287979/uva8pju/',
 
     // 언어별 커뮤니티 URL · 사전등록 후 안내에 사용
-    // ko / en / ja
+    // ko / en / ja (all Discord)
     COMMUNITY_URLS: {
-      ko: 'https://open.kakao.com/o/g4LZmfri',  // 카카오톡 오픈채팅
-      en: 'https://discord.gg/lucive',           // Discord (placeholder · 실제 invite로 교체)
-      ja: 'https://line.me/R/ti/p/@lucive',      // LINE 公式アカウント (placeholder)
+      ko: 'https://discord.gg/GgSBUzHTZ',  // Discord
+      en: 'https://discord.gg/GgSBUzHTZ',  // Discord
+      ja: 'https://discord.gg/GgSBUzHTZ',  // Discord
     },
 
     /* ─────────────── 옵션 ─────────────── */

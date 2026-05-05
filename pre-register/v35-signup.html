@@ -135,7 +135,7 @@ a:hover{text-decoration-color:var(--accent)}
     </form>
 
     <div class="foot">D-<span id="dday">17</span> 알파 오픈 · 매주 새 캐릭터</div>
-    <a href="./v38-lp-wide.html" class="back-link">← 메인으로</a>
+    <a href="./v40-lp-wide.html" class="back-link">← 메인으로</a>
   </div>
 
   <!-- SUCCESS state -->
@@ -162,7 +162,7 @@ a:hover{text-decoration-color:var(--accent)}
         </div>
       </div>
       <div class="share-row">
-        <button class="share kakao" onclick="share('kakao')">💬 카톡</button>
+        <button class="share kakao" onclick="share('discord')">💬 Discord</button>
         <button class="share x" onclick="share('x')">𝕏 X</button>
         <button class="share link" onclick="share('link')">🔗 링크</button>
       </div>
@@ -287,7 +287,7 @@ function share(channel){
     navigator.clipboard?.writeText(url).then(()=>alert('링크 복사됨'));
   } else if(channel === 'x'){
     window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`, '_blank');
-  } else if(channel === 'kakao'){
+  } else if(channel === 'discord_old'){
     // KakaoSDK 미연동 상태 · 링크 복사로 fallback
     navigator.clipboard?.writeText(text).then(()=>alert('카톡 공유 링크 복사됨'));
   }

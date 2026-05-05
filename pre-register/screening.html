@@ -208,8 +208,8 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .complete-share-desc{font-size:13px;color:var(--text-secondary);margin-bottom:16px;line-height:1.6}
 .share-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
 .share-btn{padding:11px 18px;border-radius:100px;font-family:var(--font-sans);font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:6px;border:1px solid transparent}
-.share-btn[data-ch="kakao"]{background:#FEE500;color:#3C1E1E;border-color:#F5D900}
-.share-btn[data-ch="kakao"]:hover{background:#FFED4A;transform:translateY(-1px);box-shadow:0 6px 18px rgba(254,229,0,.35)}
+.share-btn[data-ch="discord"]{background:#FEE500;color:#3C1E1E;border-color:#F5D900}
+.share-btn[data-ch="discord"]:hover{background:#FFED4A;transform:translateY(-1px);box-shadow:0 6px 18px rgba(254,229,0,.35)}
 .share-btn[data-ch="x"]{background:#000;color:#fff;border-color:#222;font-family:var(--font-display);letter-spacing:.01em}
 .share-btn[data-ch="x"]:hover{background:#1A1A1A;transform:translateY(-1px);box-shadow:0 6px 18px rgba(0,0,0,.55)}
 .share-btn[data-ch="link"]{background:rgba(5,8,18,.7);color:var(--ink);border-color:rgba(139,92,246,.26)}
@@ -261,9 +261,9 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 <div class="noise"></div>
 
 <nav class="top-nav">
-  <a href="./v38-lp-wide.html" class="top-back"><span class="arr">←</span><span>메인페이지로 돌아가기</span></a>
+  <a href="./v40-lp-wide.html" class="top-back"><span class="arr">←</span><span>메인페이지로 돌아가기</span></a>
   <div class="top-spacer"></div>
-  <a href="./v38-lp-wide.html" class="top-brand">LUCIVE</a>
+  <a href="./v40-lp-wide.html" class="top-brand">LUCIVE</a>
   <div class="top-spacer"></div>
   <div class="top-meta">설문 · <b>2분 소요</b></div>
 </nav>
@@ -357,7 +357,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
             <b style="color:var(--lucid-purple)">2-5위 초대 친구 전원 3개월 무료</b>
           </div>
           <div class="share-row">
-            <button class="share-btn" data-ch="kakao" onclick="shareOn('kakao')">💬 카카오톡</button>
+            <button class="share-btn" data-ch="discord" onclick="shareOn('discord')">💬 Discord</button>
             <button class="share-btn" data-ch="x" onclick="shareOn('x')">𝕏 X</button>
             <button class="share-btn" data-ch="link" onclick="shareOn('link')">🔗 링크 복사</button>
           </div>
@@ -374,7 +374,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
             <li>공식 공지보다 <b>먼저 뜨는 업데이트</b></li>
             <li>다른 핵심 테스터들의 <b>실제 사용 후기</b></li>
           </ul>
-          <a href="https://open.kakao.com/o/g4LZmfri" target="_blank" rel="noopener" class="cc-link">
+          <a href="https://discord.gg/GgSBUzHTZ" target="_blank" rel="noopener" class="cc-link">
             <span>💬</span><span>지금 바로 카톡 채널 들어가기</span><span>→</span>
           </a>
           <p class="cc-note">📬 또는 <b>환영 이메일</b>의 초대 링크로 편한 채널을 선택하세요</p>
@@ -1160,7 +1160,7 @@ function shareOn(ch) {
   const text = 'Lucive — 비주얼 노벨로 만나는 AI 동반자. 함께 사전 등록하면 런칭 혜택이 있어요.';
   if (ch === 'x') {
     window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
-  } else if (ch === 'kakao') {
+  } else if (ch === 'discord') {
     alert('[mock] KakaoTalk Share SDK 연동 예정');
   } else {
     navigator.clipboard.writeText(url).then(() => {
@@ -1170,7 +1170,7 @@ function shareOn(ch) {
 }
 
 function goHome() {
-  window.location.href = './v38-lp-wide.html';
+  window.location.href = './v40-lp-wide.html';
 }
 </script>
 
