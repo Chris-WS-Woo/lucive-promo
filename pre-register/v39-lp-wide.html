@@ -90,6 +90,8 @@ em{font-style:italic;color:var(--accent)}
 .mock-screen .mock-slide .mock-body > *:not(.mock-input):nth-child(3){animation-delay:calc(var(--sd) + 2s)}
 .mock-screen .mock-slide .mock-body > *:not(.mock-input):nth-child(4){animation-delay:calc(var(--sd) + 2.9s)}
 .mock-screen .mock-slide .mock-body > *:not(.mock-input):nth-child(5){animation-delay:calc(var(--sd) + 3.8s)}
+.mock-screen .mock-slide .mock-body > *:not(.mock-input):nth-child(6){animation-delay:calc(var(--sd) + 4.7s)}
+.mock-screen .mock-slide .mock-body > *:not(.mock-input):nth-child(7){animation-delay:calc(var(--sd) + 5.5s)}
 @keyframes msgRevealCycle{
   0%{opacity:0;transform:translateY(10px)}
   1.5%{opacity:1;transform:translateY(0)}
@@ -149,11 +151,11 @@ em{font-style:italic;color:var(--accent)}
 .mock-body > *{position:relative;z-index:1}
 /* .mock-msg = block 레벨 (flex column 안에서 stretch). text-align으로 left/right 정렬 */
 .mock-msg{display:block;width:100%}
-.mock-msg.lp{text-align:left;display:flex;justify-content:flex-start}
-.mock-msg.user{text-align:right;display:flex;justify-content:flex-end}
-.mock-msg.narration{text-align:left;display:flex;justify-content:flex-start}
+.mock-msg.lp{text-align:left}
+.mock-msg.user{text-align:right}
+.mock-msg.narration{text-align:left}
 /* .mock-msg-inner = inline-flex (block 부모 안에서는 inline-block처럼 content 사이즈) */
-.mock-msg-inner{display:flex;gap:6px;align-items:flex-end;max-width:88%;text-align:left}
+.mock-msg-inner{display:inline-flex;gap:6px;align-items:flex-end;max-width:88%;text-align:left;vertical-align:bottom}
 .mock-msg.user .mock-msg-inner{flex-direction:row-reverse}
 .mock-msg.lp.cons .mock-msg-inner > .mock-mini{visibility:hidden}
 .mock-narration-text{display:block;font-size:11.5px;color:var(--text-2);font-style:italic;line-height:1.5;padding:5px 9px;border-left:2px solid rgba(192,132,252,.34);background:rgba(192,132,252,.05);border-radius:0 8px 8px 0}
