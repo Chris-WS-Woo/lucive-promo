@@ -151,8 +151,8 @@ em{font-style:italic;color:var(--accent)}
 .mock-body > *{position:relative;z-index:1}
 /* .mock-msg = block level (stretches in flex column). text-align controls left/right */
 .mock-msg{display:block;width:100%}
-.mock-msg.lp{text-align:left}
-.mock-msg.user{text-align:right}
+.mock-msg.lp{text-align:left;display:flex;justify-content:flex-start}
+.mock-msg.user{text-align:right;display:flex;justify-content:flex-end}
 .mock-msg.narration{text-align:left}
 /* .mock-msg-inner = inline-flex (acts like inline-block in block parent, sizes to content) */
 .mock-msg-inner{display:inline-flex;gap:6px;align-items:flex-end;max-width:88%;text-align:left;vertical-align:bottom}
