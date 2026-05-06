@@ -1,11 +1,8 @@
-name: Deploy to GitHub Pages
+name: Deploy to lucive-deploy
 
 on:
   push:
     branches: [main]
-
-permissions:
-  contents: write
 
 jobs:
   deploy:
@@ -13,9 +10,44 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Deploy pre-register/ to gh-pages
+      - name: Build deploy directory
+        run: |
+          mkdir -p _deploy
+
+          # 언어별 메인 LP
+          cp pre-register/index.html _deploy/
+          cp pre-register/CNAME _deploy/
+          cp pre-register/_integrations.js _deploy/
+          cp pre-register/v40-lp-wide.html _deploy/
+          cp pre-register/v40-lp-wide-en.html _deploy/
+          cp pre-register/v40-lp-wide-ja.html _deploy/
+
+          # 사전등록 폼
+          cp pre-register/v35-signup.html _deploy/
+          cp pre-register/v35-signup-en.html _deploy/
+          cp pre-register/v35-signup-ja.html _deploy/
+
+          # 스크리닝 / 약관 / 개인정보
+          cp pre-register/screening.html _deploy/
+          cp pre-register/screening-en.html _deploy/
+          cp pre-register/screening-ja.html _deploy/
+          cp pre-register/terms.html _deploy/
+          cp pre-register/terms-en.html _deploy/
+          cp pre-register/terms-ja.html _deploy/
+          cp pre-register/privacy.html _deploy/
+          cp pre-register/privacy-en.html _deploy/
+          cp pre-register/privacy-ja.html _deploy/
+
+          # 에셋
+          cp -r pre-register/assets _deploy/
+          cp -r pre-register/lp-data _deploy/
+          cp -r pre-register/signup-assets _deploy/
+
+      - name: Push to lucive-deploy
         uses: peaceiris/actions-gh-pages@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./pre-register
+          personal_token: ${{ secrets.DEPLOY_TOKEN }}
+          external_repository: deepintothe/lucive-deploy
+          publish_branch: main
+          publish_dir: ./_deploy
           cname: lucive.gg
