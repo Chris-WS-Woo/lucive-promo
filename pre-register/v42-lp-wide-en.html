@@ -76,8 +76,7 @@ em{font-style:italic;color:var(--accent)}
 
 /* ================= MOCK PHONE FRAME ================= */
 .phase-mock{position:relative;z-index:2;width:100%;max-width:360px;justify-self:center;align-self:center}
-@media(min-width:980px){.phase-mock{justify-self:end;margin-right:16px;max-width:340px}}
-@media(min-width:980px){.phase-flip .phase-mock{order:1;justify-self:start;margin-right:0;margin-left:16px}.phase-flip .phase-text{order:2;padding-right:0;padding-left:24px}}
+@media(min-width:980px){.phase-mock{justify-self:end;margin-right:16px;max-width:340px}}}
 .mock-phone{position:relative;background:linear-gradient(180deg,#1a1118,#0c0810);border-radius:42px;padding:9px;box-shadow:0 36px 90px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.05),inset 0 0 0 1.5px rgba(255,255,255,.04)}
 .mock-phone::before{content:'';position:absolute;top:6px;left:50%;transform:translateX(-50%);width:34%;height:22px;background:#0c0810;border-radius:0 0 14px 14px;z-index:5}
 .mock-screen{background:#FFF9F7;border-radius:34px;overflow:hidden;display:flex;flex-direction:column;height:580px;position:relative}
@@ -290,7 +289,7 @@ em{font-style:italic;color:var(--accent)}
 
 <!-- ===== HERO ===== -->
 <section class="hero">
-  <div class="hero-bg" style="background-image:url('./signup-assets/scenes/bg/v42_hero_bg.jpg')"></div>
+  <div class="hero-bg" style="background-image:url('./signup-assets/scenes/bg/v42_hero_bg.jpg');background-position:center 35%"></div>
   <div class="hero-noise"></div>
   <div class="hero-content">
     <div class="hero-brand">LUCIVE · NEXT-GEN CHARACTER CHAT</div>
@@ -608,8 +607,8 @@ em{font-style:italic;color:var(--accent)}
 </section>
 
 <!-- ===== PHASE 05 · Memories that shift with choice · 5 linked chats ===== -->
-<section class="phase phase-flip" style="--bar-color:var(--d-indie)">
-  <div class="phase-bg" style="background-image:url('./signup-assets/scenes/bg/v42_p5_bg_contrast.jpg')"></div>
+<section class="phase" style="--bar-color:var(--d-indie)">
+  <div class="phase-bg" style="background-image:url('./signup-assets/scenes/bg/v42_p5_bg_contrast.jpg');background-position:left center"></div>
   <div class="phase-text">
     <div class="phase-step">PHASE 05 <b>·</b> LINKED</div>
     <h2 class="phase-h">Memories that shift · <em>with your choice</em></h2>
@@ -822,6 +821,8 @@ document.getElementById('dday').textContent = '17';
 
 </body>
 </html>
+
+
 
 
 
