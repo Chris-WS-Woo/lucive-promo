@@ -33,7 +33,7 @@ em{font-style:italic;color:var(--accent)}
 .wrap{max-width:1280px;margin:0 auto;padding:0 32px}
 
 /* ================= HERO ================= */
-.hero{position:relative;width:100%;height:100vh;height:100dvh;min-height:680px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:60px 32px 200px;overflow:hidden}
+.hero{position:relative;width:100%;height:100vh;height:100dvh;min-height:680px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:55px 32px 185px;overflow:hidden}
 .hero-bg{position:absolute;top:46px;left:0;right:0;bottom:0;background-size:cover;background-position:center top;z-index:0;filter:saturate(1.1) brightness(1.05)}
 .hero-bg::after{content:'';position:absolute;inset:0;background:
   radial-gradient(ellipse at 50% 45%,rgba(0,0,0,0) 0%,rgba(0,0,0,0) 30%,rgba(0,0,0,.25) 100%),
@@ -45,20 +45,14 @@ em{font-style:italic;color:var(--accent)}
 .hero-pre s{text-decoration:line-through;text-decoration-thickness:1.5px;text-decoration-color:rgba(255,244,240,.4);color:rgba(255,244,240,.7)}
 .hero-pre em{font-style:italic;font-weight:700;font-size:1.5em;letter-spacing:-.005em;background:linear-gradient(90deg,#fce7c8,var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 2px 18px rgba(214,176,124,.42)) drop-shadow(0 1px 6px rgba(0,0,0,.5));padding-left:4px}
 
-/* ── Hero Gallery Strip ── */
-.hero-gallery{position:absolute;bottom:54px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:3;padding:0 16px}
-.hero-gallery::before,.hero-gallery::after{content:'';position:absolute;top:0;bottom:0;width:60px;z-index:2;pointer-events:none}
-.hero-gallery::before{left:16px;background:linear-gradient(90deg,rgba(255,249,247,.0) 0%,transparent 100%)}
-.hero-gallery::after{right:16px;background:linear-gradient(270deg,rgba(10,6,12,.5) 0%,transparent 100%)}
-.hero-gc{width:82px;height:120px;border-radius:12px;overflow:hidden;flex-shrink:0;box-shadow:0 6px 24px rgba(0,0,0,.5),0 0 0 1px rgba(255,255,255,.12);transition:transform .25s ease,box-shadow .25s ease}
-.hero-gc:hover{transform:translateY(-6px) scale(1.04);box-shadow:0 14px 36px rgba(0,0,0,.6),0 0 0 1.5px rgba(214,176,124,.4)}
-.hero-gc img{width:100%;height:100%;object-fit:cover;object-position:center top}
-.hero-gc:nth-child(2){transform:translateY(8px)}
-.hero-gc:nth-child(3){transform:translateY(-4px)}
-.hero-gc:nth-child(4){transform:translateY(12px)}
-.hero-gc:nth-child(5){transform:translateY(-2px)}
-.hero-gc:nth-child(6){transform:translateY(6px)}
-@media(max-width:640px){.hero-gallery{gap:6px}.hero-gc{width:60px;height:90px}}
+.hero-gallery{position:absolute;bottom:44px;left:0;right:0;z-index:3;overflow:hidden;mask-image:linear-gradient(90deg,transparent 0%,#000 6%,#000 94%,transparent 100%);-webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 6%,#000 94%,transparent 100%)}
+.hero-gallery-track{display:flex;gap:8px;padding:0 8px;width:max-content;animation:galleryScroll 44s linear infinite}
+.hero-gallery-track:hover{animation-play-state:paused}
+@keyframes galleryScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.hero-gc{width:78px;height:116px;border-radius:12px;overflow:hidden;flex-shrink:0;box-shadow:0 6px 20px rgba(0,0,0,.5),0 0 0 1px rgba(255,255,255,.1);transition:transform .2s ease,box-shadow .2s ease}
+.hero-gc:hover{transform:translateY(-8px) scale(1.06);box-shadow:0 16px 36px rgba(0,0,0,.65),0 0 0 1.5px rgba(214,176,124,.45)}
+.hero-gc img{width:100%;height:100%;object-fit:cover;object-position:center 20%}
+@media(max-width:640px){.hero-gc{width:58px;height:88px}.hero-gallery-track{gap:6px;animation-duration:30s}}
 .hero-h{font-family:var(--display);font-weight:700;font-size:clamp(38px,6.2vw,80px);line-height:1.08;letter-spacing:-.015em;color:#fff;text-shadow:0 6px 36px rgba(0,0,0,.7),0 2px 12px rgba(0,0,0,.5);max-width:1000px}
 .hero-h em{font-style:italic;background:linear-gradient(90deg,#fce7c8,var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;white-space:nowrap}
 .hero-sub{font-family:var(--display);font-style:italic;font-weight:500;font-size:clamp(20px,2.4vw,28px);line-height:1.45;color:rgba(255,244,240,.94);max-width:780px;margin-top:24px;text-shadow:0 2px 16px rgba(0,0,0,.55)}
@@ -303,12 +297,48 @@ em{font-style:italic;color:var(--accent)}
     <h1 class="hero-h">첫 만남, 에피소드, 결말.<br><em>당신만의 스토리를 만드세요.</em></h1>
   </div>
   <div class="hero-gallery">
-    <div class="hero-gc"><img src="./signup-assets/scenes/bg/hero_bg_b3.jpg" alt="" loading="eager"></div>
+    <div class="hero-gallery-track">
+    <div class="hero-gc"><img src="./signup-assets/scenes/bg/hero_bg_b3.jpg" alt="" loading="lazy"></div>
     <div class="hero-gc"><img src="./signup-assets/scenes/day_01_arms_up.jpg" alt="" loading="lazy"></div>
     <div class="hero-gc"><img src="./signup-assets/scenes/scene_hero_red_smile.jpg" alt="" loading="lazy"></div>
     <div class="hero-gc"><img src="./signup-assets/scenes/bg/hero_bg_a_closeup.jpg" alt="" loading="lazy"></div>
-    <div class="hero-gc"><img src="./signup-assets/scenes/bg/sx_03_doorframe_stretch.jpg" alt="" loading="lazy"></div>
-    <div class="hero-gc"><img src="./signup-assets/scenes/bg/wait_02_cafe_lean.jpg" alt="" loading="lazy"></div>
+    <div class="hero-gc"><img src="./signup-assets/scenes/day_03_over_shoulder.jpg" alt="" loading="lazy"></div>
+    <div class="hero-gc"><img src="./signup-assets/scenes/bg/phase02_morning_set_b.jpg" alt="" loading="lazy"></div>
+    <div class="hero-gc"><img src="./signup-assets/scenes/bg/new_03_mirror_lipstick.jpg" alt="" loading="lazy"></div>
+    <div class="hero-gc"><img src="./signup-assets/scenes/bg/new_06_desk_reading.jpg" alt="" loading="lazy"></div>
+    <div class="hero-gc"><img src="./signup-assets/scenes/bg/new_10_caught_fridge.jpg" alt="" loading="lazy"></div>
+    <div class="hero-gc"><img src="./signup-assets/scenes/bg/phase04_door_a.jpg" alt="" loading="lazy"></div>
+    <div class="hero-gc"><img src="./signup-assets/scenes/bg/p04_rain_truth.jpg" alt="" loading="lazy"></div>
+    <div class="hero-gc"><img src="./signup-assets/scenes/bg/new_04_window_rain_watch.jpg" alt="" loading="lazy"></div>
+    <div class="hero-gc"><img src="./signup-assets/scenes/bg/gaze_02_reach_plead.jpg" alt="" loading="lazy"></div>
+    <div class="hero-gc"><img src="./signup-assets/scenes/bg/phase03_c_v2.jpg" alt="" loading="lazy"></div>
+    <div class="hero-gc"><img src="./signup-assets/scenes/bg/p04_night_stay_v2.jpg" alt="" loading="lazy"></div>
+    <div class="hero-gc"><img src="./signup-assets/scenes/bg/hero_yandere_c_v2.jpg" alt="" loading="lazy"></div>
+    <div class="hero-gc"><img src="./signup-assets/scenes/bg/new_08_flowers_bitter.jpg" alt="" loading="lazy"></div>
+    <div class="hero-gc"><img src="./signup-assets/scenes/bg/new_09_piano_night.jpg" alt="" loading="lazy"></div>
+    <div class="hero-gc"><img src="./signup-assets/scenes/bg/phase03_d_v2.jpg" alt="" loading="lazy"></div>
+    <div class="hero-gc"><img src="./signup-assets/scenes/bg/gaze_01_closeup_plead.jpg" alt="" loading="lazy"></div>
+    <div class="hero-gc"><img src="./signup-assets/scenes/bg/hero_bg_b3.jpg" alt="" loading="lazy"></div>
+    <div class="hero-gc"><img src="./signup-assets/scenes/day_01_arms_up.jpg" alt="" loading="lazy"></div>
+    <div class="hero-gc"><img src="./signup-assets/scenes/scene_hero_red_smile.jpg" alt="" loading="lazy"></div>
+    <div class="hero-gc"><img src="./signup-assets/scenes/bg/hero_bg_a_closeup.jpg" alt="" loading="lazy"></div>
+    <div class="hero-gc"><img src="./signup-assets/scenes/day_03_over_shoulder.jpg" alt="" loading="lazy"></div>
+    <div class="hero-gc"><img src="./signup-assets/scenes/bg/phase02_morning_set_b.jpg" alt="" loading="lazy"></div>
+    <div class="hero-gc"><img src="./signup-assets/scenes/bg/new_03_mirror_lipstick.jpg" alt="" loading="lazy"></div>
+    <div class="hero-gc"><img src="./signup-assets/scenes/bg/new_06_desk_reading.jpg" alt="" loading="lazy"></div>
+    <div class="hero-gc"><img src="./signup-assets/scenes/bg/new_10_caught_fridge.jpg" alt="" loading="lazy"></div>
+    <div class="hero-gc"><img src="./signup-assets/scenes/bg/phase04_door_a.jpg" alt="" loading="lazy"></div>
+    <div class="hero-gc"><img src="./signup-assets/scenes/bg/p04_rain_truth.jpg" alt="" loading="lazy"></div>
+    <div class="hero-gc"><img src="./signup-assets/scenes/bg/new_04_window_rain_watch.jpg" alt="" loading="lazy"></div>
+    <div class="hero-gc"><img src="./signup-assets/scenes/bg/gaze_02_reach_plead.jpg" alt="" loading="lazy"></div>
+    <div class="hero-gc"><img src="./signup-assets/scenes/bg/phase03_c_v2.jpg" alt="" loading="lazy"></div>
+    <div class="hero-gc"><img src="./signup-assets/scenes/bg/p04_night_stay_v2.jpg" alt="" loading="lazy"></div>
+    <div class="hero-gc"><img src="./signup-assets/scenes/bg/hero_yandere_c_v2.jpg" alt="" loading="lazy"></div>
+    <div class="hero-gc"><img src="./signup-assets/scenes/bg/new_08_flowers_bitter.jpg" alt="" loading="lazy"></div>
+    <div class="hero-gc"><img src="./signup-assets/scenes/bg/new_09_piano_night.jpg" alt="" loading="lazy"></div>
+    <div class="hero-gc"><img src="./signup-assets/scenes/bg/phase03_d_v2.jpg" alt="" loading="lazy"></div>
+    <div class="hero-gc"><img src="./signup-assets/scenes/bg/gaze_01_closeup_plead.jpg" alt="" loading="lazy"></div>
+    </div>
   </div>
   <div class="scroll-cue">SCROLL</div>
 </section>
