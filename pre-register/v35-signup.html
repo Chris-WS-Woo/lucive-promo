@@ -134,12 +134,15 @@ a:hover{text-decoration-color:var(--accent)}
       <button type="submit" class="submit">사전등록 신청 →</button>
     </form>
 
-    <div class="foot">D-<span id="dday">17</span> 알파 오픈 · 매주 새 캐릭터</div>
+    <div class="foot">D-<span id="dday">17</span> 알파 오픈 · 더 많은 캐릭터 런칭 예정</div>
     <a href="./v40-lp-wide.html" class="back-link">← 메인으로</a>
   </div>
 
   <!-- SUCCESS state -->
   <div class="success" id="success">
+    <div style="margin:0 0 14px;padding:10px 14px;background:rgba(201,123,137,.12);border:1px solid rgba(201,123,137,.3);border-radius:10px;font-size:12px;color:#C97B89;text-align:center;line-height:1.5">
+      📬 환영 이메일이 발송되었습니다. 받지 못하셨다면 <b>스팸함도 꼭 확인해주세요.</b>
+    </div>
     <div class="success-icon">✦</div>
     <h2 class="success-h">사전등록 <em>완료</em></h2>
     <p class="success-sub"><b id="ssEmail">your@email.com</b><br>으로 알파 오픈 시점·본편 첫 회차 알림이 갑니다.</p>
@@ -162,7 +165,7 @@ a:hover{text-decoration-color:var(--accent)}
         </div>
       </div>
       <div class="share-row">
-        <button class="share kakao" onclick="share('discord')">💬 Discord</button>
+        <button class="share kakao" onclick="share('kakao')">💬 카카오</button>
         <button class="share x" onclick="share('x')">𝕏 X</button>
         <button class="share link" onclick="share('link')">🔗 링크</button>
       </div>
@@ -186,6 +189,7 @@ a:hover{text-decoration-color:var(--accent)}
         <li>알파 오픈 우선 안내 + 본편 첫 회차 알림</li>
       </ul>
       <a href="./screening.html" class="next-cta">설문 시작 · 다이브 받기 →</a>
+      <a href="https://discord.gg/GgSBUzHTZ" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;margin-top:10px;padding:10px 18px;background:#5865F2;color:#fff;border-radius:10px;font-size:13px;font-weight:700;text-decoration:none;">🎮 Discord 커뮤니티 참여하기</a>
     </div>
 
     <a href="./v40-lp-wide.html" class="back-link">← 메인으로</a>
@@ -287,7 +291,7 @@ function share(channel){
     navigator.clipboard?.writeText(url).then(()=>alert('링크 복사됨'));
   } else if(channel === 'x'){
     window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`, '_blank');
-  } else if(channel === 'discord_old'){
+  } else if(channel === 'kakao'){
     // KakaoSDK 미연동 상태 · 링크 복사로 fallback
     navigator.clipboard?.writeText(text).then(()=>alert('카톡 공유 링크 복사됨'));
   }

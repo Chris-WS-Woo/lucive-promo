@@ -140,6 +140,9 @@ a:hover{text-decoration-color:var(--accent)}
 
   <!-- SUCCESS state -->
   <div class="success" id="success">
+    <div style="margin:0 0 14px;padding:10px 14px;background:rgba(201,123,137,.12);border:1px solid rgba(201,123,137,.3);border-radius:10px;font-size:12px;color:#C97B89;text-align:center;line-height:1.5">
+      📬 ウェルカムメールをお送りしました。<b>迷惑メールフォルダもご確認ください。</b>
+    </div>
     <div class="success-icon">✦</div>
     <h2 class="success-h"><em>登録完了</em></h2>
     <p class="success-sub"><b id="ssEmail">your@email.com</b><br> — アルファ公開と本編第1話のご案内をこちらにお送りします。</p>
@@ -162,7 +165,7 @@ a:hover{text-decoration-color:var(--accent)}
         </div>
       </div>
       <div class="share-row">
-        <button class="share kakao" onclick="share('discord')">💬 Discord</button>
+        <button class="share kakao" onclick="share('line')">📱 LINE</button>
         <button class="share x" onclick="share('x')">𝕏 X</button>
         <button class="share link" onclick="share('link')">🔗 リンク</button>
       </div>
@@ -185,6 +188,7 @@ a:hover{text-decoration-color:var(--accent)}
         <li><b>コアテスター活動</b>でDive追加 + 特別特典のご案内</li>
         <li>アルファ公開の優先案内 + 本編第1話のお知らせ</li>
       </ul>
+      <a href="https://discord.gg/GgSBUzHTZ" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;margin-top:10px;margin-bottom:6px;padding:10px 18px;background:#5865F2;color:#fff;border-radius:10px;font-size:13px;font-weight:700;text-decoration:none;">🎮 Discordコミュニティに参加</a>
       <a href="./screening-ja.html" class="next-cta">アンケート開始 · Dive獲得 →</a>
     </div>
 
@@ -284,7 +288,7 @@ function share(channel){
     if(signupEmail) I.klaviyoTrack(signupEmail, 'Share Clicked', { channel: channel });
   }
   if(channel === 'discord'){
-    window.open('https://discord.gg/GgSBUzHTZ', '_blank');
+    window.open('https://line.me/R/share?text=' + encodeURIComponent(text), '_blank');
   } else if(channel === 'link'){
     navigator.clipboard?.writeText(url).then(()=>alert('リンクをコピーしました'));
   } else if(channel === 'x'){
