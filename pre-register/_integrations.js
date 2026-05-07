@@ -29,7 +29,7 @@ window.LUCIVE_INTEGRATIONS = (function(){
 
     // Zapier Catch Webhook URL (선택 · Slack 알림 / Sheet 백업)
     // 형식: 'https://hooks.zapier.com/hooks/catch/...'
-    ZAPIER_WEBHOOK: 'https://hooks.zapier.com/hooks/catch/27287979/uva8pju/',
+    ZAPIER_WEBHOOK: 'https://hooks.zapier.com/hooks/catch/27287979/4ytung4/',
 
     // 언어별 커뮤니티 URL · 사전등록 후 안내에 사용
     // ko / en / ja (all Discord)
