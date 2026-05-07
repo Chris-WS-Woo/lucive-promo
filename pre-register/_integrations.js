@@ -17,11 +17,11 @@ window.LUCIVE_INTEGRATIONS = (function(){
     // Klaviyo Public API Key (Account → Settings → API Keys)
     // 형식: 6자 영숫자 (예: 'AbC123')
     // ⚠️ Private Key (pk_xxx...) 는 절대 여기 두지 마세요. 이 파일은 브라우저로 노출됩니다.
-    KLAVIYO_PUBLIC_KEY: 'VLcTTr',
+    KLAVIYO_PUBLIC_KEY: 'SUzTai',
 
     // Klaviyo List ID (Audience → Lists & Segments → 해당 리스트 → Settings)
     // 형식: 6자 영숫자 (예: 'XyZ789')
-    KLAVIYO_LIST_ID: 'VMHgYx',
+    KLAVIYO_LIST_ID: 'RPr3C5',
 
     // GA4 Measurement ID (Admin → Data Streams → Web Stream)
     // 형식: 'G-9QC121BKET'
