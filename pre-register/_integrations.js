@@ -21,7 +21,7 @@ window.LUCIVE_INTEGRATIONS = (function(){
 
     // Klaviyo List ID (Audience → Lists & Segments → 해당 리스트 → Settings)
     // 형식: 6자 영숫자 (예: 'XyZ789')
-    KLAVIYO_LIST_ID: 'VMHgYx',
+    KLAVIYO_LIST_ID: 'VmcBUz',
 
     // GA4 Measurement ID (Admin → Data Streams → Web Stream)
     // 형식: 'G-9QC121BKET'
