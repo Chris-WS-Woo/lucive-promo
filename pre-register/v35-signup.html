@@ -103,9 +103,6 @@ a:hover{text-decoration-color:var(--accent)}
 .next-cta{display:inline-flex;align-items:center;justify-content:center;gap:8px;margin-top:16px;padding:14px 28px;background:linear-gradient(180deg,var(--gold),var(--gold-deep));color:#2c1f00;border:none;border-radius:999px;font-family:var(--sans);font-size:15px;font-weight:800;cursor:pointer;text-decoration:none;transition:all .2s;box-shadow:0 8px 24px rgba(214,176,124,.4);width:100%;letter-spacing:-.005em}
 .next-cta:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(214,176,124,.5);color:#2c1f00}
 .next-cta-sub{margin-top:7px;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--text-3);text-align:center}
-.parallel-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:0}
-.parallel-grid .next-block,.parallel-grid .promo-block{margin-top:0}
-@media(max-width:520px){.parallel-grid{grid-template-columns:1fr}}
 
 /* form hide once submitted */
 .card.hidden{display:none}
@@ -154,9 +151,7 @@ a:hover{text-decoration-color:var(--accent)}
       📬 환영 이메일을 보내드렸어요.<br><span style="font-size:13px;font-weight:400;color:#8B6830">받지 못하셨다면 <b style="color:#7A5C1E">스팸함</b>을 꼭 확인해주세요.</span>
     </div>
 
-    <!-- 설문 + 친구초대 2열 병렬 -->
-    <div class="parallel-grid">
-    <!-- 다음 단계 · Dip -->
+    <!-- 다음 단계 · Dip (상단 이동) -->
     <div class="next-block">
       <div class="next-h">설문 완료 시 <em>혜택</em></div>
       <ul class="next-list">
@@ -169,7 +164,7 @@ a:hover{text-decoration-color:var(--accent)}
       <a href="https://discord.gg/GgSBUzHTZ" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;margin-top:10px;padding:10px 18px;background:#5865F2;color:#fff;border-radius:10px;font-size:13px;font-weight:700;text-decoration:none;">🎮 Discord 커뮤니티 참여하기</a>
     </div>
 
-    <!-- 친구 초대 -->
+    <!-- 프로모 코드 + 친구 초대 -->
     <div class="promo-block">
       <div class="promo-h">친구 초대 · <em>둘 다 +100 Dip</em></div>
       <div class="promo-row">
@@ -192,7 +187,6 @@ a:hover{text-decoration-color:var(--accent)}
         <button class="share link" onclick="share('link')">🔗 링크</button>
       </div>
     </div>
-    </div><!-- /parallel-grid -->
 
     <!-- 상위 레퍼럴 보너스 단계 -->
     <div class="tier-block">
