@@ -1,4 +1,4 @@
-name: Deploy to lucive-deploy
+name: Deploy to S3 + CloudFront
 
 on:
   push:
@@ -10,44 +10,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Build deploy directory
-        run: |
-          mkdir -p _deploy
-
-          # 언어별 메인 LP
-          cp pre-register/index.html _deploy/
-          cp pre-register/CNAME _deploy/
-          cp pre-register/_integrations.js _deploy/
-          cp pre-register/v47-lp-wide.html _deploy/
-          cp pre-register/v47-lp-wide-en.html _deploy/
-          cp pre-register/v47-lp-wide-ja.html _deploy/
-
-          # 사전등록 폼
-          cp pre-register/v35-signup.html _deploy/
-          cp pre-register/v35-signup-en.html _deploy/
-          cp pre-register/v35-signup-ja.html _deploy/
-
-          # 스크리닝 / 약관 / 개인정보
-          cp pre-register/screening.html _deploy/
-          cp pre-register/screening-en.html _deploy/
-          cp pre-register/screening-ja.html _deploy/
-          cp pre-register/terms.html _deploy/
-          cp pre-register/terms-en.html _deploy/
-          cp pre-register/terms-ja.html _deploy/
-          cp pre-register/privacy.html _deploy/
-          cp pre-register/privacy-en.html _deploy/
-          cp pre-register/privacy-ja.html _deploy/
-
-          # 에셋
-          cp -r pre-register/assets _deploy/
-          cp -r pre-register/lp-data _deploy/
-          cp -r pre-register/signup-assets _deploy/
-
-      - name: Push to lucive-deploy
-        uses: peaceiris/actions-gh-pages@v4
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
         with:
-          personal_token: ${{ secrets.DEPLOY_TOKEN }}
-          external_repository: deepintothe/lucive-deploy
-          publish_branch: main
-          publish_dir: ./_deploy
-          cname: lucive.gg
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
+
+      - name: Sync to S3
+        run: aws s3 sync pre-register/ s3://lucive.gg/ --delete
+
+      - name: Invalidate CloudFront
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} \
+            --paths "/*"
