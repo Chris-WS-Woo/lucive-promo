@@ -246,8 +246,12 @@ function handleSubmit(e){
       signup_at: new Date().toISOString()
     };
     I.klaviyoSubscribe(email, props);
+    // klaviyoIdentify로 profile properties 명시적 재설정
+    // (Subscribe 후 Flow 트리거 사이의 레이스 컨디션 방지)
+    I.klaviyoIdentify(email, props);
     I.klaviyoTrack(email, 'Pre-registered', {
       promo_code: promoCode,
+      invite_url: inviteUrl,
       referral_code: referralCode
     });
     I.gaEvent('sign_up', {
