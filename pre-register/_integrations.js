@@ -46,7 +46,7 @@ window.LUCIVE_INTEGRATIONS = (function(){
   };
 
   const KLAVIYO_API = 'https://a.klaviyo.com/client';
-  const KLAVIYO_REVISION = '2024-10-15';
+  const KLAVIYO_REVISION = '2026-04-15';
 
   function isOk(key){ return !!CONFIG[key] && CONFIG[key].length > 0; }
   function dbg(...args){ if(CONFIG.DEBUG) console.log('[LUCIVE]', ...args); }
