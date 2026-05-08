@@ -18,9 +18,9 @@ jobs:
           cp pre-register/index.html _deploy/
           cp pre-register/CNAME _deploy/
           cp pre-register/_integrations.js _deploy/
-          cp pre-register/v40-lp-wide.html _deploy/
-          cp pre-register/v40-lp-wide-en.html _deploy/
-          cp pre-register/v40-lp-wide-ja.html _deploy/
+          cp pre-register/v47-lp-wide.html _deploy/
+          cp pre-register/v47-lp-wide-en.html _deploy/
+          cp pre-register/v47-lp-wide-ja.html _deploy/
 
           # 사전등록 폼
           cp pre-register/v35-signup.html _deploy/
