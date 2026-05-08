@@ -100,8 +100,9 @@ a:hover{text-decoration-color:var(--accent)}
 .next-list li{padding-left:18px;position:relative}
 .next-list li::before{content:'◆';position:absolute;left:0;color:var(--gold);font-size:9px;top:6px}
 .next-list b{color:var(--text-1);font-weight:700}
-.next-cta{display:inline-flex;align-items:center;justify-content:center;gap:8px;margin-top:16px;padding:11px 22px;background:transparent;border:1.5px solid var(--accent);color:var(--accent);border-radius:999px;font-family:var(--sans);font-size:13px;font-weight:700;cursor:pointer;text-decoration:none;transition:all .2s}
-.next-cta:hover{background:var(--accent);color:#fff}
+.next-cta{display:inline-flex;align-items:center;justify-content:center;gap:8px;margin-top:16px;padding:14px 28px;background:linear-gradient(180deg,var(--gold),var(--gold-deep));color:#2c1f00;border:none;border-radius:999px;font-family:var(--sans);font-size:15px;font-weight:800;cursor:pointer;text-decoration:none;transition:all .2s;box-shadow:0 8px 24px rgba(214,176,124,.4);width:100%;letter-spacing:-.005em}
+.next-cta:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(214,176,124,.5);color:#2c1f00}
+.next-cta-sub{margin-top:7px;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--text-3);text-align:center}
 
 /* form hide once submitted */
 .card.hidden{display:none}
@@ -111,7 +112,7 @@ a:hover{text-decoration-color:var(--accent)}
 <body>
 
 <main class="shell">
-  <a href="./v40-lp-wide.html" class="brand">LUCIVE<span class="dot"></span>NEXT-GEN CHARACTER CHAT</a>
+  <a href="./v47-lp-wide.html" class="brand">LUCIVE<span class="dot"></span>NEXT-GEN CHARACTER CHAT</a>
 
   <div class="card" id="formCard">
     <div class="eye">핵심 테스터 사전등록</div>
@@ -135,7 +136,7 @@ a:hover{text-decoration-color:var(--accent)}
     </form>
 
     <div class="foot">D-<span id="dday">17</span> 알파 오픈 · 더 많은 캐릭터 런칭 예정</div>
-    <a href="./v40-lp-wide.html" class="back-link">← 메인으로</a>
+    <a href="./v47-lp-wide.html" class="back-link">← 메인으로</a>
   </div>
 
   <!-- SUCCESS state -->
@@ -149,7 +150,7 @@ a:hover{text-decoration-color:var(--accent)}
 
     <!-- 프로모 코드 + 친구 초대 -->
     <div class="promo-block">
-      <div class="promo-h">친구 초대 · <em>둘 다 +100 다이브</em></div>
+      <div class="promo-h">친구 초대 · <em>둘 다 +100 Dip</em></div>
       <div class="promo-row">
         <div class="promo-row-label">내 코드</div>
         <div class="promo-row-field">
@@ -180,19 +181,20 @@ a:hover{text-decoration-color:var(--accent)}
       </div>
     </div>
 
-    <!-- 다음 단계 · 다이브 -->
+    <!-- 다음 단계 · Dip -->
     <div class="next-block">
       <div class="next-h">설문 완료 시 <em>혜택</em></div>
       <ul class="next-list">
-        <li>2분 설문 완주 시 <b>+500 다이브</b> 즉시 지급</li>
-        <li><b>핵심 테스터 활동</b> 시 추가 다이브 + 별도 혜택</li>
+        <li>2분 설문 완주 시 <b>+500 Dip</b> 즉시 지급</li>
+        <li><b>핵심 테스터 활동</b> 시 추가 Dip + 별도 혜택</li>
         <li>알파 오픈 우선 안내 + 본편 첫 회차 알림</li>
       </ul>
-      <a href="./screening.html" class="next-cta">설문 시작 · 다이브 받기 →</a>
+      <a href="./screening.html" class="next-cta">설문 시작 · Dip 받기 →</a>
+      <div class="next-cta-sub">Dip = 신규 2개 캐릭터 추가 무료 연결 가능</div>
       <a href="https://discord.gg/GgSBUzHTZ" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;margin-top:10px;padding:10px 18px;background:#5865F2;color:#fff;border-radius:10px;font-size:13px;font-weight:700;text-decoration:none;">🎮 Discord 커뮤니티 참여하기</a>
     </div>
 
-    <a href="./v40-lp-wide.html" class="back-link">← 메인으로</a>
+    <a href="./v47-lp-wide.html" class="back-link">← 메인으로</a>
   </div>
 </main>
 
@@ -278,7 +280,7 @@ function copyTo(id){
 function share(channel){
   const code = document.getElementById('myCode').textContent;
   const url = `https://lucive.app/r/${code.replace('LUCIVE·','')}`;
-  const text = `LUCIVE 핵심 테스터 사전등록 · 함께 가면 둘 다 +100 다이브\n${url}`;
+  const text = `LUCIVE 핵심 테스터 사전등록 · 함께 가면 둘 다 +100 Dip\n${url}`;
   // GA4 + Klaviyo share tracking
   const I = window.LUCIVE_INTEGRATIONS;
   if(I){
