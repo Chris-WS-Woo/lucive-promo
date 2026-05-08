@@ -214,13 +214,17 @@ window.LUCIVE_INTEGRATIONS = (function(){
     }
     if(CONFIG.DEBUG){ dbg('zapier (debug)', payload); return true; }
     try{
-      const res = await fetch(CONFIG.ZAPIER_WEBHOOK, {
+      // no-cors: Google Apps Script는 OPTIONS preflight를 처리하지 않으므로
+      // Content-Type 헤더 없이 보내야 preflight가 생략되어 실제 POST가 도달한다.
+      // Apps Script에서는 e.postData.contents 를 JSON.parse 해서 읽으면 된다.
+      const enriched = Object.assign({ language: detectLang() }, payload);
+      await fetch(CONFIG.ZAPIER_WEBHOOK, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+        mode: 'no-cors',
+        body: JSON.stringify(enriched)
       });
-      dbg('zapier', res.status);
-      return res.ok;
+      dbg('zapier sent (no-cors)');
+      return true;
     }catch(e){ console.error('Zapier webhook failed', e); return false; }
   }
 
