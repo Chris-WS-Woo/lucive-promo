@@ -25,7 +25,7 @@ window.LUCIVE_INTEGRATIONS = (function(){
 
     // GA4 Measurement ID (Admin → Data Streams → Web Stream)
     // 형식: 'G-9QC121BKET'
-    GA4_MEASUREMENT_ID: 'G-9QC121BKET',
+    GA4_MEASUREMENT_ID: 'G-TPT0Z4BVX0',
 
     // Zapier Catch Webhook URL (선택 · Slack 알림 / Sheet 백업)
     // 형식: 'https://hooks.zapier.com/hooks/catch/...'
