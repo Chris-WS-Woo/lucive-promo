@@ -844,6 +844,37 @@ document.getElementById('dday').textContent = '17';
 })();
 </script>
 
+
+<script>
+/* ── GA4: Phase scroll + Language switch tracking ── */
+(function(){
+  // Phase 스크롤 도달 트래킹
+  var phases = document.querySelectorAll('section.phase');
+  var tracked = {};
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(!entry.isIntersecting) return;
+      var label = (entry.target.querySelector('.phase-step')||{}).textContent||'';
+      var match = label.match(/PHASE\s*(\d+)/);
+      if(!match) return;
+      var num = 'phase_0' + match[1];
+      if(tracked[num]) return;
+      tracked[num] = true;
+      if(window.LUCIVE_INTEGRATIONS) window.LUCIVE_INTEGRATIONS.gaEvent('phase_view', {phase: num});
+    });
+  }, {threshold: 0.3});
+  phases.forEach(function(s){ io.observe(s); });
+
+  // 언어 스위처 트래킹
+  document.querySelectorAll('.top-langs a').forEach(function(a){
+    a.addEventListener('click', function(){
+      var lang = a.textContent.trim();
+      if(window.LUCIVE_INTEGRATIONS) window.LUCIVE_INTEGRATIONS.gaEvent('language_switch', {to_lang: lang});
+    }, true);
+  });
+})();
+</script>
+
 </body>
 </html>
 

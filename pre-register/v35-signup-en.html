@@ -251,7 +251,10 @@ function handleSubmit(e){
     I.gaEvent('sign_up', {
       method: 'email',
       has_referral: !!referralCode,
-      marketing_consent: !!marketing
+      referral_code: referralCode || null,
+      marketing_consent: !!marketing,
+      email_domain: email.split('@')[1] || null,
+      language: I.detectLang()
     });
     I.zapierWebhook({
       type: 'signup',
@@ -300,6 +303,22 @@ function share(channel){
 }
 
 document.getElementById('dday').textContent = '17';
+</script>
+
+
+<script>
+/* ── GA4: form_start + enhanced sign_up tracking ── */
+(function(){
+  var formStarted = false;
+  var emailInput = document.getElementById('email');
+  if(emailInput){
+    emailInput.addEventListener('focus', function(){
+      if(formStarted) return;
+      formStarted = true;
+      if(window.LUCIVE_INTEGRATIONS) window.LUCIVE_INTEGRATIONS.gaEvent('form_start', {form: 'signup'});
+    });
+  }
+})();
 </script>
 
 </body>

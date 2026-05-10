@@ -1175,6 +1175,40 @@ function goHome() {
 }
 </script>
 
+
+<script>
+/* ── GA4: survey_abandon tracking ── */
+(function(){
+  var completed = false;
+  var startTime = Date.now();
+
+  // 완료 시 플래그 세팅 (기존 complete 함수 래핑)
+  document.addEventListener('DOMContentLoaded', function(){
+    var origComplete = window.completeFlow;
+    if(typeof origComplete === 'function'){
+      window.completeFlow = function(){
+        completed = true;
+        return origComplete.apply(this, arguments);
+      };
+    }
+  });
+
+  // 페이지 이탈 시 이탈 감지
+  window.addEventListener('pagehide', function(){
+    if(completed) return;
+    var currentQ = document.querySelector('.q-slide.active');
+    var qNum = currentQ ? (currentQ.dataset.q || 'unknown') : 'intro';
+    var elapsed = Math.round((Date.now() - startTime) / 1000);
+    if(window.LUCIVE_INTEGRATIONS){
+      window.LUCIVE_INTEGRATIONS.gaEvent('survey_abandon', {
+        last_question: qNum,
+        time_spent_sec: elapsed
+      });
+    }
+  });
+})();
+</script>
+
 </body>
 </html>
 
