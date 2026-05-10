@@ -281,7 +281,7 @@ function copyTo(id){
 function share(channel){
   const code = document.getElementById('myCode').textContent;
   const url = `https://lucive.app/r/${code.replace('LUCIVE·','')}`;
-  const text = `LUCIVE コアテスター事前登録 · 友達と一緒に登録すると双方に +100 Dive\n${url}`;
+  const text = `LUCIVE コアテスター事前登録 · 友達と一緒に登録すると双方に +100 Dip\n${url}`;
   // GA4 + Klaviyo share tracking
   const I = window.LUCIVE_INTEGRATIONS;
   if(I){
@@ -290,7 +290,7 @@ function share(channel){
     try{ signupEmail = (JSON.parse(localStorage.getItem('lucive_signup')||'{}').email)||''; }catch(_){}
     if(signupEmail) I.klaviyoTrack(signupEmail, 'Share Clicked', { channel: channel });
   }
-  if(channel === 'discord'){
+  if(channel === 'line'){
     window.open('https://line.me/R/share?text=' + encodeURIComponent(text), '_blank');
   } else if(channel === 'link'){
     navigator.clipboard?.writeText(url).then(()=>alert('リンクをコピーしました'));
