@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ja">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -83,7 +83,7 @@
                     <tr>
                       <td style="padding:18px 20px">
                         <div style="font-family:'JetBrains Mono','SF Mono',monospace;font-size:10.5px;letter-spacing:0.22em;font-weight:800;color:#b8945e;text-transform:uppercase">あなたのプロモコード</div>
-                        <div style="margin-top:8px;font-family:'JetBrains Mono','SF Mono',monospace;font-size:18px;font-weight:800;color:#2A1A22;letter-spacing:0.02em;word-break:break-all">{{ event.promo_code }}</div>
+                        <div style="margin-top:8px;font-family:'JetBrains Mono','SF Mono',monospace;font-size:18px;font-weight:800;color:#2A1A22;letter-spacing:0.02em;word-break:break-all">{{ person.promo_code }}</div>
                       </td>
                     </tr>
                   </table>
@@ -99,7 +99,7 @@
                       <td style="padding:18px 20px">
                         <div style="font-family:'JetBrains Mono','SF Mono',monospace;font-size:10.5px;letter-spacing:0.22em;font-weight:800;color:#b8945e;text-transform:uppercase">あなたの招待リンク</div>
                         <div style="margin-top:8px;font-family:'Inter',sans-serif;font-size:14px;color:#2A1A22;word-break:break-all">
-                          <a href="{{ event.invite_url }}" style="color:#b8945e;text-decoration:underline">{{ event.invite_url }}</a>
+                          <a href="{{ person.invite_url }}" style="color:#b8945e;text-decoration:underline">{{ person.invite_url }}</a>
                         </div>
                         <div style="margin-top:12px;font-family:'Inter',sans-serif;font-size:13px;color:#6B5560;line-height:1.6">
                           このリンクで友達が登録すると — 双方に <b style="color:#2A1A22">+100 Dip</b>。
@@ -236,3 +236,4 @@
 
 </body>
 </html>
+
