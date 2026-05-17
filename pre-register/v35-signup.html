@@ -92,14 +92,13 @@ a:hover{text-decoration-color:var(--accent)}
 .success-h em{color:var(--accent);font-style:italic}
 .success-sub{font-size:14px;color:var(--text-2);line-height:1.65;margin-bottom:24px}
 .success-sub b{color:var(--text-1);font-weight:700}
-.next-block{margin-top:18px;padding:20px;background:var(--elevated);border-radius:14px;text-align:left}
-.next-h{font-family:var(--display);font-size:19px;font-weight:700;color:var(--text-1);letter-spacing:-.005em;margin-bottom:12px;display:flex;align-items:baseline;gap:8px}
-.next-h::before{content:'◆';color:var(--gold);font-size:13px;flex-shrink:0}
-.next-h em{font-style:italic;color:var(--accent)}
-.next-list{font-size:13px;color:var(--text-2);line-height:1.7;list-style:none}
-.next-list li{padding-left:18px;position:relative}
-.next-list li::before{content:'◆';position:absolute;left:0;color:var(--gold);font-size:9px;top:6px}
-.next-list b{color:var(--text-1);font-weight:700}
+.next-block{margin-top:18px;padding:24px 20px;background:var(--elevated);border-radius:14px;text-align:center}
+.next-dip-num{font-family:var(--display);font-size:52px;font-weight:700;color:var(--gold-deep);line-height:1;letter-spacing:-.02em;margin-bottom:4px}
+.next-dip-num span{font-size:28px;vertical-align:super;font-weight:800}
+.next-dip-label{font-family:var(--mono);font-size:10px;letter-spacing:.22em;font-weight:800;color:var(--text-3);text-transform:uppercase;margin-bottom:10px}
+.next-dip-desc{font-size:13.5px;color:var(--text-2);line-height:1.6;margin-bottom:4px}
+.next-dip-highlight{display:inline-block;margin-top:6px;padding:5px 14px;background:linear-gradient(180deg,rgba(214,176,124,.18),rgba(214,176,124,.08));border:1.5px solid rgba(214,176,124,.5);border-radius:999px;font-family:var(--sans);font-size:13px;font-weight:800;color:var(--gold-deep)}
+.next-dip-highlight em{font-style:normal;color:var(--accent)}
 .next-cta{display:inline-flex;align-items:center;justify-content:center;gap:8px;margin-top:16px;padding:14px 28px;background:linear-gradient(180deg,var(--gold),var(--gold-deep));color:#2c1f00;border:none;border-radius:999px;font-family:var(--sans);font-size:15px;font-weight:800;cursor:pointer;text-decoration:none;transition:all .2s;box-shadow:0 8px 24px rgba(214,176,124,.4);width:100%;letter-spacing:-.005em}
 .next-cta:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(214,176,124,.5);color:#2c1f00}
 .next-cta-sub{margin-top:7px;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--text-3);text-align:center}
@@ -153,14 +152,11 @@ a:hover{text-decoration-color:var(--accent)}
 
     <!-- 다음 단계 · Dip (상단 이동) -->
     <div class="next-block">
-      <div class="next-h">설문 완료 시 <em>혜택</em></div>
-      <ul class="next-list">
-        <li>2분 설문 완주 시 <b>+500 Dip</b> 즉시 지급</li>
-        <li><b>핵심 테스터 활동</b> 시 추가 Dip + 별도 혜택</li>
-        <li>알파 오픈 우선 안내 + 본편 첫 회차 알림</li>
-      </ul>
-      <a href="./screening.html" class="next-cta">설문 시작 · Dip 받기 →</a>
-      <div class="next-cta-sub">Dip = 신규 2개 캐릭터 추가 무료 연결 가능</div>
+      <div class="next-dip-num"><span>+</span>500</div>
+      <div class="next-dip-label">Dip · 2분 설문 완료 즉시 지급</div>
+      <div class="next-dip-desc">신규 캐릭터 <div class="next-dip-highlight"><em>2개 ($5 상당)</em> 무료 연결권 제공</div></div>
+      <a href="./screening.html" class="next-cta" style="margin-top:18px">지금 바로 받기 →</a>
+      <div class="next-cta-sub" style="margin-top:8px">소요시간 약 2분</div>
       <a href="https://discord.gg/GgSBUzHTZ" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;margin-top:10px;padding:10px 18px;background:#5865F2;color:#fff;border-radius:10px;font-size:13px;font-weight:700;text-decoration:none;">🎮 Discord 커뮤니티 참여하기</a>
     </div>
 
