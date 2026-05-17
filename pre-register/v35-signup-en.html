@@ -92,16 +92,16 @@ a:hover{text-decoration-color:var(--accent)}
 .success-h em{color:var(--accent);font-style:italic}
 .success-sub{font-size:14px;color:var(--text-2);line-height:1.65;margin-bottom:24px}
 .success-sub b{color:var(--text-1);font-weight:700}
-.next-block{margin-top:18px;padding:20px;background:var(--elevated);border-radius:14px;text-align:left}
-.next-h{font-family:var(--display);font-size:19px;font-weight:700;color:var(--text-1);letter-spacing:-.005em;margin-bottom:12px;display:flex;align-items:baseline;gap:8px}
-.next-h::before{content:'◆';color:var(--gold);font-size:13px;flex-shrink:0}
-.next-h em{font-style:italic;color:var(--accent)}
-.next-list{font-size:13px;color:var(--text-2);line-height:1.7;list-style:none}
-.next-list li{padding-left:18px;position:relative}
-.next-list li::before{content:'◆';position:absolute;left:0;color:var(--gold);font-size:9px;top:6px}
-.next-list b{color:var(--text-1);font-weight:700}
-.next-cta{display:inline-flex;align-items:center;justify-content:center;gap:8px;margin-top:16px;padding:11px 22px;background:transparent;border:1.5px solid var(--accent);color:var(--accent);border-radius:999px;font-family:var(--sans);font-size:13px;font-weight:700;cursor:pointer;text-decoration:none;transition:all .2s}
-.next-cta:hover{background:var(--accent);color:#fff}
+.next-block{margin-top:18px;padding:24px 20px;background:var(--elevated);border-radius:14px;text-align:center}
+.next-dip-num{font-family:var(--display);font-size:52px;font-weight:700;color:var(--gold-deep);line-height:1;letter-spacing:-.02em;margin-bottom:4px}
+.next-dip-num span{font-size:28px;vertical-align:super;font-weight:800}
+.next-dip-label{font-family:var(--mono);font-size:10px;letter-spacing:.22em;font-weight:800;color:var(--text-3);text-transform:uppercase;margin-bottom:10px}
+.next-dip-desc{font-size:13.5px;color:var(--text-2);line-height:1.6;margin-bottom:4px}
+.next-dip-highlight{display:inline-block;margin-top:6px;padding:5px 14px;background:linear-gradient(180deg,rgba(214,176,124,.18),rgba(214,176,124,.08));border:1.5px solid rgba(214,176,124,.5);border-radius:999px;font-family:var(--sans);font-size:13px;font-weight:800;color:var(--gold-deep)}
+.next-dip-highlight em{font-style:normal;color:var(--accent)}
+.next-cta{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 28px;background:linear-gradient(180deg,var(--gold),var(--gold-deep));color:#2c1f00;border:none;border-radius:999px;font-family:var(--sans);font-size:15px;font-weight:800;cursor:pointer;text-decoration:none;transition:all .2s;box-shadow:0 8px 24px rgba(214,176,124,.4);width:100%;letter-spacing:-.005em}
+.next-cta:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(214,176,124,.5);color:#2c1f00}
+.next-cta-sub{margin-top:7px;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--text-3);text-align:center}
 
 /* form hide once submitted */
 .card.hidden{display:none}
@@ -182,9 +182,13 @@ a:hover{text-decoration-color:var(--accent)}
 
     <!-- Next · Dip -->
     <div class="next-block">
-      <div class="next-h">Survey rewards <em></em></div>
-      <ul class="next-list">
-        <li>Complete the 2-min survey → <b>+500 Dip</b> instantly</li>
+      <div class="next-dip-num"><span>+</span>500</div>
+      <div class="next-dip-label">Dip · Instant reward on survey completion</div>
+      <div class="next-dip-desc">Unlock 2 new characters <div class="next-dip-highlight"><em>2 chars ( value)</em> free connection</div></div>
+      <a href="./screening-en.html" class="next-cta" style="margin-top:18px">Claim now →</a>
+      <div class="next-cta-sub">Takes about 2 minutes</div>
+      <ul class="next-list" style="display:none">
+        <li>placeholder
         <li><b>Core tester activities</b> → bonus Dip + special perks</li>
         <li>Priority alpha launch + first chapter alerts</li>
       </ul>
