@@ -903,8 +903,22 @@ document.getElementById('dday').textContent = '17';
 })();
 </script>
 
+
+<script>
+/* ?r= 레퍼럴 코드를 사전등록 링크에 자동 추가 */
+(function(){
+  var r = new URLSearchParams(location.search).get('r');
+  if(!r) return;
+  document.querySelectorAll('a[href*="v35-signup"]').forEach(function(a){
+    var url = new URL(a.href, location.href);
+    url.searchParams.set('r', r);
+    a.href = url.pathname + url.search;
+  });
+})();
+</script>
 </body>
 </html>
+
 
 
 

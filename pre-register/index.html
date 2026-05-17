@@ -37,9 +37,14 @@ a:hover{text-decoration:underline}
   var fromNav = (navigator.language || 'ko').toLowerCase().split('-')[0];
   var lang = (fromUrl && supported[fromUrl]) ? fromUrl : (supported[fromNav] ? fromNav : 'ko');
   var target = supported[lang];
-  document.getElementById('manualLink').href = './' + target;
+  // ?r= 레퍼럴 코드 등 기존 파라미터 유지 (lang 제외)
+  var params = new URLSearchParams(location.search);
+  params.delete('lang');
+  var qs = params.toString();
+  var targetUrl = './' + target + (qs ? '?' + qs : '');
+  document.getElementById('manualLink').href = targetUrl;
   // 즉시 리다이렉트
-  setTimeout(function(){ location.replace('./' + target); }, 50);
+  setTimeout(function(){ location.replace(targetUrl); }, 50);
 })();
 </script>
 </body>
