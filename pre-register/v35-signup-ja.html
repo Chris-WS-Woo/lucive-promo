@@ -160,7 +160,7 @@ a:hover{text-decoration-color:var(--accent)}
       <div class="promo-row">
         <div class="promo-row-label">招待リンク</div>
         <div class="promo-row-field">
-          <code id="myInvite">lucive.app/r/XXX000</code>
+          <code id="myInvite">lucive.gg/?r=XXX000</code>
           <button onclick="copyTo('myInvite')">コピー</button>
         </div>
       </div>
@@ -218,12 +218,12 @@ function handleSubmit(e){
 
   const code = genPromo(email);
   const promoCode = `LUCIVE·${code}`;
-  const inviteUrl = `https://lucive.app/r/${code}`;
+  const inviteUrl = `https://lucive.gg/?r=${code}`;
   const referralCode = new URLSearchParams(location.search).get('r') || '';
 
   document.getElementById('ssEmail').textContent = email;
   document.getElementById('myCode').textContent = promoCode;
-  document.getElementById('myInvite').textContent = `lucive.app/r/${code}`;
+  document.getElementById('myInvite').textContent = `lucive.gg/?r=${code}`;
 
   document.getElementById('formCard').classList.add('hidden');
   const s = document.getElementById('success');
@@ -280,7 +280,7 @@ function copyTo(id){
 
 function share(channel){
   const code = document.getElementById('myCode').textContent;
-  const url = `https://lucive.app/r/${code.replace('LUCIVE·','')}`;
+  const url = `https://lucive.gg/?r=${code.replace('LUCIVE·','')}`;
   const text = `LUCIVE コアテスター事前登録 · 友達と一緒に登録すると双方に +100 Dip\n${url}`;
   // GA4 + Klaviyo share tracking
   const I = window.LUCIVE_INTEGRATIONS;
@@ -320,5 +320,6 @@ document.getElementById('dday').textContent = '17';
 
 </body>
 </html>
+
 
 
