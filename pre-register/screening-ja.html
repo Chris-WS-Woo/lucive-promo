@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Lucive — コアユーザーアンケート</title>
-<meta name="description" content="8つの短い質問 · 約2分。完了で500 Dip 即時付与、コアテスター活動で追加特典。">
+<meta name="description" content="8つの短い質問 · 約2分。完了で5,000 Dip 即時付与、コアテスター活動で追加特典。">
 <meta name="robots" content="noindex">
 <script src="./_integrations.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -216,6 +216,28 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .share-btn[data-ch="link"]:hover{border-color:var(--amber);color:var(--gold-soft);background:rgba(6,182,212,.08)}
 .complete-home{width:100%;max-width:280px;padding:14px 24px;border-radius:100px;background:transparent;border:1px solid var(--border-medium);color:var(--ink-soft);font-family:var(--font-mono);font-size:11.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;cursor:pointer;transition:all .2s;margin-top:8px}
 .complete-home:hover{border-color:var(--amber);color:var(--gold-soft);background:rgba(6,182,212,.06)}
+/* ── NEW COMPLETE SCREEN ─────────────────────── */
+.dip-reward-card{text-align:center;padding:28px 20px 20px;background:linear-gradient(135deg,rgba(214,176,124,.15),rgba(201,123,137,.08));border:1.5px solid rgba(214,176,124,.4);border-radius:20px;margin-bottom:20px}
+.dip-reward-num{font-family:var(--font-display);font-size:64px;font-weight:700;color:var(--gold-deep);line-height:1;letter-spacing:-.02em}
+.dip-reward-num span{font-size:32px;vertical-align:super}
+.dip-reward-label{font-family:var(--font-mono);font-size:11px;letter-spacing:.22em;font-weight:800;color:var(--muted);text-transform:uppercase;margin-top:6px}
+.dip-explain{background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:16px;padding:20px;margin-bottom:20px;text-align:left}
+.dip-explain-head{font-size:15px;font-weight:800;color:var(--ink);margin-bottom:14px}
+.dip-value-row{display:flex;align-items:center;gap:8px;padding:10px 14px;background:var(--bg-elevated);border-radius:10px;margin-bottom:14px}
+.dip-val-num{font-family:var(--font-mono);font-size:14px;font-weight:800;color:var(--gold-deep)}
+.dip-val-eq{font-size:13px;color:var(--muted);font-weight:600}
+.dip-val-desc{font-size:13px;color:var(--ink-soft)}
+.dip-unlock-card{border:1px solid var(--border-medium);border-radius:14px;overflow:hidden;margin-bottom:14px}
+.dip-unlock-preview{height:140px;background:linear-gradient(135deg,#2a1a22,#1a0f1a);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.dip-unlock-preview::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(214,176,124,.2),rgba(201,123,137,.15));backdrop-filter:blur(12px)}
+.dip-unlock-preview::after{content:'\1F512';position:absolute;font-size:36px;filter:drop-shadow(0 2px 8px rgba(0,0,0,.5))}
+.dip-unlock-info{padding:14px}
+.dip-unlock-info p{font-size:13px;color:var(--ink-soft);line-height:1.6;margin-bottom:10px}
+.dip-unlock-info b{color:var(--gold-deep)}
+.dip-unlock-info em{font-style:normal;color:var(--crimson);font-weight:700}
+.dip-unlock-btn{width:100%;padding:11px;background:linear-gradient(180deg,var(--gold),var(--gold-deep));color:#2c1f00;border:none;border-radius:999px;font-weight:800;font-size:13.5px;cursor:pointer;font-family:inherit;letter-spacing:-.005em}
+.dip-also{font-size:12.5px;color:var(--ink-soft);line-height:1.6;padding:10px 0 0;border-top:1px dashed var(--border-subtle);text-align:center}
+
 
 /* Community value banner on completion (email-delivered invite) */
 .complete-community{background:linear-gradient(135deg,rgba(139,92,246,.07),rgba(37,99,235,.04));border:1px solid rgba(139,92,246,.22);border-radius:16px;padding:22px 22px 20px;margin-bottom:20px;text-align:left}
@@ -272,7 +294,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 
   <!-- Incentive banner -->
   <div class="incentive" id="incentive">
-    🎁 完了で <b>500 Dip</b> 即時付与 · <b>コアテスター</b> 特別特典のご案内
+    🎁 完了で <b>5,000 Dip</b> 即時付与 · <b>コアテスター</b> 特別特典のご案内
   </div>
 
   <!-- Header -->
@@ -327,60 +349,52 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 
       <!-- Complete screen -->
       <div class="complete hidden" id="complete">
-        <div class="complete-seal">🎉</div>
-        <h1>送信 <em>完了!</em></h1>
+        <div class="complete-seal">&#x2728;</div>
+        <h1>&#x30A2;&#x30F3;&#x30B1;&#x30FC;&#x30C8; <em>&#x5B8C;&#x4E86;!</em></h1>
         <p class="complete-lede">
-          ご回答ありがとうございます。<br>
-          <b style="color:var(--text-primary)">アルファ公開のタイミング</b>とコアテスターのご案内をメールでお送りします。
+          &#x3054;&#x56DE;&#x7B54;&#x3042;&#x308A;&#x304C;&#x3068;&#x3046;&#x3054;&#x3056;&#x3044;&#x307E;&#x3057;&#x305F;&#x3002;<br>
+          <b style="color:var(--text-primary)">&#x30A2;&#x30EB;&#x30D5;&#x30A1;&#x516C;&#x958B;&#x6642;&#x671F;</b>&#x3068;&#x30B3;&#x30A2;&#x30C6;&#x30B9;&#x30BF;&#x30FC;&#x60C5;&#x5831;&#x3092;&#x30E1;&#x30FC;&#x30EB;&#x3067;&#x304A;&#x9001;&#x308A;&#x3057;&#x307E;&#x3059;&#x3002;
         </p>
 
-        <div class="complete-rewards">
-          <div class="reward-item">
-            <span class="reward-item-emoji">✨</span>
-            <span class="reward-item-text">完了特典 <b>+500 Dip</b> 即時付与</span>
-          </div>
-          <div class="reward-item">
-            <span class="reward-item-emoji">🌟</span>
-            <span class="reward-item-text"><b>コアテスター活動</b> · Dip追加 + 特別特典</span>
-          </div>
-          <div class="reward-item">
-            <span class="reward-item-emoji">📬</span>
-            <span class="reward-item-text">アルファ公開の優先案内 + 本編第1話のお知らせ</span>
-          </div>
+        <div class="dip-reward-card">
+          <div class="dip-reward-num"><span>+</span>5,000</div>
+          <div class="dip-reward-label">DIP &#x5373;&#x6642;&#x4ED8;&#x4E0E;</div>
         </div>
 
-        <div class="complete-share">
-          <div class="complete-share-title">✨ 事前登録者全員に</div>
-          <div class="complete-share-desc">
-            体験期間中の<b style="color:var(--sync-green)">事前登録者限定アクセス</b><br>
-            さらに <b style="color:var(--fragment-gold)">1位:基本プラン永久無料</b> ·
-            <b style="color:var(--lucid-purple)">2-5位:招待友達全員3ヶ月無料</b>
+        <div class="dip-explain">
+          <div class="dip-explain-head">&#x1F48E; DIP&#x3063;&#x3066;&#x4F55;&#x3067;&#x3059;&#x304B;&#xFF1F;</div>
+          <div class="dip-value-row">
+            <span class="dip-val-num">100 DIP</span>
+            <span class="dip-val-eq">=</span>
+            <span class="dip-val-desc"><b style="color:var(--gold-deep)">$1</b>&nbsp;&#x30A2;&#x30D7;&#x30EA;&#x5185;&#x306E;&#x5B9F;&#x969B;&#x306E;&#x4FA1;&#x5024;</span>
           </div>
-          <div class="share-row">
-            <button class="share-btn" data-ch="discord" onclick="shareOn('discord')">💬 Discord</button>
-            <button class="share-btn" data-ch="x" onclick="shareOn('x')">𝕏 X</button>
-            <button class="share-btn" data-ch="link" onclick="shareOn('link')">🔗 リンクをコピー</button>
+          <div class="dip-unlock-card">
+            <div class="dip-unlock-preview"></div>
+            <div class="dip-unlock-info">
+              <p><b>5,000 DIP</b>&#x3067;<em>Priority Access</em><br>&#x516C;&#x5F0F;&#x516C;&#x958B;&#x524D;&#x306B;&#x65B0;&#x30AD;&#x30E3;&#x30E9;&#x30AF;&#x30BF;&#x30FC;&#x306B;&#x3044;&#x3061;&#x65E9;&#x4F1A;&#x3048;&#x307E;&#x3059;&#x3002;</p>
+              <button class="dip-unlock-btn">&#x1F513; DIP&#x3067;&#x30A2;&#x30F3;&#x30ED;&#x30C3;&#x30AF;</button>
+            </div>
           </div>
+          <div class="dip-also">DIP&#x306F;&#x30AD;&#x30E3;&#x30E9;&#x30AF;&#x30BF;&#x30FC;&#x3084;&#x30C1;&#x30E3;&#x30D7;&#x30BF;&#x30FC;&#x306E;&#x30A2;&#x30F3;&#x30ED;&#x30C3;&#x30AF;&#x306B;&#x3082;&#x4F7F;&#x3048;&#x307E;&#x3059;&#x3002;</div>
         </div>
 
-        <!-- Community value banner (invite delivered via email) -->
         <div class="complete-community">
           <div class="cc-head">
-            <span class="cc-icon">💬</span>
-            <h3>気になることは <em>ここで</em> 解消</h3>
+            <span class="cc-icon">&#x1F4AC;</span>
+            <h3>Discord <em>#character-making</em></h3>
           </div>
           <ul class="cc-points">
-            <li><b>開発者</b>と1:1で直接Q&A</li>
-            <li>公式アナウンスより<b>先に届くアップデート</b></li>
-            <li>他のコアテスターの<b>実際の使用レビュー</b></li>
+            <li>&#x1F3A8; &#x30AD;&#x30E3;&#x30E9;&#x30AF;&#x30BF;&#x30FC;&#x306E;&#x30B3;&#x30F3;&#x30BB;&#x30D7;&#x30C8;&#x30A2;&#x30FC;&#x30C8;&#x30FB;&#x6027;&#x683C;&#x6848;&#x30FB;&#x30B9;&#x30C8;&#x30FC;&#x30EA;&#x30FC;&#x3092;&#x30EA;&#x30A2;&#x30EB;&#x30BF;&#x30A4;&#x30E0;&#x3067;&#x78BA;&#x8A8D;</li>
+            <li>&#x1F4AC; &#x6B32;&#x3057;&#x3044;&#x30AD;&#x30E3;&#x30E9;&#x30AF;&#x30BF;&#x30FC;&#x30BF;&#x30A4;&#x30D7;&#x306E;&#x30D5;&#x30A3;&#x30FC;&#x30C9;&#x30D0;&#x30C3;&#x30AF;&#x3092;&#x9001;&#x4FE1;</li>
+            <li>&#x2B50; &#x6700;&#x3082;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x306E;&#x591A;&#x3044;&#x30AD;&#x30E3;&#x30E9;&#x30AF;&#x30BF;&#x30FC;&#x304C;&#x512A;&#x5148;&#x30EA;&#x30EA;&#x30FC;&#x30B9;&#x3055;&#x308C;&#x307E;&#x3059;</li>
           </ul>
-          <a href="https://discord.gg/GgSBUzHTZ" target="_blank" rel="noopener" class="cc-link">
-            <span>💬</span><span>LINEに参加する</span><span>→</span>
+          <a href="https://discord.gg/GgSBUzHTZ" target="_blank" rel="noopener" class="cc-link discord">
+            <span>&#x1F4AC;</span><span>Discord&#x306B;&#x53C2;&#x52A0;&#x3059;&#x308B;</span><span>&#x2192;</span>
           </a>
-          <p class="cc-note">📬 または<b>ウェルカムメール</b>の招待リンクから</p>
+          <p class="cc-note">&#x1F4EC; &#x30A6;&#x30A7;&#x30EB;&#x30AB;&#x30E1;&#x30E1;&#x30FC;&#x30EB;&#x306E;&#x62DB;&#x5F85;&#x30EA;&#x30F3;&#x30AF;&#x304B;&#x3089;&#x3082;&#x53C2;&#x52A0;&#x3067;&#x304D;&#x307E;&#x3059;</p>
         </div>
 
-        <button class="complete-home" onclick="goHome()">ホームへ戻る</button>
+        <button class="complete-home" onclick="goHome()">&#x30DB;&#x30FC;&#x30E0;&#x3078;&#x623B;&#x308B;</button>
       </div>
 
     </div>

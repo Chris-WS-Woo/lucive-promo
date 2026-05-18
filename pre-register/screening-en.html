@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Lucive — Core User Survey</title>
-<meta name="description" content="8 short questions · ~2 min. 500 Dip on completion, bonus rewards for core tester activities.">
+<meta name="description" content="8 short questions · ~2 min. 5,000 Dip on completion, bonus rewards for core tester activities.">
 <meta name="robots" content="noindex">
 <script src="./_integrations.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -216,6 +216,28 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .share-btn[data-ch="link"]:hover{border-color:var(--amber);color:var(--gold-soft);background:rgba(6,182,212,.08)}
 .complete-home{width:100%;max-width:280px;padding:14px 24px;border-radius:100px;background:transparent;border:1px solid var(--border-medium);color:var(--ink-soft);font-family:var(--font-mono);font-size:11.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;cursor:pointer;transition:all .2s;margin-top:8px}
 .complete-home:hover{border-color:var(--amber);color:var(--gold-soft);background:rgba(6,182,212,.06)}
+/* ── NEW COMPLETE SCREEN ─────────────────────── */
+.dip-reward-card{text-align:center;padding:28px 20px 20px;background:linear-gradient(135deg,rgba(214,176,124,.15),rgba(201,123,137,.08));border:1.5px solid rgba(214,176,124,.4);border-radius:20px;margin-bottom:20px}
+.dip-reward-num{font-family:var(--font-display);font-size:64px;font-weight:700;color:var(--gold-deep);line-height:1;letter-spacing:-.02em}
+.dip-reward-num span{font-size:32px;vertical-align:super}
+.dip-reward-label{font-family:var(--font-mono);font-size:11px;letter-spacing:.22em;font-weight:800;color:var(--muted);text-transform:uppercase;margin-top:6px}
+.dip-explain{background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:16px;padding:20px;margin-bottom:20px;text-align:left}
+.dip-explain-head{font-size:15px;font-weight:800;color:var(--ink);margin-bottom:14px}
+.dip-value-row{display:flex;align-items:center;gap:8px;padding:10px 14px;background:var(--bg-elevated);border-radius:10px;margin-bottom:14px}
+.dip-val-num{font-family:var(--font-mono);font-size:14px;font-weight:800;color:var(--gold-deep)}
+.dip-val-eq{font-size:13px;color:var(--muted);font-weight:600}
+.dip-val-desc{font-size:13px;color:var(--ink-soft)}
+.dip-unlock-card{border:1px solid var(--border-medium);border-radius:14px;overflow:hidden;margin-bottom:14px}
+.dip-unlock-preview{height:140px;background:linear-gradient(135deg,#2a1a22,#1a0f1a);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.dip-unlock-preview::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(214,176,124,.2),rgba(201,123,137,.15));backdrop-filter:blur(12px)}
+.dip-unlock-preview::after{content:'\1F512';position:absolute;font-size:36px;filter:drop-shadow(0 2px 8px rgba(0,0,0,.5))}
+.dip-unlock-info{padding:14px}
+.dip-unlock-info p{font-size:13px;color:var(--ink-soft);line-height:1.6;margin-bottom:10px}
+.dip-unlock-info b{color:var(--gold-deep)}
+.dip-unlock-info em{font-style:normal;color:var(--crimson);font-weight:700}
+.dip-unlock-btn{width:100%;padding:11px;background:linear-gradient(180deg,var(--gold),var(--gold-deep));color:#2c1f00;border:none;border-radius:999px;font-weight:800;font-size:13.5px;cursor:pointer;font-family:inherit;letter-spacing:-.005em}
+.dip-also{font-size:12.5px;color:var(--ink-soft);line-height:1.6;padding:10px 0 0;border-top:1px dashed var(--border-subtle);text-align:center}
+
 
 /* Community value banner on completion (email-delivered invite) */
 .complete-community{background:linear-gradient(135deg,rgba(139,92,246,.07),rgba(37,99,235,.04));border:1px solid rgba(139,92,246,.22);border-radius:16px;padding:22px 22px 20px;margin-bottom:20px;text-align:left}
@@ -272,7 +294,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 
   <!-- Incentive banner -->
   <div class="incentive" id="incentive">
-    🎁 <b>500 Dip</b> on completion · special <b>core tester</b> rewards
+    🎁 <b>5,000 Dip</b> on completion · special <b>core tester</b> rewards
   </div>
 
   <!-- Header -->
@@ -327,57 +349,49 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 
       <!-- Complete screen -->
       <div class="complete hidden" id="complete">
-        <div class="complete-seal">🎉</div>
-        <h1>Survey <em>complete!</em></h1>
+        <div class="complete-seal">&#x2728;</div>
+        <h1>Survey <em>Complete!</em></h1>
         <p class="complete-lede">
           Thank you for your responses.<br>
           We'll email you the <b style="color:var(--text-primary)">alpha launch time</b> and core tester info.
         </p>
 
-        <div class="complete-rewards">
-          <div class="reward-item">
-            <span class="reward-item-emoji">✨</span>
-            <span class="reward-item-text"><b>+500 Dip</b> reward granted instantly</span>
-          </div>
-          <div class="reward-item">
-            <span class="reward-item-emoji">🌟</span>
-            <span class="reward-item-text"><b>Core tester activities</b> · bonus Dip + special perks</span>
-          </div>
-          <div class="reward-item">
-            <span class="reward-item-emoji">📬</span>
-            <span class="reward-item-text">Priority alpha launch alerts + first chapter notice</span>
-          </div>
+        <div class="dip-reward-card">
+          <div class="dip-reward-num"><span>+</span>5,000</div>
+          <div class="dip-reward-label">DIP reward granted instantly</div>
         </div>
 
-        <div class="complete-share">
-          <div class="complete-share-title">✨ All pre-registrants get</div>
-          <div class="complete-share-desc">
-            <b style="color:var(--sync-green)">Pre-registration-only access</b> during the trial<br>
-            Plus: <b style="color:var(--fragment-gold)">1st: basic plan free for life</b> ·
-            <b style="color:var(--lucid-purple)">2nd-5th: friends free for 3 months</b>
+        <div class="dip-explain">
+          <div class="dip-explain-head">&#x1F48E; What is DIP?</div>
+          <div class="dip-value-row">
+            <span class="dip-val-num">100 DIP</span>
+            <span class="dip-val-eq">=</span>
+            <span class="dip-val-desc"><b style="color:var(--gold-deep)">$1</b>&nbsp;real in-app value, not just points</span>
           </div>
-          <div class="share-row">
-            <button class="share-btn" data-ch="discord" onclick="shareOn('discord')">💬 Discord</button>
-            <button class="share-btn" data-ch="x" onclick="shareOn('x')">𝕏 X</button>
-            <button class="share-btn" data-ch="link" onclick="shareOn('link')">🔗 Copy link</button>
+          <div class="dip-unlock-card">
+            <div class="dip-unlock-preview"></div>
+            <div class="dip-unlock-info">
+              <p><b>5,000 DIP</b> unlocks <em>Priority Access</em><br>See new characters before their official reveal.</p>
+              <button class="dip-unlock-btn">&#x1F513; Unlock with DIP</button>
+            </div>
           </div>
+          <div class="dip-also">DIP can also be used to instantly unlock any character or chapter.</div>
         </div>
 
-        <!-- Community value banner (invite delivered via email) -->
         <div class="complete-community">
           <div class="cc-head">
-            <span class="cc-icon">💬</span>
-            <h3>Get answers <em>here</em></h3>
+            <span class="cc-icon">&#x1F4AC;</span>
+            <h3>Discord <em>#character-making</em></h3>
           </div>
           <ul class="cc-points">
-            <li>Direct 1:1 Q&A with the <b>developer</b></li>
-            <li>Updates <b>before official announcements</b></li>
-            <li><b>Real reviews</b> from other core testers</li>
+            <li>&#x1F3A8; See character concept art, personality drafts, and story arcs as they're made</li>
+            <li>&#x1F4AC; Drop feedback on the type of character you want</li>
+            <li>&#x2B50; Most requested characters get prioritized for early release</li>
           </ul>
-          <a href="https://discord.gg/GgSBUzHTZ" target="_blank" rel="noopener" class="cc-link">
-            <span>💬</span><span>Join our Discord</span><span>→</span>
+          <a href="https://discord.gg/GgSBUzHTZ" target="_blank" rel="noopener" class="cc-link discord">
+            <span>&#x1F4AC;</span><span>Join Discord</span><span>&#x2192;</span>
           </a>
-          <p class="cc-note">📬 Or use the invite link in the <b>welcome email</b></p>
+          <p class="cc-note">&#x1F4EC; Or use the invite link in your welcome email. See you inside! &#x1F49C;</p>
         </div>
 
         <button class="complete-home" onclick="goHome()">Back to home</button>
