@@ -240,7 +240,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .dip-unlock-gallery::-webkit-scrollbar{display:none}
 .dip-unlock-slot{flex-shrink:0;width:100px;height:140px;border-radius:10px;overflow:hidden;position:relative;border:1px solid var(--border-medium)}
 .dip-unlock-slot img{width:100%;height:100%;object-fit:cover;object-position:top center;filter:blur(4px) brightness(.85);transform:scale(1.15);transition:filter .3s}
-.dip-unlock-slot::after{content:'F512';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:22px;filter:drop-shadow(0 1px 3px rgba(0,0,0,.6))}
+.dip-unlock-slot::after{content:'🔒';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:22px;filter:drop-shadow(0 1px 3px rgba(0,0,0,.6))}
 .dip-unlock-slot.main{width:130px;height:140px;border-color:rgba(214,176,124,.5)}
 
 .dip-unlock-btn{width:100%;padding:11px;background:linear-gradient(180deg,var(--gold),var(--gold-deep));color:#2c1f00;border:none;border-radius:999px;font-weight:800;font-size:13.5px;cursor:pointer;font-family:inherit;letter-spacing:-.005em}
@@ -613,8 +613,8 @@ const QUESTIONS = [
   {
     id: 'q10',
     number: 11,
-    title: 'Is there anything you'd like<br>to try in the alpha?',
-    desc: 'Optional. Filling this in gets priority core tester invites.',
+    title: "Is there anything you'd like<br>to try in the alpha?",
+    desc: '(Optional)',
     type: 'textarea',
     optional: true,
     placeholder: 'e.g., How naturally LPs recall past conversations, whether multi-LP chats preserve individuality...',
