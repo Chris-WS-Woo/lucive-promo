@@ -437,7 +437,7 @@ const QUESTIONS = [
   {
     id: 'q1',
     number: 1,
-    title: 'AIキャラクターチャットの<br>利用経験は?',
+    title: 'AIキャラクターチャットアプリの<br>利用期間はどのくらいですか?',
     desc: 'Crack, Zeta, Character.AI, Replika など。',
     type: 'single',
     options: [
@@ -451,8 +451,8 @@ const QUESTIONS = [
   {
     id: 'q1b',
     number: 2,
-    title: '主にどのアプリを<br>使用しましたか?',
-    desc: '複数選択可。',
+    title: '使用したAIキャラクターチャットアプリを<br>すべて選択してください。',
+    desc: '複数選択可',
     type: 'multi',
     skipIf: { q1: 'never' },
     options: [
@@ -469,8 +469,8 @@ const QUESTIONS = [
   {
     id: 'q2',
     number: 3,
-    title: 'どのくらいの頻度で<br>会話していますか?',
-    desc: 'AIチャットボットアプリ基準。',
+    title: 'AIチャットアプリを<br>どのくらいの頻度で使用していますか?',
+    desc: '',
     type: 'single',
     skipIf: { q1: 'never' },
     options: [
@@ -484,7 +484,7 @@ const QUESTIONS = [
   {
     id: 'q3',
     number: 4,
-    title: '不便だった点は<br>何ですか?',
+    title: 'AIチャットを使っていて<br>不便だった点があれば?',
     desc: '当てはまるものをすべて選択。多いほど選定に有利。',
     type: 'multi-with-other',
     skipIf: { q1: 'never' },
@@ -512,8 +512,8 @@ const QUESTIONS = [
   {
     id: 'q4',
     number: 5,
-    title: それでも良かった<br>瞬間は?',
-    desc: '複数選択可。',
+    title: 'AIチャットで<br>一番良かった瞬間は?',
+    desc: '複数選択可',
     type: 'multi',
     skipIf: { q1: 'never' },
     options: [
@@ -529,7 +529,7 @@ const QUESTIONS = [
   {
     id: 'q5',
     number: 6,
-    title: '創作経験は<br>ありますか?',
+    title: 'これまでの創作活動を<br>すべて選択してください。',
     desc: '複数選択可。',
     type: 'multi',
     options: [
@@ -545,7 +545,7 @@ const QUESTIONS = [
   {
     id: 'q6',
     number: 7,
-    title: '直近1年間で楽しんだ<br>ゲームジャンルは?',
+    title: '直近1年間で楽しんだ<br>ゲームジャンルをすべて選択してください。',
     desc: '複数選択可。',
     type: 'multi',
     options: [
@@ -562,7 +562,7 @@ const QUESTIONS = [
   {
     id: 'q7',
     number: 8,
-    title: 'ウェブトゥーン・ウェブ小説は<br>どのくらい楽しんでいますか?',
+    title: 'ウェブトゥーンやウェブ小説を<br>どのくらいの頻度で読んでいますか?',
     desc: '頻度とジャンル両方をお聞きします。',
     type: 'compound',
     parts: [
@@ -613,7 +613,7 @@ const QUESTIONS = [
   {
     id: 'q10',
     number: 11,
-    title: 'アルファで試したいことは<br>ありますか?',
+    title: 'アルファでぜひ<br>試してみたいことはありますか?',
     desc: '任意です。記入するとコアテスター優先案内。',
     type: 'textarea',
     optional: true,
