@@ -437,8 +437,8 @@ const QUESTIONS = [
   {
     id: 'q1',
     number: 1,
-    title: 'How much have you used<br>AI character chat?',
-    desc: 'Crack, Zeta, Character.AI, Replika, etc.',
+    title: 'How long have you been using<br>AI character chat apps?',
+    desc: 'e.g. Character.AI, Replika, Crack, Talkie, etc.',
     type: 'single',
     options: [
       { value: 'never',       label: "Never used" },
@@ -451,7 +451,7 @@ const QUESTIONS = [
   {
     id: 'q1b',
     number: 2,
-    title: 'Which apps did you<br>mainly use?',
+    title: 'Which AI character chat apps<br>have you used?',
     desc: 'Multiple selection.',
     type: 'multi',
     skipIf: { q1: 'never' },
@@ -469,7 +469,7 @@ const QUESTIONS = [
   {
     id: 'q2',
     number: 3,
-    title: 'How often do<br>you chat?',
+    title: 'How often do you use<br>AI chatbot apps?',
     desc: 'AI chatbot apps.',
     type: 'single',
     skipIf: { q1: 'never' },
@@ -484,7 +484,7 @@ const QUESTIONS = [
   {
     id: 'q3',
     number: 4,
-    title: 'What was<br>frustrating?',
+    title: 'What has frustrated you<br>about AI chat apps?',
     desc: 'Select all that apply. The more, the better.',
     type: 'multi-with-other',
     skipIf: { q1: 'never' },
@@ -512,7 +512,7 @@ const QUESTIONS = [
   {
     id: 'q4',
     number: 5,
-    title: 'Best moments<br>despite that?',
+    title: 'What have been your best<br>moments with AI chat?',
     desc: 'Multiple selection.',
     type: 'multi',
     skipIf: { q1: 'never' },
@@ -529,7 +529,7 @@ const QUESTIONS = [
   {
     id: 'q5',
     number: 6,
-    title: 'Do you have<br>creative experience?',
+    title: 'What kind of creative work<br>have you done?',
     desc: 'Multiple selection.',
     type: 'multi',
     options: [
@@ -545,7 +545,7 @@ const QUESTIONS = [
   {
     id: 'q6',
     number: 7,
-    title: 'Game genres<br>in the past year?',
+    title: 'What game genres have you played<br>in the past year?',
     desc: 'Multiple selection.',
     type: 'multi',
     options: [
@@ -562,7 +562,7 @@ const QUESTIONS = [
   {
     id: 'q7',
     number: 8,
-    title: 'How often do you read<br>webtoons / web novels?',
+    title: 'How often do you read<br>webtoons or web novels?',
     desc: 'Tell us both frequency and genre.',
     type: 'compound',
     parts: [
@@ -613,7 +613,7 @@ const QUESTIONS = [
   {
     id: 'q10',
     number: 11,
-    title: 'Anything you want to<br>try in alpha?',
+    title: 'Is there anything you'd like<br>to try in the alpha?',
     desc: 'Optional. Filling this in gets priority core tester invites.',
     type: 'textarea',
     optional: true,
