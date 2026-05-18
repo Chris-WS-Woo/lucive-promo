@@ -229,7 +229,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .dip-val-desc{font-size:13px;color:var(--ink-soft)}
 .dip-unlock-card{border:1px solid var(--border-medium);border-radius:14px;overflow:hidden;margin-bottom:14px}
 .dip-unlock-preview{height:140px;background:linear-gradient(135deg,#2a1a22,#1a0f1a);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
-.dip-unlock-preview::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(214,176,124,.2),rgba(201,123,137,.15));backdrop-filter:blur(12px)}
+.dip-unlock-preview::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(214,176,124,.2),rgba(201,123,137,.15));backdrop-filter:blur(5px)}
 .dip-unlock-preview::after{content:'\1F512';position:absolute;font-size:36px;filter:drop-shadow(0 2px 8px rgba(0,0,0,.5))}
 .dip-unlock-info{padding:14px}
 .dip-unlock-info p{font-size:13px;color:var(--ink-soft);line-height:1.6;margin-bottom:10px}
@@ -239,7 +239,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .dip-unlock-gallery{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;margin-bottom:14px;scrollbar-width:none}
 .dip-unlock-gallery::-webkit-scrollbar{display:none}
 .dip-unlock-slot{flex-shrink:0;width:100px;height:140px;border-radius:10px;overflow:hidden;position:relative;border:1px solid var(--border-medium)}
-.dip-unlock-slot img{width:100%;height:100%;object-fit:cover;object-position:top center;filter:blur(8px) brightness(.75);transform:scale(1.15);transition:filter .3s}
+.dip-unlock-slot img{width:100%;height:100%;object-fit:cover;object-position:top center;filter:blur(4px) brightness(.85);transform:scale(1.15);transition:filter .3s}
 .dip-unlock-slot::after{content:'F512';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:22px;filter:drop-shadow(0 1px 3px rgba(0,0,0,.6))}
 .dip-unlock-slot.main{width:130px;height:140px;border-color:rgba(214,176,124,.5)}
 
@@ -1233,5 +1233,6 @@ function goHome() {
 
 </body>
 </html>
+
 
 
