@@ -241,6 +241,11 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .dip-unlock-slot{flex-shrink:0;width:100px;height:140px;border-radius:10px;overflow:hidden;position:relative;border:1px solid var(--border-medium)}
 .dip-unlock-slot img{width:100%;height:100%;object-fit:cover;object-position:top center;filter:blur(4px) brightness(.85);transform:scale(1.15);transition:filter .3s}
 .dip-unlock-slot::after{content:'🔒';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:22px;filter:drop-shadow(0 1px 3px rgba(0,0,0,.6))}
+
+.dip-slot-wrap{position:relative;width:100%;height:100%}
+.dip-slot-lock{position:absolute;top:50%;left:50%;transform:translate(-50%,-60%);font-size:20px;filter:drop-shadow(0 1px 3px rgba(0,0,0,.6));z-index:2}
+.dip-slot-dip{position:absolute;bottom:0;left:0;right:0;text-align:center;padding:4px 2px;background:rgba(0,0,0,.55);font-family:var(--font-mono);font-size:9px;font-weight:800;color:var(--fragment-gold);letter-spacing:.08em;z-index:2}
+
 .dip-unlock-slot.main{width:100px;height:140px;border-color:rgba(214,176,124,.5)}
 
 .dip-unlock-btn{width:100%;padding:11px;background:linear-gradient(180deg,var(--gold),var(--gold-deep));color:#2c1f00;border:none;border-radius:999px;font-weight:800;font-size:13.5px;cursor:pointer;font-family:inherit;letter-spacing:-.005em}
@@ -374,10 +379,10 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
           <div class="dip-value-row">
             <span class="dip-val-num">100 DIP</span>
             <span class="dip-val-eq">=</span>
-            <span class="dip-val-desc"><b style="color:var(--gold-deep)">$1</b>, 캐릭터 잠금해제에 바로 쓸 수 있어요</span>
+            <span class="dip-val-desc"><b style="color:var(--gold-deep)">$1</b>로, 앱 내에서 유료 캐릭터 잠금해제나 에피소드 해제에 쓸 수 있어요.</span>
           </div>
           <div class="dip-unlock-card">
-            <div class="dip-unlock-gallery"><div class="dip-unlock-slot main"><img src="./signup-assets/scenes/bg/unlock-preview/final_ko.jpg" alt=""></div><div class="dip-unlock-slot"><img src="./signup-assets/scenes/bg/unlock-preview/final_wuxia.jpg" alt=""></div><div class="dip-unlock-slot"><img src="./signup-assets/scenes/bg/unlock-preview/final_medieval.jpg" alt=""></div><div class="dip-unlock-slot"><img src="./signup-assets/scenes/bg/unlock-preview/final_en.jpg" alt=""></div><div class="dip-unlock-slot"><img src="./signup-assets/scenes/bg/unlock-preview/final_ja.jpg" alt=""></div></div>
+            <div class="dip-unlock-gallery"><div class="dip-unlock-slot main" style="background:#1a0f1a"><div class="dip-slot-wrap"><img src="./signup-assets/scenes/bg/unlock-preview/final_ko.jpg" alt=""><div class="dip-slot-lock">🔒</div><div class="dip-slot-dip">200 DIP</div></div></div><div class="dip-unlock-slot" style="background:#1a0f1a"><div class="dip-slot-wrap"><img src="./signup-assets/scenes/bg/unlock-preview/final_wuxia.jpg" alt=""><div class="dip-slot-lock">🔒</div><div class="dip-slot-dip">200 DIP</div></div></div><div class="dip-unlock-slot" style="background:#1a0f1a"><div class="dip-slot-wrap"><img src="./signup-assets/scenes/bg/unlock-preview/final_medieval.jpg" alt=""><div class="dip-slot-lock">🔒</div><div class="dip-slot-dip">200 DIP</div></div></div><div class="dip-unlock-slot" style="background:#1a0f1a"><div class="dip-slot-wrap"><img src="./signup-assets/scenes/bg/unlock-preview/final_en.jpg" alt=""><div class="dip-slot-lock">🔒</div><div class="dip-slot-dip">200 DIP</div></div></div><div class="dip-unlock-slot" style="background:#1a0f1a"><div class="dip-slot-wrap"><img src="./signup-assets/scenes/bg/unlock-preview/final_ja.jpg" alt=""><div class="dip-slot-lock">🔒</div><div class="dip-slot-dip">200 DIP</div></div></div></div><div class="dip-unlock-slot"><img src="./signup-assets/scenes/bg/unlock-preview/final_wuxia.jpg" alt=""></div><div class="dip-unlock-slot"><img src="./signup-assets/scenes/bg/unlock-preview/final_medieval.jpg" alt=""></div><div class="dip-unlock-slot"><img src="./signup-assets/scenes/bg/unlock-preview/final_en.jpg" alt=""></div><div class="dip-unlock-slot"><img src="./signup-assets/scenes/bg/unlock-preview/final_ja.jpg" alt=""></div></div>
             <div class="dip-unlock-info">
               <p><b>5,000 DIP</b>으로 신규 캐릭터를 먼저 만나보세요.</p>
             </div>
