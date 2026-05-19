@@ -313,7 +313,7 @@ function share(channel){
   }
 }
 
-document.getElementById('dday').textContent = '17';
+const _t=new Date('2026-05-22T00:00:00+09:00'),_n=new Date(),_d=Math.ceil((_t-_n)/864e5);document.querySelectorAll('#dday').forEach(e=>e.textContent=_d>0?_d:'D-day');
 </script>
 
 
@@ -334,6 +334,7 @@ document.getElementById('dday').textContent = '17';
 
 </body>
 </html>
+
 
 
 
