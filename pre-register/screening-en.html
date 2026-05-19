@@ -240,7 +240,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .dip-unlock-gallery::-webkit-scrollbar{display:none}
 .dip-unlock-slot{flex-shrink:0;width:100px;height:140px;border-radius:10px;overflow:hidden;position:relative;border:1px solid var(--border-medium)}
 .dip-unlock-slot img{width:100%;height:100%;object-fit:cover;object-position:top center;filter:blur(4px) brightness(.85);transform:scale(1.15);transition:filter .3s}
-.dip-unlock-slot::after{content:'🔒';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:22px;filter:drop-shadow(0 1px 3px rgba(0,0,0,.6))}
+.dip-unlock-slot::after{content:'';display:none}
 
 .dip-slot-wrap{position:relative;width:100%;height:100%;display:block;min-height:140px}
 .dip-slot-lock{position:absolute;top:50%;left:50%;transform:translate(-50%,-60%);font-size:20px;filter:drop-shadow(0 1px 3px rgba(0,0,0,.6));z-index:2}
@@ -1236,6 +1236,7 @@ function goHome() {
 
 </body>
 </html>
+
 
 
 
