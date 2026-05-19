@@ -110,9 +110,19 @@ a:hover{text-decoration-color:var(--accent)}
 .dip-unlock-gallery::-webkit-scrollbar{display:none}
 .dip-unlock-slot{flex-shrink:0;width:100px;height:130px;border-radius:10px;overflow:hidden;position:relative;border:1px solid rgba(63,38,52,.12)}
 .dip-unlock-slot img{width:100%;height:100%;object-fit:cover;object-position:top center;filter:blur(4px) brightness(.85);transform:scale(1.15)}
-.dip-unlock-slot::after{content:'🔒';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:22px}
+.dip-unlock-slot::after{content:''}
 .dip-unlock-slot.main{width:130px;border-color:rgba(214,176,124,.5)}
 .dip-also{font-size:12px;color:var(--text-3);text-align:center;padding-top:8px;border-top:1px dashed rgba(63,38,52,.1);margin-bottom:12px}
+
+
+.next-survey-label{font-family:var(--mono);font-size:11px;letter-spacing:.2em;font-weight:800;color:var(--text-3);text-transform:uppercase;margin-bottom:8px}
+.next-reward-value{font-family:var(--sans);font-size:64px;font-weight:900;color:var(--gold-deep);line-height:1;letter-spacing:-.03em;margin-bottom:2px}
+.next-reward-sub{font-family:var(--sans);font-size:13px;color:var(--text-2);margin-bottom:12px}
+.next-reward-sub b{color:var(--gold-deep);font-weight:800}
+.next-unlock-text{font-size:14px;font-weight:700;color:var(--text-1);margin-bottom:14px}
+.dip-slot-wrap{position:relative;width:100%;height:100%}
+.dip-slot-lock{position:absolute;top:50%;left:50%;transform:translate(-50%,-60%);font-size:20px;filter:drop-shadow(0 1px 3px rgba(0,0,0,.6));z-index:2}
+.dip-slot-dip{position:absolute;bottom:0;left:0;right:0;text-align:center;padding:4px 2px;background:rgba(0,0,0,.55);font-family:var(--mono);font-size:9px;font-weight:800;color:var(--gold);letter-spacing:.08em;z-index:2}
 
 .next-cta-sub{margin-top:7px;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--text-3);text-align:center}
 
@@ -195,12 +205,13 @@ a:hover{text-decoration-color:var(--accent)}
 
     <!-- Next · Dip -->
     <div class="next-block">
-      <div class="next-dip-num"><span>+</span>5,000</div>
-      <div class="next-dip-label">DIP · Instant reward on survey completion</div>
-      <div class="next-dip-desc"><div class="next-dip-highlight"><em>Premium new characters</em></div> Get 2 premium characters free · $50 value</div>
-      <div class="dip-value-row"><span class="dip-val-num">100 DIP</span><span class="dip-val-eq">=</span><span class="dip-val-desc"><b style="color:var(--gold-deep)">$1</b>, spend it instantly to unlock characters</span></div><div class="dip-unlock-gallery"><div class="dip-unlock-slot main"><img src="./signup-assets/scenes/bg/unlock-preview/final_en.jpg" alt=""></div><div class="dip-unlock-slot"><img src="./signup-assets/scenes/bg/unlock-preview/final_medieval.jpg" alt=""></div><div class="dip-unlock-slot"><img src="./signup-assets/scenes/bg/unlock-preview/final_ko.jpg" alt=""></div><div class="dip-unlock-slot"><img src="./signup-assets/scenes/bg/unlock-preview/final_wuxia.jpg" alt=""></div><div class="dip-unlock-slot"><img src="./signup-assets/scenes/bg/unlock-preview/final_ja.jpg" alt=""></div></div><div class="dip-also">DIP can be used to instantly unlock any character or chapter.</div>
+      <div class="next-survey-label">Complete the 2-min survey</div>
+      <div class="next-reward-value">$50</div>
+      <div class="next-reward-sub">in-app value · <b>5,000 DIP</b> reward</div>
+      <div class="next-unlock-text">25 premium characters to unlock</div>
+      <div class="dip-unlock-gallery"><div class="dip-unlock-slot main"><div class="dip-slot-wrap"><img src="./signup-assets/scenes/bg/unlock-preview/final_en.jpg" alt=""><div class="dip-slot-lock">🔒</div><div class="dip-slot-dip">200 DIP</div></div></div><div class="dip-unlock-slot"><div class="dip-slot-wrap"><img src="./signup-assets/scenes/bg/unlock-preview/final_medieval.jpg" alt=""><div class="dip-slot-lock">🔒</div><div class="dip-slot-dip">200 DIP</div></div></div><div class="dip-unlock-slot"><div class="dip-slot-wrap"><img src="./signup-assets/scenes/bg/unlock-preview/final_ko.jpg" alt=""><div class="dip-slot-lock">🔒</div><div class="dip-slot-dip">200 DIP</div></div></div><div class="dip-unlock-slot"><div class="dip-slot-wrap"><img src="./signup-assets/scenes/bg/unlock-preview/final_wuxia.jpg" alt=""><div class="dip-slot-lock">🔒</div><div class="dip-slot-dip">200 DIP</div></div></div><div class="dip-unlock-slot"><div class="dip-slot-wrap"><img src="./signup-assets/scenes/bg/unlock-preview/final_ja.jpg" alt=""><div class="dip-slot-lock">🔒</div><div class="dip-slot-dip">200 DIP</div></div></div></div>
       <a href="./screening-en.html" class="next-cta" style="margin-top:18px">Claim Now, Earn Dip →</a>
-      <div class="next-cta-sub">Takes about 2 minutes</div>
+      <div class="next-cta-sub" style="margin-top:8px">Takes about 2 minutes</div>
     </div>
 
     <a href="./v47-lp-wide-en.html" class="back-link">← Back to main</a>
